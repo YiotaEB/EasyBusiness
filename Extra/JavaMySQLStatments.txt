@@ -1,0 +1,40 @@
+JAVA mysql connection
+
+
+ ConnectionCreator connectionCreator = new ConnectionCreator();
+        Connection connection = connectionCreator.connect();
+
+SELECT:
+
+  
+        Statement getUsersStatement = connection.createStatement();
+        String query = " Select * From Users";
+        ResultSet rs = getUsersStatement.executeQuery(query);
+        
+        // iterate through the java resultset
+        while (rs.next()) {
+            String user = rs.getString("Username");
+            String pass = rs.getString("Password");
+
+            // print the results
+            System.out.println("User: " + user +"   "+ " Pass: " + pass);
+        }
+        getUsersStatement.close();
+
+
+INSERT:
+ // the mysql insert statement
+      String query2 = " insert into Countries (CountryName) values ('Greece')";
+
+      // create the mysql insert preparedstatement
+      PreparedStatement preparedStmt = connection.prepareStatement(query2);
+      // execute the preparedstatement
+      preparedStmt.execute();
+
+
+REMOVE:
+ String query3 = "delete from Countries where CountryName = ('Greece')";
+      PreparedStatement preparedStmt2 = connection.prepareStatement(query3);
+
+      // execute the preparedstatement
+      preparedStmt2.execute();
