@@ -29,7 +29,7 @@ public class ScrollablePane extends JPanel implements Scrollable {
 
             @Override
             public Dimension getPreferredScrollableViewportSize() {
-                return new Dimension(200, 130);
+                return new Dimension(140, 130);
             }
 
             @Override

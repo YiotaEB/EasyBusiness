@@ -5,12 +5,11 @@
  */
 package eb_managementapp.UI.Forms;
 
-import static eb_managementapp.EB_ManagementApp.addSizeForm;
-import static eb_managementapp.EB_ManagementApp.addProductTypeForm;
-import static eb_managementapp.EB_ManagementApp.setUpForm;
-import static eb_managementapp.EB_ManagementApp.viewProducts;
 import eb_managementapp.DB.ConnectionCreator;
+import static eb_managementapp.EB_ManagementApp.addProductTypeForm;
 import static eb_managementapp.EB_ManagementApp.addProductsForm;
+import static eb_managementapp.EB_ManagementApp.addSizeForm;
+import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.UI.Components.CheckboxGroup;
 import eb_managementapp.UI.Components.JTableUtilities;
 import java.awt.Point;
@@ -23,12 +22,8 @@ import java.sql.Statement;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import static javax.swing.JOptionPane.showMessageDialog;
-import static javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 public class AddProductsForm extends javax.swing.JFrame {
 
@@ -39,9 +34,9 @@ public class AddProductsForm extends javax.swing.JFrame {
 
         //---
         //setLayout(new GridLayout(0, 2));
-        CheckboxGroup group = new CheckboxGroup(new String[]{"150ml", "250ml", "300ml", "350ml", "500ml", "1L"});
+        CheckboxGroup group = new CheckboxGroup(new String[]{"150ml", "250ml", "300ml", "350ml", "500ml", "1L", "2L","3L"});
 
-        group.setBounds(new Rectangle(new Point(95, 110), group.getPreferredSize()));
+        group.setBounds(new Rectangle(new Point(85, 110), group.getPreferredSize()));
         ProductPanel.add(group);
         pack();
         setLocationRelativeTo(null);

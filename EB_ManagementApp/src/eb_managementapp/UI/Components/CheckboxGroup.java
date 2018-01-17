@@ -35,7 +35,7 @@ public class CheckboxGroup extends JPanel {
             checkBoxes = new ArrayList<>(25);
             setLayout(new BorderLayout());
             JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
-            all = new JCheckBox("Select All...");
+            all = new JCheckBox("Select All");
             all.setFont(SELECT_ALL_FONT);
             all.addActionListener(new ActionListener() {
                 @Override
@@ -51,14 +51,15 @@ public class CheckboxGroup extends JPanel {
             JPanel content = new ScrollablePane(new GridBagLayout());
             //content.setBackground(UIManager.getColor("List.background"));
             content.setBackground(Color.WHITE);
-            content.add(all);
+            
             if (options.length > 0) {
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridwidth = GridBagConstraints.REMAINDER;
                 gbc.anchor = GridBagConstraints.NORTHWEST;
                 gbc.weightx = 1;
-                for (int index = 0; index < options.length - 1; index++) {
+                content.add(all, gbc);
+                for (int index = 0; index < options.length -1; index++) {
                     JCheckBox cb = new JCheckBox(options[index]);
                     cb.setOpaque(false);
                     checkBoxes.add(cb);
