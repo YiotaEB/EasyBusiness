@@ -1,0 +1,30 @@
+Lists - add items from database
+
+  Vector<String> productNames = new Vector<>();
+
+        
+        try {
+            //SELECT From ProductType
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getProductsListStatement = connection.createStatement();
+            String query = " Select * From Products";
+            ResultSet rs;
+            rs = getProductsListStatement.executeQuery(query);
+
+            // iterate through the java resultset
+            while (rs.next()) {
+                String pL = rs.getString("Name");
+                productNames.add(pL);
+               
+
+                // print the results
+                //System.out.println("Name" + typeName);
+            }
+            getProductsListStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+         this.productList.setListData(productNames);

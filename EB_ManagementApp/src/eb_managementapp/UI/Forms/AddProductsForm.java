@@ -12,6 +12,7 @@ import static eb_managementapp.EB_ManagementApp.viewProducts;
 import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.addProductsForm;
 import eb_managementapp.UI.Components.CheckboxGroup;
+import eb_managementapp.UI.Components.JTableUtilities;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.sql.Connection;
@@ -19,9 +20,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import static javax.swing.JOptionPane.showMessageDialog;
+import static javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class AddProductsForm extends javax.swing.JFrame {
 
@@ -38,8 +45,8 @@ public class AddProductsForm extends javax.swing.JFrame {
         ProductPanel.add(group);
         pack();
         setLocationRelativeTo(null);
-		
-		try {
+
+        try {
 
             //SELECT From ProductType
             ConnectionCreator connectionCreator = new ConnectionCreator();
@@ -95,9 +102,9 @@ public class AddProductsForm extends javax.swing.JFrame {
         ButtonPanel = new javax.swing.JPanel();
         AddNewProductButton = new javax.swing.JButton();
         CancelButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        productList = new javax.swing.JList<>();
+        TablePanel = new javax.swing.JPanel();
+        productsScrollPane = new javax.swing.JScrollPane();
+        productsTable = new javax.swing.JTable();
         ViewProductsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -157,14 +164,9 @@ public class AddProductsForm extends javax.swing.JFrame {
         ProductPanelLayout.setHorizontalGroup(
             ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ProductPanelLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ProductPanelLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(TypeLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ProductPanelLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProductPanelLayout.createSequentialGroup()
                         .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(ProductPanelLayout.createSequentialGroup()
                                 .addComponent(QuantityLabel)
@@ -176,17 +178,23 @@ public class AddProductsForm extends javax.swing.JFrame {
                                 .addComponent(PriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(ProductPanelLayout.createSequentialGroup()
                                 .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(SizeLabel)
-                                    .addComponent(ProductNameLabel))
-                                .addGap(11, 11, 11)
-                                .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(20, 20, 20)
-                .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AddTypeButton)
-                    .addGroup(ProductPanelLayout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(AddSizeButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(ProductPanelLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(TypeLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(TypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(ProductPanelLayout.createSequentialGroup()
+                                        .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(SizeLabel)
+                                            .addComponent(ProductNameLabel))
+                                        .addGap(11, 11, 11)
+                                        .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(AddTypeButton)))
+                        .addGap(5, 5, 5))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProductPanelLayout.createSequentialGroup()
+                        .addComponent(AddSizeButton)
+                        .addContainerGap())))
         );
         ProductPanelLayout.setVerticalGroup(
             ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,11 +211,10 @@ public class AddProductsForm extends javax.swing.JFrame {
                             .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addComponent(SizeLabel))
-                    .addGroup(ProductPanelLayout.createSequentialGroup()
-                        .addComponent(AddTypeButton)
-                        .addGap(50, 50, 50)
-                        .addComponent(AddSizeButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
+                    .addComponent(AddTypeButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(AddSizeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(QuantityLabel)
                     .addComponent(QuantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,9 +258,20 @@ public class AddProductsForm extends javax.swing.JFrame {
                 .addGap(35, 35, 35))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List of Products", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(204, 204, 204))); // NOI18N
+        TablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List of Products", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        jScrollPane1.setViewportView(productList);
+        productsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        productsTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        productsTable.setAutoscrolls(false);
+        productsTable.getTableHeader().setReorderingAllowed(false);
+        productsScrollPane.setViewportView(productsTable);
 
         ViewProductsButton.setText("View Products");
         ViewProductsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -262,26 +280,27 @@ public class AddProductsForm extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(ViewProductsButton)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        javax.swing.GroupLayout TablePanelLayout = new javax.swing.GroupLayout(TablePanel);
+        TablePanel.setLayout(TablePanelLayout);
+        TablePanelLayout.setHorizontalGroup(
+            TablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TablePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ViewProductsButton)
-                .addGap(10, 10, 10))
+                .addContainerGap())
+            .addGroup(TablePanelLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(productsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
+        );
+        TablePanelLayout.setVerticalGroup(
+            TablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TablePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ViewProductsButton)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -290,22 +309,21 @@ public class AddProductsForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ProductPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ProductPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ProductPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(ButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
         );
@@ -351,44 +369,65 @@ public class AddProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_AddNewProductButtonActionPerformed
 
     private void ViewProductsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewProductsButtonActionPerformed
-        
-//        DefaultListModel model = new DefaultListModel(); //create a new list model
-//
-//        
-//        try {
-//            //SELECT From ProductType
-//            ConnectionCreator connectionCreator = new ConnectionCreator();
-//            Connection connection = connectionCreator.connect();
-//
-//            Statement getProductsListStatement = connection.createStatement();
-//            String query = " Select * From Products";
-//            ResultSet rs;
-//            rs = getProductsListStatement.executeQuery(query);
-//
-//            // iterate through the java resultset
-//            while (rs.next()) {
-//                String pL = rs.getString();
-//                productList.addElement(pl);
-//
-//                // print the results
-//                //System.out.println("Name" + typeName);
-//            }
-//            getProductsListStatement.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
 
-        
-        
-        
-        
-        
-        setVisible(false);
-        viewProducts = new ViewProductsForm();
+        Vector<String> productNumbers = new Vector<>();
+        Vector<String> productNames = new Vector<>();
+        Vector<String> productSize = new Vector<>();
+        Vector<String> productPrice = new Vector<>();
+        Vector<String> productQuantity = new Vector<>();
+        Vector<String> columnNames = new Vector<>();
+        columnNames.add("#");
+        columnNames.add("Name");
+        columnNames.add("Size");
+        columnNames.add("Price");
+        columnNames.add("Quantity");
+        Vector<Vector<String>> data = new Vector<>();
+
+        try {
+            //SELECT From ProductType
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getProductsListStatement = connection.createStatement();
+            String query = " Select * From Products,ProductSizes Where Products.ProductSizeID=ProductSizes.ProductSizeID";
+            ResultSet rs;
+            rs = getProductsListStatement.executeQuery(query);
+            Integer i = 0;
+
+            while (rs.next()) {
+                i++;
+                productNumbers.add(i.toString());
+                productNames.add(rs.getString("Name"));
+                productSize.add(rs.getString("ProductSizeName"));
+                productPrice.add(rs.getString("Price"));
+                productQuantity.add(rs.getString("Quantity"));
+
+            }
+            getProductsListStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (int i = 0; i < productNumbers.size(); i++) {
+            Vector<String> row = new Vector<>();
+            row.add(productNumbers.get(i));
+            row.add(productNames.get(i));
+            row.add(productSize.get(i));
+            row.add(productPrice.get(i));
+            row.add(productQuantity.get(i));
+            data.add(row);
+        }
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        productsTable.setModel(model);
+
+        JTableUtilities.setJTableColumnsWidth(productsTable, productsTable.getWidth(), 10, 40, 20, 15, 15);
+
+//        
+//        TableColumnModel columnModel =  productsTable.getColumnModel();
+//        columnModel.getColumn(0).setPreferredWidth(50);
+        // this.productTable.setListData(productNames);
+
     }//GEN-LAST:event_ViewProductsButtonActionPerformed
 
     private void AddSizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddSizeButtonActionPerformed
@@ -402,8 +441,8 @@ public class AddProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_AddTypeButtonActionPerformed
 
     private void TypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TypeComboBoxActionPerformed
-        
-		//TODO Panayiota: Action when selecting an item in TypeComboBox.
+
+        //TODO Panayiota: Action when selecting an item in TypeComboBox.
 
     }//GEN-LAST:event_TypeComboBoxActionPerformed
 
@@ -456,11 +495,11 @@ public class AddProductsForm extends javax.swing.JFrame {
     private javax.swing.JLabel QuantityLabel;
     private javax.swing.JSpinner QuantitySpinner;
     private javax.swing.JLabel SizeLabel;
+    private javax.swing.JPanel TablePanel;
     private javax.swing.JComboBox<String> TypeComboBox;
     private javax.swing.JLabel TypeLabel;
     private javax.swing.JButton ViewProductsButton;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> productList;
+    private javax.swing.JScrollPane productsScrollPane;
+    private javax.swing.JTable productsTable;
     // End of variables declaration//GEN-END:variables
 }
