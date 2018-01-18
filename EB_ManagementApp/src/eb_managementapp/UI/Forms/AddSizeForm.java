@@ -7,13 +7,16 @@ package eb_managementapp.UI.Forms;
 
 import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.addProductsForm;
+import static eb_managementapp.EB_ManagementApp.setUpForm;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
-
 
 public class AddSizeForm extends javax.swing.JFrame {
 
@@ -22,6 +25,33 @@ public class AddSizeForm extends javax.swing.JFrame {
      */
     public AddSizeForm() {
         initComponents();
+        final String TITLE = "Add Size";
+
+        try {
+            //SELECT From ProductType
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getSizeTypeStatement = connection.createStatement();
+
+            //typeComboBox
+            String qr = " Select Name From UnitTypes";
+            ResultSet rs;
+            rs = getSizeTypeStatement.executeQuery(qr);
+
+            typeComboBox.removeAllItems();
+            // iterate through the java resultset
+            while (rs.next()) {
+                String typeName = rs.getString("Name");
+                typeComboBox.addItem(typeName);
+            }
+            getSizeTypeStatement.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setTitle(TITLE);
         setVisible(true);
     }
 
@@ -34,81 +64,88 @@ public class AddSizeForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        AddSizePanel = new javax.swing.JPanel();
-        SizeLabel = new javax.swing.JLabel();
-        SizeTextField = new javax.swing.JTextField();
-        ButtonPanel = new javax.swing.JPanel();
-        AddButton = new javax.swing.JButton();
-        CancelButton = new javax.swing.JButton();
+        addSizePanel = new javax.swing.JPanel();
+        sizeLabel = new javax.swing.JLabel();
+        sizeTextField = new javax.swing.JTextField();
+        typeComboBox = new javax.swing.JComboBox<>();
+        buttonPanel = new javax.swing.JPanel();
+        addButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        AddSizePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Size", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(204, 204, 204))); // NOI18N
+        addSizePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Size", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        SizeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        SizeLabel.setText("Size:");
+        sizeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        sizeLabel.setText("Size:");
 
-        SizeTextField.addActionListener(new java.awt.event.ActionListener() {
+        sizeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SizeTextFieldActionPerformed(evt);
+                sizeTextFieldActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout AddSizePanelLayout = new javax.swing.GroupLayout(AddSizePanel);
-        AddSizePanel.setLayout(AddSizePanelLayout);
-        AddSizePanelLayout.setHorizontalGroup(
-            AddSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(AddSizePanelLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(SizeLabel)
+        typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout addSizePanelLayout = new javax.swing.GroupLayout(addSizePanel);
+        addSizePanel.setLayout(addSizePanelLayout);
+        addSizePanelLayout.setHorizontalGroup(
+            addSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addSizePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(sizeLabel)
                 .addGap(18, 18, 18)
-                .addComponent(SizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        AddSizePanelLayout.setVerticalGroup(
-            AddSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(AddSizePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(AddSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SizeLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        AddButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AddButton.setText("Add");
-        AddButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddButtonActionPerformed(evt);
-            }
-        });
-
-        CancelButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
-        ButtonPanel.setLayout(ButtonPanelLayout);
-        ButtonPanelLayout.setHorizontalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonPanelLayout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(CancelButton)
+                .addComponent(sizeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(AddButton)
+                .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        addSizePanelLayout.setVerticalGroup(
+            addSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addSizePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sizeLabel)
+                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        ButtonPanelLayout.setVerticalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonPanelLayout.createSequentialGroup()
+
+        addButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(cancelButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(addButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AddButton)
-                    .addComponent(CancelButton))
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
+                    .addComponent(cancelButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -119,17 +156,17 @@ public class AddSizeForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(AddSizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addSizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(AddSizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addSizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(11, 11, 11))
         );
 
@@ -137,39 +174,37 @@ public class AddSizeForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void SizeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SizeTextFieldActionPerformed
+    private void sizeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sizeTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_SizeTextFieldActionPerformed
+    }//GEN-LAST:event_sizeTextFieldActionPerformed
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
-        setVisible(true);
-        addProductsForm = new AddProductsForm();
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        setVisible(false);
+        setUpForm = new SetUpForm();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
-        
-         ConnectionCreator connectionCreator = new ConnectionCreator();
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+
+        ConnectionCreator connectionCreator = new ConnectionCreator();
         Connection connection = connectionCreator.connect();
 
-        String queryInsertSize = " insert into ProductSizes (ProductSizeID,CompanyID,ProductSizeName)"
-                + "values (4,5,'" + SizeTextField.getText() + "')";
+        String queryInsertSize = " insert into ProductSizes (Name,UnitTypeID)"
+                + "values ('" + sizeTextField.getText()+typeComboBox.getItemAt(typeComboBox.getSelectedIndex()) + "',"+(typeComboBox.getSelectedIndex()+1)+")";
 
         try {
             //Create insert preparedstatement for administrator
             PreparedStatement prepareSizeStatement = connection.prepareStatement(queryInsertSize);
             prepareSizeStatement.execute();
 
-            showMessageDialog(null, "Size Added -->" + SizeTextField.getText());
+            showMessageDialog(null, "Size Added -->" + sizeTextField.getText());
 
         } catch (SQLException ex) {
             Logger.getLogger(AddSizeForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        setVisible(true);
+
+        setVisible(false);
         addProductsForm = new AddProductsForm();
-    }//GEN-LAST:event_AddButtonActionPerformed
+    }//GEN-LAST:event_addButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,11 +243,12 @@ public class AddSizeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddButton;
-    private javax.swing.JPanel AddSizePanel;
-    private javax.swing.JPanel ButtonPanel;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JLabel SizeLabel;
-    private javax.swing.JTextField SizeTextField;
+    private javax.swing.JButton addButton;
+    private javax.swing.JPanel addSizePanel;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel sizeLabel;
+    private javax.swing.JTextField sizeTextField;
+    private javax.swing.JComboBox<String> typeComboBox;
     // End of variables declaration//GEN-END:variables
 }

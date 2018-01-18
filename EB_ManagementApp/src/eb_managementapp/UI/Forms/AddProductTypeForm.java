@@ -14,11 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
 
-
-/**
- *
- * @author panay
- */
 public class AddProductTypeForm extends javax.swing.JFrame {
 
     /**
@@ -26,6 +21,10 @@ public class AddProductTypeForm extends javax.swing.JFrame {
      */
     public AddProductTypeForm() {
         initComponents();
+
+        final String TITLE = "Add Type";
+
+        setTitle(TITLE);
         setVisible(true);
     }
 
@@ -38,81 +37,82 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        AddTypePanel = new javax.swing.JPanel();
-        NameLabel = new javax.swing.JLabel();
-        NameTypeTextField = new javax.swing.JTextField();
-        ButtonPanel = new javax.swing.JPanel();
-        AddButton = new javax.swing.JButton();
-        CancelButton = new javax.swing.JButton();
+        addTypePanel = new javax.swing.JPanel();
+        nameLabel = new javax.swing.JLabel();
+        nameTypeTextField = new javax.swing.JTextField();
+        buttonPanel = new javax.swing.JPanel();
+        addButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        AddTypePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(204, 204, 204))); // NOI18N
+        addTypePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        NameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        NameLabel.setText("Name:");
+        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        nameLabel.setText("Name:");
 
-        NameTypeTextField.addActionListener(new java.awt.event.ActionListener() {
+        nameTypeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameTypeTextFieldActionPerformed(evt);
+                nameTypeTextFieldActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout AddTypePanelLayout = new javax.swing.GroupLayout(AddTypePanel);
-        AddTypePanel.setLayout(AddTypePanelLayout);
-        AddTypePanelLayout.setHorizontalGroup(
-            AddTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(AddTypePanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout addTypePanelLayout = new javax.swing.GroupLayout(addTypePanel);
+        addTypePanel.setLayout(addTypePanelLayout);
+        addTypePanelLayout.setHorizontalGroup(
+            addTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addTypePanelLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(NameLabel)
+                .addComponent(nameLabel)
                 .addGap(18, 18, 18)
-                .addComponent(NameTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nameTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        AddTypePanelLayout.setVerticalGroup(
-            AddTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(AddTypePanelLayout.createSequentialGroup()
+        addTypePanelLayout.setVerticalGroup(
+            addTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addTypePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(AddTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NameTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NameLabel))
+                .addGroup(addTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        AddButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AddButton.setText("Add");
-        AddButton.addActionListener(new java.awt.event.ActionListener() {
+        addButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddButtonActionPerformed(evt);
+                addButtonActionPerformed(evt);
             }
         });
 
-        CancelButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
-        ButtonPanel.setLayout(ButtonPanelLayout);
-        ButtonPanelLayout.setHorizontalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addComponent(CancelButton)
+                .addComponent(cancelButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(AddButton)
+                .addComponent(addButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        ButtonPanelLayout.setVerticalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonPanelLayout.createSequentialGroup()
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AddButton)
-                    .addComponent(CancelButton))
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
+                    .addComponent(cancelButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -123,17 +123,17 @@ public class AddProductTypeForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(AddTypePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addTypePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(AddTypePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addTypePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(11, 11, 11))
         );
 
@@ -141,40 +141,37 @@ public class AddProductTypeForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         setVisible(true);
         addProductsForm = new AddProductsForm();
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void NameTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTypeTextFieldActionPerformed
+    private void nameTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTypeTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_NameTypeTextFieldActionPerformed
+    }//GEN-LAST:event_nameTypeTextFieldActionPerformed
 
-    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
-
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
 
         ConnectionCreator connectionCreator = new ConnectionCreator();
         Connection connection = connectionCreator.connect();
 
-        String queryInsertProducts = " insert into ProductTypes (ProductTypeID,CompanyID,ProductTypeName)"
-                + "values (4,5,'" + NameTypeTextField.getText()+ "')";
+        String queryInsertProducts = " insert into ProductTypes (Name)"
+                + "values ('" + nameTypeTextField.getText() + "')";
 
         try {
             //Create insert preparedstatement for administrator
             PreparedStatement prepareTypeStatement = connection.prepareStatement(queryInsertProducts);
             prepareTypeStatement.execute();
 
-            showMessageDialog(null, "Type Added -->" + NameTypeTextField.getText());
+            showMessageDialog(null, "Type Added -->" + nameTypeTextField.getText());
 
         } catch (SQLException ex) {
             Logger.getLogger(AddProductTypeForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
-
         setVisible(true);
         addProductsForm = new AddProductsForm();
-    }//GEN-LAST:event_AddButtonActionPerformed
+    }//GEN-LAST:event_addButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,11 +212,11 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddButton;
-    private javax.swing.JPanel AddTypePanel;
-    private javax.swing.JPanel ButtonPanel;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JLabel NameLabel;
-    private javax.swing.JTextField NameTypeTextField;
+    private javax.swing.JButton addButton;
+    private javax.swing.JPanel addTypePanel;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField nameTypeTextField;
     // End of variables declaration//GEN-END:variables
 }

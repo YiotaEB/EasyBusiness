@@ -5,16 +5,57 @@
  */
 package eb_managementapp.UI.Forms;
 
+import eb_managementapp.DB.ConnectionCreator;
 import eb_managementapp.UI.Forms.SetUpForm;
+import java.util.Vector;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import eb_managementapp.UI.Components.JTableUtilities;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
 
 public class SuppliersForm extends javax.swing.JFrame {
 
-    
-    final String TITLE = "Easy Business - Add Supplies";
-    
+    final String TITLE = "Add Supplies";
+
     public SuppliersForm() {
         initComponents();
+        
+        		try {
+
+            //SELECT From ProductType
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getCountryStatement = connection.createStatement();
+            String qr = " Select Name From Countries";
+            ResultSet rs;
+            rs = getCountryStatement.executeQuery(qr);
+
+            countryComboBox.removeAllItems();
+            // iterate through the java resultset
+            while (rs.next()) {
+                String typeName = rs.getString("Name");
+                countryComboBox.addItem(typeName);
+
+                // print the results
+                //System.out.println("Name" + typeName);
+            }
+            getCountryStatement.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
         setTitle(TITLE);
         setVisible(true);
     }
@@ -28,114 +69,284 @@ public class SuppliersForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        SupplierPanel = new javax.swing.JPanel();
-        SupplierNameLabel = new javax.swing.JLabel();
-        SupplierNameTextField = new javax.swing.JTextField();
-        SuppliesNameLabel = new javax.swing.JLabel();
-        AddSuppliesButton = new javax.swing.JButton();
-        SuppliesList = new javax.swing.JLabel();
-        SuppliersScrollPane = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jPanel1 = new javax.swing.JPanel();
-        CancelButton = new javax.swing.JButton();
-        AddNewProductButton = new javax.swing.JButton();
+        tableSuppliersPanel = new javax.swing.JPanel();
+        suppliersScrollPane = new javax.swing.JScrollPane();
+        suppliersTable = new javax.swing.JTable();
+        viewSuppliersButton = new javax.swing.JButton();
+        supplierPanel = new javax.swing.JPanel();
+        supplierNameLabel = new javax.swing.JLabel();
+        supplierNameTextField = new javax.swing.JTextField();
+        supplierTelephoneLabel = new javax.swing.JLabel();
+        supplierTelephoneTextField = new javax.swing.JTextField();
+        supplierAddressLabel = new javax.swing.JLabel();
+        supplierAddressTextField = new javax.swing.JTextField();
+        supplierCityLabel = new javax.swing.JLabel();
+        supplierCityTextField = new javax.swing.JTextField();
+        supplierCountryLabel = new javax.swing.JLabel();
+        countryComboBox = new javax.swing.JComboBox<>();
+        suppliesPanel = new javax.swing.JPanel();
+        suppliesNameLabel = new javax.swing.JLabel();
+        suppliesNameTextField = new javax.swing.JTextField();
+        quantityLabel = new javax.swing.JLabel();
+        quantitySpinner = new javax.swing.JSpinner();
+        priceLabel = new javax.swing.JLabel();
+        priceTextField = new javax.swing.JTextField();
+        buttonPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        addNewSuppliertButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        SupplierPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Suppliers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(204, 204, 204))); // NOI18N
+        tableSuppliersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List of Suppliers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        SupplierNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        SupplierNameLabel.setText("Supplier Name:");
+        suppliersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        SupplierNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            },
+            new String [] {
 
-        SuppliesNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        SuppliesNameLabel.setText("Supplies Name:");
+            }
+        ));
+        suppliersTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        suppliersTable.setAutoscrolls(false);
+        suppliersTable.getTableHeader().setReorderingAllowed(false);
+        suppliersScrollPane.setViewportView(suppliersTable);
 
-        AddSuppliesButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        AddSuppliesButton.setText("Add Supplies");
-
-        SuppliesList.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        SuppliesList.setText("List of Supplier:");
-
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        SuppliersScrollPane.setViewportView(jList1);
-
-        javax.swing.GroupLayout SupplierPanelLayout = new javax.swing.GroupLayout(SupplierPanel);
-        SupplierPanel.setLayout(SupplierPanelLayout);
-        SupplierPanelLayout.setHorizontalGroup(
-            SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SupplierPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(SupplierPanelLayout.createSequentialGroup()
-                        .addComponent(SuppliesList)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SuppliersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(SupplierPanelLayout.createSequentialGroup()
-                        .addGroup(SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(SuppliesNameLabel)
-                            .addComponent(SupplierNameLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(SupplierNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AddSuppliesButton))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        SupplierPanelLayout.setVerticalGroup(
-            SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SupplierPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SupplierNameLabel)
-                    .addComponent(SupplierNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SuppliesNameLabel)
-                    .addComponent(AddSuppliesButton))
-                .addGap(18, 18, 18)
-                .addGroup(SupplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SuppliesList)
-                    .addComponent(SuppliersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
-
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+        viewSuppliersButton.setText("View Suppliers");
+        viewSuppliersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
+                viewSuppliersButtonActionPerformed(evt);
             }
         });
 
-        AddNewProductButton.setText("Add New Supplier");
-        AddNewProductButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddNewProductButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(162, Short.MAX_VALUE)
-                .addComponent(CancelButton)
-                .addGap(18, 18, 18)
-                .addComponent(AddNewProductButton)
+        javax.swing.GroupLayout tableSuppliersPanelLayout = new javax.swing.GroupLayout(tableSuppliersPanel);
+        tableSuppliersPanel.setLayout(tableSuppliersPanelLayout);
+        tableSuppliersPanelLayout.setHorizontalGroup(
+            tableSuppliersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tableSuppliersPanelLayout.createSequentialGroup()
+                .addGroup(tableSuppliersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tableSuppliersPanelLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(suppliersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableSuppliersPanelLayout.createSequentialGroup()
+                        .addContainerGap(260, Short.MAX_VALUE)
+                        .addComponent(viewSuppliersButton)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        tableSuppliersPanelLayout.setVerticalGroup(
+            tableSuppliersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tableSuppliersPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CancelButton)
-                    .addComponent(AddNewProductButton))
+                .addComponent(suppliersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(viewSuppliersButton)
+                .addContainerGap())
+        );
+
+        supplierPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Suppliers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
+
+        supplierNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        supplierNameLabel.setText("Name:");
+
+        supplierNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        supplierTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        supplierTelephoneLabel.setText("Telephone:");
+
+        supplierTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supplierTelephoneTextFieldActionPerformed(evt);
+            }
+        });
+
+        supplierAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        supplierAddressLabel.setText("Address:");
+
+        supplierAddressTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supplierAddressTextFieldActionPerformed(evt);
+            }
+        });
+
+        supplierCityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        supplierCityLabel.setText("City:");
+
+        supplierCityTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supplierCityTextFieldActionPerformed(evt);
+            }
+        });
+
+        supplierCountryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        supplierCountryLabel.setText("Country:");
+
+        countryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        countryComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                countryComboBoxActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout supplierPanelLayout = new javax.swing.GroupLayout(supplierPanel);
+        supplierPanel.setLayout(supplierPanelLayout);
+        supplierPanelLayout.setHorizontalGroup(
+            supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(supplierPanelLayout.createSequentialGroup()
+                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(supplierPanelLayout.createSequentialGroup()
+                        .addGap(0, 25, Short.MAX_VALUE)
+                        .addComponent(supplierCountryLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, supplierPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(supplierPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(supplierCityLabel)
+                                    .addComponent(supplierAddressLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(supplierAddressTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                                    .addComponent(supplierCityTextField)))
+                            .addGroup(supplierPanelLayout.createSequentialGroup()
+                                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, supplierPanelLayout.createSequentialGroup()
+                                        .addComponent(supplierNameLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                    .addGroup(supplierPanelLayout.createSequentialGroup()
+                                        .addComponent(supplierTelephoneLabel)
+                                        .addGap(10, 10, 10)))
+                                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(supplierTelephoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                                    .addComponent(supplierNameTextField))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        supplierPanelLayout.setVerticalGroup(
+            supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(supplierPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(supplierNameLabel)
+                    .addComponent(supplierNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(supplierTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(supplierTelephoneLabel))
+                .addGap(11, 11, 11)
+                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(supplierAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(supplierAddressLabel))
+                .addGap(10, 10, 10)
+                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(supplierCityLabel)
+                    .addComponent(supplierCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(supplierPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(supplierCountryLabel))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        suppliesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplies", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
+
+        suppliesNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        suppliesNameLabel.setText("Name:");
+
+        suppliesNameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suppliesNameTextFieldActionPerformed(evt);
+            }
+        });
+
+        quantityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        quantityLabel.setText("Quantity:");
+
+        priceLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        priceLabel.setText("Price: (€)");
+
+        priceTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceTextFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout suppliesPanelLayout = new javax.swing.GroupLayout(suppliesPanel);
+        suppliesPanel.setLayout(suppliesPanelLayout);
+        suppliesPanelLayout.setHorizontalGroup(
+            suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(suppliesPanelLayout.createSequentialGroup()
+                .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(suppliesPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(suppliesNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(suppliesNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(suppliesPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, suppliesPanelLayout.createSequentialGroup()
+                                .addComponent(priceLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(priceTextField))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, suppliesPanelLayout.createSequentialGroup()
+                                .addComponent(quantityLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+        suppliesPanelLayout.setVerticalGroup(
+            suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(suppliesNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(suppliesNameLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(quantityLabel)
+                    .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(priceLabel))
+                .addGap(11, 11, 11))
+        );
+
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        addNewSuppliertButton.setText("Add New Supplier");
+        addNewSuppliertButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNewSuppliertButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cancelButton)
+                .addGap(18, 18, 18)
+                .addComponent(addNewSuppliertButton)
+                .addContainerGap())
+        );
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(addNewSuppliertButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -146,9 +357,13 @@ public class SuppliersForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SupplierPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(suppliesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(supplierPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tableSuppliersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -156,9 +371,14 @@ public class SuppliersForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(SupplierPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(supplierPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(suppliesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tableSuppliersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -166,14 +386,137 @@ public class SuppliersForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+    private void viewSuppliersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewSuppliersButtonActionPerformed
+
+        Vector<String> supplierNumbers = new Vector<>();
+        Vector<String> supplierNames = new Vector<>();
+        Vector<String> suppliesNames = new Vector<>();
+        Vector<String> suppliesPrice = new Vector<>();
+        Vector<String> suppliesQuantity = new Vector<>();
+        Vector<String> columnNames = new Vector<>();
+        columnNames.add("#");
+        columnNames.add("Supplier Name");
+        columnNames.add("Supplies Name");
+        columnNames.add("Price");
+        columnNames.add("Quantity");
+        Vector<Vector<String>> data = new Vector<>();
+
+        try {
+            //SELECT From ProductType
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getSupplierListStatement = connection.createStatement();
+            String query = " Select Name From Suppliers";
+            ResultSet rs = getSupplierListStatement.executeQuery(query);
+            
+            Statement getSuppliesListStatement = connection.createStatement();
+            String query2 = " Select Name, Price, Quantity From Supplies";
+            ResultSet rs2 = getSuppliesListStatement.executeQuery(query2);
+            
+            Integer i = 0;
+
+            while (rs.next()) {
+                i++;
+                supplierNumbers.add(i.toString());
+                supplierNames.add(rs.getString("Name"));
+            }
+            getSupplierListStatement.close();
+            
+            while (rs2.next()) {
+                i++;
+                suppliesNames.add(rs2.getString("Name"));
+                suppliesPrice.add("€ " + rs2.getString("Price"));
+                suppliesQuantity.add(rs2.getString("Quantity"));
+
+            }
+            getSuppliesListStatement.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+       for (int i = 0; i < supplierNumbers.size(); i++) {
+            Vector<String> row = new Vector<>();
+            row.add(supplierNumbers.get(i));
+            row.add(supplierNames.get(i));
+            row.add(suppliesNames.get(i));
+            row.add(suppliesPrice.get(i));
+            row.add(suppliesQuantity.get(i));
+            data.add(row);
+        }
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        suppliersTable.setModel(model);
+
+        JTableUtilities.setJTableColumnsWidth(suppliersTable, suppliersTable.getWidth(), 10, 35, 20, 15, 20);
+    }//GEN-LAST:event_viewSuppliersButtonActionPerformed
+
+    private void supplierTelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierTelephoneTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierTelephoneTextFieldActionPerformed
+
+    private void supplierAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierAddressTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierAddressTextFieldActionPerformed
+
+    private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_countryComboBoxActionPerformed
+
+    private void suppliesNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppliesNameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_suppliesNameTextFieldActionPerformed
+
+    private void priceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_priceTextFieldActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.setVisible(false);
         setUpForm = new SetUpForm();
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void AddNewProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddNewProductButtonActionPerformed
+    private void addNewSuppliertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewSuppliertButtonActionPerformed
+        ConnectionCreator connectionCreator = new ConnectionCreator();
+        Connection connection = connectionCreator.connect();
+
+        String queryInsertSuppliers = " insert into Suppliers (Name,Telephone,City,Address,CountryID)"
+                + "values ('" + supplierNameTextField.getText() + "','"+supplierTelephoneTextField.getText()+"','"+supplierCityTextField.getText()+"', '"+supplierAddressTextField.getText()+"',0)";
+        
+        String queryInsertSupplies = " insert into Supplies (Name,Quantity,Price)"
+                + "values ('" + suppliesNameTextField.getText() + "'," + quantitySpinner.getValue() + "," + priceTextField.getText() + ")";
+        
+        
+        
+        try {
+            //Create insert preparedstatement for administrator
+            PreparedStatement prepareSupplierStatement = connection.prepareStatement(queryInsertSuppliers);
+            prepareSupplierStatement.execute();
+            
+            PreparedStatement prepareSuppliesStatement = connection.prepareStatement(queryInsertSupplies);
+            prepareSuppliesStatement.execute();
+
+            showMessageDialog(null, "Supplier Added -->" + supplierNameTextField.getText());
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setVisible(true);
+        countryComboBox.setSelectedIndex(0);
+        supplierNameTextField.setText("");
+        suppliesNameTextField.setText("");
+        supplierAddressTextField.setText("");
+        supplierCityTextField.setText("");
+        supplierTelephoneTextField.setText("");
+        quantitySpinner.setValue(0);
+        priceTextField.setText("");
+    }//GEN-LAST:event_addNewSuppliertButtonActionPerformed
+
+    private void supplierCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierCityTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AddNewProductButtonActionPerformed
+    }//GEN-LAST:event_supplierCityTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,8 +545,6 @@ public class SuppliersForm extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -214,16 +555,30 @@ public class SuppliersForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddNewProductButton;
-    private javax.swing.JButton AddSuppliesButton;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JLabel SupplierNameLabel;
-    private javax.swing.JTextField SupplierNameTextField;
-    private javax.swing.JPanel SupplierPanel;
-    private javax.swing.JScrollPane SuppliersScrollPane;
-    private javax.swing.JLabel SuppliesList;
-    private javax.swing.JLabel SuppliesNameLabel;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton addNewSuppliertButton;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> countryComboBox;
+    private javax.swing.JLabel priceLabel;
+    private javax.swing.JTextField priceTextField;
+    private javax.swing.JLabel quantityLabel;
+    private javax.swing.JSpinner quantitySpinner;
+    private javax.swing.JLabel supplierAddressLabel;
+    private javax.swing.JTextField supplierAddressTextField;
+    private javax.swing.JLabel supplierCityLabel;
+    private javax.swing.JTextField supplierCityTextField;
+    private javax.swing.JLabel supplierCountryLabel;
+    private javax.swing.JLabel supplierNameLabel;
+    private javax.swing.JTextField supplierNameTextField;
+    private javax.swing.JPanel supplierPanel;
+    private javax.swing.JLabel supplierTelephoneLabel;
+    private javax.swing.JTextField supplierTelephoneTextField;
+    private javax.swing.JScrollPane suppliersScrollPane;
+    private javax.swing.JTable suppliersTable;
+    private javax.swing.JLabel suppliesNameLabel;
+    private javax.swing.JTextField suppliesNameTextField;
+    private javax.swing.JPanel suppliesPanel;
+    private javax.swing.JPanel tableSuppliersPanel;
+    private javax.swing.JButton viewSuppliersButton;
     // End of variables declaration//GEN-END:variables
 }
