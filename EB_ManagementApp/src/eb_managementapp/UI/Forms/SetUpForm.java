@@ -10,11 +10,11 @@ import static eb_managementapp.EB_ManagementApp.companyDetailsForm;
 import static eb_managementapp.EB_ManagementApp.addUsersForm;
 import static eb_managementapp.EB_ManagementApp.addProductsForm;
 import static eb_managementapp.EB_ManagementApp.addSupplierForm;
-import static eb_managementapp.EB_ManagementApp.addSuppliesForm;
+import static eb_managementapp.EB_ManagementApp.customersForm;
 
 public class SetUpForm extends javax.swing.JFrame {
 
-    final String TITLE = "Easy Business - Set Up";
+    final String TITLE = "Set Up";
     
     
     public SetUpForm() {
@@ -32,34 +32,35 @@ public class SetUpForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        TitlePanel = new javax.swing.JPanel();
-        TitleLabel = new javax.swing.JLabel();
-        ButtonsPanel = new javax.swing.JPanel();
+        titlePanel = new javax.swing.JPanel();
+        titleLabel = new javax.swing.JLabel();
+        buttonsPanel = new javax.swing.JPanel();
         createCompanyButton = new javax.swing.JButton();
         createEmployeesButton = new javax.swing.JButton();
         addProductsButton = new javax.swing.JButton();
         addSupplierButton = new javax.swing.JButton();
-        addSuppliesButton = new javax.swing.JButton();
+        addCustomersButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        TitleLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        TitleLabel.setText("SET UP MENU");
+        titleLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        titleLabel.setText("SET UP MENU");
 
-        javax.swing.GroupLayout TitlePanelLayout = new javax.swing.GroupLayout(TitlePanel);
-        TitlePanel.setLayout(TitlePanelLayout);
-        TitlePanelLayout.setHorizontalGroup(
-            TitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TitlePanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
+        titlePanel.setLayout(titlePanelLayout);
+        titlePanelLayout.setHorizontalGroup(
+            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(titlePanelLayout.createSequentialGroup()
                 .addGap(69, 69, 69)
-                .addComponent(TitleLabel)
+                .addComponent(titleLabel)
                 .addContainerGap(68, Short.MAX_VALUE))
         );
-        TitlePanelLayout.setVerticalGroup(
-            TitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TitlePanelLayout.createSequentialGroup()
+        titlePanelLayout.setVerticalGroup(
+            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(titlePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(TitleLabel)
+                .addComponent(titleLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -84,37 +85,37 @@ public class SetUpForm extends javax.swing.JFrame {
             }
         });
 
-        addSupplierButton.setText("ADD SUPPLIES");
+        addSupplierButton.setText("ADD SUPPLIEr");
         addSupplierButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addSupplierButtonActionPerformed(evt);
             }
         });
 
-        addSuppliesButton.setText("ADD CUSTOMERS");
-        addSuppliesButton.addActionListener(new java.awt.event.ActionListener() {
+        addCustomersButton.setText("ADD CUSTOMERS");
+        addCustomersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addSuppliesButtonActionPerformed(evt);
+                addCustomersButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout ButtonsPanelLayout = new javax.swing.GroupLayout(ButtonsPanel);
-        ButtonsPanel.setLayout(ButtonsPanelLayout);
-        ButtonsPanelLayout.setHorizontalGroup(
-            ButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonsPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout buttonsPanelLayout = new javax.swing.GroupLayout(buttonsPanel);
+        buttonsPanel.setLayout(buttonsPanelLayout);
+        buttonsPanelLayout.setHorizontalGroup(
+            buttonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonsPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(ButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(buttonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(createCompanyButton, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
                     .addComponent(createEmployeesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(addProductsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(addSupplierButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addSuppliesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(addCustomersButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        ButtonsPanelLayout.setVerticalGroup(
-            ButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonsPanelLayout.createSequentialGroup()
+        buttonsPanelLayout.setVerticalGroup(
+            buttonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(createCompanyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -124,7 +125,7 @@ public class SetUpForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(addSupplierButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(addSuppliesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addCustomersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -135,17 +136,17 @@ public class SetUpForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ButtonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TitlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(titlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(TitlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(titlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ButtonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -173,10 +174,10 @@ public class SetUpForm extends javax.swing.JFrame {
        addSupplierForm = new SuppliersForm ();
     }//GEN-LAST:event_addSupplierButtonActionPerformed
 
-    private void addSuppliesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliesButtonActionPerformed
+    private void addCustomersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCustomersButtonActionPerformed
        this.setVisible(false);
-       addSuppliesForm= new AddSuppliesForm();
-    }//GEN-LAST:event_addSuppliesButtonActionPerformed
+       customersForm= new CustomersForm();
+    }//GEN-LAST:event_addCustomersButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,14 +216,14 @@ public class SetUpForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel ButtonsPanel;
-    private javax.swing.JLabel TitleLabel;
-    private javax.swing.JPanel TitlePanel;
+    private javax.swing.JButton addCustomersButton;
     private javax.swing.JButton addProductsButton;
     private javax.swing.JButton addSupplierButton;
-    private javax.swing.JButton addSuppliesButton;
+    private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton createCompanyButton;
     private javax.swing.JButton createEmployeesButton;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JPanel titlePanel;
     // End of variables declaration//GEN-END:variables
 
 }

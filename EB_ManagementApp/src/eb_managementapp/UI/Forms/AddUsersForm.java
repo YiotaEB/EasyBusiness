@@ -1,17 +1,49 @@
 package eb_managementapp.UI.Forms;
 
+import eb_managementapp.DB.ConnectionCreator;
 import eb_managementapp.UI.Forms.SetUpForm;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AddUsersForm extends javax.swing.JFrame {
- 
-    final String TITLE = "Easy Business - Add Employees";
+
+    final String TITLE = "Add Employees";
 
     /**
      * Creates new form AddUsersForm
      */
     public AddUsersForm() {
         initComponents();
+
+        //COUNTRIES SELECTION COMBOBOX
+        try {
+            //Select Statment to choose countries
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getCountryStatement = connection.createStatement();
+            String qr = " Select Name From Countries";
+            ResultSet rs = getCountryStatement.executeQuery(qr);
+
+            countryComboBox.removeAllItems();
+            // iterate through the java resultset
+            while (rs.next()) {
+                String typeName = rs.getString("Name");
+                countryComboBox.addItem(typeName);
+            }
+            getCountryStatement.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         setTitle(TITLE);
         setVisible(true);
     }
@@ -26,193 +58,185 @@ public class AddUsersForm extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
-        EmployeeDetailsPanel = new javax.swing.JPanel();
-        EmployeeNameLabel = new javax.swing.JLabel();
-        EmployeeLastNameLabel = new javax.swing.JLabel();
-        NameTextField = new javax.swing.JTextField();
-        LastNameTextField = new javax.swing.JTextField();
-        EmailTextField = new javax.swing.JTextField();
-        EmployeeEmailLabel = new javax.swing.JLabel();
-        CompanyNameLabel34 = new javax.swing.JLabel();
-        CompanyNameTextField36 = new javax.swing.JTextField();
-        CompanyNameLabel29 = new javax.swing.JLabel();
-        CompanyNameLabel31 = new javax.swing.JLabel();
-        CompanyNameTextField32 = new javax.swing.JTextField();
-        CompanyNameLabel30 = new javax.swing.JLabel();
-        CompanyNameTextField33 = new javax.swing.JTextField();
-        DateOfBirthPicker1 = new org.jdesktop.swingx.JXDatePicker();
-        UsernameLabel = new javax.swing.JLabel();
+        employeeDetailsPanel = new javax.swing.JPanel();
+        employeeNameLabel = new javax.swing.JLabel();
+        employeeNameTextField = new javax.swing.JTextField();
+        employeeLastNameLabel = new javax.swing.JLabel();
+        lastNameTextField = new javax.swing.JTextField();
+        usernameLabel = new javax.swing.JLabel();
+        employeeTelephoneLabel = new javax.swing.JLabel();
+        employeeTelephoneTextField = new javax.swing.JTextField();
+        employeeAddressLabel = new javax.swing.JLabel();
+        employeeAddressTextField = new javax.swing.JTextField();
+        employeeCityLabel = new javax.swing.JLabel();
+        employeeCityTextField = new javax.swing.JTextField();
+        countryLabel = new javax.swing.JLabel();
+        countryComboBox = new javax.swing.JComboBox<>();
         EmploymentDetailsPanel = new javax.swing.JPanel();
-        PositionLabel = new javax.swing.JLabel();
-        UserTypeComboBox = new javax.swing.JComboBox<>();
+        positionLabel = new javax.swing.JLabel();
+        positionCompoBox = new javax.swing.JComboBox<>();
+        hireDateLabel = new javax.swing.JLabel();
+        dateOfHirePicker = new org.jdesktop.swingx.JXDatePicker();
         FullTimeRadioButton = new javax.swing.JRadioButton();
-        FullTimeRadioButton1 = new javax.swing.JRadioButton();
-        HireDateLabel = new javax.swing.JLabel();
-        DateOfHirePicker = new org.jdesktop.swingx.JXDatePicker();
-        ButtonPanel = new javax.swing.JPanel();
+        PartTimeRadioButton = new javax.swing.JRadioButton();
         AddNewEmployeesButton = new javax.swing.JButton();
-        ViewEmployeesButton = new javax.swing.JButton();
-        CancelButton = new javax.swing.JButton();
+        buttonPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
+        viewEmployeesPanel = new javax.swing.JPanel();
+        viewEmployeesButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Easy Business - Add Employees");
 
-        EmployeeDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employee Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+        employeeDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employee Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        EmployeeNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        EmployeeNameLabel.setText("Name:");
+        employeeNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        employeeNameLabel.setText("Name:");
 
-        EmployeeLastNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        EmployeeLastNameLabel.setText("Last Name:");
-
-        NameTextField.addActionListener(new java.awt.event.ActionListener() {
+        employeeNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameTextFieldActionPerformed(evt);
+                employeeNameTextFieldActionPerformed(evt);
             }
         });
 
-        LastNameTextField.addActionListener(new java.awt.event.ActionListener() {
+        employeeLastNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        employeeLastNameLabel.setText("Last Name:");
+
+        lastNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LastNameTextFieldActionPerformed(evt);
+                lastNameTextFieldActionPerformed(evt);
             }
         });
 
-        EmailTextField.addActionListener(new java.awt.event.ActionListener() {
+        usernameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        usernameLabel.setText("UserName: ");
+
+        employeeTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        employeeTelephoneLabel.setText("Telephone:");
+
+        employeeTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EmailTextFieldActionPerformed(evt);
+                employeeTelephoneTextFieldActionPerformed(evt);
             }
         });
 
-        EmployeeEmailLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        EmployeeEmailLabel.setText("E-mail:");
+        employeeAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        employeeAddressLabel.setText("Address:");
 
-        CompanyNameLabel34.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CompanyNameLabel34.setText("Telephone:");
-
-        CompanyNameTextField36.addActionListener(new java.awt.event.ActionListener() {
+        employeeAddressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CompanyNameTextField36ActionPerformed(evt);
+                employeeAddressTextFieldActionPerformed(evt);
             }
         });
 
-        CompanyNameLabel29.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CompanyNameLabel29.setText("Country:");
+        employeeCityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        employeeCityLabel.setText("City:");
 
-        CompanyNameLabel31.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CompanyNameLabel31.setText("City:");
-
-        CompanyNameTextField32.addActionListener(new java.awt.event.ActionListener() {
+        employeeCityTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CompanyNameTextField32ActionPerformed(evt);
+                employeeCityTextFieldActionPerformed(evt);
             }
         });
 
-        CompanyNameLabel30.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CompanyNameLabel30.setText("Address:");
+        countryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        countryLabel.setText("Country:");
 
-        CompanyNameTextField33.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CompanyNameTextField33ActionPerformed(evt);
-            }
-        });
+        countryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        DateOfBirthPicker1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateOfBirthPicker1ActionPerformed(evt);
-            }
-        });
-
-        UsernameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        UsernameLabel.setText("UserName: ");
-
-        javax.swing.GroupLayout EmployeeDetailsPanelLayout = new javax.swing.GroupLayout(EmployeeDetailsPanel);
-        EmployeeDetailsPanel.setLayout(EmployeeDetailsPanelLayout);
-        EmployeeDetailsPanelLayout.setHorizontalGroup(
-            EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EmployeeDetailsPanelLayout.createSequentialGroup()
-                .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(UsernameLabel))
-                    .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout employeeDetailsPanelLayout = new javax.swing.GroupLayout(employeeDetailsPanel);
+        employeeDetailsPanel.setLayout(employeeDetailsPanelLayout);
+        employeeDetailsPanelLayout.setHorizontalGroup(
+            employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(EmployeeNameLabel)
-                            .addComponent(EmployeeLastNameLabel))
+                        .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(employeeNameLabel)
+                            .addComponent(employeeLastNameLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(LastNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(NameTextField))))
-                .addGap(18, 18, 18)
-                .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(EmployeeEmailLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(EmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(CompanyNameLabel34)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CompanyNameTextField36, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CompanyNameLabel31)
-                            .addComponent(CompanyNameLabel29)
-                            .addComponent(CompanyNameLabel30))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(CompanyNameTextField32)
-                            .addComponent(CompanyNameTextField33)
-                            .addComponent(DateOfBirthPicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lastNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                            .addComponent(employeeNameTextField)))
+                    .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                                    .addGap(4, 4, 4)
+                                    .addComponent(employeeTelephoneLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(employeeTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(usernameLabel)
+                                .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addComponent(employeeAddressLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(employeeAddressTextField)))
+                            .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeDetailsPanelLayout.createSequentialGroup()
+                                        .addComponent(employeeCityLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                    .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                                        .addComponent(countryLabel)
+                                        .addGap(10, 10, 10)))
+                                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(countryComboBox, 0, 175, Short.MAX_VALUE)
+                                    .addComponent(employeeCityTextField))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        EmployeeDetailsPanelLayout.setVerticalGroup(
-            EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
+        employeeDetailsPanelLayout.setVerticalGroup(
+            employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(EmployeeEmailLabel)
-                            .addComponent(EmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(CompanyNameLabel34)
-                            .addComponent(CompanyNameTextField36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(CompanyNameLabel29)
-                            .addComponent(DateOfBirthPicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(CompanyNameLabel31)
-                            .addComponent(CompanyNameTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(CompanyNameLabel30)
-                            .addComponent(CompanyNameTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(EmployeeDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EmployeeNameLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(EmployeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(LastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EmployeeLastNameLabel))
-                        .addGap(20, 20, 20)
-                        .addComponent(UsernameLabel)))
+                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employeeNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(employeeNameLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(employeeLastNameLabel))
+                .addGap(11, 11, 11)
+                .addComponent(usernameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employeeTelephoneLabel)
+                    .addComponent(employeeTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employeeAddressLabel)
+                    .addComponent(employeeAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employeeCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(employeeCityLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(countryLabel)
+                    .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        EmploymentDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment  Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+        EmploymentDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment  Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        PositionLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        PositionLabel.setText("Position:");
+        positionLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        positionLabel.setText("Position:");
 
-        UserTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        UserTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+        positionCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        positionCompoBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UserTypeComboBoxActionPerformed(evt);
+                positionCompoBoxActionPerformed(evt);
+            }
+        });
+
+        hireDateLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        hireDateLabel.setText("Hire Date:");
+
+        dateOfHirePicker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateOfHirePickerActionPerformed(evt);
             }
         });
 
@@ -220,16 +244,19 @@ public class AddUsersForm extends javax.swing.JFrame {
         FullTimeRadioButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         FullTimeRadioButton.setText("Full Time");
 
-        buttonGroup.add(FullTimeRadioButton1);
-        FullTimeRadioButton1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        FullTimeRadioButton1.setText("Part Time");
-
-        HireDateLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        HireDateLabel.setText("Hire Date");
-
-        DateOfHirePicker.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup.add(PartTimeRadioButton);
+        PartTimeRadioButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        PartTimeRadioButton.setText("Part Time");
+        PartTimeRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateOfHirePickerActionPerformed(evt);
+                PartTimeRadioButtonActionPerformed(evt);
+            }
+        });
+
+        AddNewEmployeesButton.setText("Add New Emplyees");
+        AddNewEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddNewEmployeesButtonActionPerformed(evt);
             }
         });
 
@@ -237,79 +264,109 @@ public class AddUsersForm extends javax.swing.JFrame {
         EmploymentDetailsPanel.setLayout(EmploymentDetailsPanelLayout);
         EmploymentDetailsPanelLayout.setHorizontalGroup(
             EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EmploymentDetailsPanelLayout.createSequentialGroup()
-                .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
+                .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(FullTimeRadioButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(FullTimeRadioButton1))
+                        .addGap(142, 142, 142)
+                        .addComponent(AddNewEmployeesButton))
                     .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(PositionLabel)
+                        .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(positionLabel))
+                            .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(hireDateLabel)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(UserTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                        .addComponent(HireDateLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(DateOfHirePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(FullTimeRadioButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(PartTimeRadioButton))
+                            .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(dateOfHirePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                                .addComponent(positionCompoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         EmploymentDetailsPanelLayout.setVerticalGroup(
             EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EmploymentDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(HireDateLabel)
-                        .addComponent(DateOfHirePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(UserTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(PositionLabel)))
-                .addGap(15, 15, 15)
+            .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(positionCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(positionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hireDateLabel)
+                    .addComponent(dateOfHirePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(FullTimeRadioButton)
-                    .addComponent(FullTimeRadioButton1))
-                .addContainerGap())
-        );
-
-        AddNewEmployeesButton.setText("Add New Emplyees");
-
-        ViewEmployeesButton.setText("View Employees");
-        ViewEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ViewEmployeesButtonActionPerformed(evt);
-            }
-        });
-
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
-        ButtonPanel.setLayout(ButtonPanelLayout);
-        ButtonPanelLayout.setHorizontalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
-                .addContainerGap(229, Short.MAX_VALUE)
-                .addComponent(CancelButton)
-                .addGap(18, 18, 18)
-                .addComponent(ViewEmployeesButton)
-                .addGap(18, 18, 18)
+                    .addComponent(PartTimeRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(AddNewEmployeesButton)
+                .addGap(11, 11, 11))
+        );
+
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.setText("Next ->");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cancelButton)
+                .addGap(18, 18, 18)
+                .addComponent(nextButton)
+                .addGap(11, 11, 11))
+        );
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(nextButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        viewEmployeesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List of Employees", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
+
+        viewEmployeesButton.setText("View Employees");
+        viewEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewEmployeesButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout viewEmployeesPanelLayout = new javax.swing.GroupLayout(viewEmployeesPanel);
+        viewEmployeesPanel.setLayout(viewEmployeesPanelLayout);
+        viewEmployeesPanelLayout.setHorizontalGroup(
+            viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
+                .addContainerGap(256, Short.MAX_VALUE)
+                .addComponent(viewEmployeesButton)
                 .addContainerGap())
         );
-        ButtonPanelLayout.setVerticalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
+        viewEmployeesPanelLayout.setVerticalGroup(
+            viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AddNewEmployeesButton)
-                    .addComponent(ViewEmployeesButton)
-                    .addComponent(CancelButton))
+                .addComponent(viewEmployeesButton)
                 .addContainerGap())
         );
 
@@ -320,20 +377,27 @@ public class AddUsersForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(EmploymentDetailsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(EmployeeDetailsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(employeeDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(EmploymentDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(viewEmployeesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(EmployeeDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(EmploymentDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(employeeDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(EmploymentDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(viewEmployeesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
@@ -341,52 +405,77 @@ public class AddUsersForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextFieldActionPerformed
+    private void employeeNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeNameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_NameTextFieldActionPerformed
+    }//GEN-LAST:event_employeeNameTextFieldActionPerformed
 
-    private void LastNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastNameTextFieldActionPerformed
+    private void lastNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_LastNameTextFieldActionPerformed
+    }//GEN-LAST:event_lastNameTextFieldActionPerformed
 
-    private void EmailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailTextFieldActionPerformed
+    private void employeeTelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeTelephoneTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EmailTextFieldActionPerformed
+    }//GEN-LAST:event_employeeTelephoneTextFieldActionPerformed
 
-    private void CompanyNameTextField36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompanyNameTextField36ActionPerformed
+    private void employeeCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeCityTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CompanyNameTextField36ActionPerformed
+    }//GEN-LAST:event_employeeCityTextFieldActionPerformed
 
-    private void CompanyNameTextField32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompanyNameTextField32ActionPerformed
+    private void employeeAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeAddressTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CompanyNameTextField32ActionPerformed
+    }//GEN-LAST:event_employeeAddressTextFieldActionPerformed
 
-    private void CompanyNameTextField33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompanyNameTextField33ActionPerformed
+    private void dateOfHirePickerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateOfHirePickerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CompanyNameTextField33ActionPerformed
+    }//GEN-LAST:event_dateOfHirePickerActionPerformed
 
-    private void UserTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserTypeComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_UserTypeComboBoxActionPerformed
-
-    private void DateOfHirePickerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DateOfHirePickerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DateOfHirePickerActionPerformed
-
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void ViewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewEmployeesButtonActionPerformed
-          
+    private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed
+
         this.setVisible(false);
-           setUpForm=new SetUpForm();
-           
-    }//GEN-LAST:event_ViewEmployeesButtonActionPerformed
 
-    private void DateOfBirthPicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DateOfBirthPicker1ActionPerformed
+    }//GEN-LAST:event_viewEmployeesButtonActionPerformed
+
+    private void PartTimeRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PartTimeRadioButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_DateOfBirthPicker1ActionPerformed
+    }//GEN-LAST:event_PartTimeRadioButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void positionCompoBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionCompoBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_positionCompoBoxActionPerformed
+
+    private void AddNewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddNewEmployeesButtonActionPerformed
+       ConnectionCreator connectionCreator = new ConnectionCreator();
+        Connection connection = connectionCreator.connect();
+
+        // Insert Statement for the Empolyees
+        String queryInsertUser = " insert into Users (UserID,UserDetailsID,FirstName, LastName)"
+        + "values ('0','0','"+employeeNameTextField.getText()+"','"+lastNameTextField.getText()+"')";
+
+        String queryInsertUserDetails = " insert into UserDetails (UserDetailsID,countryID, Telephone,City, Address)"
+        + "values ('0', 0,'"+employeeTelephoneTextField.getText()+"','"+employeeCityTextField.getText()+"', '"+employeeAddressTextField.getText()+"')";
+
+        try {
+            //Create insert preparedstatement for administrator
+            PreparedStatement preparedUserStatement = connection.prepareStatement(queryInsertUser);
+            preparedUserStatement.execute();
+
+            PreparedStatement preparedUserDetailsStatement = connection.prepareStatement(queryInsertUserDetails);
+            preparedUserDetailsStatement.execute();
+
+            showMessageDialog(null, "Employer Added -->" + employeeNameTextField.getText());
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_AddNewEmployeesButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -425,32 +514,32 @@ public class AddUsersForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddNewEmployeesButton;
-    private javax.swing.JPanel ButtonPanel;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JLabel CompanyNameLabel29;
-    private javax.swing.JLabel CompanyNameLabel30;
-    private javax.swing.JLabel CompanyNameLabel31;
-    private javax.swing.JLabel CompanyNameLabel34;
-    private javax.swing.JTextField CompanyNameTextField32;
-    private javax.swing.JTextField CompanyNameTextField33;
-    private javax.swing.JTextField CompanyNameTextField36;
-    private org.jdesktop.swingx.JXDatePicker DateOfBirthPicker1;
-    private org.jdesktop.swingx.JXDatePicker DateOfHirePicker;
-    private javax.swing.JTextField EmailTextField;
-    private javax.swing.JPanel EmployeeDetailsPanel;
-    private javax.swing.JLabel EmployeeEmailLabel;
-    private javax.swing.JLabel EmployeeLastNameLabel;
-    private javax.swing.JLabel EmployeeNameLabel;
     private javax.swing.JPanel EmploymentDetailsPanel;
     private javax.swing.JRadioButton FullTimeRadioButton;
-    private javax.swing.JRadioButton FullTimeRadioButton1;
-    private javax.swing.JLabel HireDateLabel;
-    private javax.swing.JTextField LastNameTextField;
-    private javax.swing.JTextField NameTextField;
-    private javax.swing.JLabel PositionLabel;
-    private javax.swing.JComboBox<String> UserTypeComboBox;
-    private javax.swing.JLabel UsernameLabel;
-    private javax.swing.JButton ViewEmployeesButton;
+    private javax.swing.JRadioButton PartTimeRadioButton;
     private javax.swing.ButtonGroup buttonGroup;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> countryComboBox;
+    private javax.swing.JLabel countryLabel;
+    private org.jdesktop.swingx.JXDatePicker dateOfHirePicker;
+    private javax.swing.JLabel employeeAddressLabel;
+    private javax.swing.JTextField employeeAddressTextField;
+    private javax.swing.JLabel employeeCityLabel;
+    private javax.swing.JTextField employeeCityTextField;
+    private javax.swing.JPanel employeeDetailsPanel;
+    private javax.swing.JLabel employeeLastNameLabel;
+    private javax.swing.JLabel employeeNameLabel;
+    private javax.swing.JTextField employeeNameTextField;
+    private javax.swing.JLabel employeeTelephoneLabel;
+    private javax.swing.JTextField employeeTelephoneTextField;
+    private javax.swing.JLabel hireDateLabel;
+    private javax.swing.JTextField lastNameTextField;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JComboBox<String> positionCompoBox;
+    private javax.swing.JLabel positionLabel;
+    private javax.swing.JLabel usernameLabel;
+    private javax.swing.JButton viewEmployeesButton;
+    private javax.swing.JPanel viewEmployeesPanel;
     // End of variables declaration//GEN-END:variables
 }

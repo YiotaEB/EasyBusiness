@@ -3,6 +3,7 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -26,8 +27,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="ButtonsPanel" max="32767" attributes="0"/>
-                  <Component id="TitlePanel" max="32767" attributes="0"/>
+                  <Component id="buttonsPanel" max="32767" attributes="0"/>
+                  <Component id="titlePanel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -37,23 +38,23 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="TitlePanel" min="-2" max="-2" attributes="0"/>
+              <Component id="titlePanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="ButtonsPanel" max="32767" attributes="0"/>
+              <Component id="buttonsPanel" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="TitlePanel">
+    <Container class="javax.swing.JPanel" name="titlePanel">
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                  <Component id="TitleLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="68" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -62,14 +63,14 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="TitleLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="TitleLabel">
+        <Component class="javax.swing.JLabel" name="titleLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -79,7 +80,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="ButtonsPanel">
+    <Container class="javax.swing.JPanel" name="buttonsPanel">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -91,7 +92,7 @@
                       <Component id="createEmployeesButton" max="32767" attributes="0"/>
                       <Component id="addProductsButton" max="32767" attributes="0"/>
                       <Component id="addSupplierButton" max="32767" attributes="0"/>
-                      <Component id="addSuppliesButton" max="32767" attributes="0"/>
+                      <Component id="addCustomersButton" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -109,7 +110,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="addSupplierButton" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                  <Component id="addSuppliesButton" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="addCustomersButton" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace pref="34" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -142,18 +143,18 @@
         </Component>
         <Component class="javax.swing.JButton" name="addSupplierButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="ADD SUPPLIES"/>
+            <Property name="text" type="java.lang.String" value="ADD SUPPLIEr"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addSupplierButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="addSuppliesButton">
+        <Component class="javax.swing.JButton" name="addCustomersButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="ADD CUSTOMERS"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addSuppliesButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addCustomersButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

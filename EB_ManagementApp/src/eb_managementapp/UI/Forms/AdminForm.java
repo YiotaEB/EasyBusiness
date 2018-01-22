@@ -10,7 +10,9 @@ import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.loginForm;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -21,11 +23,33 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class AdminForm extends javax.swing.JFrame {
 
      //final variables:
-    final String TITLE = "Easy Business - Setup";
+    final String TITLE = "Administrator Set Up";
     
     
     public AdminForm() {
         initComponents();
+         //COUNTRIES SELECTION COMBOBOX
+        try {
+            //Select Statment to choose countries
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getCountryStatement = connection.createStatement();
+            String qr = " Select Name From Countries";
+            ResultSet rs = getCountryStatement.executeQuery(qr);
+
+            countryComboBox.removeAllItems();
+            // iterate through the java resultset
+            while (rs.next()) {
+                String typeName = rs.getString("Name");
+                countryComboBox.addItem(typeName);
+            }
+            getCountryStatement.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         setVisible(true);
     }
 
@@ -38,268 +62,259 @@ public class AdminForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        AdministratorDetails = new javax.swing.JPanel();
-        NameLabe = new javax.swing.JLabel();
-        NameTextField = new javax.swing.JTextField();
-        LastNameLabel = new javax.swing.JLabel();
-        LastNameTextField = new javax.swing.JTextField();
-        AdminEmailLabel = new javax.swing.JLabel();
-        AdminEmailTextField = new javax.swing.JTextField();
-        AdminTelephoneLabel = new javax.swing.JLabel();
-        AdminTelephoneTextField = new javax.swing.JTextField();
-        AdminCountryLabel = new javax.swing.JLabel();
-        AdminCountryComboBox = new javax.swing.JComboBox<>();
-        AdminCityLabel = new javax.swing.JLabel();
-        AdminCityTextField = new javax.swing.JTextField();
-        AdminAddressLabel = new javax.swing.JLabel();
-        AdminAddressTextField = new javax.swing.JTextField();
-        LoginInfoPanel = new javax.swing.JPanel();
-        UserNameLabel = new javax.swing.JLabel();
-        UserNameTextField = new javax.swing.JTextField();
-        PasswordLabel = new javax.swing.JLabel();
-        PasswordField = new javax.swing.JPasswordField();
-        ConfirmPasswordLabel = new javax.swing.JLabel();
-        ConfirmPasswordField = new javax.swing.JPasswordField();
-        ButtonPanel = new javax.swing.JPanel();
-        CancelButton = new javax.swing.JButton();
-        NextButton = new javax.swing.JButton();
+        administratorDetails = new javax.swing.JPanel();
+        nameLabel = new javax.swing.JLabel();
+        nameTextField = new javax.swing.JTextField();
+        lastNameLabel = new javax.swing.JLabel();
+        lastNameTextField = new javax.swing.JTextField();
+        adminTelephoneLabel = new javax.swing.JLabel();
+        adminTelephoneTextField = new javax.swing.JTextField();
+        countryLabel = new javax.swing.JLabel();
+        countryComboBox = new javax.swing.JComboBox<>();
+        cityLabel = new javax.swing.JLabel();
+        cityTextField = new javax.swing.JTextField();
+        adminAddressLabel = new javax.swing.JLabel();
+        adminAddressTextField = new javax.swing.JTextField();
+        loginInfoPanel = new javax.swing.JPanel();
+        usernameLabel = new javax.swing.JLabel();
+        usernameTextField = new javax.swing.JTextField();
+        passwordLabel = new javax.swing.JLabel();
+        passwordField = new javax.swing.JPasswordField();
+        confirmPasswordLabel = new javax.swing.JLabel();
+        confirmPasswordField = new javax.swing.JPasswordField();
+        buttonPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        AdministratorDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Administrator Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+        administratorDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Administrator Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
 
-        NameLabe.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        NameLabe.setText("Name:");
+        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        nameLabel.setText("Name:");
 
-        NameTextField.addActionListener(new java.awt.event.ActionListener() {
+        nameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameTextFieldActionPerformed(evt);
+                nameTextFieldActionPerformed(evt);
             }
         });
 
-        LastNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        LastNameLabel.setText("Last name:");
+        lastNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lastNameLabel.setText("Last name:");
 
-        LastNameTextField.addActionListener(new java.awt.event.ActionListener() {
+        lastNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LastNameTextFieldActionPerformed(evt);
+                lastNameTextFieldActionPerformed(evt);
             }
         });
 
-        AdminEmailLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AdminEmailLabel.setText("E-mail:");
+        adminTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        adminTelephoneLabel.setText("Telephone:");
 
-        AdminEmailTextField.addActionListener(new java.awt.event.ActionListener() {
+        adminTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdminEmailTextFieldActionPerformed(evt);
+                adminTelephoneTextFieldActionPerformed(evt);
             }
         });
 
-        AdminTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AdminTelephoneLabel.setText("Telephone:");
+        countryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        countryLabel.setText("Country:");
 
-        AdminTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
+        countryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        countryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdminTelephoneTextFieldActionPerformed(evt);
+                countryComboBoxActionPerformed(evt);
             }
         });
 
-        AdminCountryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AdminCountryLabel.setText("Country:");
+        cityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        cityLabel.setText("City:");
 
-        AdminCountryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        AdminCountryComboBox.addActionListener(new java.awt.event.ActionListener() {
+        cityTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdminCountryComboBoxActionPerformed(evt);
+                cityTextFieldActionPerformed(evt);
             }
         });
 
-        AdminCityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AdminCityLabel.setText("City:");
+        adminAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        adminAddressLabel.setText("Address:");
 
-        AdminCityTextField.addActionListener(new java.awt.event.ActionListener() {
+        adminAddressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdminCityTextFieldActionPerformed(evt);
+                adminAddressTextFieldActionPerformed(evt);
             }
         });
 
-        AdminAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AdminAddressLabel.setText("Address:");
-
-        AdminAddressTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdminAddressTextFieldActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout AdministratorDetailsLayout = new javax.swing.GroupLayout(AdministratorDetails);
-        AdministratorDetails.setLayout(AdministratorDetailsLayout);
-        AdministratorDetailsLayout.setHorizontalGroup(
-            AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(AdministratorDetailsLayout.createSequentialGroup()
-                .addGroup(AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdministratorDetailsLayout.createSequentialGroup()
-                        .addContainerGap(28, Short.MAX_VALUE)
-                        .addComponent(AdminAddressLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(AdminAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(230, 230, 230))
-                    .addGroup(AdministratorDetailsLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(AdministratorDetailsLayout.createSequentialGroup()
-                                .addComponent(AdminTelephoneLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(AdminTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(AdministratorDetailsLayout.createSequentialGroup()
-                                .addComponent(NameLabe)
-                                .addGap(16, 16, 16)
-                                .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        javax.swing.GroupLayout administratorDetailsLayout = new javax.swing.GroupLayout(administratorDetails);
+        administratorDetails.setLayout(administratorDetailsLayout);
+        administratorDetailsLayout.setHorizontalGroup(
+            administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(administratorDetailsLayout.createSequentialGroup()
+                .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(administratorDetailsLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nameLabel)
+                        .addGap(16, 16, 16)
+                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdministratorDetailsLayout.createSequentialGroup()
-                                .addComponent(LastNameLabel)
-                                .addGap(11, 11, 11)
-                                .addComponent(LastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdministratorDetailsLayout.createSequentialGroup()
-                                .addComponent(AdminEmailLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(AdminEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdministratorDetailsLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(AdminCityLabel)
+                        .addComponent(lastNameLabel)
                         .addGap(11, 11, 11)
-                        .addComponent(AdminCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
-                        .addComponent(AdminCountryLabel)
+                        .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, administratorDetailsLayout.createSequentialGroup()
+                        .addContainerGap(15, Short.MAX_VALUE)
+                        .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(administratorDetailsLayout.createSequentialGroup()
+                                .addComponent(cityLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(administratorDetailsLayout.createSequentialGroup()
+                                .addComponent(adminAddressLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(adminAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(administratorDetailsLayout.createSequentialGroup()
+                                .addComponent(countryLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(17, 17, 17)
+                        .addComponent(adminTelephoneLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(AdminCountryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(adminTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        AdministratorDetailsLayout.setVerticalGroup(
-            AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdministratorDetailsLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NameLabe)
-                    .addComponent(LastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LastNameLabel))
-                .addGap(11, 11, 11)
-                .addGroup(AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AdminTelephoneLabel)
-                    .addComponent(AdminTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AdminEmailLabel)
-                    .addComponent(AdminEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AdminAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AdminAddressLabel))
-                .addGap(18, 18, 18)
-                .addGroup(AdministratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AdminCountryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AdminCountryLabel)
-                    .addComponent(AdminCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AdminCityLabel))
-                .addContainerGap(24, Short.MAX_VALUE))
+        administratorDetailsLayout.setVerticalGroup(
+            administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, administratorDetailsLayout.createSequentialGroup()
+                .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(administratorDetailsLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameLabel)
+                            .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lastNameLabel))
+                        .addGap(11, 11, 11)
+                        .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(adminTelephoneLabel)
+                            .addComponent(adminTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(administratorDetailsLayout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(adminAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(adminAddressLabel))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cityTextField)
+                    .addComponent(cityLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(countryLabel))
+                .addContainerGap())
         );
 
-        LoginInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        loginInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        UserNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        UserNameLabel.setText("User Name: ");
+        usernameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        usernameLabel.setText("User Name: ");
 
-        UserNameTextField.addActionListener(new java.awt.event.ActionListener() {
+        usernameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UserNameTextFieldActionPerformed(evt);
+                usernameTextFieldActionPerformed(evt);
             }
         });
 
-        PasswordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        PasswordLabel.setText("Password:");
+        passwordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        passwordLabel.setText("Password:");
 
-        PasswordField.addActionListener(new java.awt.event.ActionListener() {
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PasswordFieldActionPerformed(evt);
+                passwordFieldActionPerformed(evt);
             }
         });
 
-        ConfirmPasswordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        ConfirmPasswordLabel.setText("Confirm Password:");
+        confirmPasswordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        confirmPasswordLabel.setText("Confirm Password:");
 
-        javax.swing.GroupLayout LoginInfoPanelLayout = new javax.swing.GroupLayout(LoginInfoPanel);
-        LoginInfoPanel.setLayout(LoginInfoPanelLayout);
-        LoginInfoPanelLayout.setHorizontalGroup(
-            LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LoginInfoPanelLayout.createSequentialGroup()
-                .addGap(133, 133, 133)
-                .addGroup(LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(PasswordLabel)
-                        .addComponent(ConfirmPasswordLabel))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginInfoPanelLayout.createSequentialGroup()
+        confirmPasswordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmPasswordFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout loginInfoPanelLayout = new javax.swing.GroupLayout(loginInfoPanel);
+        loginInfoPanel.setLayout(loginInfoPanelLayout);
+        loginInfoPanelLayout.setHorizontalGroup(
+            loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loginInfoPanelLayout.createSequentialGroup()
+                .addGap(129, 129, 129)
+                .addGroup(loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(passwordLabel)
+                        .addComponent(confirmPasswordLabel))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginInfoPanelLayout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(UserNameLabel)))
+                        .addComponent(usernameLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(UserNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(ConfirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(PasswordField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(confirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(passwordField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
-        LoginInfoPanelLayout.setVerticalGroup(
-            LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LoginInfoPanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(UserNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UserNameLabel))
+        loginInfoPanelLayout.setVerticalGroup(
+            loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loginInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(usernameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PasswordLabel))
+                .addGroup(loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passwordLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(LoginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ConfirmPasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ConfirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                .addGroup(loginInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(confirmPasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(confirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        CancelButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cancelButton.setText("Exit");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
 
-        NextButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NextButton.setText("Next >");
-        NextButton.addActionListener(new java.awt.event.ActionListener() {
+        nextButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        nextButton.setText("Next >");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NextButtonActionPerformed(evt);
+                nextButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
-        ButtonPanel.setLayout(ButtonPanelLayout);
-        ButtonPanelLayout.setHorizontalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
-                .addContainerGap(380, Short.MAX_VALUE)
-                .addComponent(CancelButton)
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(384, Short.MAX_VALUE)
+                .addComponent(cancelButton)
                 .addGap(18, 18, 18)
-                .addComponent(NextButton)
-                .addGap(21, 21, 21))
+                .addComponent(nextButton)
+                .addGap(11, 11, 11))
         );
-        ButtonPanelLayout.setVerticalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonPanelLayout.createSequentialGroup()
-                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CancelButton)
-                    .addComponent(NextButton))
-                .addGap(0, 4, Short.MAX_VALUE))
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(nextButton))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -308,68 +323,76 @@ public class AdminForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(LoginInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(loginInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(AdministratorDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(administratorDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(218, 218, 218)
-                .addComponent(LoginInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(183, 183, 183)
+                .addComponent(loginInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(7, 7, 7)
-                    .addComponent(AdministratorDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(186, Short.MAX_VALUE)))
+                    .addComponent(administratorDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(180, Short.MAX_VALUE)))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextFieldActionPerformed
+    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_NameTextFieldActionPerformed
+    }//GEN-LAST:event_nameTextFieldActionPerformed
 
-    private void LastNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastNameTextFieldActionPerformed
+    private void lastNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_LastNameTextFieldActionPerformed
+    }//GEN-LAST:event_lastNameTextFieldActionPerformed
 
-    private void AdminEmailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminEmailTextFieldActionPerformed
+    private void adminTelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminTelephoneTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AdminEmailTextFieldActionPerformed
+    }//GEN-LAST:event_adminTelephoneTextFieldActionPerformed
 
-    private void AdminTelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminTelephoneTextFieldActionPerformed
+    private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AdminTelephoneTextFieldActionPerformed
+    }//GEN-LAST:event_countryComboBoxActionPerformed
 
-    private void AdminCountryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminCountryComboBoxActionPerformed
+    private void cityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AdminCountryComboBoxActionPerformed
+    }//GEN-LAST:event_cityTextFieldActionPerformed
 
-    private void AdminCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminCityTextFieldActionPerformed
+    private void adminAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminAddressTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AdminCityTextFieldActionPerformed
+    }//GEN-LAST:event_adminAddressTextFieldActionPerformed
 
-    private void AdminAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminAddressTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AdminAddressTextFieldActionPerformed
-
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextButtonActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void usernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usernameTextFieldActionPerformed
+
+    private void confirmPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPasswordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_confirmPasswordFieldActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
         ConnectionCreator connectionCreator = new ConnectionCreator();
         Connection connection = connectionCreator.connect();
@@ -377,20 +400,20 @@ public class AdminForm extends javax.swing.JFrame {
         // Insert Statement for the Administrator
 
         String queryInsertUser = " insert into Users (UserID,UserDetailsID,Username, Password, ConfirmPassword,  FirstName, LastName)"
-        + "values ('1233','1234','"+UserNameTextField.getText()+"','"+PasswordField.getSelectedText()+"','"+ConfirmPasswordField.getSelectedText()+"','"+NameTextField.getText()+"','"+LastNameTextField.getText()+"')";
+        + "values ('0','0','"+usernameTextField.getText()+"','"+passwordField.getSelectedText()+"','"+confirmPasswordField.getSelectedText()+"','"+nameTextField.getText()+"','"+lastNameTextField.getText()+"')";
 
-        String queryInsertUserDetails = " insert into UserDetails (UserDetailsID, Telephone, Email, CountryID, City, Address)"
-        + "values ('1234', '"+AdminTelephoneTextField.getText()+"','"+AdminEmailTextField.getText()+"', 2, '"+AdminCityTextField.getText()+"', '"+AdminAddressTextField.getText()+"')";
-        
+        String queryInsertUserDetails = " insert into UserDetails (UserDetailsID,countryID, Telephone,City, Address)"
+        + "values ('0', 0,'"+adminTelephoneTextField.getText()+"','"+cityTextField.getText()+"', '"+adminAddressTextField.getText()+"')";
+
         try {
             //Create insert preparedstatement for administrator
             PreparedStatement preparedUserStatement = connection.prepareStatement(queryInsertUser);
             preparedUserStatement.execute();
-            
-             PreparedStatement preparedUserDetailsStatement = connection.prepareStatement(queryInsertUserDetails);
+
+            PreparedStatement preparedUserDetailsStatement = connection.prepareStatement(queryInsertUserDetails);
             preparedUserDetailsStatement.execute();
 
-            showMessageDialog(null, "Company Added -->" + UserNameTextField.getText());
+            showMessageDialog(null, "Company Added -->" + usernameTextField.getText());
 
         } catch (SQLException ex) {
             Logger.getLogger(CompanyDetailsForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -398,16 +421,7 @@ public class AdminForm extends javax.swing.JFrame {
 
         this.setVisible(false);
         loginForm = new LoginForm ();
-
-    }//GEN-LAST:event_NextButtonActionPerformed
-
-    private void PasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PasswordFieldActionPerformed
-
-    private void UserNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserNameTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_UserNameTextFieldActionPerformed
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -445,30 +459,28 @@ public class AdminForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AdminAddressLabel;
-    private javax.swing.JTextField AdminAddressTextField;
-    private javax.swing.JLabel AdminCityLabel;
-    private javax.swing.JTextField AdminCityTextField;
-    private javax.swing.JComboBox<String> AdminCountryComboBox;
-    private javax.swing.JLabel AdminCountryLabel;
-    private javax.swing.JLabel AdminEmailLabel;
-    private javax.swing.JTextField AdminEmailTextField;
-    private javax.swing.JLabel AdminTelephoneLabel;
-    private javax.swing.JTextField AdminTelephoneTextField;
-    private javax.swing.JPanel AdministratorDetails;
-    private javax.swing.JPanel ButtonPanel;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JPasswordField ConfirmPasswordField;
-    private javax.swing.JLabel ConfirmPasswordLabel;
-    private javax.swing.JLabel LastNameLabel;
-    private javax.swing.JTextField LastNameTextField;
-    private javax.swing.JPanel LoginInfoPanel;
-    private javax.swing.JLabel NameLabe;
-    private javax.swing.JTextField NameTextField;
-    private javax.swing.JButton NextButton;
-    private javax.swing.JPasswordField PasswordField;
-    private javax.swing.JLabel PasswordLabel;
-    private javax.swing.JLabel UserNameLabel;
-    private javax.swing.JTextField UserNameTextField;
+    private javax.swing.JLabel adminAddressLabel;
+    private javax.swing.JTextField adminAddressTextField;
+    private javax.swing.JLabel adminTelephoneLabel;
+    private javax.swing.JTextField adminTelephoneTextField;
+    private javax.swing.JPanel administratorDetails;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel cityLabel;
+    private javax.swing.JTextField cityTextField;
+    private javax.swing.JPasswordField confirmPasswordField;
+    private javax.swing.JLabel confirmPasswordLabel;
+    private javax.swing.JComboBox<String> countryComboBox;
+    private javax.swing.JLabel countryLabel;
+    private javax.swing.JLabel lastNameLabel;
+    private javax.swing.JTextField lastNameTextField;
+    private javax.swing.JPanel loginInfoPanel;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JPasswordField passwordField;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JLabel usernameLabel;
+    private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
 }

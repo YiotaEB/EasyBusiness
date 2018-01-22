@@ -43,9 +43,9 @@ public class SuppliersForm extends javax.swing.JFrame {
         suppliesQuantity = new Vector<>();
         columnNames = new Vector<>();
 
+        //COUNTRIES SELECTION COMBOBOX
         try {
-
-            //SELECT From ProductType
+            //Select Statment to choose countries
             ConnectionCreator connectionCreator = new ConnectionCreator();
             Connection connection = connectionCreator.connect();
 
@@ -58,9 +58,6 @@ public class SuppliersForm extends javax.swing.JFrame {
             while (rs.next()) {
                 String typeName = rs.getString("Name");
                 countryComboBox.addItem(typeName);
-
-                // print the results
-                //System.out.println("Name" + typeName);
             }
             getCountryStatement.close();
 

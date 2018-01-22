@@ -11,7 +11,6 @@ import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.UI.Forms.CustomersForm;
 import eb_managementapp.UI.Forms.AddSizeForm;
 import eb_managementapp.UI.Forms.AddProductTypeForm;
-import eb_managementapp.UI.Forms.AddSuppliesForm;
 import java.sql.SQLException;
 
 public class EB_ManagementApp {
@@ -26,8 +25,7 @@ public class EB_ManagementApp {
     public static SetUpForm setUpForm;
     public static AddProductTypeForm addProductTypeForm;
     public static AddSizeForm addSizeForm;
-    public static CustomersForm CustomersForm;
-    public static AddSuppliesForm addSuppliesForm;
+    public static CustomersForm customersForm;
     
     
     
