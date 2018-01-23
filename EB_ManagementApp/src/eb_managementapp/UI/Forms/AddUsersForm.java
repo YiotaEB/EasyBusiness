@@ -3,6 +3,7 @@ package eb_managementapp.UI.Forms;
 import eb_managementapp.DB.ConnectionCreator;
 import eb_managementapp.UI.Forms.SetUpForm;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import eb_managementapp.UI.Components.AlertBox;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AddUsersForm extends javax.swing.JFrame {
@@ -452,28 +454,67 @@ public class AddUsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_positionCompoBoxActionPerformed
 
     private void AddNewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddNewEmployeesButtonActionPerformed
-       ConnectionCreator connectionCreator = new ConnectionCreator();
-        Connection connection = connectionCreator.connect();
-
-        // Insert Statement for the Empolyees
-        String queryInsertUser = " insert into Users (UserID,UserDetailsID,FirstName, LastName)"
-        + "values ('0','0','"+employeeNameTextField.getText()+"','"+lastNameTextField.getText()+"')";
-
-        String queryInsertUserDetails = " insert into UserDetails (UserDetailsID,countryID, Telephone,City, Address)"
-        + "values ('0', 0,'"+employeeTelephoneTextField.getText()+"','"+employeeCityTextField.getText()+"', '"+employeeAddressTextField.getText()+"')";
-
         try {
-            //Create insert preparedstatement for administrator
-            PreparedStatement preparedUserStatement = connection.prepareStatement(queryInsertUser);
-            preparedUserStatement.execute();
 
-            PreparedStatement preparedUserDetailsStatement = connection.prepareStatement(queryInsertUserDetails);
-            preparedUserDetailsStatement.execute();
+            //Combine the first letter of the first name with the last name:
+            char firstNameFirstLetter = employeeNameTextField.getText().charAt(0);      //e.g Panayiota  --> P
+            String lastName = lastNameTextField.getText();                              //e.g Michaelides --> Michaelides
+            String username = firstNameFirstLetter + lastName;                          //Result = PMichaelides
 
-            showMessageDialog(null, "Employer Added -->" + employeeNameTextField.getText());
+            boolean exists = true;
+
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            int counter = -1;
+
+            while (exists) {
+                counter++;
+                Statement statement = connection.createStatement();
+                String query = "";
+                if (counter == 0) {
+                    query = "SELECT Username FROM Users WHERE LOWER(Username) = '" + username.toLowerCase() + "'";
+                } else {
+                    query = "SELECT Username FROM Users WHERE LOWER(Username) = '" + username.toLowerCase() + counter + "'";
+                }
+                System.out.println(query);
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.next()) {
+                    exists = false;
+                    if (counter != 0) {
+                        username += counter;
+                    }
+                }
+                statement.close();
+            }
+
+            //rs = statement.executeQuery(query);
+            //Not unique
+            Statement insertStatement = connection.createStatement();
+            String insertQuery = "INSERT INTO Users (Username, Password, UserTypeID, FirstName, LastName, DateHired, City, Address, Telephone, CountryID) "
+                    + "VALUES ("
+                    + "'" + username.toLowerCase() + "',"
+                    + "'',"
+                    + "1,"
+                    + "'" + employeeNameTextField.getText() + "',"
+                    + "'" + lastNameTextField.getText() + "',"
+                    + dateOfHirePicker.getDate().getTime() + ","
+                    + "'" + employeeCityTextField.getText() + "',"
+                    + "'" + employeeAddressTextField.getText() + "',"
+                    + "'" + employeeTelephoneTextField.getText() + "',"
+                    + countryComboBox.getSelectedIndex()+1
+                    + "); ";
+            int statusInsert = insertStatement.executeUpdate(insertQuery);
+            if (statusInsert > 0) {
+                //TODO: Show alert box? "User was added"
+            }
+            else {
+                //TODO: Show alert box? "Couldnt add user"
+            }
+            insertStatement.close();
 
         } catch (SQLException ex) {
-            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_AddNewEmployeesButtonActionPerformed
 
