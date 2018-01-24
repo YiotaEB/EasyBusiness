@@ -7,49 +7,91 @@ package eb_managementapp.UI.Forms;
 
 import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import eb_managementapp.UI.Components.CheckboxGroup;
+import eb_managementapp.UI.Components.JTableUtilities;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
 
 public class CustomersForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form CustomersForm
-     */
+    Vector<String> customerNumbers;
+    Vector<String> customerNames;
+    Vector<String> customerProducts;
+    Vector<String> columnNames;
+
     public CustomersForm() {
         initComponents();
 
-        		try {
+        customerNumbers = new Vector<>();
+        customerNames = new Vector<>();
+        customerProducts = new Vector<>();
+        columnNames = new Vector<>();
+
+        String[] sizeNamesArray = new String[1];
+
+        try {
 
             //SELECT From ProductType
             ConnectionCreator connectionCreator = new ConnectionCreator();
             Connection connection = connectionCreator.connect();
 
             Statement getCountryStatement = connection.createStatement();
-            String qr = " Select CountryName From Countries";
+            Statement getProductsStatement = connection.createStatement();
+
+            String qr = " Select Name From Countries";
             ResultSet rs;
             rs = getCountryStatement.executeQuery(qr);
 
-            CountryComboBox.removeAllItems();
+            countryComboBox.removeAllItems();
             // iterate through the java resultset
             while (rs.next()) {
-                String typeName = rs.getString("CountryName");
-                CountryComboBox.addItem(typeName);
+                String typeName = rs.getString("Name");
+                countryComboBox.addItem(typeName);
 
                 // print the results
                 //System.out.println("Name" + typeName);
             }
             getCountryStatement.close();
 
+            //DefaultSizes List
+            String qr2 = " Select Name From Products";
+            ResultSet rs2;
+            rs2 = getProductsStatement.executeQuery(qr2);
+
+            Vector<String> productNames = new Vector<>();
+            // iterate through the java resultset
+            while (rs2.next()) {
+                productNames.add(rs2.getString("Name"));
+            }
+            getProductsStatement.close();
+
+            //copy all elements from sizeNames (Vector) to sizeNamesArray(Array)
+            sizeNamesArray = new String[productNames.size()];
+            for (int i = 0; i < sizeNamesArray.length; i++) {
+                sizeNamesArray[i] = productNames.get(i);
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+        CheckboxGroup group = new CheckboxGroup(sizeNamesArray);
+
+        group.setBounds(new Rectangle(new Point(110, 240), group.getPreferredSize()));
+        customerPanel.add(group);
+        pack();
+        setLocationRelativeTo(null);
+
         setVisible(true);
     }
 
@@ -62,188 +104,203 @@ public class CustomersForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        CustomerPanel = new javax.swing.JPanel();
-        CustomerNameLabel = new javax.swing.JLabel();
-        CustomerNameTextField = new javax.swing.JTextField();
-        CustomerNoLabel = new javax.swing.JLabel();
-        CustomerNoTextField = new javax.swing.JTextField();
-        CustomerTelephoneLabel = new javax.swing.JLabel();
-        CustomerTelephoneTextField = new javax.swing.JTextField();
-        CustomerEmailLabel = new javax.swing.JLabel();
-        CustomerEmailTextField = new javax.swing.JTextField();
-        CustomerAddressLabel = new javax.swing.JLabel();
-        CustomerAddressTextField = new javax.swing.JTextField();
-        CustomerCityLabel = new javax.swing.JLabel();
-        CustomerCityTextField = new javax.swing.JTextField();
-        CustomerCountryLabel = new javax.swing.JLabel();
-        CountryComboBox = new javax.swing.JComboBox<>();
-        SuppliesList = new javax.swing.JLabel();
-        SuppliersScrollPane = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        customerPanel = new javax.swing.JPanel();
+        customerNameLabel = new javax.swing.JLabel();
+        customerNameTextField = new javax.swing.JTextField();
+        customerTelephoneLabel = new javax.swing.JLabel();
+        customerTelephoneTextField = new javax.swing.JTextField();
+        customerAddressLabel = new javax.swing.JLabel();
+        customerAddressTextField = new javax.swing.JTextField();
+        customerCityLabel = new javax.swing.JLabel();
+        customerCityTextField = new javax.swing.JTextField();
+        customerCountryLabel = new javax.swing.JLabel();
+        countryComboBox = new javax.swing.JComboBox<>();
+        suppliesList = new javax.swing.JLabel();
+        addNewCustomertButton = new javax.swing.JButton();
+        buttonPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        CancelButton = new javax.swing.JButton();
-        AddNewCustomertButton = new javax.swing.JButton();
+        customerScrollPanel = new javax.swing.JScrollPane();
+        customerTable = new javax.swing.JTable();
+        viewCustomers = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        CustomerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(204, 204, 204))); // NOI18N
+        customerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        CustomerNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CustomerNameLabel.setText("Customer Name:");
+        customerNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customerNameLabel.setText("Customer Name:");
 
-        CustomerNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        customerNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        CustomerNoLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CustomerNoLabel.setText("Customer No.:");
+        customerTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customerTelephoneLabel.setText("Telephone:");
 
-        CustomerNoTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        CustomerTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CustomerTelephoneLabel.setText("Telephone:");
-
-        CustomerTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
+        customerTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerTelephoneTextFieldActionPerformed(evt);
+                customerTelephoneTextFieldActionPerformed(evt);
             }
         });
 
-        CustomerEmailLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CustomerEmailLabel.setText("E-mail:");
+        customerAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customerAddressLabel.setText("Address:");
 
-        CustomerEmailTextField.addActionListener(new java.awt.event.ActionListener() {
+        customerAddressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerEmailTextFieldActionPerformed(evt);
+                customerAddressTextFieldActionPerformed(evt);
             }
         });
 
-        CustomerAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CustomerAddressLabel.setText("Address:");
+        customerCityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customerCityLabel.setText("City:");
 
-        CustomerAddressTextField.addActionListener(new java.awt.event.ActionListener() {
+        customerCityTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerAddressTextFieldActionPerformed(evt);
+                customerCityTextFieldActionPerformed(evt);
             }
         });
 
-        CustomerCityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CustomerCityLabel.setText("City:");
+        customerCountryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customerCountryLabel.setText("Country:");
 
-        CustomerCityTextField.addActionListener(new java.awt.event.ActionListener() {
+        countryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        countryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerCityTextFieldActionPerformed(evt);
+                countryComboBoxActionPerformed(evt);
             }
         });
 
-        CustomerCountryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CustomerCountryLabel.setText("Country:");
+        suppliesList.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        suppliesList.setText("Products:");
 
-        CountryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        CountryComboBox.addActionListener(new java.awt.event.ActionListener() {
+        addNewCustomertButton.setText("Add Customer");
+        addNewCustomertButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CountryComboBoxActionPerformed(evt);
+                addNewCustomertButtonActionPerformed(evt);
             }
         });
 
-        SuppliesList.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        SuppliesList.setText("Selling Products");
+        javax.swing.GroupLayout customerPanelLayout = new javax.swing.GroupLayout(customerPanel);
+        customerPanel.setLayout(customerPanelLayout);
+        customerPanelLayout.setHorizontalGroup(
+            customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customerPanelLayout.createSequentialGroup()
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customerPanelLayout.createSequentialGroup()
+                        .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(customerPanelLayout.createSequentialGroup()
+                                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerPanelLayout.createSequentialGroup()
+                                        .addComponent(customerCityLabel)
+                                        .addGap(11, 11, 11))
+                                    .addGroup(customerPanelLayout.createSequentialGroup()
+                                        .addComponent(customerNameLabel)
+                                        .addGap(5, 5, 5)))
+                                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(customerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(customerPanelLayout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(customerCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(customerPanelLayout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(customerPanelLayout.createSequentialGroup()
+                                        .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(customerTelephoneLabel)
+                                            .addComponent(customerAddressLabel))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(customerAddressTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                            .addComponent(customerTelephoneTextField)))
+                                    .addGroup(customerPanelLayout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(customerCountryLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(suppliesList)
+                                .addGap(172, 172, 172)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addNewCustomertButton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        customerPanelLayout.setVerticalGroup(
+            customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customerPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(customerNameLabel)
+                    .addComponent(customerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(customerTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerTelephoneLabel))
+                .addGap(11, 11, 11)
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(customerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerAddressLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(customerCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerCityLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerCountryLabel))
+                .addGap(18, 18, 18)
+                .addComponent(suppliesList, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                .addComponent(addNewCustomertButton)
+                .addContainerGap())
+        );
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
         });
-        SuppliersScrollPane.setViewportView(jList1);
 
-        javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
-        CustomerPanel.setLayout(CustomerPanelLayout);
-        CustomerPanelLayout.setHorizontalGroup(
-            CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerPanelLayout.createSequentialGroup()
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CustomerPanelLayout.createSequentialGroup()
-                            .addComponent(CustomerNameLabel)
-                            .addGap(11, 11, 11)
-                            .addComponent(CustomerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(CustomerNoLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(CustomerNoTextField))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CustomerPanelLayout.createSequentialGroup()
-                            .addGap(34, 34, 34)
-                            .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(CustomerTelephoneLabel)
-                                .addGroup(CustomerPanelLayout.createSequentialGroup()
-                                    .addGap(10, 10, 10)
-                                    .addComponent(CustomerAddressLabel)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(CustomerPanelLayout.createSequentialGroup()
-                                    .addComponent(CustomerTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(CustomerEmailLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(CustomerEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(CustomerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CustomerPanelLayout.createSequentialGroup()
-                            .addGap(72, 72, 72)
-                            .addComponent(CustomerCityLabel)
-                            .addGap(11, 11, 11)
-                            .addComponent(CustomerCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(CustomerCountryLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(CountryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(SuppliesList)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SuppliersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        nextButton.setText("Next ->");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cancelButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(nextButton)
+                .addContainerGap())
+        );
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(nextButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        CustomerPanelLayout.setVerticalGroup(
-            CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CustomerNameLabel)
-                    .addComponent(CustomerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CustomerNoLabel)
-                    .addComponent(CustomerNoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CustomerTelephoneLabel)
-                    .addComponent(CustomerTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CustomerEmailLabel)
-                    .addComponent(CustomerEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CustomerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CustomerAddressLabel))
-                .addGap(15, 15, 15)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CountryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CustomerCountryLabel)
-                    .addComponent(CustomerCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CustomerCityLabel))
-                .addGap(18, 18, 18)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SuppliesList)
-                    .addComponent(SuppliersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
 
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
-            }
-        });
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customer List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        AddNewCustomertButton.setText("Add New Customer");
-        AddNewCustomertButton.addActionListener(new java.awt.event.ActionListener() {
+        customerScrollPanel.setViewportView(customerTable);
+
+        viewCustomers.setText("View Customers");
+        viewCustomers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddNewCustomertButtonActionPerformed(evt);
+                viewCustomersActionPerformed(evt);
             }
         });
 
@@ -252,20 +309,26 @@ public class CustomersForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(CancelButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AddNewCustomertButton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                .addContainerGap(286, Short.MAX_VALUE)
+                .addComponent(viewCustomers, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(customerScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CancelButton)
-                    .addComponent(AddNewCustomertButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(viewCustomers)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(customerScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(41, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -273,53 +336,127 @@ public class CustomersForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CustomerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(10, 10, 10))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(customerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 10, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(CustomerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(customerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         setVisible(false);
         setUpForm = new SetUpForm();
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void AddNewCustomertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddNewCustomertButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AddNewCustomertButtonActionPerformed
+    private void addNewCustomertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewCustomertButtonActionPerformed
+        ConnectionCreator connectionCreator = new ConnectionCreator();
+        Connection connection = connectionCreator.connect();
 
-    private void CountryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CountryComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CountryComboBoxActionPerformed
+        String queryInsertCustomers = " insert into Customers (Name, Address,City,Telephone,CountryID,ProductID)"
+                + "values ('" + customerNameTextField.getText() + "','" + customerAddressTextField.getText() + "','" + customerCityTextField.getText() + "'," + customerTelephoneTextField.getText() + ",0,0)";
 
-    private void CustomerAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerAddressTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CustomerAddressTextFieldActionPerformed
+        try {
+            //Create insert preparedstatement for Customer
+            PreparedStatement prepareProductStatement = connection.prepareStatement(queryInsertCustomers);
+            prepareProductStatement.execute();
 
-    private void CustomerTelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerTelephoneTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CustomerTelephoneTextFieldActionPerformed
+            showMessageDialog(null, "Customer Added -->" + customerNameTextField.getText());
 
-    private void CustomerCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerCityTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CustomerCityTextFieldActionPerformed
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    private void CustomerEmailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerEmailTextFieldActionPerformed
+        setVisible(true);
+        countryComboBox.setSelectedIndex(0);
+        customerNameTextField.setText("");
+        customerAddressTextField.setText("");
+        customerCityTextField.setText("");
+        customerTelephoneTextField.setText("");
+    }//GEN-LAST:event_addNewCustomertButtonActionPerformed
+
+    private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CustomerEmailTextFieldActionPerformed
+    }//GEN-LAST:event_countryComboBoxActionPerformed
+
+    private void customerAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerAddressTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerAddressTextFieldActionPerformed
+
+    private void customerTelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerTelephoneTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerTelephoneTextFieldActionPerformed
+
+    private void customerCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerCityTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerCityTextFieldActionPerformed
+
+    private void viewCustomersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCustomersActionPerformed
+
+        columnNames.add("#");
+        columnNames.add("Customer");
+        columnNames.add("Products");
+        Vector<Vector<String>> data = new Vector<>();
+
+        try {
+            //SELECT From ProductType
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getProductsListStatement = connection.createStatement();
+            String query = " Select Customers.Name AS Customer,\n"
+                    + " Products.Name AS Products  From Customers, Products \n"
+                    + "Where Products.ID = Customers.ProductID";
+            ResultSet rs = getProductsListStatement.executeQuery(query);
+            Integer i = 0;
+
+            while (rs.next()) {
+                i++;
+                customerNumbers.add(i.toString());
+                customerNames.add(rs.getString("Customer"));
+                customerProducts.add(rs.getString("Products"));
+
+            }
+            getProductsListStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (int i = 0; i < customerNumbers.size(); i++) {
+            Vector<String> row = new Vector<>();
+            row.add(customerNumbers.get(i));
+            row.add(customerNames.get(i));
+            row.add(customerProducts.get(i));
+            data.add(row);
+        }
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        customerTable.setModel(model);
+
+        JTableUtilities.setJTableColumnsWidth(customerTable, customerTable.getWidth(), 10, 35, 55);    }//GEN-LAST:event_viewCustomersActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        setVisible(false);
+        setUpForm = new SetUpForm();
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -357,26 +494,25 @@ public class CustomersForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddNewCustomertButton;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JComboBox<String> CountryComboBox;
-    private javax.swing.JLabel CustomerAddressLabel;
-    private javax.swing.JTextField CustomerAddressTextField;
-    private javax.swing.JLabel CustomerCityLabel;
-    private javax.swing.JTextField CustomerCityTextField;
-    private javax.swing.JLabel CustomerCountryLabel;
-    private javax.swing.JLabel CustomerEmailLabel;
-    private javax.swing.JTextField CustomerEmailTextField;
-    private javax.swing.JLabel CustomerNameLabel;
-    private javax.swing.JTextField CustomerNameTextField;
-    private javax.swing.JLabel CustomerNoLabel;
-    private javax.swing.JTextField CustomerNoTextField;
-    private javax.swing.JPanel CustomerPanel;
-    private javax.swing.JLabel CustomerTelephoneLabel;
-    private javax.swing.JTextField CustomerTelephoneTextField;
-    private javax.swing.JScrollPane SuppliersScrollPane;
-    private javax.swing.JLabel SuppliesList;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JButton addNewCustomertButton;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> countryComboBox;
+    private javax.swing.JLabel customerAddressLabel;
+    private javax.swing.JTextField customerAddressTextField;
+    private javax.swing.JLabel customerCityLabel;
+    private javax.swing.JTextField customerCityTextField;
+    private javax.swing.JLabel customerCountryLabel;
+    private javax.swing.JLabel customerNameLabel;
+    private javax.swing.JTextField customerNameTextField;
+    private javax.swing.JPanel customerPanel;
+    private javax.swing.JScrollPane customerScrollPanel;
+    private javax.swing.JTable customerTable;
+    private javax.swing.JLabel customerTelephoneLabel;
+    private javax.swing.JTextField customerTelephoneTextField;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JLabel suppliesList;
+    private javax.swing.JButton viewCustomers;
     // End of variables declaration//GEN-END:variables
 }

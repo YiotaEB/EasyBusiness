@@ -29,7 +29,7 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="buttonPanel" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="ProductPanep" min="-2" max="-2" attributes="0"/>
+                      <Component id="productPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="tablePanel" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -43,7 +43,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="tablePanel" max="32767" attributes="0"/>
-                  <Component id="ProductPanep" max="32767" attributes="0"/>
+                  <Component id="productPanel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="11" max="32767" attributes="0"/>
               <Component id="buttonPanel" min="-2" max="-2" attributes="0"/>
@@ -53,7 +53,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="ProductPanep">
+    <Container class="javax.swing.JPanel" name="productPanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">

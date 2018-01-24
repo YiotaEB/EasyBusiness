@@ -1,28 +1,38 @@
 package eb_managementapp.UI.Forms;
 
 import eb_managementapp.DB.ConnectionCreator;
-import eb_managementapp.UI.Forms.SetUpForm;
-import static eb_managementapp.EB_ManagementApp.setUpForm;
-import eb_managementapp.UI.Components.AlertBox;
+import eb_managementapp.UI.Components.JTableUtilities;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.Alert;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
 
 public class AddUsersForm extends javax.swing.JFrame {
 
     final String TITLE = "Add Employees";
 
-    /**
-     * Creates new form AddUsersForm
-     */
+    Vector<String> employeeNumber;
+    Vector<String> employeeFirstName;
+    Vector<String> employeeLastName;
+    Vector<String> employeeUsername;
+    Vector<String> employeePosition;
+    Vector<String> columnNames;
+
     public AddUsersForm() {
         initComponents();
+        
+        employeeNumber = new Vector<>();
+        employeeFirstName = new Vector<>();
+        employeeLastName = new Vector<>();
+        employeeUsername = new Vector<>();
+        employeePosition = new Vector<>();
+        columnNames = new Vector<>();
+        
 
         //COUNTRIES SELECTION COMBOBOX
         try {
@@ -46,6 +56,8 @@ public class AddUsersForm extends javax.swing.JFrame {
             Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        updateUsersComboBox();
+        
         setTitle(TITLE);
         setVisible(true);
     }
@@ -76,7 +88,7 @@ public class AddUsersForm extends javax.swing.JFrame {
         countryComboBox = new javax.swing.JComboBox<>();
         EmploymentDetailsPanel = new javax.swing.JPanel();
         positionLabel = new javax.swing.JLabel();
-        positionCompoBox = new javax.swing.JComboBox<>();
+        positionComboBox = new javax.swing.JComboBox<>();
         hireDateLabel = new javax.swing.JLabel();
         dateOfHirePicker = new org.jdesktop.swingx.JXDatePicker();
         FullTimeRadioButton = new javax.swing.JRadioButton();
@@ -86,6 +98,8 @@ public class AddUsersForm extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         viewEmployeesPanel = new javax.swing.JPanel();
+        employeesScrollPane = new javax.swing.JScrollPane();
+        employeesTable = new javax.swing.JTable();
         viewEmployeesButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -226,10 +240,10 @@ public class AddUsersForm extends javax.swing.JFrame {
         positionLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         positionLabel.setText("Position:");
 
-        positionCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        positionCompoBox.addActionListener(new java.awt.event.ActionListener() {
+        positionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        positionComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                positionCompoBoxActionPerformed(evt);
+                positionComboBoxActionPerformed(evt);
             }
         });
 
@@ -288,7 +302,7 @@ public class AddUsersForm extends javax.swing.JFrame {
                                 .addComponent(PartTimeRadioButton))
                             .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(dateOfHirePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                                .addComponent(positionCompoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(positionComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
         EmploymentDetailsPanelLayout.setVerticalGroup(
@@ -296,7 +310,7 @@ public class AddUsersForm extends javax.swing.JFrame {
             .addGroup(EmploymentDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(positionCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(positionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(positionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(EmploymentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -348,6 +362,8 @@ public class AddUsersForm extends javax.swing.JFrame {
 
         viewEmployeesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List of Employees", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
+        employeesScrollPane.setViewportView(employeesTable);
+
         viewEmployeesButton.setText("View Employees");
         viewEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -360,14 +376,19 @@ public class AddUsersForm extends javax.swing.JFrame {
         viewEmployeesPanelLayout.setHorizontalGroup(
             viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
-                .addContainerGap(256, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(viewEmployeesButton)
                 .addContainerGap())
+            .addGroup(viewEmployeesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(employeesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         viewEmployeesPanelLayout.setVerticalGroup(
             viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(employeesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(viewEmployeesButton)
                 .addContainerGap())
         );
@@ -437,7 +458,66 @@ public class AddUsersForm extends javax.swing.JFrame {
 
     private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed
 
-        this.setVisible(false);
+        columnNames.clear();
+        columnNames.add("#");
+        columnNames.add("FirstName");
+        columnNames.add("LastName");
+        columnNames.add("Username");
+        columnNames.add("Position");
+        Vector<Vector<String>> data = new Vector<>();
+
+        try {
+            //SELECT From User_Types
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getUserStatement = connection.createStatement();
+            String query = "SELECT\n"
+                    + "Users.FirstName AS FirstName,\n"
+                    + "Users.LastName AS LastName,\n"
+                    + "Users.Username AS Username,\n"
+                    + "User_Types.Name As Position\n"
+                    + "FROM Users, User_Types\n"
+                    + "WHERE User_Types.ID=Users.UserTypeID";
+            ResultSet rs = getUserStatement.executeQuery(query);
+
+            Integer i = 0;
+
+            data.clear();
+            employeeNumber.clear();
+            employeeFirstName.clear();
+            employeeLastName.clear();
+            employeeUsername.clear();
+
+            while (rs.next()) {
+                i++;
+                employeeNumber.add(i.toString());
+                employeeFirstName.add(rs.getString("FirstName"));
+                employeeLastName.add(rs.getString("LastName"));
+                employeeUsername.add(rs.getString("Username"));
+                employeePosition.add(rs.getString("Position"));
+            }
+            getUserStatement.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (int i = 0; i < employeeNumber.size(); i++) {
+            Vector<String> row = new Vector<>();
+            row.add(employeeNumber.get(i));
+            row.add(employeeFirstName.get(i));
+            row.add(employeeLastName.get(i));
+            row.add(employeeUsername.get(i));
+            row.add(employeePosition.get(i));
+            data.add(row);
+        }
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        employeesTable.setModel(model);
+
+        JTableUtilities.setJTableColumnsWidth(employeesTable, employeesTable.getWidth(), 9, 24, 24, 23, 20);
+
 
     }//GEN-LAST:event_viewEmployeesButtonActionPerformed
 
@@ -449,9 +529,9 @@ public class AddUsersForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nextButtonActionPerformed
 
-    private void positionCompoBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionCompoBoxActionPerformed
+    private void positionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_positionCompoBoxActionPerformed
+    }//GEN-LAST:event_positionComboBoxActionPerformed
 
     private void AddNewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddNewEmployeesButtonActionPerformed
         try {
@@ -492,32 +572,56 @@ public class AddUsersForm extends javax.swing.JFrame {
             //Not unique
             Statement insertStatement = connection.createStatement();
             String insertQuery = "INSERT INTO Users (Username, Password, UserTypeID, FirstName, LastName, DateHired, City, Address, Telephone, CountryID) "
-                    + "VALUES ("
-                    + "'" + username.toLowerCase() + "',"
-                    + "'',"
-                    + "1,"
-                    + "'" + employeeNameTextField.getText() + "',"
-                    + "'" + lastNameTextField.getText() + "',"
-                    + dateOfHirePicker.getDate().getTime() + ","
-                    + "'" + employeeCityTextField.getText() + "',"
-                    + "'" + employeeAddressTextField.getText() + "',"
-                    + "'" + employeeTelephoneTextField.getText() + "',"
-                    + countryComboBox.getSelectedIndex()+1
-                    + "); ";
+                    + "VALUES (" + "'" + username.toLowerCase() + "'," + "''," + positionComboBox.getSelectedIndex()+1 + "," + "'" + employeeNameTextField.getText() + "'," + "'" + lastNameTextField.getText() + "'," + dateOfHirePicker.getDate().getTime() + "," + "'" + employeeCityTextField.getText() + "'," + "'" + employeeAddressTextField.getText() + "'," + "'" + employeeTelephoneTextField.getText() + "'," + countryComboBox.getSelectedIndex() + 1 + "); ";
             int statusInsert = insertStatement.executeUpdate(insertQuery);
             if (statusInsert > 0) {
                 //TODO: Show alert box? "User was added"
-            }
-            else {
+            } else {
                 //TODO: Show alert box? "Couldnt add user"
             }
+            showMessageDialog(null, "Employee Added -->" + employeeNameTextField.getText());
             insertStatement.close();
 
+            
         } catch (SQLException ex) {
             Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+         setVisible(true);
+        countryComboBox.setSelectedIndex(0);
+        employeeNameTextField.setText("");
+        lastNameTextField.setText("");
+        employeeCityTextField.setText("");
+        employeeAddressTextField.setText("");
+        employeeTelephoneTextField.setText("");
+
+        updateUsersComboBox();
     }//GEN-LAST:event_AddNewEmployeesButtonActionPerformed
 
+    public void updateUsersComboBox() {
+       
+        //POSITION SELECTION COMBOBOX
+        try {
+            //Select Statment to choose position
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getPositionStatement = connection.createStatement();
+            String qr = " Select Name From User_Types";
+            ResultSet rs = getPositionStatement.executeQuery(qr);
+
+            positionComboBox.removeAllItems();
+            // iterate through the java resultset
+            while (rs.next()) {
+                String typeName = rs.getString("Name");
+                positionComboBox.addItem(typeName);
+            }
+            getPositionStatement.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -574,10 +678,12 @@ public class AddUsersForm extends javax.swing.JFrame {
     private javax.swing.JTextField employeeNameTextField;
     private javax.swing.JLabel employeeTelephoneLabel;
     private javax.swing.JTextField employeeTelephoneTextField;
+    private javax.swing.JScrollPane employeesScrollPane;
+    private javax.swing.JTable employeesTable;
     private javax.swing.JLabel hireDateLabel;
     private javax.swing.JTextField lastNameTextField;
     private javax.swing.JButton nextButton;
-    private javax.swing.JComboBox<String> positionCompoBox;
+    private javax.swing.JComboBox<String> positionComboBox;
     private javax.swing.JLabel positionLabel;
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JButton viewEmployeesButton;
