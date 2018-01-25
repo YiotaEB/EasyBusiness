@@ -5,9 +5,22 @@
  */
 package eb_managementapp.UI;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
@@ -21,9 +34,9 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         this.setVisible(true);
 
-       
     }
 
     /**
@@ -35,21 +48,469 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tabPanel = new javax.swing.JTabbedPane();
+        home = new javax.swing.JPanel();
+        statistics = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        dialyProduction = new javax.swing.JPanel();
+        productionScrollPane = new javax.swing.JScrollPane();
+        dailyProductionTable = new javax.swing.JTable();
+        moreProductionDetails = new javax.swing.JButton();
+        latestSales = new javax.swing.JPanel();
+        salesScrollPanel = new javax.swing.JScrollPane();
+        dailySalesTable = new javax.swing.JTable();
+        moreSalesDetails = new javax.swing.JButton();
+        latestPurchases = new javax.swing.JPanel();
+        purchasesScrollPanel = new javax.swing.JScrollPane();
+        dailyPurchasesTable = new javax.swing.JTable();
+        morePurchasesDetails = new javax.swing.JButton();
+        inventory = new javax.swing.JPanel();
+        production = new javax.swing.JPanel();
+        sales = new javax.swing.JPanel();
+        customers = new javax.swing.JPanel();
+        employees = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        suppliers = new javax.swing.JPanel();
+        menuBar = new javax.swing.JMenuBar();
+        file = new javax.swing.JMenu();
+        view = new javax.swing.JMenu();
+        options = new javax.swing.JMenu();
+        tools = new javax.swing.JMenu();
+        help = new javax.swing.JMenu();
+        about = new javax.swing.JMenu();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tabPanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        statistics.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        jButton1.setText("Bar Chart");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout statisticsLayout = new javax.swing.GroupLayout(statistics);
+        statistics.setLayout(statisticsLayout);
+        statisticsLayout.setHorizontalGroup(
+            statisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statisticsLayout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addComponent(jButton1)
+                .addContainerGap(116, Short.MAX_VALUE))
+        );
+        statisticsLayout.setVerticalGroup(
+            statisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statisticsLayout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jButton1)
+                .addContainerGap(360, Short.MAX_VALUE))
+        );
+
+        dialyProduction.setBorder(javax.swing.BorderFactory.createTitledBorder("Daily Production"));
+
+        dailyProductionTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        productionScrollPane.setViewportView(dailyProductionTable);
+
+        moreProductionDetails.setText("+ More Details");
+        moreProductionDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moreProductionDetailsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dialyProductionLayout = new javax.swing.GroupLayout(dialyProduction);
+        dialyProduction.setLayout(dialyProductionLayout);
+        dialyProductionLayout.setHorizontalGroup(
+            dialyProductionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialyProductionLayout.createSequentialGroup()
+                .addGroup(dialyProductionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(productionScrollPane)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialyProductionLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(moreProductionDetails)))
+                .addContainerGap())
+        );
+        dialyProductionLayout.setVerticalGroup(
+            dialyProductionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialyProductionLayout.createSequentialGroup()
+                .addComponent(moreProductionDetails)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(productionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        latestSales.setBorder(javax.swing.BorderFactory.createTitledBorder("Latest Sales"));
+
+        dailySalesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        salesScrollPanel.setViewportView(dailySalesTable);
+
+        moreSalesDetails.setText("+ More Details");
+        moreSalesDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moreSalesDetailsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout latestSalesLayout = new javax.swing.GroupLayout(latestSales);
+        latestSales.setLayout(latestSalesLayout);
+        latestSalesLayout.setHorizontalGroup(
+            latestSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, latestSalesLayout.createSequentialGroup()
+                .addGroup(latestSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(latestSalesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(salesScrollPanel))
+                    .addGroup(latestSalesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(moreSalesDetails)))
+                .addContainerGap())
+        );
+        latestSalesLayout.setVerticalGroup(
+            latestSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(latestSalesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(moreSalesDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(salesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        latestPurchases.setBorder(javax.swing.BorderFactory.createTitledBorder("Latest Purchases"));
+
+        dailyPurchasesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        purchasesScrollPanel.setViewportView(dailyPurchasesTable);
+
+        morePurchasesDetails.setText("+ More Details");
+        morePurchasesDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                morePurchasesDetailsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout latestPurchasesLayout = new javax.swing.GroupLayout(latestPurchases);
+        latestPurchases.setLayout(latestPurchasesLayout);
+        latestPurchasesLayout.setHorizontalGroup(
+            latestPurchasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(latestPurchasesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(latestPurchasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(purchasesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, latestPurchasesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(morePurchasesDetails)))
+                .addContainerGap())
+        );
+        latestPurchasesLayout.setVerticalGroup(
+            latestPurchasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(latestPurchasesLayout.createSequentialGroup()
+                .addComponent(morePurchasesDetails)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(purchasesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
+        home.setLayout(homeLayout);
+        homeLayout.setHorizontalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(latestPurchases, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(latestSales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dialyProduction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        homeLayout.setVerticalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(homeLayout.createSequentialGroup()
+                        .addComponent(dialyProduction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(latestSales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(latestPurchases, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
+        tabPanel.addTab("Home", home);
+
+        javax.swing.GroupLayout inventoryLayout = new javax.swing.GroupLayout(inventory);
+        inventory.setLayout(inventoryLayout);
+        inventoryLayout.setHorizontalGroup(
+            inventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 996, Short.MAX_VALUE)
+        );
+        inventoryLayout.setVerticalGroup(
+            inventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+
+        tabPanel.addTab("Inventory", inventory);
+
+        javax.swing.GroupLayout productionLayout = new javax.swing.GroupLayout(production);
+        production.setLayout(productionLayout);
+        productionLayout.setHorizontalGroup(
+            productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 996, Short.MAX_VALUE)
+        );
+        productionLayout.setVerticalGroup(
+            productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+
+        tabPanel.addTab("Production", production);
+
+        javax.swing.GroupLayout salesLayout = new javax.swing.GroupLayout(sales);
+        sales.setLayout(salesLayout);
+        salesLayout.setHorizontalGroup(
+            salesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 996, Short.MAX_VALUE)
+        );
+        salesLayout.setVerticalGroup(
+            salesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+
+        tabPanel.addTab("Sales", sales);
+
+        javax.swing.GroupLayout customersLayout = new javax.swing.GroupLayout(customers);
+        customers.setLayout(customersLayout);
+        customersLayout.setHorizontalGroup(
+            customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 996, Short.MAX_VALUE)
+        );
+        customersLayout.setVerticalGroup(
+            customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+
+        tabPanel.addTab("Customers", customers);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List Of Employess", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jTextField1.setText("Search....");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        jButton3.setPreferredSize(new java.awt.Dimension(49, 25));
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 944, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField1)
+                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jLabel2.setText("No. Employees: ###");
+
+        javax.swing.GroupLayout employeesLayout = new javax.swing.GroupLayout(employees);
+        employees.setLayout(employeesLayout);
+        employeesLayout.setHorizontalGroup(
+            employeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(employeesLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        employeesLayout.setVerticalGroup(
+            employeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
+        );
+
+        tabPanel.addTab("Employees", employees);
+
+        javax.swing.GroupLayout suppliersLayout = new javax.swing.GroupLayout(suppliers);
+        suppliers.setLayout(suppliersLayout);
+        suppliersLayout.setHorizontalGroup(
+            suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 996, Short.MAX_VALUE)
+        );
+        suppliersLayout.setVerticalGroup(
+            suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+
+        tabPanel.addTab("Suppliers", suppliers);
+
+        file.setText("File");
+        menuBar.add(file);
+
+        view.setText("View");
+        menuBar.add(view);
+
+        options.setText("Options");
+        menuBar.add(options);
+
+        tools.setText("Tools");
+        menuBar.add(tools);
+
+        help.setText("Help");
+        menuBar.add(help);
+
+        about.setText("About");
+        menuBar.add(about);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 787, Short.MAX_VALUE)
+            .addComponent(tabPanel)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 360, Short.MAX_VALUE)
+            .addComponent(tabPanel)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+
+        dataset.setValue(80, "Marks", "Value 1");
+
+        dataset.setValue(70, "Marks", "Value 2");
+
+        dataset.setValue(75, "Marks", "Value 3");
+
+        JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
+
+        CategoryPlot p = chart.getCategoryPlot();
+
+        p.setRangeGridlinePaint(Color.black);
+
+        ChartFrame frame = new ChartFrame("Bar Chart Report", chart);
+
+        frame.setVisible(true);
+
+        frame.setSize(400, 350);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void moreProductionDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreProductionDetailsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moreProductionDetailsActionPerformed
+
+    private void moreSalesDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreSalesDetailsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moreSalesDetailsActionPerformed
+
+    private void morePurchasesDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_morePurchasesDetailsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_morePurchasesDetailsActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -87,5 +548,43 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu about;
+    private javax.swing.JPanel customers;
+    private javax.swing.JTable dailyProductionTable;
+    private javax.swing.JTable dailyPurchasesTable;
+    private javax.swing.JTable dailySalesTable;
+    private javax.swing.JPanel dialyProduction;
+    private javax.swing.JPanel employees;
+    private javax.swing.JMenu file;
+    private javax.swing.JMenu help;
+    private javax.swing.JPanel home;
+    private javax.swing.JPanel inventory;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel latestPurchases;
+    private javax.swing.JPanel latestSales;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JButton moreProductionDetails;
+    private javax.swing.JButton morePurchasesDetails;
+    private javax.swing.JButton moreSalesDetails;
+    private javax.swing.JMenu options;
+    private javax.swing.JPanel production;
+    private javax.swing.JScrollPane productionScrollPane;
+    private javax.swing.JScrollPane purchasesScrollPanel;
+    private javax.swing.JPanel sales;
+    private javax.swing.JScrollPane salesScrollPanel;
+    private javax.swing.JPanel statistics;
+    private javax.swing.JPanel suppliers;
+    private javax.swing.JTabbedPane tabPanel;
+    private javax.swing.JMenu tools;
+    private javax.swing.JMenu view;
     // End of variables declaration//GEN-END:variables
 }
