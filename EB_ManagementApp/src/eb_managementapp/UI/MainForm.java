@@ -5,6 +5,7 @@
  */
 package eb_managementapp.UI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -33,6 +34,37 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
+        
+        
+        
+        
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+
+        dataset.setValue(80, "Marks", "Value 1");
+
+        dataset.setValue(70, "Marks", "Value 2");
+
+        dataset.setValue(75, "Marks", "Value 3");
+
+        JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
+
+        CategoryPlot p = chart.getCategoryPlot();
+
+        p.setRangeGridlinePaint(Color.black);
+        
+        //Panel (same window):
+        ChartPanel chartPanel = new ChartPanel(chart);
+        statistics.setLayout(new java.awt.BorderLayout());
+        statistics.add(chartPanel,BorderLayout.CENTER);
+        statistics.validate();
+        
+        //Panel (same window):
+        ChartPanel chartPanel2 = new ChartPanel(chart);
+        customersGraphsPanel2.setLayout(new java.awt.BorderLayout());
+        customersGraphsPanel2.add(chartPanel2,BorderLayout.CENTER);
+        customersGraphsPanel2.validate();
+        
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.setVisible(true);
@@ -51,34 +83,89 @@ public class MainForm extends javax.swing.JFrame {
         tabPanel = new javax.swing.JTabbedPane();
         home = new javax.swing.JPanel();
         statistics = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         dialyProduction = new javax.swing.JPanel();
         productionScrollPane = new javax.swing.JScrollPane();
         dailyProductionTable = new javax.swing.JTable();
-        moreProductionDetails = new javax.swing.JButton();
+        moreProdDetailsBtn = new javax.swing.JButton();
         latestSales = new javax.swing.JPanel();
         salesScrollPanel = new javax.swing.JScrollPane();
         dailySalesTable = new javax.swing.JTable();
-        moreSalesDetails = new javax.swing.JButton();
+        moreSalesDetailsBtn = new javax.swing.JButton();
         latestPurchases = new javax.swing.JPanel();
         purchasesScrollPanel = new javax.swing.JScrollPane();
         dailyPurchasesTable = new javax.swing.JTable();
-        morePurchasesDetails = new javax.swing.JButton();
+        morePurchDetailsBtn = new javax.swing.JButton();
         inventory = new javax.swing.JPanel();
         production = new javax.swing.JPanel();
         sales = new javax.swing.JPanel();
         customers = new javax.swing.JPanel();
+        noCustomerLb = new javax.swing.JLabel();
+        customerDetailsPanel = new javax.swing.JPanel();
+        expCusDetailsBtn = new javax.swing.JButton();
+        printCusDetailsBtn = new javax.swing.JButton();
+        importCustomerBtn = new javax.swing.JButton();
+        searchCustomerTxt = new javax.swing.JTextField();
+        refreshCusDetailsBtn = new javax.swing.JButton();
+        customerScrollPanel = new javax.swing.JScrollPane();
+        customerDetailsTable = new javax.swing.JTable();
+        customerTabPanel = new javax.swing.JTabbedPane();
+        custSalesPanel = new javax.swing.JPanel();
+        importCustSalesBtn = new javax.swing.JButton();
+        searchCustSalesTxt = new javax.swing.JTextField();
+        exportCustSalesBtn = new javax.swing.JButton();
+        printCustSalesBtn = new javax.swing.JButton();
+        refreshCustSalesTable = new javax.swing.JButton();
+        customersSalesTabPane = new javax.swing.JScrollPane();
+        custSalesTable = new javax.swing.JTable();
+        custProductsPanel = new javax.swing.JPanel();
+        exportCustProductsBtn = new javax.swing.JButton();
+        printCustProductsBtn = new javax.swing.JButton();
+        searchCustProductsTxt = new javax.swing.JTextField();
+        refreshCustProductsBtn = new javax.swing.JButton();
+        importCustProductsBtn = new javax.swing.JButton();
+        custProScrollPanel = new javax.swing.JScrollPane();
+        custProductsTable = new javax.swing.JTable();
+        customersGraphsPanel = new javax.swing.JPanel();
+        customersGraphsPanel2 = new javax.swing.JPanel();
         employees = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        noEmployeesLb = new javax.swing.JLabel();
+        employeeListPanel = new javax.swing.JPanel();
+        employeeScrollPanel = new javax.swing.JScrollPane();
+        employeesTable = new javax.swing.JTable();
+        searchTxt = new javax.swing.JTextField();
+        exportFilesBtn = new javax.swing.JButton();
+        printBtn = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
+        importEmplBtn = new javax.swing.JButton();
         suppliers = new javax.swing.JPanel();
+        noSuppliesLb = new javax.swing.JLabel();
+        suppliersDetailsPanel1 = new javax.swing.JPanel();
+        expSupDetailsBtn1 = new javax.swing.JButton();
+        printSupDetailsBtn1 = new javax.swing.JButton();
+        importSupplierBtn = new javax.swing.JButton();
+        searchSupplierTxt = new javax.swing.JTextField();
+        refreshSuplTableBtn = new javax.swing.JButton();
+        supplierScrollPanel = new javax.swing.JScrollPane();
+        customerDetailsTable1 = new javax.swing.JTable();
+        suppliesTab = new javax.swing.JTabbedPane();
+        suppliesTabPanel = new javax.swing.JPanel();
+        importSuppliesBtn = new javax.swing.JButton();
+        searchSuppliesTxt = new javax.swing.JTextField();
+        exportSuppliesFilesBtn = new javax.swing.JButton();
+        printSuppliesBtn = new javax.swing.JButton();
+        refreshSuppliesTableBtn = new javax.swing.JButton();
+        suppliesTabPane = new javax.swing.JScrollPane();
+        custSalesTable1 = new javax.swing.JTable();
+        purchasesHistoryPanel = new javax.swing.JPanel();
+        exportPurchFilesBtn = new javax.swing.JButton();
+        printPurchasesBtn = new javax.swing.JButton();
+        searchPurchasesTxt = new javax.swing.JTextField();
+        refreshPurchasesTableBtn = new javax.swing.JButton();
+        importPurchaseBtn = new javax.swing.JButton();
+        purchHistoryScrollPanel = new javax.swing.JScrollPane();
+        purchHistoryTable = new javax.swing.JTable();
+        supplierGraphPanel = new javax.swing.JPanel();
+        suppliesGraphPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         file = new javax.swing.JMenu();
         view = new javax.swing.JMenu();
@@ -93,28 +180,15 @@ public class MainForm extends javax.swing.JFrame {
 
         statistics.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
-        jButton1.setText("Bar Chart");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout statisticsLayout = new javax.swing.GroupLayout(statistics);
         statistics.setLayout(statisticsLayout);
         statisticsLayout.setHorizontalGroup(
             statisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statisticsLayout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addComponent(jButton1)
-                .addContainerGap(116, Short.MAX_VALUE))
+            .addGap(0, 302, Short.MAX_VALUE)
         );
         statisticsLayout.setVerticalGroup(
             statisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statisticsLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jButton1)
-                .addContainerGap(360, Short.MAX_VALUE))
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         dialyProduction.setBorder(javax.swing.BorderFactory.createTitledBorder("Daily Production"));
@@ -132,10 +206,10 @@ public class MainForm extends javax.swing.JFrame {
         ));
         productionScrollPane.setViewportView(dailyProductionTable);
 
-        moreProductionDetails.setText("+ More Details");
-        moreProductionDetails.addActionListener(new java.awt.event.ActionListener() {
+        moreProdDetailsBtn.setText("+ More Details");
+        moreProdDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moreProductionDetailsActionPerformed(evt);
+                moreProdDetailsBtnActionPerformed(evt);
             }
         });
 
@@ -148,13 +222,13 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(productionScrollPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialyProductionLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(moreProductionDetails)))
+                        .addComponent(moreProdDetailsBtn)))
                 .addContainerGap())
         );
         dialyProductionLayout.setVerticalGroup(
             dialyProductionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialyProductionLayout.createSequentialGroup()
-                .addComponent(moreProductionDetails)
+                .addComponent(moreProdDetailsBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(productionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -174,10 +248,10 @@ public class MainForm extends javax.swing.JFrame {
         ));
         salesScrollPanel.setViewportView(dailySalesTable);
 
-        moreSalesDetails.setText("+ More Details");
-        moreSalesDetails.addActionListener(new java.awt.event.ActionListener() {
+        moreSalesDetailsBtn.setText("+ More Details");
+        moreSalesDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moreSalesDetailsActionPerformed(evt);
+                moreSalesDetailsBtnActionPerformed(evt);
             }
         });
 
@@ -189,17 +263,17 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(latestSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(latestSalesLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(salesScrollPanel))
+                        .addComponent(salesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE))
                     .addGroup(latestSalesLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(moreSalesDetails)))
+                        .addComponent(moreSalesDetailsBtn)))
                 .addContainerGap())
         );
         latestSalesLayout.setVerticalGroup(
             latestSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(latestSalesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(moreSalesDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(moreSalesDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addComponent(salesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -220,10 +294,10 @@ public class MainForm extends javax.swing.JFrame {
         ));
         purchasesScrollPanel.setViewportView(dailyPurchasesTable);
 
-        morePurchasesDetails.setText("+ More Details");
-        morePurchasesDetails.addActionListener(new java.awt.event.ActionListener() {
+        morePurchDetailsBtn.setText("+ More Details");
+        morePurchDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                morePurchasesDetailsActionPerformed(evt);
+                morePurchDetailsBtnActionPerformed(evt);
             }
         });
 
@@ -237,13 +311,13 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(purchasesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, latestPurchasesLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(morePurchasesDetails)))
+                        .addComponent(morePurchDetailsBtn)))
                 .addContainerGap())
         );
         latestPurchasesLayout.setVerticalGroup(
             latestPurchasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(latestPurchasesLayout.createSequentialGroup()
-                .addComponent(morePurchasesDetails)
+                .addComponent(morePurchDetailsBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(purchasesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -255,7 +329,7 @@ public class MainForm extends javax.swing.JFrame {
             homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(statistics, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(latestPurchases, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -268,14 +342,14 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(homeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(statistics, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(homeLayout.createSequentialGroup()
                         .addComponent(dialyProduction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(latestSales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(latestPurchases, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Home", home);
@@ -288,7 +362,7 @@ public class MainForm extends javax.swing.JFrame {
         );
         inventoryLayout.setVerticalGroup(
             inventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 578, Short.MAX_VALUE)
+            .addGap(0, 615, Short.MAX_VALUE)
         );
 
         tabPanel.addTab("Inventory", inventory);
@@ -301,7 +375,7 @@ public class MainForm extends javax.swing.JFrame {
         );
         productionLayout.setVerticalGroup(
             productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 578, Short.MAX_VALUE)
+            .addGap(0, 615, Short.MAX_VALUE)
         );
 
         tabPanel.addTab("Production", production);
@@ -314,27 +388,37 @@ public class MainForm extends javax.swing.JFrame {
         );
         salesLayout.setVerticalGroup(
             salesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 578, Short.MAX_VALUE)
+            .addGap(0, 615, Short.MAX_VALUE)
         );
 
         tabPanel.addTab("Sales", sales);
 
-        javax.swing.GroupLayout customersLayout = new javax.swing.GroupLayout(customers);
-        customers.setLayout(customersLayout);
-        customersLayout.setHorizontalGroup(
-            customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 996, Short.MAX_VALUE)
-        );
-        customersLayout.setVerticalGroup(
-            customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 578, Short.MAX_VALUE)
-        );
+        noCustomerLb.setText("No. Customers: ###");
 
-        tabPanel.addTab("Customers", customers);
+        customerDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customer Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List Of Employess", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+        expCusDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        expCusDetailsBtn.setPreferredSize(new java.awt.Dimension(49, 25));
+        expCusDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expCusDetailsBtnActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        printCusDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
+        importCustomerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+
+        searchCustomerTxt.setText("Search....");
+        searchCustomerTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchCustomerTxtActionPerformed(evt);
+            }
+        });
+
+        refreshCusDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+
+        customerDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -345,60 +429,328 @@ public class MainForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        customerScrollPanel.setViewportView(customerDetailsTable);
 
-        jTextField1.setText("Search....");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        javax.swing.GroupLayout customerDetailsPanelLayout = new javax.swing.GroupLayout(customerDetailsPanel);
+        customerDetailsPanel.setLayout(customerDetailsPanelLayout);
+        customerDetailsPanelLayout.setHorizontalGroup(
+            customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerDetailsPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(expCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(printCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchCustomerTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(refreshCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(importCustomerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(customerDetailsPanelLayout.createSequentialGroup()
+                .addComponent(customerScrollPanel)
+                .addContainerGap())
+        );
+        customerDetailsPanelLayout.setVerticalGroup(
+            customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customerDetailsPanelLayout.createSequentialGroup()
+                .addGroup(customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(expCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchCustomerTxt)
+                    .addComponent(importCustomerBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addComponent(customerScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        customerTabPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        customerTabPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        customerTabPanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        importCustSalesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+
+        searchCustSalesTxt.setText("Search....");
+        searchCustSalesTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchCustSalesTxtActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+        exportCustSalesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        exportCustSalesBtn.setPreferredSize(new java.awt.Dimension(49, 25));
+        exportCustSalesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportCustSalesBtnActionPerformed(evt);
+            }
+        });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
-        jButton3.setPreferredSize(new java.awt.Dimension(49, 25));
+        printCustSalesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+        refreshCustSalesTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+        custSalesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        customersSalesTabPane.setViewportView(custSalesTable);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout custSalesPanelLayout = new javax.swing.GroupLayout(custSalesPanel);
+        custSalesPanel.setLayout(custSalesPanelLayout);
+        custSalesPanelLayout.setHorizontalGroup(
+            custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(custSalesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 944, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, custSalesPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(exportCustSalesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(printCustSalesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchCustSalesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(refreshCustSalesTable, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(importCustSalesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(customersSalesTabPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+        custSalesPanelLayout.setVerticalGroup(
+            custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(custSalesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printCustSalesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exportCustSalesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshCustSalesTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchCustSalesTxt)
+                    .addComponent(importCustSalesBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(customersSalesTabPane, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jLabel2.setText("No. Employees: ###");
+        customerTabPanel.addTab("Customer Sales", custSalesPanel);
+
+        exportCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        exportCustProductsBtn.setPreferredSize(new java.awt.Dimension(49, 25));
+        exportCustProductsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportCustProductsBtnActionPerformed(evt);
+            }
+        });
+
+        printCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
+        searchCustProductsTxt.setText("Search....");
+        searchCustProductsTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchCustProductsTxtActionPerformed(evt);
+            }
+        });
+
+        refreshCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+
+        importCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+
+        custProductsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        custProScrollPanel.setViewportView(custProductsTable);
+
+        javax.swing.GroupLayout custProductsPanelLayout = new javax.swing.GroupLayout(custProductsPanel);
+        custProductsPanel.setLayout(custProductsPanelLayout);
+        custProductsPanelLayout.setHorizontalGroup(
+            custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(custProductsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, custProductsPanelLayout.createSequentialGroup()
+                        .addGap(0, 475, Short.MAX_VALUE)
+                        .addComponent(exportCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(printCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchCustProductsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(importCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(custProScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        custProductsPanelLayout.setVerticalGroup(
+            custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(custProductsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exportCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchCustProductsTxt)
+                    .addComponent(importCustProductsBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(43, 43, 43)
+                .addComponent(custProScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+
+        customerTabPanel.addTab("Customer Prooducts", custProductsPanel);
+
+        customersGraphsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customers Sales %", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        javax.swing.GroupLayout customersGraphsPanelLayout = new javax.swing.GroupLayout(customersGraphsPanel);
+        customersGraphsPanel.setLayout(customersGraphsPanelLayout);
+        customersGraphsPanelLayout.setHorizontalGroup(
+            customersGraphsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 205, Short.MAX_VALUE)
+        );
+        customersGraphsPanelLayout.setVerticalGroup(
+            customersGraphsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        customersGraphsPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customer Sales per month", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        javax.swing.GroupLayout customersGraphsPanel2Layout = new javax.swing.GroupLayout(customersGraphsPanel2);
+        customersGraphsPanel2.setLayout(customersGraphsPanel2Layout);
+        customersGraphsPanel2Layout.setHorizontalGroup(
+            customersGraphsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        customersGraphsPanel2Layout.setVerticalGroup(
+            customersGraphsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout customersLayout = new javax.swing.GroupLayout(customers);
+        customers.setLayout(customersLayout);
+        customersLayout.setHorizontalGroup(
+            customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customersLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customersLayout.createSequentialGroup()
+                        .addComponent(noCustomerLb)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(customersLayout.createSequentialGroup()
+                        .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(customerDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(customerTabPanel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(customersGraphsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(customersGraphsPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        customersLayout.setVerticalGroup(
+            customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(noCustomerLb)
+                .addGap(32, 32, 32)
+                .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(customersGraphsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(customerDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customersLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(customerTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(customersLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(customersGraphsPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        tabPanel.addTab("Customers", customers);
+
+        noEmployeesLb.setText("No. Employees: ###");
+
+        employeeListPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "List Of Employess", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        employeesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        employeeScrollPanel.setViewportView(employeesTable);
+
+        searchTxt.setText("Search....");
+        searchTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTxtActionPerformed(evt);
+            }
+        });
+
+        exportFilesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        exportFilesBtn.setPreferredSize(new java.awt.Dimension(49, 25));
+        exportFilesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportFilesBtnActionPerformed(evt);
+            }
+        });
+
+        printBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
+        refreshBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+
+        importEmplBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+
+        javax.swing.GroupLayout employeeListPanelLayout = new javax.swing.GroupLayout(employeeListPanel);
+        employeeListPanel.setLayout(employeeListPanelLayout);
+        employeeListPanelLayout.setHorizontalGroup(
+            employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeeListPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(employeeScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 944, Short.MAX_VALUE)
+                    .addGroup(employeeListPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(exportFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(printBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(importEmplBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        employeeListPanelLayout.setVerticalGroup(
+            employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeListPanelLayout.createSequentialGroup()
+                .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exportFilesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchTxt)
+                    .addComponent(importEmplBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout employeesLayout = new javax.swing.GroupLayout(employees);
         employees.setLayout(employeesLayout);
@@ -406,34 +758,312 @@ public class MainForm extends javax.swing.JFrame {
             employeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(employeesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(employeeListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(employeesLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel2)
+                .addComponent(noEmployeesLb)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         employeesLayout.setVerticalGroup(
             employeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(employeesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addComponent(noEmployeesLb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(employeeListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
 
         tabPanel.addTab("Employees", employees);
 
+        noSuppliesLb.setText("No. Suppliers: ###");
+
+        suppliersDetailsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplier Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        expSupDetailsBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        expSupDetailsBtn1.setPreferredSize(new java.awt.Dimension(49, 25));
+        expSupDetailsBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expSupDetailsBtn1ActionPerformed(evt);
+            }
+        });
+
+        printSupDetailsBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
+        importSupplierBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+        importSupplierBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importSupplierBtnActionPerformed(evt);
+            }
+        });
+
+        searchSupplierTxt.setText("Search....");
+        searchSupplierTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchSupplierTxtActionPerformed(evt);
+            }
+        });
+
+        refreshSuplTableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+
+        customerDetailsTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        supplierScrollPanel.setViewportView(customerDetailsTable1);
+
+        javax.swing.GroupLayout suppliersDetailsPanel1Layout = new javax.swing.GroupLayout(suppliersDetailsPanel1);
+        suppliersDetailsPanel1.setLayout(suppliersDetailsPanel1Layout);
+        suppliersDetailsPanel1Layout.setHorizontalGroup(
+            suppliersDetailsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliersDetailsPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(expSupDetailsBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(printSupDetailsBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchSupplierTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(refreshSuplTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(importSupplierBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(suppliersDetailsPanel1Layout.createSequentialGroup()
+                .addComponent(supplierScrollPanel)
+                .addContainerGap())
+        );
+        suppliersDetailsPanel1Layout.setVerticalGroup(
+            suppliersDetailsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(suppliersDetailsPanel1Layout.createSequentialGroup()
+                .addGroup(suppliersDetailsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printSupDetailsBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(expSupDetailsBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshSuplTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchSupplierTxt)
+                    .addComponent(importSupplierBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addComponent(supplierScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        suppliesTab.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        suppliesTab.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        suppliesTab.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        importSuppliesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+
+        searchSuppliesTxt.setText("Search....");
+        searchSuppliesTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchSuppliesTxtActionPerformed(evt);
+            }
+        });
+
+        exportSuppliesFilesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        exportSuppliesFilesBtn.setPreferredSize(new java.awt.Dimension(49, 25));
+        exportSuppliesFilesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportSuppliesFilesBtnActionPerformed(evt);
+            }
+        });
+
+        printSuppliesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
+        refreshSuppliesTableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+
+        custSalesTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        suppliesTabPane.setViewportView(custSalesTable1);
+
+        javax.swing.GroupLayout suppliesTabPanelLayout = new javax.swing.GroupLayout(suppliesTabPanel);
+        suppliesTabPanel.setLayout(suppliesTabPanelLayout);
+        suppliesTabPanelLayout.setHorizontalGroup(
+            suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(suppliesTabPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesTabPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(exportSuppliesFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(printSuppliesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchSuppliesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshSuppliesTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(importSuppliesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(suppliesTabPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        suppliesTabPanelLayout.setVerticalGroup(
+            suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(suppliesTabPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printSuppliesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exportSuppliesFilesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshSuppliesTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchSuppliesTxt)
+                    .addComponent(importSuppliesBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(suppliesTabPane, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        suppliesTab.addTab("Supplies", suppliesTabPanel);
+
+        exportPurchFilesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        exportPurchFilesBtn.setPreferredSize(new java.awt.Dimension(49, 25));
+        exportPurchFilesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportPurchFilesBtnActionPerformed(evt);
+            }
+        });
+
+        printPurchasesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
+        searchPurchasesTxt.setText("Search....");
+        searchPurchasesTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchPurchasesTxtActionPerformed(evt);
+            }
+        });
+
+        refreshPurchasesTableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+
+        importPurchaseBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+
+        purchHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        purchHistoryScrollPanel.setViewportView(purchHistoryTable);
+
+        javax.swing.GroupLayout purchasesHistoryPanelLayout = new javax.swing.GroupLayout(purchasesHistoryPanel);
+        purchasesHistoryPanel.setLayout(purchasesHistoryPanelLayout);
+        purchasesHistoryPanelLayout.setHorizontalGroup(
+            purchasesHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(purchasesHistoryPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(purchasesHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, purchasesHistoryPanelLayout.createSequentialGroup()
+                        .addGap(0, 475, Short.MAX_VALUE)
+                        .addComponent(exportPurchFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(printPurchasesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchPurchasesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshPurchasesTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(importPurchaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(purchHistoryScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        purchasesHistoryPanelLayout.setVerticalGroup(
+            purchasesHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(purchasesHistoryPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(purchasesHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printPurchasesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exportPurchFilesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshPurchasesTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchPurchasesTxt)
+                    .addComponent(importPurchaseBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(43, 43, 43)
+                .addComponent(purchHistoryScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+
+        suppliesTab.addTab("Purchases Records", purchasesHistoryPanel);
+
+        supplierGraphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplier purchases %", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        javax.swing.GroupLayout supplierGraphPanelLayout = new javax.swing.GroupLayout(supplierGraphPanel);
+        supplierGraphPanel.setLayout(supplierGraphPanelLayout);
+        supplierGraphPanelLayout.setHorizontalGroup(
+            supplierGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 205, Short.MAX_VALUE)
+        );
+        supplierGraphPanelLayout.setVerticalGroup(
+            supplierGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        suppliesGraphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplies purchases  per month", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        javax.swing.GroupLayout suppliesGraphPanelLayout = new javax.swing.GroupLayout(suppliesGraphPanel);
+        suppliesGraphPanel.setLayout(suppliesGraphPanelLayout);
+        suppliesGraphPanelLayout.setHorizontalGroup(
+            suppliesGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        suppliesGraphPanelLayout.setVerticalGroup(
+            suppliesGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout suppliersLayout = new javax.swing.GroupLayout(suppliers);
         suppliers.setLayout(suppliersLayout);
         suppliersLayout.setHorizontalGroup(
             suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 996, Short.MAX_VALUE)
+            .addGroup(suppliersLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(suppliersLayout.createSequentialGroup()
+                        .addComponent(noSuppliesLb)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(suppliersLayout.createSequentialGroup()
+                        .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(suppliersDetailsPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(suppliesTab))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(supplierGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(suppliesGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         suppliersLayout.setVerticalGroup(
             suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 578, Short.MAX_VALUE)
+            .addGroup(suppliersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(noSuppliesLb)
+                .addGap(32, 32, 32)
+                .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(supplierGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(suppliersDetailsPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(suppliersLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(suppliesTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(suppliersLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(suppliesGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Suppliers", suppliers);
@@ -472,45 +1102,77 @@ public class MainForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        
-
-        dataset.setValue(80, "Marks", "Value 1");
-
-        dataset.setValue(70, "Marks", "Value 2");
-
-        dataset.setValue(75, "Marks", "Value 3");
-
-        JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
-
-        CategoryPlot p = chart.getCategoryPlot();
-
-        p.setRangeGridlinePaint(Color.black);
-
-        ChartFrame frame = new ChartFrame("Bar Chart Report", chart);
-
-        frame.setVisible(true);
-
-        frame.setSize(400, 350);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void moreProductionDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreProductionDetailsActionPerformed
+    private void moreProdDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreProdDetailsBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_moreProductionDetailsActionPerformed
+    }//GEN-LAST:event_moreProdDetailsBtnActionPerformed
 
-    private void moreSalesDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreSalesDetailsActionPerformed
+    private void moreSalesDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreSalesDetailsBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_moreSalesDetailsActionPerformed
+    }//GEN-LAST:event_moreSalesDetailsBtnActionPerformed
 
-    private void morePurchasesDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_morePurchasesDetailsActionPerformed
+    private void morePurchDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_morePurchDetailsBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_morePurchasesDetailsActionPerformed
+    }//GEN-LAST:event_morePurchDetailsBtnActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void searchTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_searchTxtActionPerformed
+
+    private void exportFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFilesBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportFilesBtnActionPerformed
+
+    private void expCusDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expCusDetailsBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_expCusDetailsBtnActionPerformed
+
+    private void searchCustomerTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCustomerTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchCustomerTxtActionPerformed
+
+    private void exportCustSalesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportCustSalesBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportCustSalesBtnActionPerformed
+
+    private void searchCustSalesTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCustSalesTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchCustSalesTxtActionPerformed
+
+    private void exportCustProductsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportCustProductsBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportCustProductsBtnActionPerformed
+
+    private void searchCustProductsTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCustProductsTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchCustProductsTxtActionPerformed
+
+    private void expSupDetailsBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expSupDetailsBtn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_expSupDetailsBtn1ActionPerformed
+
+    private void searchSupplierTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSupplierTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchSupplierTxtActionPerformed
+
+    private void searchSuppliesTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSuppliesTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchSuppliesTxtActionPerformed
+
+    private void exportSuppliesFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportSuppliesFilesBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportSuppliesFilesBtnActionPerformed
+
+    private void exportPurchFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportPurchFilesBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportPurchFilesBtnActionPerformed
+
+    private void searchPurchasesTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPurchasesTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchPurchasesTxtActionPerformed
+
+    private void importSupplierBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importSupplierBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_importSupplierBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -549,40 +1211,95 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu about;
+    private javax.swing.JScrollPane custProScrollPanel;
+    private javax.swing.JPanel custProductsPanel;
+    private javax.swing.JTable custProductsTable;
+    private javax.swing.JPanel custSalesPanel;
+    private javax.swing.JTable custSalesTable;
+    private javax.swing.JTable custSalesTable1;
+    private javax.swing.JPanel customerDetailsPanel;
+    private javax.swing.JTable customerDetailsTable;
+    private javax.swing.JTable customerDetailsTable1;
+    private javax.swing.JScrollPane customerScrollPanel;
+    private javax.swing.JTabbedPane customerTabPanel;
     private javax.swing.JPanel customers;
+    private javax.swing.JPanel customersGraphsPanel;
+    private javax.swing.JPanel customersGraphsPanel2;
+    private javax.swing.JScrollPane customersSalesTabPane;
     private javax.swing.JTable dailyProductionTable;
     private javax.swing.JTable dailyPurchasesTable;
     private javax.swing.JTable dailySalesTable;
     private javax.swing.JPanel dialyProduction;
+    private javax.swing.JPanel employeeListPanel;
+    private javax.swing.JScrollPane employeeScrollPanel;
     private javax.swing.JPanel employees;
+    private javax.swing.JTable employeesTable;
+    private javax.swing.JButton expCusDetailsBtn;
+    private javax.swing.JButton expSupDetailsBtn1;
+    private javax.swing.JButton exportCustProductsBtn;
+    private javax.swing.JButton exportCustSalesBtn;
+    private javax.swing.JButton exportFilesBtn;
+    private javax.swing.JButton exportPurchFilesBtn;
+    private javax.swing.JButton exportSuppliesFilesBtn;
     private javax.swing.JMenu file;
     private javax.swing.JMenu help;
     private javax.swing.JPanel home;
+    private javax.swing.JButton importCustProductsBtn;
+    private javax.swing.JButton importCustSalesBtn;
+    private javax.swing.JButton importCustomerBtn;
+    private javax.swing.JButton importEmplBtn;
+    private javax.swing.JButton importPurchaseBtn;
+    private javax.swing.JButton importSupplierBtn;
+    private javax.swing.JButton importSuppliesBtn;
     private javax.swing.JPanel inventory;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel latestPurchases;
     private javax.swing.JPanel latestSales;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JButton moreProductionDetails;
-    private javax.swing.JButton morePurchasesDetails;
-    private javax.swing.JButton moreSalesDetails;
+    private javax.swing.JButton moreProdDetailsBtn;
+    private javax.swing.JButton morePurchDetailsBtn;
+    private javax.swing.JButton moreSalesDetailsBtn;
+    private javax.swing.JLabel noCustomerLb;
+    private javax.swing.JLabel noEmployeesLb;
+    private javax.swing.JLabel noSuppliesLb;
     private javax.swing.JMenu options;
+    private javax.swing.JButton printBtn;
+    private javax.swing.JButton printCusDetailsBtn;
+    private javax.swing.JButton printCustProductsBtn;
+    private javax.swing.JButton printCustSalesBtn;
+    private javax.swing.JButton printPurchasesBtn;
+    private javax.swing.JButton printSupDetailsBtn1;
+    private javax.swing.JButton printSuppliesBtn;
     private javax.swing.JPanel production;
     private javax.swing.JScrollPane productionScrollPane;
+    private javax.swing.JScrollPane purchHistoryScrollPanel;
+    private javax.swing.JTable purchHistoryTable;
+    private javax.swing.JPanel purchasesHistoryPanel;
     private javax.swing.JScrollPane purchasesScrollPanel;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton refreshCusDetailsBtn;
+    private javax.swing.JButton refreshCustProductsBtn;
+    private javax.swing.JButton refreshCustSalesTable;
+    private javax.swing.JButton refreshPurchasesTableBtn;
+    private javax.swing.JButton refreshSuplTableBtn;
+    private javax.swing.JButton refreshSuppliesTableBtn;
     private javax.swing.JPanel sales;
     private javax.swing.JScrollPane salesScrollPanel;
+    private javax.swing.JTextField searchCustProductsTxt;
+    private javax.swing.JTextField searchCustSalesTxt;
+    private javax.swing.JTextField searchCustomerTxt;
+    private javax.swing.JTextField searchPurchasesTxt;
+    private javax.swing.JTextField searchSupplierTxt;
+    private javax.swing.JTextField searchSuppliesTxt;
+    private javax.swing.JTextField searchTxt;
     private javax.swing.JPanel statistics;
+    private javax.swing.JPanel supplierGraphPanel;
+    private javax.swing.JScrollPane supplierScrollPanel;
     private javax.swing.JPanel suppliers;
+    private javax.swing.JPanel suppliersDetailsPanel1;
+    private javax.swing.JPanel suppliesGraphPanel;
+    private javax.swing.JTabbedPane suppliesTab;
+    private javax.swing.JScrollPane suppliesTabPane;
+    private javax.swing.JPanel suppliesTabPanel;
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JMenu tools;
     private javax.swing.JMenu view;
