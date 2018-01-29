@@ -27,9 +27,9 @@
           <Group type="102" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="CompanyDetails" max="32767" attributes="0"/>
-                  <Component id="CompanyWorkingHoursLabel" max="32767" attributes="0"/>
-                  <Component id="ButtonPanel" max="32767" attributes="0"/>
+                  <Component id="companyDetails" max="32767" attributes="0"/>
+                  <Component id="companyWorkingHoursLabel" max="32767" attributes="0"/>
+                  <Component id="buttonPanel" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -38,18 +38,18 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="CompanyDetails" min="-2" pref="165" max="-2" attributes="0"/>
+              <Component id="companyDetails" min="-2" pref="165" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="CompanyWorkingHoursLabel" min="-2" max="-2" attributes="0"/>
+              <Component id="companyWorkingHoursLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="ButtonPanel" min="-2" max="-2" attributes="0"/>
+              <Component id="buttonPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="CompanyDetails">
+    <Container class="javax.swing.JPanel" name="companyDetails">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -68,53 +68,53 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="EmailLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="emailLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="EmailTextField" min="-2" pref="175" max="-2" attributes="0"/>
+                          <Component id="emailTextField" min="-2" pref="175" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="FaxLabel" min="-2" max="-2" attributes="0"/>
-                                      <Component id="CompanyNameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="faxLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="companyNameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="TelephoneLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="telephoneLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="TelephoneTextField" alignment="0" min="-2" pref="175" max="-2" attributes="0"/>
-                                  <Component id="CompanyNameTextField" alignment="1" min="-2" pref="175" max="-2" attributes="0"/>
+                                  <Component id="telephoneTextField" alignment="0" min="-2" pref="175" max="-2" attributes="0"/>
+                                  <Component id="companyNameTextField" alignment="1" min="-2" pref="175" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="FaxTextField" min="-2" pref="175" max="-2" attributes="0"/>
+                              <Component id="faxTextField" min="-2" pref="175" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="CountryLabel" min="-2" max="-2" attributes="0"/>
-                                      <Component id="CompanyTypeLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="countryLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="companyTypeLabel" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="CompanyTypeComboBox" min="-2" pref="175" max="-2" attributes="0"/>
-                                      <Component id="CountryComboBox" min="-2" pref="175" max="-2" attributes="0"/>
+                                      <Component id="companyTypeComboBox" min="-2" pref="175" max="-2" attributes="0"/>
+                                      <Component id="countryComboBox" min="-2" pref="175" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
-                                  <Component id="CityLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cityLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="CityTextField" min="-2" pref="175" max="-2" attributes="0"/>
+                                  <Component id="cityTextField" min="-2" pref="175" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                  <Component id="AddressLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="addressLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="AddressTextField" min="-2" pref="175" max="-2" attributes="0"/>
+                                  <Component id="addressTextField" min="-2" pref="175" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -128,40 +128,40 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="CompanyNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CompanyNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CompanyTypeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CompanyTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="companyNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="companyNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="companyTypeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="companyTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="FaxLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="FaxTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CountryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CountryComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="faxLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="faxTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="countryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="countryComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="TelephoneLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="TelephoneTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="telephoneLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="telephoneTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="EmailLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="EmailTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="emailLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="emailTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="CityTextField" alignment="3" max="32767" attributes="0"/>
-                              <Component id="CityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cityTextField" alignment="3" max="32767" attributes="0"/>
+                              <Component id="cityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="AddressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="AddressLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="addressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="addressLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       </Group>
@@ -172,7 +172,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="CompanyNameLabel">
+        <Component class="javax.swing.JLabel" name="companyNameLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -180,12 +180,12 @@
             <Property name="text" type="java.lang.String" value="Company Name:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="CompanyNameTextField">
+        <Component class="javax.swing.JTextField" name="companyNameTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CompanyNameTextFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="companyNameTextFieldActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="CompanyTypeLabel">
+        <Component class="javax.swing.JLabel" name="companyTypeLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -193,7 +193,7 @@
             <Property name="text" type="java.lang.String" value="Company Type:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="CompanyTypeComboBox">
+        <Component class="javax.swing.JComboBox" name="companyTypeComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -205,13 +205,13 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CompanyTypeComboBoxActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="companyTypeComboBoxActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="FaxLabel">
+        <Component class="javax.swing.JLabel" name="faxLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -219,12 +219,12 @@
             <Property name="text" type="java.lang.String" value="Fax:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="FaxTextField">
+        <Component class="javax.swing.JTextField" name="faxTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FaxTextFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="faxTextFieldActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="CountryLabel">
+        <Component class="javax.swing.JLabel" name="countryLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -232,7 +232,7 @@
             <Property name="text" type="java.lang.String" value="Country:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="CountryComboBox">
+        <Component class="javax.swing.JComboBox" name="countryComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -244,13 +244,13 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CountryComboBoxActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="countryComboBoxActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="TelephoneLabel">
+        <Component class="javax.swing.JLabel" name="telephoneLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -258,12 +258,12 @@
             <Property name="text" type="java.lang.String" value="Telephone:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="TelephoneTextField">
+        <Component class="javax.swing.JTextField" name="telephoneTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TelephoneTextFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="telephoneTextFieldActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="CityLabel">
+        <Component class="javax.swing.JLabel" name="cityLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -271,12 +271,12 @@
             <Property name="text" type="java.lang.String" value="City:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="CityTextField">
+        <Component class="javax.swing.JTextField" name="cityTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CityTextFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cityTextFieldActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="EmailLabel">
+        <Component class="javax.swing.JLabel" name="emailLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -284,12 +284,12 @@
             <Property name="text" type="java.lang.String" value="Company E-mail:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="EmailTextField">
+        <Component class="javax.swing.JTextField" name="emailTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmailTextFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="emailTextFieldActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="AddressLabel">
+        <Component class="javax.swing.JLabel" name="addressLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -297,14 +297,14 @@
             <Property name="text" type="java.lang.String" value="Address:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="AddressTextField">
+        <Component class="javax.swing.JTextField" name="addressTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddressTextFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addressTextFieldActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="CompanyWorkingHoursLabel">
+    <Container class="javax.swing.JPanel" name="companyWorkingHoursLabel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -321,13 +321,13 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                  <Component id="StartTimeLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="startTimeLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="StartTimeCompoBox" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="startTimeCompoBox" min="-2" pref="140" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
-                  <Component id="FinishTimeLabel1" min="-2" max="-2" attributes="0"/>
+                  <Component id="finishTimeLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="FinishTimeCompoBox" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="finishTimeCompoBox" min="-2" pref="140" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -337,10 +337,10 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="StartTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="StartTimeCompoBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="FinishTimeLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="FinishTimeCompoBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="startTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="startTimeCompoBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="finishTimeLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="finishTimeCompoBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -348,7 +348,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="StartTimeLabel">
+        <Component class="javax.swing.JLabel" name="startTimeLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -356,7 +356,7 @@
             <Property name="text" type="java.lang.String" value="Start Time:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="StartTimeCompoBox">
+        <Component class="javax.swing.JComboBox" name="startTimeCompoBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -371,7 +371,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="FinishTimeLabel1">
+        <Component class="javax.swing.JLabel" name="finishTimeLabel1">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="0"/>
@@ -379,7 +379,7 @@
             <Property name="text" type="java.lang.String" value="Finish Time:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="FinishTimeCompoBox">
+        <Component class="javax.swing.JComboBox" name="finishTimeCompoBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -396,16 +396,16 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="ButtonPanel">
+    <Container class="javax.swing.JPanel" name="buttonPanel">
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="CancelButton" min="-2" max="-2" attributes="0"/>
+                  <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="NextButton" min="-2" max="-2" attributes="0"/>
+                  <Component id="nextButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -414,8 +414,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="CancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="NextButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nextButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
               </Group>
@@ -423,7 +423,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="CancelButton">
+        <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
@@ -431,10 +431,10 @@
             <Property name="text" type="java.lang.String" value="Cancel"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CancelButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="NextButton">
+        <Component class="javax.swing.JButton" name="nextButton">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
@@ -442,7 +442,7 @@
             <Property name="text" type="java.lang.String" value="Next &gt;"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NextButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

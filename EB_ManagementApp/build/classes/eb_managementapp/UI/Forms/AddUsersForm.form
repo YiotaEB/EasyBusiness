@@ -35,7 +35,7 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="employeeDetailsPanel" max="32767" attributes="0"/>
-                          <Component id="EmploymentDetailsPanel" max="32767" attributes="0"/>
+                          <Component id="employmentDetailsPanel" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="viewEmployeesPanel" min="-2" max="-2" attributes="0"/>
@@ -53,7 +53,7 @@
                   <Group type="102" attributes="0">
                       <Component id="employeeDetailsPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="EmploymentDetailsPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="employmentDetailsPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="viewEmployeesPanel" max="32767" attributes="0"/>
               </Group>
@@ -274,7 +274,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="EmploymentDetailsPanel">
+    <Container class="javax.swing.JPanel" name="employmentDetailsPanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -293,7 +293,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
-                          <Component id="AddNewEmployeesButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="addNewEmployeesButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -310,9 +310,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                  <Component id="FullTimeRadioButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fullTimeRadioButton" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="PartTimeRadioButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="partTimeRadioButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="dateOfHirePicker" pref="178" max="32767" attributes="0"/>
@@ -340,11 +340,11 @@
                   </Group>
                   <EmptySpace pref="11" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="FullTimeRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="PartTimeRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="fullTimeRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="partTimeRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="AddNewEmployeesButton" min="-2" max="-2" attributes="0"/>
+                  <Component id="addNewEmployeesButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -390,7 +390,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dateOfHirePickerActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="FullTimeRadioButton">
+        <Component class="javax.swing.JRadioButton" name="fullTimeRadioButton">
           <Properties>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buttonGroup"/>
@@ -401,7 +401,7 @@
             <Property name="text" type="java.lang.String" value="Full Time"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="PartTimeRadioButton">
+        <Component class="javax.swing.JRadioButton" name="partTimeRadioButton">
           <Properties>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buttonGroup"/>
@@ -412,15 +412,15 @@
             <Property name="text" type="java.lang.String" value="Part Time"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PartTimeRadioButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="partTimeRadioButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="AddNewEmployeesButton">
+        <Component class="javax.swing.JButton" name="addNewEmployeesButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Add New Emplyees"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddNewEmployeesButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addNewEmployeesButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

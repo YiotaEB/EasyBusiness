@@ -105,10 +105,10 @@ public class SuppliersForm extends javax.swing.JFrame {
         quantitySpinner = new javax.swing.JSpinner();
         priceLabel = new javax.swing.JLabel();
         priceTextField = new javax.swing.JTextField();
-        addSuppliesButton1 = new javax.swing.JButton();
+        addSuppliesButton = new javax.swing.JButton();
         buttonPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
-        cancelButton1 = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -310,10 +310,10 @@ public class SuppliersForm extends javax.swing.JFrame {
             }
         });
 
-        addSuppliesButton1.setText("Add Supplies");
-        addSuppliesButton1.addActionListener(new java.awt.event.ActionListener() {
+        addSuppliesButton.setText("Add Supplies");
+        addSuppliesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addSuppliesButton1ActionPerformed(evt);
+                addSuppliesButtonActionPerformed(evt);
             }
         });
 
@@ -344,7 +344,7 @@ public class SuppliersForm extends javax.swing.JFrame {
                             .addComponent(quantitySpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
                             .addComponent(priceTextField))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addSuppliesButton1)))
+                        .addComponent(addSuppliesButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         suppliesPanelLayout.setVerticalGroup(
@@ -361,7 +361,7 @@ public class SuppliersForm extends javax.swing.JFrame {
                 .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(suppliesPanelLayout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addComponent(addSuppliesButton1))
+                        .addComponent(addSuppliesButton))
                     .addGroup(suppliesPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -380,10 +380,10 @@ public class SuppliersForm extends javax.swing.JFrame {
             }
         });
 
-        cancelButton1.setText("Next ->");
-        cancelButton1.addActionListener(new java.awt.event.ActionListener() {
+        nextButton.setText("Next ->");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButton1ActionPerformed(evt);
+                nextButtonActionPerformed(evt);
             }
         });
 
@@ -395,7 +395,7 @@ public class SuppliersForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cancelButton1)
+                .addComponent(nextButton)
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -404,7 +404,7 @@ public class SuppliersForm extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
-                    .addComponent(cancelButton1))
+                    .addComponent(nextButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -563,7 +563,7 @@ public class SuppliersForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_supplierCityTextFieldActionPerformed
 
-    private void addSuppliesButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliesButton1ActionPerformed
+    private void addSuppliesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliesButtonActionPerformed
         ConnectionCreator connectionCreator = new ConnectionCreator();
         Connection connection = connectionCreator.connect();
 
@@ -587,15 +587,15 @@ public class SuppliersForm extends javax.swing.JFrame {
         suppliesNameTextField.setText("");
         quantitySpinner.setValue(0);
         priceTextField.setText("");
-    }//GEN-LAST:event_addSuppliesButton1ActionPerformed
+    }//GEN-LAST:event_addSuppliesButtonActionPerformed
 
     private void supplierComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_supplierComboBoxActionPerformed
 
-    private void cancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButton1ActionPerformed
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButton1ActionPerformed
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     public void updateSuppliersComboBox() {
         try {
@@ -657,11 +657,11 @@ public class SuppliersForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addSuppliersButton;
-    private javax.swing.JButton addSuppliesButton1;
+    private javax.swing.JButton addSuppliesButton;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton cancelButton1;
     private javax.swing.JComboBox<String> countryComboBox;
+    private javax.swing.JButton nextButton;
     private javax.swing.JLabel priceLabel;
     private javax.swing.JTextField priceTextField;
     private javax.swing.JLabel quantityLabel;

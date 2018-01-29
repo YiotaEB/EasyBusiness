@@ -39,267 +39,267 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        CompanyDetails = new javax.swing.JPanel();
-        CompanyNameLabel = new javax.swing.JLabel();
-        CompanyNameTextField = new javax.swing.JTextField();
-        CompanyTypeLabel = new javax.swing.JLabel();
-        CompanyTypeComboBox = new javax.swing.JComboBox<>();
-        FaxLabel = new javax.swing.JLabel();
-        FaxTextField = new javax.swing.JTextField();
-        CountryLabel = new javax.swing.JLabel();
-        CountryComboBox = new javax.swing.JComboBox<>();
-        TelephoneLabel = new javax.swing.JLabel();
-        TelephoneTextField = new javax.swing.JTextField();
-        CityLabel = new javax.swing.JLabel();
-        CityTextField = new javax.swing.JTextField();
-        EmailLabel = new javax.swing.JLabel();
-        EmailTextField = new javax.swing.JTextField();
-        AddressLabel = new javax.swing.JLabel();
-        AddressTextField = new javax.swing.JTextField();
-        CompanyWorkingHoursLabel = new javax.swing.JPanel();
-        StartTimeLabel = new javax.swing.JLabel();
-        StartTimeCompoBox = new javax.swing.JComboBox<>();
-        FinishTimeLabel1 = new javax.swing.JLabel();
-        FinishTimeCompoBox = new javax.swing.JComboBox<>();
-        ButtonPanel = new javax.swing.JPanel();
-        CancelButton = new javax.swing.JButton();
-        NextButton = new javax.swing.JButton();
+        companyDetails = new javax.swing.JPanel();
+        companyNameLabel = new javax.swing.JLabel();
+        companyNameTextField = new javax.swing.JTextField();
+        companyTypeLabel = new javax.swing.JLabel();
+        companyTypeComboBox = new javax.swing.JComboBox<>();
+        faxLabel = new javax.swing.JLabel();
+        faxTextField = new javax.swing.JTextField();
+        countryLabel = new javax.swing.JLabel();
+        countryComboBox = new javax.swing.JComboBox<>();
+        telephoneLabel = new javax.swing.JLabel();
+        telephoneTextField = new javax.swing.JTextField();
+        cityLabel = new javax.swing.JLabel();
+        cityTextField = new javax.swing.JTextField();
+        emailLabel = new javax.swing.JLabel();
+        emailTextField = new javax.swing.JTextField();
+        addressLabel = new javax.swing.JLabel();
+        addressTextField = new javax.swing.JTextField();
+        companyWorkingHoursLabel = new javax.swing.JPanel();
+        startTimeLabel = new javax.swing.JLabel();
+        startTimeCompoBox = new javax.swing.JComboBox<>();
+        finishTimeLabel1 = new javax.swing.JLabel();
+        finishTimeCompoBox = new javax.swing.JComboBox<>();
+        buttonPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Easy Business - Set Up Compnay ");
 
-        CompanyDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Company Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+        companyDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Company Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
 
-        CompanyNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CompanyNameLabel.setText("Company Name:");
+        companyNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        companyNameLabel.setText("Company Name:");
 
-        CompanyNameTextField.addActionListener(new java.awt.event.ActionListener() {
+        companyNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CompanyNameTextFieldActionPerformed(evt);
+                companyNameTextFieldActionPerformed(evt);
             }
         });
 
-        CompanyTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CompanyTypeLabel.setText("Company Type:");
+        companyTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        companyTypeLabel.setText("Company Type:");
 
-        CompanyTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        CompanyTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+        companyTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        companyTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CompanyTypeComboBoxActionPerformed(evt);
+                companyTypeComboBoxActionPerformed(evt);
             }
         });
 
-        FaxLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        FaxLabel.setText("Fax:");
+        faxLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        faxLabel.setText("Fax:");
 
-        FaxTextField.addActionListener(new java.awt.event.ActionListener() {
+        faxTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FaxTextFieldActionPerformed(evt);
+                faxTextFieldActionPerformed(evt);
             }
         });
 
-        CountryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CountryLabel.setText("Country:");
+        countryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        countryLabel.setText("Country:");
 
-        CountryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        CountryComboBox.addActionListener(new java.awt.event.ActionListener() {
+        countryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        countryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CountryComboBoxActionPerformed(evt);
+                countryComboBoxActionPerformed(evt);
             }
         });
 
-        TelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        TelephoneLabel.setText("Telephone:");
+        telephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        telephoneLabel.setText("Telephone:");
 
-        TelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
+        telephoneTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TelephoneTextFieldActionPerformed(evt);
+                telephoneTextFieldActionPerformed(evt);
             }
         });
 
-        CityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        CityLabel.setText("City:");
+        cityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        cityLabel.setText("City:");
 
-        CityTextField.addActionListener(new java.awt.event.ActionListener() {
+        cityTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CityTextFieldActionPerformed(evt);
+                cityTextFieldActionPerformed(evt);
             }
         });
 
-        EmailLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        EmailLabel.setText("Company E-mail:");
+        emailLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        emailLabel.setText("Company E-mail:");
 
-        EmailTextField.addActionListener(new java.awt.event.ActionListener() {
+        emailTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EmailTextFieldActionPerformed(evt);
+                emailTextFieldActionPerformed(evt);
             }
         });
 
-        AddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        AddressLabel.setText("Address:");
+        addressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        addressLabel.setText("Address:");
 
-        AddressTextField.addActionListener(new java.awt.event.ActionListener() {
+        addressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddressTextFieldActionPerformed(evt);
+                addressTextFieldActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout CompanyDetailsLayout = new javax.swing.GroupLayout(CompanyDetails);
-        CompanyDetails.setLayout(CompanyDetailsLayout);
-        CompanyDetailsLayout.setHorizontalGroup(
-            CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CompanyDetailsLayout.createSequentialGroup()
+        javax.swing.GroupLayout companyDetailsLayout = new javax.swing.GroupLayout(companyDetails);
+        companyDetails.setLayout(companyDetailsLayout);
+        companyDetailsLayout.setHorizontalGroup(
+            companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(companyDetailsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CompanyDetailsLayout.createSequentialGroup()
-                        .addComponent(EmailLabel)
+                .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(companyDetailsLayout.createSequentialGroup()
+                        .addComponent(emailLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(EmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(CompanyDetailsLayout.createSequentialGroup()
-                        .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CompanyDetailsLayout.createSequentialGroup()
+                        .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(companyDetailsLayout.createSequentialGroup()
+                        .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(companyDetailsLayout.createSequentialGroup()
                                 .addGap(3, 3, 3)
-                                .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(FaxLabel)
-                                    .addComponent(CompanyNameLabel)))
-                            .addComponent(TelephoneLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(faxLabel)
+                                    .addComponent(companyNameLabel)))
+                            .addComponent(telephoneLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(TelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(CompanyNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(FaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CompanyDetailsLayout.createSequentialGroup()
+                        .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(telephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(companyNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(faxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(companyDetailsLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(CountryLabel)
-                                    .addComponent(CompanyTypeLabel))
+                                .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(countryLabel)
+                                    .addComponent(companyTypeLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(CompanyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(CountryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(CompanyDetailsLayout.createSequentialGroup()
+                                .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(companyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(companyDetailsLayout.createSequentialGroup()
                                 .addGap(79, 79, 79)
-                                .addComponent(CityLabel)
+                                .addComponent(cityLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(CityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CompanyDetailsLayout.createSequentialGroup()
+                                .addComponent(cityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, companyDetailsLayout.createSequentialGroup()
                                 .addGap(54, 54, 54)
-                                .addComponent(AddressLabel)
+                                .addComponent(addressLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(AddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        CompanyDetailsLayout.setVerticalGroup(
-            CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CompanyDetailsLayout.createSequentialGroup()
+        companyDetailsLayout.setVerticalGroup(
+            companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(companyDetailsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CompanyNameLabel)
-                    .addComponent(CompanyNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CompanyTypeLabel)
-                    .addComponent(CompanyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(companyNameLabel)
+                    .addComponent(companyNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(companyTypeLabel)
+                    .addComponent(companyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FaxLabel)
-                    .addComponent(FaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CountryLabel)
-                    .addComponent(CountryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(faxLabel)
+                    .addComponent(faxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(countryLabel)
+                    .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CompanyDetailsLayout.createSequentialGroup()
-                        .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TelephoneLabel)
-                            .addComponent(TelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(companyDetailsLayout.createSequentialGroup()
+                        .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(telephoneLabel)
+                            .addComponent(telephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(EmailLabel)
-                            .addComponent(EmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(CompanyDetailsLayout.createSequentialGroup()
-                        .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(CityTextField)
-                            .addComponent(CityLabel))
+                        .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(emailLabel)
+                            .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(companyDetailsLayout.createSequentialGroup()
+                        .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cityTextField)
+                            .addComponent(cityLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(CompanyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(AddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AddressLabel))
+                        .addGroup(companyDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addressLabel))
                         .addGap(2, 2, 2)))
                 .addGap(140, 140, 140))
         );
 
-        CompanyWorkingHoursLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Company Working Hours", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+        companyWorkingHoursLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Company Working Hours", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
 
-        StartTimeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        StartTimeLabel.setText("Start Time:");
+        startTimeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        startTimeLabel.setText("Start Time:");
 
-        StartTimeCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        startTimeCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        FinishTimeLabel1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        FinishTimeLabel1.setText("Finish Time:");
+        finishTimeLabel1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        finishTimeLabel1.setText("Finish Time:");
 
-        FinishTimeCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        finishTimeCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        javax.swing.GroupLayout CompanyWorkingHoursLabelLayout = new javax.swing.GroupLayout(CompanyWorkingHoursLabel);
-        CompanyWorkingHoursLabel.setLayout(CompanyWorkingHoursLabelLayout);
-        CompanyWorkingHoursLabelLayout.setHorizontalGroup(
-            CompanyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CompanyWorkingHoursLabelLayout.createSequentialGroup()
+        javax.swing.GroupLayout companyWorkingHoursLabelLayout = new javax.swing.GroupLayout(companyWorkingHoursLabel);
+        companyWorkingHoursLabel.setLayout(companyWorkingHoursLabelLayout);
+        companyWorkingHoursLabelLayout.setHorizontalGroup(
+            companyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(companyWorkingHoursLabelLayout.createSequentialGroup()
                 .addGap(43, 43, 43)
-                .addComponent(StartTimeLabel)
+                .addComponent(startTimeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(StartTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(startTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(67, 67, 67)
-                .addComponent(FinishTimeLabel1)
+                .addComponent(finishTimeLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(FinishTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(finishTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        CompanyWorkingHoursLabelLayout.setVerticalGroup(
-            CompanyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CompanyWorkingHoursLabelLayout.createSequentialGroup()
+        companyWorkingHoursLabelLayout.setVerticalGroup(
+            companyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(companyWorkingHoursLabelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CompanyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StartTimeLabel)
-                    .addComponent(StartTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(FinishTimeLabel1)
-                    .addComponent(FinishTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(companyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startTimeLabel)
+                    .addComponent(startTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(finishTimeLabel1)
+                    .addComponent(finishTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        CancelButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
 
-        NextButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NextButton.setText("Next >");
-        NextButton.addActionListener(new java.awt.event.ActionListener() {
+        nextButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        nextButton.setText("Next >");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NextButtonActionPerformed(evt);
+                nextButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
-        ButtonPanel.setLayout(ButtonPanelLayout);
-        ButtonPanelLayout.setHorizontalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(CancelButton)
+                .addComponent(cancelButton)
                 .addGap(18, 18, 18)
-                .addComponent(NextButton)
+                .addComponent(nextButton)
                 .addGap(21, 21, 21))
         );
-        ButtonPanelLayout.setVerticalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonPanelLayout.createSequentialGroup()
-                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CancelButton)
-                    .addComponent(NextButton))
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(nextButton))
                 .addGap(0, 4, Short.MAX_VALUE))
         );
 
@@ -310,19 +310,19 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(CompanyDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CompanyWorkingHoursLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(companyDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(companyWorkingHoursLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(CompanyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(companyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CompanyWorkingHoursLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(companyWorkingHoursLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -330,35 +330,31 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void FaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FaxTextFieldActionPerformed
+    private void telephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telephoneTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_FaxTextFieldActionPerformed
+    }//GEN-LAST:event_telephoneTextFieldActionPerformed
 
-    private void TelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TelephoneTextFieldActionPerformed
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TelephoneTextFieldActionPerformed
+    }//GEN-LAST:event_emailTextFieldActionPerformed
 
-    private void EmailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailTextFieldActionPerformed
+    private void companyNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_companyNameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EmailTextFieldActionPerformed
+    }//GEN-LAST:event_companyNameTextFieldActionPerformed
 
-    private void CompanyNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompanyNameTextFieldActionPerformed
+    private void cityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CompanyNameTextFieldActionPerformed
+    }//GEN-LAST:event_cityTextFieldActionPerformed
 
-    private void CityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CityTextFieldActionPerformed
+    private void addressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CityTextFieldActionPerformed
+    }//GEN-LAST:event_addressTextFieldActionPerformed
 
-    private void AddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddressTextFieldActionPerformed
+    private void companyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_companyTypeComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AddressTextFieldActionPerformed
+    }//GEN-LAST:event_companyTypeComboBoxActionPerformed
 
-    private void CompanyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompanyTypeComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CompanyTypeComboBoxActionPerformed
-
-    private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextButtonActionPerformed
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
         /*ConnectionCreator connectionCreator = new ConnectionCreator();
         Connection connection = connectionCreator.connect();
@@ -390,15 +386,19 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
             setUpForm = new SetUpForm();
         
         
-    }//GEN-LAST:event_NextButtonActionPerformed
+    }//GEN-LAST:event_nextButtonActionPerformed
 
-    private void CountryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CountryComboBoxActionPerformed
+    private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CountryComboBoxActionPerformed
+    }//GEN-LAST:event_countryComboBoxActionPerformed
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void faxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faxTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_faxTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,30 +437,30 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AddressLabel;
-    private javax.swing.JTextField AddressTextField;
-    private javax.swing.JPanel ButtonPanel;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JLabel CityLabel;
-    private javax.swing.JTextField CityTextField;
-    private javax.swing.JPanel CompanyDetails;
-    private javax.swing.JLabel CompanyNameLabel;
-    private javax.swing.JTextField CompanyNameTextField;
-    private javax.swing.JComboBox<String> CompanyTypeComboBox;
-    private javax.swing.JLabel CompanyTypeLabel;
-    private javax.swing.JPanel CompanyWorkingHoursLabel;
-    private javax.swing.JComboBox<String> CountryComboBox;
-    private javax.swing.JLabel CountryLabel;
-    private javax.swing.JLabel EmailLabel;
-    private javax.swing.JTextField EmailTextField;
-    private javax.swing.JLabel FaxLabel;
-    private javax.swing.JTextField FaxTextField;
-    private javax.swing.JComboBox<String> FinishTimeCompoBox;
-    private javax.swing.JLabel FinishTimeLabel1;
-    private javax.swing.JButton NextButton;
-    private javax.swing.JComboBox<String> StartTimeCompoBox;
-    private javax.swing.JLabel StartTimeLabel;
-    private javax.swing.JLabel TelephoneLabel;
-    private javax.swing.JTextField TelephoneTextField;
+    private javax.swing.JLabel addressLabel;
+    private javax.swing.JTextField addressTextField;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel cityLabel;
+    private javax.swing.JTextField cityTextField;
+    private javax.swing.JPanel companyDetails;
+    private javax.swing.JLabel companyNameLabel;
+    private javax.swing.JTextField companyNameTextField;
+    private javax.swing.JComboBox<String> companyTypeComboBox;
+    private javax.swing.JLabel companyTypeLabel;
+    private javax.swing.JPanel companyWorkingHoursLabel;
+    private javax.swing.JComboBox<String> countryComboBox;
+    private javax.swing.JLabel countryLabel;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JLabel faxLabel;
+    private javax.swing.JTextField faxTextField;
+    private javax.swing.JComboBox<String> finishTimeCompoBox;
+    private javax.swing.JLabel finishTimeLabel1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JComboBox<String> startTimeCompoBox;
+    private javax.swing.JLabel startTimeLabel;
+    private javax.swing.JLabel telephoneLabel;
+    private javax.swing.JTextField telephoneTextField;
     // End of variables declaration//GEN-END:variables
 }
