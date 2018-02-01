@@ -20,4 +20,31 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to admin menu -->
+    <string name="admin_nav_home">Home</string>
+    <string name="admin_nav_sales">Sales</string>
+    <string name="admin_nav_inventory">Inventory</string>
+    <string name="admin_nav_production">Production</string>
+    <string name="admin_nav_suppliers">Suppliers</string>
+    <string name="admin_nav_customers">Customers</string>
+    <string name="admin_nav_employees">Employees</string>
+
+    <!-- Strings related to user menu -->
+    <string name="users_nav_home">Home</string>
+    <string name="users_nav_routes">Routes</string>
+    <string name="users_nav_sales">Sales</string>
+    <string name="users_nav_delivery_stock">Delivery Stock</string>
+    <string name="users_nav_customers">Customers</string>
+
+
+    <string-array name="randomItems">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.easybusiness.eb_androidapp;
+package com.easybusiness.eb_androidapp.UI;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,6 +29,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.easybusiness.eb_androidapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
-            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            Intent i = new Intent(LoginActivity.this, AdminMainActivity.class);
             startActivity(i);
             finish();
         }

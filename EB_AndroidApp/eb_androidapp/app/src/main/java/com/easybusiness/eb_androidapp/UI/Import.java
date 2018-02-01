@@ -1,4 +1,4 @@
-package com.easybusiness.eb_androidapp;
+package com.easybusiness.eb_androidapp.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.easybusiness.eb_androidapp.R;
 
 public class Import extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,9 +91,9 @@ public class Import extends AppCompatActivity
         AppCompatActivity currentActivity = this;
         switch (id){
 
-            case R.id.nav_home:
-                if (!(currentActivity instanceof MainActivity)) {
-                    Intent i = new Intent(this, MainActivity.class);
+            /*case R.id.nav_home:
+                if (!(currentActivity instanceof AdminMainActivity)) {
+                    Intent i = new Intent(this, AdminMainActivity.class);
                     startActivity(i);
                 }
                 break;
@@ -106,7 +108,7 @@ public class Import extends AppCompatActivity
                     Intent i = new Intent(this, Gallery.class);
                     startActivity(i);
                 }
-                break;
+                break;*/
         }
 
 

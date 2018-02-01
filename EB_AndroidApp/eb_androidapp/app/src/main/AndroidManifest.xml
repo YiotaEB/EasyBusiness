@@ -14,36 +14,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name=".SplashActivity"
+            android:name=".UI.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".MainActivity"
+            android:name=".UI.AdminMainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Import"
+            android:name=".UI.Import"
             android:label="Import"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name=".Gallery"
+            android:name=".UI.Gallery"
             android:label="Gallery"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
-
+            android:name=".UI.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".UI.UserMainActivity" />
+        <activity android:name=".UI.InvoiceActivity" />
+        <activity android:name=".UI.ViewCustomersActivity" />
+        <activity android:name=".UI.ViewSuppliersActivity" />
+        <activity android:name=".UI.AddCustomersAcitvity" />
+        <activity android:name=".UI.AddSuppliersAcitvity" />
+        <activity android:name=".UI.ViewEmployeesActivity" />
+        <activity android:name=".UI.AddEmployeesActivity" />
+        <activity android:name=".UI.ViewSalesActivity" />
+        <activity android:name=".UI.ViewInventoryActivity" />
+        <activity android:name=".UI.ViewProductionActivity" />
+        <activity android:name=".UI.ViewRoutesActivity" />
+        <activity android:name=".UI.ViewDeliveryRoutesActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.easybusiness.eb_androidapp;
+package com.easybusiness.eb_androidapp.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Gallery extends AppCompatActivity
+import com.easybusiness.eb_androidapp.R;
+
+public class AdminMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawer;
@@ -24,11 +26,9 @@ public class Gallery extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
+        setContentView(R.layout.activity_main_admin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //We dont need this.
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -89,9 +89,9 @@ public class Gallery extends AppCompatActivity
         AppCompatActivity currentActivity = this;
         switch (id){
 
-            case R.id.nav_home:
-                if (!(currentActivity instanceof MainActivity)) {
-                    Intent i = new Intent(this, MainActivity.class);
+            /*case R.id.nav_home:
+                if (!(currentActivity instanceof AdminMainActivity)) {
+                    Intent i = new Intent(this, AdminMainActivity.class);
                     startActivity(i);
                 }
                 break;
@@ -106,7 +106,7 @@ public class Gallery extends AppCompatActivity
                     Intent i = new Intent(this, Gallery.class);
                     startActivity(i);
                 }
-                break;
+                break;*/
         }
 
 

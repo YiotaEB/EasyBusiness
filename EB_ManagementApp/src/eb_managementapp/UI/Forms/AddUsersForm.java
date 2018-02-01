@@ -77,7 +77,6 @@ public class AddUsersForm extends javax.swing.JFrame {
         employeeNameTextField = new javax.swing.JTextField();
         employeeLastNameLabel = new javax.swing.JLabel();
         lastNameTextField = new javax.swing.JTextField();
-        usernameLabel = new javax.swing.JLabel();
         employeeTelephoneLabel = new javax.swing.JLabel();
         employeeTelephoneTextField = new javax.swing.JTextField();
         employeeAddressLabel = new javax.swing.JLabel();
@@ -124,9 +123,6 @@ public class AddUsersForm extends javax.swing.JFrame {
                 lastNameTextFieldActionPerformed(evt);
             }
         });
-
-        usernameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        usernameLabel.setText("UserName: ");
 
         employeeTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         employeeTelephoneLabel.setText("Telephone:");
@@ -175,32 +171,30 @@ public class AddUsersForm extends javax.swing.JFrame {
                         .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lastNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                             .addComponent(employeeNameTextField)))
-                    .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
-                                    .addGap(4, 4, 4)
-                                    .addComponent(employeeTelephoneLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(employeeTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(usernameLabel)
-                                .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
-                                    .addGap(18, 18, 18)
-                                    .addComponent(employeeAddressLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(employeeAddressTextField)))
+                    .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
-                                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeDetailsPanelLayout.createSequentialGroup()
-                                        .addComponent(employeeCityLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                    .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
-                                        .addComponent(countryLabel)
-                                        .addGap(10, 10, 10)))
-                                .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(countryComboBox, 0, 175, Short.MAX_VALUE)
-                                    .addComponent(employeeCityTextField))))))
+                                .addGap(14, 14, 14)
+                                .addComponent(employeeTelephoneLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(employeeTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(employeeAddressLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(employeeAddressTextField)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeDetailsPanelLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeDetailsPanelLayout.createSequentialGroup()
+                                    .addComponent(employeeCityLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
+                                    .addComponent(countryLabel)
+                                    .addGap(10, 10, 10)))
+                            .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(countryComboBox, 0, 175, Short.MAX_VALUE)
+                                .addComponent(employeeCityTextField)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         employeeDetailsPanelLayout.setVerticalGroup(
@@ -215,8 +209,6 @@ public class AddUsersForm extends javax.swing.JFrame {
                     .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(employeeLastNameLabel))
                 .addGap(11, 11, 11)
-                .addComponent(usernameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(employeeTelephoneLabel)
                     .addComponent(employeeTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -685,7 +677,6 @@ public class AddUsersForm extends javax.swing.JFrame {
     private javax.swing.JRadioButton partTimeRadioButton;
     private javax.swing.JComboBox<String> positionComboBox;
     private javax.swing.JLabel positionLabel;
-    private javax.swing.JLabel usernameLabel;
     private javax.swing.JButton viewEmployeesButton;
     private javax.swing.JPanel viewEmployeesPanel;
     // End of variables declaration//GEN-END:variables
