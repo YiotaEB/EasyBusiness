@@ -8,43 +8,43 @@
     tools:context="com.easybusiness.eb_androidapp.UI.ViewCustomersActivity">
 
     <TextView
-        android:id="@+id/customer_List_Text"
+        android:id="@+id/customer_list_text"
         style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="Customer List:"/>
+        android:text="@string/customer_list_text"/>
 
     <Button
-        android:id="@+id/print_Customer_List_Btn"
+        android:id="@+id/print_customer_list_Btn"
         android:layout_width="43dp"
         android:layout_height="43dp"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/add_Customer_Btn"
+        android:layout_toLeftOf="@id/add_customer_btn"
         android:background="@drawable/ic_local_printshop_black_24dp" />
 
     <Button
-        android:id="@+id/add_Customer_Btn"
+        android:id="@+id/add_customer_btn"
         android:layout_width="43dp"
         android:layout_height="43dp"
         android:background="@android:drawable/ic_input_add"
         android:layout_alignParentRight="true"/>
 
     <SearchView
-        android:id="@+id/customer_Search_View"
+        android:id="@+id/customer_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        android:layout_below="@id/add_Customer_Btn"/>
+        android:layout_below="@id/add_customer_btn"/>
 
     <ListView
-        android:id="@+id/customer_List_View"
+        android:id="@+id/customer_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/randomItems"
-        android:layout_below="@id/customer_Search_View"/>
+        android:layout_below="@id/customer_search_view"/>
 
 
 

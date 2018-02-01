@@ -13,32 +13,32 @@
 
         <item
             android:id="@+id/admin_nav_inventory"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_storage_black_24dp"
             android:title="@string/admin_nav_inventory" />
 
         <item
             android:id="@+id/admin_nav_sales"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_poll_black_24dp"
             android:title="@string/admin_nav_sales" />
 
         <item
             android:id="@+id/admin_nav_production"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_store_mall_directory_black_24dp"
             android:title="@string/admin_nav_production" />
 
         <item
             android:id="@+id/admin_nav_suppliers"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_assignment_ind_black_24dp"
             android:title="@string/admin_nav_suppliers" />
 
         <item
             android:id="@+id/admin_nav_customers"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_assignment_ind_black_24dp"
             android:title="@string/admin_nav_customers" />
 
         <item
             android:id="@+id/admin_nav_employees"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_group_black_24dp"
             android:title="@string/admin_nav_employees" />
 
     </group>

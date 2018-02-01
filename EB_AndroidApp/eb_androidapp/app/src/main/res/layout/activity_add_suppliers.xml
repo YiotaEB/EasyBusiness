@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
-    tools:context="com.easybusiness.eb_androidapp.UI.AddSuppliersAcitvity">
+    tools:context="com.easybusiness.eb_androidapp.UI.AddSuppliersActivity">
 
     <TextView
         android:id="@+id/suppliers_list_text"
@@ -24,17 +24,16 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="Name: " />
+        android:text="@string/supplier_name_text_view" />
 
     <EditText
         android:id="@+id/supplier_name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/supplier_name_text_view"
+        android:layout_toEndOf="@id/supplier_name_text_view"
         android:inputType="textPersonName"
         android:gravity="center"
-        android:layout_marginTop="50dp"
-        android:text="Name: "/>
+        android:layout_marginTop="50dp"/>
 
     <TextView
         android:id="@+id/supplier_telephone_text_view"
@@ -43,17 +42,16 @@
         android:layout_marginTop="20dp"
         android:layout_below="@id/supplier_name_text"
         android:gravity="center"
-        android:text="Telephone:" />
+        android:text="@string/supplier_telephone_text_view" />
 
     <EditText
         android:id="@+id/supplier_telephone_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/supplier_telephone_text_view"
+        android:layout_toEndOf="@+id/supplier_telephone_text_view"
         android:layout_below="@id/supplier_name_text"
         android:gravity="center"
-        android:inputType="phone"
-        android:text="Telephone: " />
+        android:inputType="phone" />
 
     <TextView
         android:id="@+id/supplier_address_text_view"
@@ -62,17 +60,16 @@
         android:layout_below="@id/supplier_telephone_text_view"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:text="Address:" />
+        android:text="@string/supplier_address_text_view" />
 
     <EditText
         android:id="@+id/supplier_address_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/supplier_address_text_view"
+        android:layout_toEndOf="@+id/supplier_address_text_view"
         android:layout_below="@id/supplier_telephone_text"
         android:inputType="textPersonName"
-        android:gravity="center"
-        android:text="adress: " />
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/supplier_city_text_view"
@@ -81,17 +78,16 @@
         android:layout_below="@id/supplier_address_text"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:text="City:" />
+        android:text="@string/supplier_city_text_view" />
 
     <EditText
         android:id="@+id/supplier_city_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/supplier_address_text"
-        android:layout_toRightOf="@id/supplier_city_text_view"
+        android:layout_toEndOf="@id/supplier_city_text_view"
         android:inputType="textPersonName"
-        android:gravity="center"
-        android:text="city: " />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/supplier_country_text_view"
@@ -109,8 +105,8 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/supplier_city_text_view"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@id/supplier_country_text_view"
-        android:text="Select Country"
+        android:layout_toEndOf="@id/supplier_country_text_view"
+        android:text="@string/country_spinner"
         android:visibility="visible" />
 
     <TextView
@@ -122,7 +118,7 @@
         android:layout_below="@id/supplier_country_text_view"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="Supplies List:" />
+        android:text="@string/supplies_list_text" />
 
     <TextView
         android:id="@+id/supplies_name_text_view"
@@ -131,17 +127,16 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/supplies_list_text"
         android:gravity="center"
-        android:text="Name: " />
+        android:text="@string/supplies_name_text_view" />
 
     <EditText
         android:id="@+id/supplies_name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/supplies_name_text_view"
+        android:layout_toEndOf="@id/supplies_name_text_view"
         android:inputType="textPersonName"
         android:layout_below="@id/supplies_list_text"
-        android:gravity="center"
-        android:text="Name: "/>
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/supplies_quantity_text_view"
@@ -150,14 +145,14 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/supplies_name_text"
         android:gravity="center"
-        android:text="Quantity: " />
+        android:text="@string/supplies_quantity_text_view" />
 
     <NumberPicker
         android:id="@+id/quanity_Picker"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_below="@id/supplies_name_text"
-        android:layout_toRightOf="@+id/supplies_quantity_text_view" />
+        android:layout_toEndOf="@+id/supplies_quantity_text_view" />
 
     <TextView
         android:id="@+id/supplies_price_text_view"
@@ -167,13 +162,13 @@
         android:layout_marginTop="30dp"
         android:layout_below="@id/supplies_quantity_text_view"
         android:gravity="center"
-        android:text="Price: " />
+        android:text="@string/supplies_price_text_view" />
 
     <EditText
         android:id="@+id/supplies_price_text"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/supplies_price_text_view"
+        android:layout_toEndOf="@id/supplies_price_text_view"
         android:inputType="numberDecimal"
         android:layout_below="@id/quanity_Picker"
         android:gravity="center"/>
@@ -186,7 +181,7 @@
         android:layout_below="@id/supplies_price_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="Add Customer" />
+        android:text="@string/add_customer_Btn" />
 
 
 </RelativeLayout>

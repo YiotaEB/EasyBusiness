@@ -17,7 +17,8 @@ import android.view.MenuItem;
 import com.easybusiness.eb_androidapp.R;
 
 public class AdminMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener  {
+
 
     DrawerLayout drawer;
     NavigationView navigationView;
@@ -89,24 +90,43 @@ public class AdminMainActivity extends AppCompatActivity
         AppCompatActivity currentActivity = this;
         switch (id){
 
-            /*case R.id.nav_home:
+            case R.id.admin_nav_home:
                 if (!(currentActivity instanceof AdminMainActivity)) {
                     Intent i = new Intent(this, AdminMainActivity.class);
                     startActivity(i);
                 }
                 break;
-            case R.id.nav_camera:
-                if (!(currentActivity instanceof Import)) {
-                    Intent i = new Intent(this, Import.class);
+            case R.id.admin_nav_inventory:
+                if (!(currentActivity instanceof ViewInventoryActivity)) {
+                    Intent i = new Intent(this, ViewInventoryActivity.class);
                     startActivity(i);
                 }
                 break;
-            case R.id.nav_gallery:
-                if (!(currentActivity instanceof Gallery)) {
-                    Intent i = new Intent(this, Gallery.class);
+            case R.id.admin_nav_sales:
+                if (!(currentActivity instanceof ViewSalesActivity)) {
+                    Intent i = new Intent(this, ViewSalesActivity.class);
                     startActivity(i);
                 }
-                break;*/
+                break;
+            case R.id.admin_nav_suppliers:
+                if (!(currentActivity instanceof ViewSuppliersActivity)) {
+                    Intent i = new Intent(this, ViewSuppliersActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.admin_nav_customers:
+                if (!(currentActivity instanceof ViewCustomersActivity)) {
+                    Intent i = new Intent(this, ViewCustomersActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.admin_nav_employees:
+                if (!(currentActivity instanceof ViewEmployeesActivity)) {
+                    Intent i = new Intent(this, ViewEmployeesActivity.class);
+                    startActivity(i);
+                }
+                break;
+
         }
 
 

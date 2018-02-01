@@ -1,15 +1,138 @@
 package com.easybusiness.eb_androidapp.UI;
 
+import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.easybusiness.eb_androidapp.R;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
-public class ViewSalesActivity extends AppCompatActivity {
+public class ViewSalesActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    DrawerLayout drawer;
+    NavigationView navigationView;
+    Toolbar toolbar=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_sales);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3)
+        });
+        graph.addSeries(series);
+
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        AppCompatActivity currentActivity = this;
+        switch (id){
+
+            case R.id.admin_nav_home:
+                if (!(currentActivity instanceof AdminMainActivity)) {
+                    Intent i = new Intent(this, AdminMainActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.admin_nav_inventory:
+                if (!(currentActivity instanceof ViewInventoryActivity)) {
+                    Intent i = new Intent(this, ViewInventoryActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.admin_nav_sales:
+                if (!(currentActivity instanceof ViewSalesActivity)) {
+                    Intent i = new Intent(this, ViewSalesActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.admin_nav_suppliers:
+                if (!(currentActivity instanceof ViewSuppliersActivity)) {
+                    Intent i = new Intent(this, ViewSuppliersActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.admin_nav_customers:
+                if (!(currentActivity instanceof ViewCustomersActivity)) {
+                    Intent i = new Intent(this, ViewCustomersActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.admin_nav_employees:
+                if (!(currentActivity instanceof ViewEmployeesActivity)) {
+                    Intent i = new Intent(this, ViewEmployeesActivity.class);
+                    startActivity(i);
+                }
+                break;
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
+

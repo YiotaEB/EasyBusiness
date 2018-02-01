@@ -37,6 +37,34 @@
     <string name="users_nav_delivery_stock">Delivery Stock</string>
     <string name="users_nav_customers">Customers</string>
 
+    <!-- Strings related to viewCustomers & addCustomers activity -->
+    <string name="customer_list_text">Customers:</string>
+    <string name="customer_name_text_view">Name:</string>
+    <string name="customer_name_text">Name:</string>
+    <string name="customer_telephone_text_view">Telephone:</string>
+    <string name="customer_telephone_text">Telephone:</string>
+    <string name="customer_address_text_view">Address:</string>
+    <string name="customer_address_text">adress:</string>
+    <string name="customer_city_text_view">City:</string>
+    <string name="customer_city_text">city:</string>
+    <string name="customer_country_text_view">Country:</string>
+    <string name="country_spinner">Select Country</string>
+    <string name="customer_products_text_view">Products:</string>
+    <string name="add_customer_Btn">Add Customer</string>
+
+    <!-- Strings related to view suppliers activity -->
+    <string name="supplier_name_text_view">Name:</string>
+    <string name="supplier_name_text">Name:</string>
+    <string name="supplier_telephone_text_view">Telephone:</string>
+    <string name="supplier_telephone_text">Telephone:</string>
+    <string name="supplier_address_text_view">Address:</string>
+    <string name="supplier_city_text_view">City:</string>
+    <string name="supplies_list_text">Supplies List:</string>
+    <string name="supplies_name_text_view">Name:</string>
+    <string name="supplies_quantity_text_view">Quantity:</string>
+    <string name="supplies_price_text_view">Price:</string>
+    <string name="add_supplier_Btn">Add Customer</string>
+
 
     <string-array name="randomItems">
         <item>1</item>

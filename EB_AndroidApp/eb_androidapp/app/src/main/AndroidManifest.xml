@@ -42,8 +42,8 @@
         <activity android:name=".UI.InvoiceActivity" />
         <activity android:name=".UI.ViewCustomersActivity" />
         <activity android:name=".UI.ViewSuppliersActivity" />
-        <activity android:name=".UI.AddCustomersAcitvity" />
-        <activity android:name=".UI.AddSuppliersAcitvity" />
+        <activity android:name=".UI.AddCustomersActivity" />
+        <activity android:name=".UI.AddSuppliersActivity" />
         <activity android:name=".UI.ViewEmployeesActivity" />
         <activity android:name=".UI.AddEmployeesActivity" />
         <activity android:name=".UI.ViewSalesActivity" />
