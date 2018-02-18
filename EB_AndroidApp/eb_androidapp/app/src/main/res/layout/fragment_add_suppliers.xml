@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AddSuppliersFragment">
+
+    <TextView
+        android:id="@+id/suppliers_list_text"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="Supplier List:" />
+
+    <TextView
+        android:id="@+id/supplier_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/supplier_name_text_view" />
+
+    <EditText
+        android:id="@+id/supplier_name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/supplier_name_text_view"
+        android:inputType="textPersonName"
+        android:gravity="center"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/supplier_telephone_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/supplier_name_text"
+        android:gravity="center"
+        android:text="@string/supplier_telephone_text_view" />
+
+    <EditText
+        android:id="@+id/supplier_telephone_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/supplier_telephone_text_view"
+        android:layout_below="@id/supplier_name_text"
+        android:gravity="center"
+        android:inputType="phone" />
+
+    <TextView
+        android:id="@+id/supplier_address_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/supplier_telephone_text_view"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="@string/supplier_address_text_view" />
+
+    <EditText
+        android:id="@+id/supplier_address_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/supplier_address_text_view"
+        android:layout_below="@id/supplier_telephone_text"
+        android:inputType="textPersonName"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/supplier_city_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/supplier_address_text"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="@string/supplier_city_text_view" />
+
+    <EditText
+        android:id="@+id/supplier_city_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/supplier_address_text"
+        android:layout_toEndOf="@id/supplier_city_text_view"
+        android:inputType="textPersonName"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/supplier_country_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/supplier_city_text"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Country:" />
+
+    <Spinner
+        android:id="@+id/country_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/supplier_city_text_view"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/supplier_country_text_view"
+        android:text="@string/country_spinner"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/supplies_list_text"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/supplier_country_text_view"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/supplies_list_text" />
+
+    <TextView
+        android:id="@+id/supplies_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/supplies_list_text"
+        android:gravity="center"
+        android:text="@string/supplies_name_text_view" />
+
+    <EditText
+        android:id="@+id/supplies_name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/supplies_name_text_view"
+        android:inputType="textPersonName"
+        android:layout_below="@id/supplies_list_text"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/supplies_quantity_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/supplies_name_text"
+        android:gravity="center"
+        android:text="@string/supplies_quantity_text_view" />
+
+    <NumberPicker
+        android:id="@+id/quanity_Picker"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/supplies_name_text"
+        android:layout_toEndOf="@+id/supplies_quantity_text_view" />
+
+    <TextView
+        android:id="@+id/supplies_price_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/supplies_quantity_text_view"
+        android:gravity="center"
+        android:text="@string/supplies_price_text_view" />
+
+    <EditText
+        android:id="@+id/supplies_price_text"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/supplies_price_text_view"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/quanity_Picker"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/add_customer_Btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_below="@id/supplies_price_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/add_customer_Btn" />
+
+
+</RelativeLayout>

@@ -1,0 +1,25 @@
+
+
+
+DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+
+dataset.setValue(80, "Marks", "Value 1");
+dataset.setValue(70, "Marks", "Value 2");
+dataset.setValue(75, "Marks", "Value 3");
+
+JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
+
+CategoryPlot p = chart.getCategoryPlot();
+p.setRangeGridlinePaint(Color.black);
+
+//Panel (same window):
+ChartPanel chartPanel = new ChartPanel(chart);
+statistics.setLayout(new java.awt.BorderLayout());
+statistics.add(chartPanel,BorderLayout.CENTER);
+statistics.validate();
+
+//Frame (new window):
+ChartFrame frame = new ChartFrame("Bar Chart Report", chart);
+frame.setVisible(true);
+frame.setSize(400, 350);

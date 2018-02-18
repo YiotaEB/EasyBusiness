@@ -75,4 +75,10 @@
         <item>6</item>
     </string-array>
 
+    <string name="baseURL">http://www.panickapps.com/eb/API</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

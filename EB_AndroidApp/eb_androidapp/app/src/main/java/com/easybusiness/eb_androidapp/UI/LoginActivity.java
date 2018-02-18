@@ -1,5 +1,4 @@
 package com.easybusiness.eb_androidapp.UI;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -30,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.easybusiness.eb_androidapp.Model.AppMode;
 import com.easybusiness.eb_androidapp.R;
 
 import java.util.ArrayList;
@@ -191,7 +191,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
-            Intent i = new Intent(LoginActivity.this, AdminMainActivity.class);
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            i.putExtra(MainActivity.APP_MODE_STRING, AppMode.MODE_ADMIN);                           //TODO Select mode according to user logged in.
             startActivity(i);
             finish();
         }
@@ -199,12 +200,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        //return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        //return password.length() > 4;
+        return true;
     }
 
     /**
@@ -354,4 +357,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-

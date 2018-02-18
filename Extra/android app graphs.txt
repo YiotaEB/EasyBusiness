@@ -1,0 +1,22 @@
+Andoid Studio Graphs
+
+Lib: (GradleScripts->build.gradle(app)->dependencies)
+compile 'com.jjoe64:graphview:4.2.1'
+
+.java 
+
+ GraphView graph = (GraphView) findViewById(R.id.graph);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3)
+        });
+        graph.addSeries(series);
+
+
+.xml
+
+<com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph" />
