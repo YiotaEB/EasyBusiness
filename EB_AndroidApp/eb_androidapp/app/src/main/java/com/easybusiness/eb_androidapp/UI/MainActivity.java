@@ -1,6 +1,8 @@
 package com.easybusiness.eb_androidapp.UI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,14 +14,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.easybusiness.eb_androidapp.Model.AppMode;
 import com.easybusiness.eb_androidapp.R;
+import com.easybusiness.eb_androidapp.UI.Fragments.AddCustomersFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.AddEmployeesFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.AddSuppliersFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.AdminHomeFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewCustomersFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewDeliveryRoutesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewInventoryFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewProductionFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewRoutesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSalesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSuppliersFragment;
 
@@ -27,22 +36,43 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String APP_MODE_STRING = "APP_MODE";
+    public static final String PREFERENCE_USERNAME = "preference-username";
+    public static final String PREFERENCE_FIRSTNAME = "preference-firstname";
+    public static final String PREFERENCE_LASTNAME = "preference-lastname";
+    public static final String PREFERENCE_SESSIONID = "preference-sessionID";
+    public static final String PREFERENCE_USERLEVELID = "preference-userelevelID";
 
-    private Toolbar toolBar;
+    private Toolbar toolbar;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
     private AppMode appMode;
 
+    //Fragments:
+    public static AddCustomersFragment addCustomersFragment = null;
+    public static  AddEmployeesFragment addEmployeesFragment = null;
+    public static  AddSuppliersFragment addSuppliersFragment = null;
+    public static  AdminHomeFragment adminHomeFragment = null;
+    public static  ViewCustomersFragment viewCustomersFragment = null;
+    public static  ViewDeliveryRoutesFragment viewDeliveryRoutesFragment = null;
+    public static  ViewEmployeesFragment viewEmployeesFragment = null;
+    public static  ViewInventoryFragment viewInventoryFragment = null;
+    public static  ViewProductionFragment viewProductionFragment = null;
+    public static  ViewRoutesFragment viewRoutesFragment = null;
+    public static  ViewSalesFragment viewSalesFragment = null;
+    public static  ViewSuppliersFragment viewSuppliersFragment = null;
+
+    private String currentUserFirstname;
+    private String currentUserLastname;
+    private String currentUserLevelID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Get the activity mode.
         appMode = (AppMode) getIntent().getSerializableExtra(APP_MODE_STRING);
 
-        //Set layouts and menu according to application mode.
         switch (appMode) {
             case MODE_USER:
                 setContentView(R.layout.activity_main_user);
@@ -56,15 +86,26 @@ public class MainActivity extends AppCompatActivity
                 throw new RuntimeException("Invalid application mode selected");
         }
 
-
-        //Set layouts and menus according to the appliclation mode.
-        toolBar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolBar);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        //----------------------
+        View navHeader = navigationView.getHeaderView(0);
+        TextView nameTextView = navHeader.findViewById(R.id.drawer_name);
+        TextView userLevelTextView = navHeader.findViewById(R.id.drawer_userlevel);
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        currentUserFirstname = sharedPreferences.getString(PREFERENCE_FIRSTNAME, "None");
+        currentUserLastname = sharedPreferences.getString(PREFERENCE_LASTNAME, "None");
+        currentUserLevelID = sharedPreferences.getString(PREFERENCE_USERLEVELID, "-1");
+        String nameString = currentUserFirstname + " " + currentUserLastname;
+        nameTextView.setText(nameString);
+        userLevelTextView.setText(currentUserLevelID); //TODO Actual name of user level.
 
         showDefaultFragment();
 
@@ -78,14 +119,10 @@ public class MainActivity extends AppCompatActivity
         else {
             FragmentManager manager = getSupportFragmentManager();
             if (manager.getBackStackEntryCount() > 0) {
-                super.onBackPressed();
-                Fragment currentFragment = manager.findFragmentById(R.id.frame);
+                FragmentManager fm = getSupportFragmentManager();
+                fm.popBackStack();
 
-                //TODO: Is it needed?
-//                if (currentFragment.getClass() == AdminHomeFragment.class /*|| currentFragment.getClass() == UserHomeFragment.class*/)
-//                    navigationView.getMenu().getItem(0).setChecked(true);
-//                else if (currentFragment.getClass() == AddEmployeesFragment.class)
-//                    navigationView.getMenu().getItem(1).setChecked(true);
+                //setMenuItemChecked(newFragment);
 
             }
             else super.onBackPressed();
@@ -121,56 +158,91 @@ public class MainActivity extends AppCompatActivity
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame);
         Fragment newFragment = null;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
 
         switch (id) {
 
             //HOME:
             case R.id.admin_nav_home:
                 setTitle(AdminHomeFragment.TITLE);
-                newFragment = new AdminHomeFragment();
+                if (adminHomeFragment == null) {
+                    newFragment = new AdminHomeFragment();
+                }
+                else {
+                    newFragment = adminHomeFragment;
+                }
                 fragmentTransaction.replace(R.id.frame, newFragment, AdminHomeFragment.TAG);
                 break;
 
             //INVENTORY:
             case R.id.admin_nav_inventory:
                 setTitle(ViewInventoryFragment.TITLE);
-                newFragment = new ViewInventoryFragment();
+                if (viewInventoryFragment == null) {
+                    newFragment = new ViewInventoryFragment();
+                }
+                else {
+                    newFragment = viewInventoryFragment;
+                }
                 fragmentTransaction.replace(R.id.frame, newFragment, ViewInventoryFragment.TAG);
                 break;
 
             //SALES:
             case R.id.admin_nav_sales:
                 setTitle(ViewSalesFragment.TITLE);
-                newFragment = new ViewSalesFragment();
+                if (viewSalesFragment == null) {
+                    newFragment = new ViewSalesFragment();
+                }
+                else {
+                    newFragment = viewSalesFragment;
+                }
                 fragmentTransaction.replace(R.id.frame, newFragment, ViewSalesFragment.TAG);
                 break;
 
             //PRODUCTION:
             case R.id.admin_nav_production:
                 setTitle(ViewProductionFragment.TITLE);
-                newFragment = new ViewProductionFragment();
+                if (viewProductionFragment == null) {
+                    newFragment = new ViewProductionFragment();
+                }
+                else {
+                    newFragment = viewProductionFragment;
+                }
                 fragmentTransaction.replace(R.id.frame, newFragment, ViewProductionFragment.TAG);
                 break;
 
             //SUPPLIERS:
             case R.id.admin_nav_suppliers:
                 setTitle(ViewSuppliersFragment.TITLE);
-                newFragment = new ViewSuppliersFragment();
+                if (viewSuppliersFragment == null) {
+                    newFragment = new ViewSuppliersFragment();
+                }
+                else {
+                    newFragment = viewSuppliersFragment;
+                }
                 fragmentTransaction.replace(R.id.frame, newFragment, ViewSuppliersFragment.TAG);
                 break;
 
             //CUSTOMERS:
             case R.id.admin_nav_customers:
                 setTitle(ViewCustomersFragment.TITLE);
-                newFragment = new ViewCustomersFragment();
+                if (viewCustomersFragment == null) {
+                    newFragment = new ViewCustomersFragment();
+                }
+                else {
+                    newFragment = viewCustomersFragment;
+                }
                 fragmentTransaction.replace(R.id.frame, newFragment, ViewCustomersFragment.TAG);
                 break;
 
             //EMPLOYEES:
             case R.id.admin_nav_employees:
                 setTitle(ViewEmployeesFragment.TITLE);
-                newFragment = new ViewEmployeesFragment();
+                if (viewEmployeesFragment == null) {
+                    newFragment = new ViewEmployeesFragment();
+                }
+                else {
+                    newFragment = viewEmployeesFragment;
+                }
                 fragmentTransaction.replace(R.id.frame, newFragment, ViewEmployeesFragment.TAG);
                 break;
 
@@ -180,6 +252,8 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.addToBackStack(newFragment.getTag());
             fragmentTransaction.commit();
         }
+
+        setMenuItemChecked(newFragment);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -194,5 +268,22 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
         navigationView.getMenu().getItem(0).setChecked(true);
     }
+
+    public void setMenuItemChecked(Fragment fragment) {
+        switch (appMode) {
+            case MODE_ADMIN:
+                break;
+            case MODE_USER:
+                break;
+        }
+    }
+
+    //private Fragment getLastFragment() {
+        //int index = getFragmentManager().getBackStackEntryCount() - 1;
+       // FragmentManager.BackStackEntry backEntry = getFragmentManager().getBackStackEntryAt(index);
+        //String tag = backEntry.getName();
+       // Fragment fragment = getFragmentManager().findFragmentByTag(tag);
+       // return fragment;
+   // }
 
 }

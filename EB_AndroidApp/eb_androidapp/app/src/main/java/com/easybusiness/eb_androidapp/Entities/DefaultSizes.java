@@ -17,13 +17,16 @@
 package com.easybusiness.eb_androidapp.Entities;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 
-public class DefaultSizes implements Serializable {
+public class Defaultsizes implements Serializable {
 
 
 	//-------------------- Supporting Finals --------------------
@@ -41,7 +44,7 @@ public class DefaultSizes implements Serializable {
 
 	//-------------------- Constructor --------------------
 
-    public DefaultSizes(
+    public Defaultsizes(
 		int ID, 
 		String Name, 
 		int UnitTypeID
@@ -93,13 +96,13 @@ public class DefaultSizes implements Serializable {
     }
     
     /**
-     * Converts an array of DefaultSizes objects to a JSON Array.
-     * @param defaultSizes_array
+     * Converts an array of Defaultsizes objects to a JSON Array.
+     * @param defaultsizes_array
      * @return String
      */
-    public static String toJSONArray(DefaultSizes[] defaultSizes_array) {
+    public static String toJSONArray(Defaultsizes [] defaultsizes_array) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final DefaultSizes i : defaultSizes_array) {
+        for (final Defaultsizes i : defaultsizes_array) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -109,13 +112,13 @@ public class DefaultSizes implements Serializable {
     }
     
     /**
-     * Converts an ArrayList of DefaultSizes objects to a JSON Array.
-     * @param defaultSizes_arraylist ArrayList of DefaultSizes to convert to JSON.
+     * Converts an ArrayList of Defaultsizes objects to a JSON Array.
+     * @param defaultsizes_arraylist ArrayList of Defaultsizes to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(ArrayList<DefaultSizes> defaultSizes_arraylist) {
+    public static String toJSONArray(ArrayList<Defaultsizes> defaultsizes_arraylist) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final DefaultSizes i : defaultSizes_arraylist) {
+        for (final Defaultsizes i : defaultsizes_arraylist) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -125,13 +128,13 @@ public class DefaultSizes implements Serializable {
     }
     
     /**
-     * Converts an Vector of DefaultSizes objects to a JSON Array.
-     * @param defaultSizes_vector Vector of DefaultSizes to convert to JSON.
+     * Converts an Vector of Defaultsizes objects to a JSON Array.
+     * @param defaultsizes_vector Vector of Defaultsizes to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(Vector<DefaultSizes> defaultSizes_vector) {
+    public static String toJSONArray(Vector<Defaultsizes> defaultsizes_vector) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final DefaultSizes i : defaultSizes_vector) {
+        for (final Defaultsizes i : defaultsizes_vector) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -141,13 +144,13 @@ public class DefaultSizes implements Serializable {
     }
     
     /**
-     * Converts a List of DefaultSizes objects to a JSON Array.
-     * @param defaultSizes_list List of DefaultSizes to convert to JSON.
+     * Converts a List of Defaultsizes objects to a JSON Array.
+     * @param defaultsizes_list List of Defaultsizes to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(List<DefaultSizes> defaultSizes_list) {
+    public static String toJSONArray(List<Defaultsizes> defaultsizes_list) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final DefaultSizes i : defaultSizes_list) {
+        for (final Defaultsizes i : defaultsizes_list) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }

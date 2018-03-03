@@ -9,9 +9,9 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -38,19 +38,15 @@
     <string name="users_nav_customers">Customers</string>
 
     <!-- Strings related to viewCustomers & addCustomers activity -->
-    <string name="customer_list_text">Customers:</string>
-    <string name="customer_name_text_view">Name:</string>
-    <string name="customer_name_text">Name:</string>
-    <string name="customer_telephone_text_view">Telephone:</string>
-    <string name="customer_telephone_text">Telephone:</string>
-    <string name="customer_address_text_view">Address:</string>
-    <string name="customer_address_text">adress:</string>
-    <string name="customer_city_text_view">City:</string>
-    <string name="customer_city_text">city:</string>
-    <string name="customer_country_text_view">Country:</string>
-    <string name="country_spinner">Select Country</string>
-    <string name="customer_products_text_view">Products:</string>
-    <string name="add_customer_Btn">Add Customer</string>
+    <string name="customer_list_text">Customers</string>
+    <string name="Name">Name</string>
+    <string name="Telephone">Telephone</string>
+    <string name="Address">Address</string>
+    <string name="City">City</string>
+    <string name="Country">Country:</string>
+    <string name="Select_Country">Select Country</string>
+    <string name="Products">Products</string>
+    <string name="Add_Customer">Add Customer</string>
 
     <!-- Strings related to view suppliers activity -->
     <string name="supplier_name_text_view">Name:</string>
@@ -80,5 +76,21 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="Select_Products">Select Products</string>
+    <string name="Position">Position</string>
+    <string name="Select_Position">Select Position</string>
+    <string name="Part_Time">Part Time</string>
+    <string name="Full_Time">Full Time</string>
+    <string name="Add_Employee">Add Employee</string>
+    <string name="Supplies">Supplies</string>
+    <string name="Add_Supplier">Add Supplier</string>
+    <string name="retry">Retry</string>
+    <string name="abort">Abort</string>
+    <string name="connection_error">Connection error</string>
+    <string name="connection_error_message">A connection error has occured</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="unknown_error_message">An unknown error has occured while getting data from the server.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="exit">Exit</string>
 
 </resources>

@@ -8,7 +8,7 @@
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewCustomersFragment">
 
     <TextView
-        android:id="@+id/customer_list_text"
+        android:id="@+id/customer_fragment_title"
         style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
         android:layout_width="wrap_content"
         android:layout_height="43dp"

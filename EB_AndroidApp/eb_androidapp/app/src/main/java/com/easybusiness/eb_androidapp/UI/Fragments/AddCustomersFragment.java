@@ -15,7 +15,7 @@ import com.easybusiness.eb_androidapp.R;
 public class AddCustomersFragment extends Fragment {
 
     public static final String TAG = "AddCustomersFragment";
-    public static final String TITLE = "Add Customers";
+    public static final String TITLE = "Add Customer";
 
 
     public AddCustomersFragment() {

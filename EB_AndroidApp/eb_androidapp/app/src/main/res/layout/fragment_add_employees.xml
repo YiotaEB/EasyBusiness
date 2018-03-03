@@ -7,157 +7,118 @@
     android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AddEmployeesFragment">
 
-    <TextView
-        android:id="@+id/employees_list_text"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:text="Employees:" />
-
-    <TextView
-        android:id="@+id/employees_name_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/employees_list_text"
-        android:gravity="center"
-        android:text="Name: " />
-
-    <EditText
-        android:id="@+id/employees_name_text"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/employees_list_text"
-        android:layout_toRightOf="@id/employees_name_text_view"
-        android:inputType="textPersonName"
-        android:gravity="center"
-        android:text="Name: "/>
+        android:id="@+id/employees_name_layout"
+        >
 
-    <TextView
-        android:id="@+id/employees_telephone_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/employees_name_text"
-        android:gravity="center"
-        android:text="Telephone:" />
+        <EditText
+            android:id="@+id/employees_name_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Name"/>
 
-    <EditText
-        android:id="@+id/employees_telephone_text"
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/employees_telephone_text_view"
-        android:layout_below="@id/employees_name_text"
-        android:inputType="number"
-        android:gravity="center"
-        android:text="Telephone: " />
+        android:id="@+id/employees_address_layout"
+        android:layout_below="@+id/employees_name_layout"
+        >
 
-    <TextView
-        android:id="@+id/employees_address_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/employees_telephone_text_view"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Address:" />
+        <EditText
+            android:id="@+id/employees_address_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Address"/>
 
-    <EditText
-        android:id="@+id/employees_address_text"
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/employees_address_text_view"
-        android:layout_below="@id/employees_telephone_text"
-        android:inputType="textPersonName"
-        android:gravity="center"
-        android:text="adress: " />
+        android:id="@+id/employees_telephone_layout"
+        android:layout_below="@+id/employees_address_layout"
+        >
 
-    <TextView
-        android:id="@+id/employees_city_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/employees_address_text"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="City:" />
+        <EditText
+            android:id="@+id/employees_telephone_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Telephone"/>
 
-    <EditText
-        android:id="@+id/employees_city_text"
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/employees_address_text"
-        android:layout_toRightOf="@id/employees_city_text_view"
-        android:inputType="textPersonName"
-        android:gravity="center"
-        android:text="city: " />
+        android:id="@+id/employees_city_layout"
+        android:layout_below="@+id/employees_telephone_layout"
+        >
 
-    <TextView
-        android:id="@+id/employees_country_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/employees_city_text"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Country:" />
+        <EditText
+            android:id="@+id/employees_city_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/City"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <Spinner
         android:id="@+id/country_spinner"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/employees_city_text_view"
+        android:layout_below="@id/employees_city_layout"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@id/employees_country_text_view"
-        android:text="Select Country"
-        android:visibility="visible" />
-
-    <TextView
-        android:id="@+id/employees_position_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/employees_city_text"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Position:" />
+        android:text="@string/Select_Country" />
 
     <Spinner
         android:id="@+id/position_spinner"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/employees_country_text_view"
+        android:layout_below="@+id/country_spinner"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@id/employees_position_text_view"
-        android:text="Select Country"
-        android:visibility="visible" />
+        android:text="@string/Select_Position" />
 
-    <RadioButton
-        android:id="@+id/part_time_radio_button"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/position_spinner"
-        android:text="Part Time"
-        android:layout_marginLeft="80dp"/>
-
-    <RadioButton
-        android:id="@+id/full_time_radio_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/time_radiogroup"
         android:layout_below="@id/position_spinner"
-        android:layout_toRightOf="@id/part_time_radio_button"
-        android:layout_marginLeft="20dp"
-        android:text="Full Time" />
+        android:orientation="horizontal"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:layout_marginTop="20dp"
+        >
+
+        <RadioButton
+            android:id="@+id/part_time_radio_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/Part_Time"/>
+
+        <RadioButton
+            android:id="@+id/full_time_radio_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/Full_Time" />
+
+    </RadioGroup>
+
+
 
     <Button
         android:id="@+id/add_employees_Btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:layout_below="@id/part_time_radio_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Add Employee" />
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:layout_below="@id/time_radiogroup"
+        android:layout_marginTop="25dp"
+        android:text="@string/Add_Employee" />
 
 </RelativeLayout>

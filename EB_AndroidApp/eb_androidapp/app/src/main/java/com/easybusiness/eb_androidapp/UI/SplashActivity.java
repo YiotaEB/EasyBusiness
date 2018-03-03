@@ -13,6 +13,8 @@ public class SplashActivity extends AppCompatActivity {
 
     public static final int SPLASH_DISPLAY_LENGTH = 1000;
 
+    //TODO: This activity should check if the user is already logged in.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,6 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                //Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();

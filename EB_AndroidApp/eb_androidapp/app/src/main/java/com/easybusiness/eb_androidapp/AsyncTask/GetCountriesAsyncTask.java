@@ -29,9 +29,6 @@ Uri.Builder builder = new Uri.Builder()
 
 public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
 
-    private InputStream inputStream;
-    private HttpURLConnection urlConnection;
-    private byte[] outputBytes;
     private String query;
     private String responseData;
     private Activity activity;
@@ -49,10 +46,10 @@ public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
         if (query == null) query = "";
 
         try {
-            URL url = new URL(AsyncTaskTools.encodeForAPI(activity.getString(R.string.baseURL), "Countries", "GetMultiple"));
-            urlConnection = (HttpURLConnection) url.openConnection();
+            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Countries", "GetMultiple"));
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
-            outputBytes = query.getBytes("UTF-8");
+            byte[] outputBytes = query.getBytes("UTF-8");
             urlConnection.setRequestMethod("POST");
             urlConnection.connect();
             OutputStream os = urlConnection.getOutputStream();
@@ -63,8 +60,8 @@ public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
 
             //OK
             if (statusCode == HttpURLConnection.HTTP_OK) {
-                inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                responseData = AsyncTaskTools.convertStreamToString(inputStream);
+                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                responseData = AsyncTasks.convertStreamToString(inputStream);
 
                 //TODO: Change JSON Parsing
                 JSONObject outterObject = new JSONObject(responseData);
@@ -72,7 +69,7 @@ public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
                 final String title = outterObject.getString("Title");
                 final String message = outterObject.getString("Message");
 
-                if (status.equals(AsyncTaskTools.RESPONSE_OK)) {
+                if (status.equals(AsyncTasks.RESPONSE_OK)) {
                     JSONArray dataArray = outterObject.getJSONArray("Data");
                     responseData = "";
                     for (int i = 0; i < dataArray.length(); i++) {
