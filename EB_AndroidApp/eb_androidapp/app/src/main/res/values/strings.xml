@@ -92,5 +92,9 @@
     <string name="unknown_error_message">An unknown error has occured while getting data from the server.</string>
     <string name="dismiss">Dismiss</string>
     <string name="exit">Exit</string>
+    <string name="log_out">Log out</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

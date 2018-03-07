@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.easybusiness.eb_androidapp.Entities.Products;
+import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
-import com.easybusiness.eb_androidapp.UI.Adapters.ProductAdapter;
+import com.easybusiness.eb_androidapp.UI.Adapters.EmployeeAdapter;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeesFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,15 +32,15 @@ Uri.Builder builder = new Uri.Builder()
             String query = builder.build().getEncodedQuery();
  */
 
-public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
+public class GetEmployeeAsyncTask extends AsyncTask<Void,Void,Void> {
 
     private String query;
     private String responseData;
     private Activity activity;
     private View view;
-    ArrayList<Products> products = null;
+    ArrayList<Users> employees = null;
 
-    public GetProductsAsyncTask(String query, Activity activity, View view) {
+    public GetEmployeeAsyncTask(String query, Activity activity, View view) {
         this.query = query;
         this.activity = activity;
         this.view = view;
@@ -53,7 +52,7 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
         if (query == null) query = "";
 
         try {
-            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Products", "GetMultiple"));
+            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Users", "GetMultiple"));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
             byte[] outputBytes = query.getBytes("UTF-8");
@@ -67,6 +66,7 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
 
             //OK
             if (statusCode == HttpURLConnection.HTTP_OK) {
+                System.out.println("okay");
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 responseData = AsyncTasks.convertStreamToString(inputStream);
 
@@ -76,26 +76,30 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
                 final String message = outterObject.getString("Message");
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                    products = new ArrayList<>();
+                    employees = new ArrayList<>();
                     JSONArray dataArray = outterObject.getJSONArray("Data");
                     for (int i = 0; i < dataArray.length(); i++) {
                         JSONObject jsonObject = dataArray.getJSONObject(i);
-                        String name = jsonObject.getString("Name");
-                        int quantityInStock = jsonObject.getInt("QuantityInStock");
-                        Products p = new Products(0, name, 0, quantityInStock, 0, 0, 0);
-                        products.add(p);
+                        String firstName = jsonObject.getString("Firstname");
+                        String lastName = jsonObject.getString("Lastname");
+                        String telephone = jsonObject.getString("Telephone");
+                        Users p = new Users(0, "","", 0, firstName, lastName, 0,"", "",telephone, 0);
+                        employees.add(p);
                     }
 
-                    final ListView productsListview = activity.findViewById(R.id.productsList);
-                    String [] items = new String[products.size()];
-                    for (int i = 0; i < items.length; i++)
-                        items[i] = products.get(i).getName();
-                    final ProductAdapter productAdapter = new ProductAdapter(activity, products);
+                    final ListView employeesListview = activity.findViewById(R.id.employees_list_view);
+//                    String [] items = new String[employees.size()];
+//                    for (int i = 0; i < items.length; i++)
+//                        items[i] = employees.get(i).getFirstname();
+                    final EmployeeAdapter employeeAdapter = new EmployeeAdapter(activity, employees);
+                    ViewEmployeesFragment.allEmployeesAdapter = (EmployeeAdapter) employeesListview.getAdapter();
+
+                    System.out.println("ok");
 
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            productsListview.setAdapter(productAdapter);
+                            employeesListview.setAdapter(employeeAdapter);
                         }
                     });
 

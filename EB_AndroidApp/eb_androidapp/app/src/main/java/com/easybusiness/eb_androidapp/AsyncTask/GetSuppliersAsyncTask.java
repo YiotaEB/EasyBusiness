@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.easybusiness.eb_androidapp.Entities.Products;
+import com.easybusiness.eb_androidapp.Entities.Suppliers;
 import com.easybusiness.eb_androidapp.R;
-import com.easybusiness.eb_androidapp.UI.Adapters.ProductAdapter;
+import com.easybusiness.eb_androidapp.UI.Adapters.SupplierAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,15 +31,15 @@ Uri.Builder builder = new Uri.Builder()
             String query = builder.build().getEncodedQuery();
  */
 
-public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
+public class GetSuppliersAsyncTask extends AsyncTask<Void,Void,Void> {
 
     private String query;
     private String responseData;
     private Activity activity;
     private View view;
-    ArrayList<Products> products = null;
+    ArrayList<Suppliers> suppliers= null;
 
-    public GetProductsAsyncTask(String query, Activity activity, View view) {
+    public GetSuppliersAsyncTask(String query, Activity activity, View view) {
         this.query = query;
         this.activity = activity;
         this.view = view;
@@ -53,7 +51,7 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
         if (query == null) query = "";
 
         try {
-            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Products", "GetMultiple"));
+            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Suppliers", "GetMultiple"));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
             byte[] outputBytes = query.getBytes("UTF-8");
@@ -76,26 +74,26 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
                 final String message = outterObject.getString("Message");
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                    products = new ArrayList<>();
+                    suppliers = new ArrayList<>();
                     JSONArray dataArray = outterObject.getJSONArray("Data");
                     for (int i = 0; i < dataArray.length(); i++) {
                         JSONObject jsonObject = dataArray.getJSONObject(i);
                         String name = jsonObject.getString("Name");
-                        int quantityInStock = jsonObject.getInt("QuantityInStock");
-                        Products p = new Products(0, name, 0, quantityInStock, 0, 0, 0);
-                        products.add(p);
+                        String telephone = jsonObject.getString("Telephone");
+                        Suppliers p = new Suppliers(0, name, 0, " ", telephone, "");
+                        suppliers.add(p);
                     }
 
-                    final ListView productsListview = activity.findViewById(R.id.productsList);
-                    String [] items = new String[products.size()];
+                    final ListView supplierListview = activity.findViewById(R.id.supplier_List_View);
+                    String [] items = new String[suppliers.size()];
                     for (int i = 0; i < items.length; i++)
-                        items[i] = products.get(i).getName();
-                    final ProductAdapter productAdapter = new ProductAdapter(activity, products);
+                        items[i] = suppliers.get(i).getName();
+                    final SupplierAdapter supplierAdapter = new SupplierAdapter(activity, suppliers);
 
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            productsListview.setAdapter(productAdapter);
+                            supplierListview.setAdapter(supplierAdapter);
                         }
                     });
 

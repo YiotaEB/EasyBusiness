@@ -38,13 +38,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
+        android:background="@color/lightGray"
         android:layout_below="@id/add_employees_btn"/>
 
     <ListView
         android:id="@+id/employees_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/randomItems"
         android:layout_below="@id/employees_search_view"/>
 
 </RelativeLayout>

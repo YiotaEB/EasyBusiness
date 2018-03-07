@@ -1,5 +1,6 @@
 package com.easybusiness.eb_androidapp.UI;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.easybusiness.eb_androidapp.AsyncTask.LogoutAsyncTask;
 import com.easybusiness.eb_androidapp.Model.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddCustomersFragment;
@@ -144,6 +146,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 return true;
 
+            //logs the user out from the system
+            case R.id.action_logout:
+                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                String sessionId = sharedPreferences.getString(PREFERENCE_SESSIONID, "0");
+                final LogoutAsyncTask logoutAsyncTask = new LogoutAsyncTask(this,findViewById(R.id.content_main),sessionId );
+                logoutAsyncTask.execute();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

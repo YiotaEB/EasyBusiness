@@ -1,7 +1,9 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.easybusiness.eb_androidapp.AsyncTask.GetCountriesAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.GetCustomersAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliersAsyncTask;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
@@ -33,9 +37,9 @@ public class ViewSuppliersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_suppliers, container, false);
 
-        Uri.Builder builder = new Uri.Builder().appendQueryParameter("Limit", String.valueOf(3));
-        String query = builder.build().getEncodedQuery();
-        new GetCountriesAsyncTask(query, getActivity(), v).execute();
+//        Uri.Builder builder = new Uri.Builder().appendQueryParameter("Limit", String.valueOf(3));
+//        String query = builder.build().getEncodedQuery();
+//        new GetCountriesAsyncTask(query, getActivity(), v).execute();
 
         Button addSupplierBtn = v.findViewById(R.id.add_supplier_btn);
         addSupplierBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +55,14 @@ public class ViewSuppliersFragment extends Fragment {
                 ((MainActivity) getActivity()).setMenuItemChecked(newFragment);
             }
         });
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
+
+        Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
+        String query = builder.build().getEncodedQuery();
+
+        new GetSuppliersAsyncTask(query, getActivity(), v).execute();
 
         return v;
     }

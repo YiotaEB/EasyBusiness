@@ -46,6 +46,7 @@
                 >
 
                     <EditText
+                        android:text="panayiota"
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                         />
 
                     <EditText
+                        android:text="1234"
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
