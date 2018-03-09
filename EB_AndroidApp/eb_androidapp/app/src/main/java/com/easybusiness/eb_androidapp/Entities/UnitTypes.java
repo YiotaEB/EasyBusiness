@@ -17,16 +17,13 @@
 package com.easybusiness.eb_androidapp.Entities;
 
 import java.io.Serializable;
-import java.sql.Time;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 
-public class Unittypes implements Serializable {
+public class UnitTypes implements Serializable {
 
 
 	//-------------------- Supporting Finals --------------------
@@ -43,7 +40,7 @@ public class Unittypes implements Serializable {
 
 	//-------------------- Constructor --------------------
 
-    public Unittypes(
+    public UnitTypes(
 		int ID, 
 		String Name
 		) {
@@ -83,13 +80,13 @@ public class Unittypes implements Serializable {
     }
     
     /**
-     * Converts an array of Unittypes objects to a JSON Array.
-     * @param unittypes_array
+     * Converts an array of UnitTypes objects to a JSON Array.
+     * @param unitTypes_array
      * @return String
      */
-    public static String toJSONArray(Unittypes [] unittypes_array) {
+    public static String toJSONArray(UnitTypes[] unitTypes_array) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Unittypes i : unittypes_array) {
+        for (final UnitTypes i : unitTypes_array) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -99,13 +96,13 @@ public class Unittypes implements Serializable {
     }
     
     /**
-     * Converts an ArrayList of Unittypes objects to a JSON Array.
-     * @param unittypes_arraylist ArrayList of Unittypes to convert to JSON.
+     * Converts an ArrayList of UnitTypes objects to a JSON Array.
+     * @param unitTypes_arraylist ArrayList of UnitTypes to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(ArrayList<Unittypes> unittypes_arraylist) {
+    public static String toJSONArray(ArrayList<UnitTypes> unitTypes_arraylist) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Unittypes i : unittypes_arraylist) {
+        for (final UnitTypes i : unitTypes_arraylist) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -115,13 +112,13 @@ public class Unittypes implements Serializable {
     }
     
     /**
-     * Converts an Vector of Unittypes objects to a JSON Array.
-     * @param unittypes_vector Vector of Unittypes to convert to JSON.
+     * Converts an Vector of UnitTypes objects to a JSON Array.
+     * @param unitTypes_vector Vector of UnitTypes to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(Vector<Unittypes> unittypes_vector) {
+    public static String toJSONArray(Vector<UnitTypes> unitTypes_vector) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Unittypes i : unittypes_vector) {
+        for (final UnitTypes i : unitTypes_vector) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -131,13 +128,13 @@ public class Unittypes implements Serializable {
     }
     
     /**
-     * Converts a List of Unittypes objects to a JSON Array.
-     * @param unittypes_list List of Unittypes to convert to JSON.
+     * Converts a List of UnitTypes objects to a JSON Array.
+     * @param unitTypes_list List of UnitTypes to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(List<Unittypes> unittypes_list) {
+    public static String toJSONArray(List<UnitTypes> unitTypes_list) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Unittypes i : unittypes_list) {
+        for (final UnitTypes i : unitTypes_list) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }

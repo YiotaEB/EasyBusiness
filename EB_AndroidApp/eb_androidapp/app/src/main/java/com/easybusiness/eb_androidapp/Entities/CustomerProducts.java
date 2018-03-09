@@ -17,16 +17,13 @@
 package com.easybusiness.eb_androidapp.Entities;
 
 import java.io.Serializable;
-import java.sql.Time;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 
-public class Customerproducts implements Serializable {
+public class CustomerProducts implements Serializable {
 
 
 	//-------------------- Supporting Finals --------------------
@@ -44,7 +41,7 @@ public class Customerproducts implements Serializable {
 
 	//-------------------- Constructor --------------------
 
-    public Customerproducts(
+    public CustomerProducts(
 		int ID, 
 		int CustomerID, 
 		int ProductID
@@ -96,13 +93,13 @@ public class Customerproducts implements Serializable {
     }
     
     /**
-     * Converts an array of Customerproducts objects to a JSON Array.
-     * @param customerproducts_array
+     * Converts an array of CustomerProducts objects to a JSON Array.
+     * @param customerProducts_array
      * @return String
      */
-    public static String toJSONArray(Customerproducts [] customerproducts_array) {
+    public static String toJSONArray(CustomerProducts[] customerProducts_array) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Customerproducts i : customerproducts_array) {
+        for (final CustomerProducts i : customerProducts_array) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -112,13 +109,13 @@ public class Customerproducts implements Serializable {
     }
     
     /**
-     * Converts an ArrayList of Customerproducts objects to a JSON Array.
-     * @param customerproducts_arraylist ArrayList of Customerproducts to convert to JSON.
+     * Converts an ArrayList of CustomerProducts objects to a JSON Array.
+     * @param customerProducts_arraylist ArrayList of CustomerProducts to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(ArrayList<Customerproducts> customerproducts_arraylist) {
+    public static String toJSONArray(ArrayList<CustomerProducts> customerProducts_arraylist) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Customerproducts i : customerproducts_arraylist) {
+        for (final CustomerProducts i : customerProducts_arraylist) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -128,13 +125,13 @@ public class Customerproducts implements Serializable {
     }
     
     /**
-     * Converts an Vector of Customerproducts objects to a JSON Array.
-     * @param customerproducts_vector Vector of Customerproducts to convert to JSON.
+     * Converts an Vector of CustomerProducts objects to a JSON Array.
+     * @param customerProducts_vector Vector of CustomerProducts to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(Vector<Customerproducts> customerproducts_vector) {
+    public static String toJSONArray(Vector<CustomerProducts> customerProducts_vector) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Customerproducts i : customerproducts_vector) {
+        for (final CustomerProducts i : customerProducts_vector) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
@@ -144,13 +141,13 @@ public class Customerproducts implements Serializable {
     }
     
     /**
-     * Converts a List of Customerproducts objects to a JSON Array.
-     * @param customerproducts_list List of Customerproducts to convert to JSON.
+     * Converts a List of CustomerProducts objects to a JSON Array.
+     * @param customerProducts_list List of CustomerProducts to convert to JSON.
      * @return String
      */
-    public static String toJSONArray(List<Customerproducts> customerproducts_list) {
+    public static String toJSONArray(List<CustomerProducts> customerProducts_list) {
         StringBuilder strArray = new StringBuilder("[ ");
-        for (final Customerproducts i : customerproducts_list) {
+        for (final CustomerProducts i : customerProducts_list) {
             strArray.append(i.toJSON());
             strArray.append(", ");
         }
