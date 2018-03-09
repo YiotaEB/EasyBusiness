@@ -78,8 +78,6 @@ public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
 
                 }
 
-
-
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

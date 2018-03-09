@@ -5,14 +5,21 @@
  */
 package eb_managementapp.UI;
 
+import Utilities.HTTPConnection;
+import eb_managementapp.Entities.Customers;
+import org.json.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
@@ -34,12 +41,15 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
+
+        getCustomers();
         
         
         
-        
+
+        customerScrollPanel.setViewportView(customerDetailsTable);
+
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        
 
         dataset.setValue(80, "Marks", "Value 1");
 
@@ -52,23 +62,85 @@ public class MainForm extends javax.swing.JFrame {
         CategoryPlot p = chart.getCategoryPlot();
 
         p.setRangeGridlinePaint(Color.black);
-        
+
         //Panel (same window):
         ChartPanel chartPanel = new ChartPanel(chart);
         statistics.setLayout(new java.awt.BorderLayout());
-        statistics.add(chartPanel,BorderLayout.CENTER);
+        statistics.add(chartPanel, BorderLayout.CENTER);
         statistics.validate();
-        
+
         //Panel (same window):
         ChartPanel chartPanel2 = new ChartPanel(chart);
         customersGraphsPanel2.setLayout(new java.awt.BorderLayout());
-        customersGraphsPanel2.add(chartPanel2,BorderLayout.CENTER);
+        customersGraphsPanel2.add(chartPanel2, BorderLayout.CENTER);
         customersGraphsPanel2.validate();
-        
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.setVisible(true);
 
+    }
+    
+    public void getCustomers() {
+        ArrayList<Customers> customersList = new ArrayList<>();
+
+        //Get customers from api
+        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "Limit=2&SessionID=92389a58728010c6216d4c009efb79ef");
+        try {
+            JSONObject jsonObject = new JSONObject(customersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+                    int countryID = currentItem.getInt("CountryID");
+                    String city = currentItem.getString("City");
+                    String telephone = currentItem.getString("Telephone");
+                    String address = currentItem.getString("Address");
+                    int customerProductsID = currentItem.getInt("CustomerProductsID");
+
+                    Customers customer = new Customers(id, name, countryID, city, telephone, address, customerProductsID);
+                    customersList.add(customer);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + customersJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel customersTableModel = new DefaultTableModel();
+        
+        //Add the table columns:
+        customersTableModel.addColumn("ID");
+        customersTableModel.addColumn("Name");
+        customersTableModel.addColumn("Telephone");
+        customersTableModel.addColumn("Address");
+        customersTableModel.addColumn("City");
+        customersTableModel.addColumn("Country");
+        
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < customersList.size(); i++) {
+            Object[] currentRow = { 
+                customersList.get(i).getID(), 
+                customersList.get(i).getName(),
+                customersList.get(i).getTelephone(),
+                customersList.get(i).getAddress(),
+                customersList.get(i).getCity(),
+                customersList.get(i).getCountryID()
+            };
+            customersTableModel.addRow(currentRow);
+        }
+        customerDetailsTable.setModel(customersTableModel);
+        
     }
 
     /**
