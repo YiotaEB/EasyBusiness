@@ -31,7 +31,10 @@ public class ViewEmployeesFragment extends Fragment {
     public static final String TITLE = "Employees";
 
     private SearchView searchView;
+    private ListView employeesListview;
+    private Button addEmployeeBtn;
     public static EmployeeAdapter allEmployeesAdapter;
+    private View v;
 
 
     public ViewEmployeesFragment() {
@@ -43,11 +46,18 @@ public class ViewEmployeesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_view_employees, container, false);
+        v = inflater.inflate(R.layout.fragment_view_employees, container, false);
 
-        final ListView employeesListview = v.findViewById(R.id.employees_list_view);
-
+        employeesListview = v.findViewById(R.id.employees_list_view);
         searchView = v.findViewById(R.id.employees_search_view);
+        addEmployeeBtn = v.findViewById(R.id.add_employees_btn);
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -81,7 +91,6 @@ public class ViewEmployeesFragment extends Fragment {
             }
         });
 
-        Button addEmployeeBtn = v.findViewById(R.id.add_employees_btn);
         addEmployeeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +113,5 @@ public class ViewEmployeesFragment extends Fragment {
 
         new GetEmployeeAsyncTask(query, getActivity(), v).execute();
 
-        return v;
     }
-
 }

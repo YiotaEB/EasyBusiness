@@ -7,12 +7,40 @@
     android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ProductsTabFragment">
 
+        <LinearLayout
+            android:id="@+id/layout_top_products"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+
+            <SearchView
+                android:id="@+id/products_searchview"
+                android:background="@color/lightGray"
+                android:layout_width="0dp"
+                android:layout_weight="9"
+                android:layout_height="match_parent">
+
+            </SearchView>
+
+
+            <ImageButton
+                android:id="@+id/addProduct"
+                android:src="@drawable/ic_add_box_black_48dp"
+                android:tint="@color/darkGreen"
+                android:background="?android:selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/productsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
+            android:layout_below="@id/layout_top_products"
+            android:layout_marginTop="10dp"
+
             />
 
 
