@@ -7,139 +7,178 @@
     android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AddEmployeesFragment">
 
-
-    <android.support.design.widget.TextInputLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/employees_firstname_layout"
-        >
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/employees_firstname_edittext"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat"
-            android:hint="@string/Firstname"/>
+            android:layout_height="wrap_content">
 
-    </android.support.design.widget.TextInputLayout>
+            <!--Firstname-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employees_firstname_layout"
+                >
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/employees_lastname_layout"
-        android:layout_below="@+id/employees_firstname_layout"
-        >
+                <EditText
+                    android:id="@+id/employees_firstname_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:singleLine="true"
+                    android:hint="@string/Firstname"/>
 
-        <EditText
-            android:id="@+id/employees_lastname_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat"
-            android:hint="@string/Lastname"/>
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <!--Lastname-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employees_lastname_layout"
+                android:layout_below="@+id/employees_firstname_layout"
+                >
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/employees_address_layout"
-        android:layout_below="@+id/employees_lastname_layout"
-        >
+                <EditText
+                    android:id="@+id/employees_lastname_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Lastname"/>
 
-        <EditText
-            android:id="@+id/employees_address_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat"
-            android:hint="@string/Address"/>
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <!--Username-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employees_username_layout"
+                android:layout_below="@+id/employees_lastname_layout"
+                >
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/employees_telephone_layout"
-        android:layout_below="@+id/employees_address_layout"
-        >
+                <EditText
+                    android:id="@+id/employees_username_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/username"/>
 
-        <EditText
-            android:id="@+id/employees_telephone_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat"
-            android:hint="@string/Telephone"/>
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <!--Address-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employees_address_layout"
+                android:layout_below="@+id/employees_username_layout"
+                >
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/employees_city_layout"
-        android:layout_below="@+id/employees_telephone_layout"
-        >
+                <EditText
+                    android:id="@+id/employees_address_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Address"/>
 
-        <EditText
-            android:id="@+id/employees_city_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat"
-            android:hint="@string/City"/>
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <!--Telephone-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employees_telephone_layout"
+                android:layout_below="@+id/employees_address_layout"
+                >
 
-    <Spinner
-        android:id="@+id/country_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_below="@id/employees_city_layout"
-        android:layout_marginTop="20dp"
-        android:text="@string/Select_Country" />
+                <EditText
+                    android:id="@+id/employees_telephone_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Telephone"/>
 
-    <Spinner
-        android:id="@+id/position_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_below="@+id/country_spinner"
-        android:layout_marginTop="20dp"
-        android:text="@string/Select_Position" />
+            </android.support.design.widget.TextInputLayout>
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/time_radiogroup"
-        android:layout_below="@id/position_spinner"
-        android:orientation="horizontal"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:layout_marginTop="20dp"
-        >
+            <!--City-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employees_city_layout"
+                android:layout_below="@+id/employees_telephone_layout"
+                >
 
-        <RadioButton
-            android:id="@+id/part_time_radio_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/Part_Time"/>
+                <EditText
+                    android:id="@+id/employees_city_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/City"/>
 
-        <RadioButton
-            android:id="@+id/full_time_radio_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/Full_Time" />
+            </android.support.design.widget.TextInputLayout>
 
-    </RadioGroup>
+            <!--Country-->
+            <TextView
+                android:id="@+id/country_textview"
+                android:text="@string/Select_Country"
+                android:layout_below="@id/employees_city_layout"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
+            <Spinner
+                android:id="@+id/country_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@id/country_textview"
+                android:text="@string/Select_Country" />
 
+            <!--Position-->
+            <TextView
+                android:id="@+id/position_textview"
+                android:text="@string/Select_Position"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/country_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/add_employees_Btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
-        android:layout_below="@id/time_radiogroup"
-        android:layout_marginTop="25dp"
-        android:text="@string/Add_Employee" />
+            <Spinner
+                android:id="@+id/position_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/position_textview"
+                android:text="@string/Select_Position" />
+
+            <!--Date of hire-->
+            <Button
+                android:id="@+id/datepicker_button"
+                android:layout_below="@id/position_spinner"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorOpposite"
+                android:textColor="@color/black"
+                android:text="@string/select_date_of_hire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/add_employees_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:layout_below="@id/datepicker_button"
+                android:layout_marginTop="25dp"
+                android:text="@string/Add_Employee" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

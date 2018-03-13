@@ -17,7 +17,7 @@
             android:id="@+id/supllier_name_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Name"/>
+            android:hint="@string/Firstname"/>
 
     </android.support.design.widget.TextInputLayout>
 

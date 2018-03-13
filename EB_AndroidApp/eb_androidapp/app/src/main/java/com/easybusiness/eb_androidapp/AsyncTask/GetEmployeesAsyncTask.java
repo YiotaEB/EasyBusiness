@@ -32,7 +32,7 @@ Uri.Builder builder = new Uri.Builder()
             String query = builder.build().getEncodedQuery();
  */
 
-public class GetEmployeeAsyncTask extends AsyncTask<Void,Void,Void> {
+public class GetEmployeesAsyncTask extends AsyncTask<Void,Void,Void> {
 
     private String query;
     private String responseData;
@@ -40,7 +40,7 @@ public class GetEmployeeAsyncTask extends AsyncTask<Void,Void,Void> {
     private View view;
     ArrayList<Users> employees = null;
 
-    public GetEmployeeAsyncTask(String query, Activity activity, View view) {
+    public GetEmployeesAsyncTask(String query, Activity activity, View view) {
         this.query = query;
         this.activity = activity;
         this.view = view;
@@ -66,7 +66,6 @@ public class GetEmployeeAsyncTask extends AsyncTask<Void,Void,Void> {
 
             //OK
             if (statusCode == HttpURLConnection.HTTP_OK) {
-                System.out.println("okay");
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 responseData = AsyncTasks.convertStreamToString(inputStream);
 
@@ -94,8 +93,6 @@ public class GetEmployeeAsyncTask extends AsyncTask<Void,Void,Void> {
                     final EmployeeAdapter employeeAdapter = new EmployeeAdapter(activity, employees);
                     ViewEmployeesFragment.allEmployeesAdapter = (EmployeeAdapter) employeesListview.getAdapter();
 
-                    System.out.println("ok");
-
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -109,7 +106,7 @@ public class GetEmployeeAsyncTask extends AsyncTask<Void,Void,Void> {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity);
+                            final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
                             alertDialog.show();
                         }
                     });

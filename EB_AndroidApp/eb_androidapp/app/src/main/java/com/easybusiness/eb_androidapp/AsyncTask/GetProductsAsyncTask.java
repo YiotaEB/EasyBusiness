@@ -105,7 +105,7 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity);
+                            final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
                             alertDialog.show();
                         }
                     });

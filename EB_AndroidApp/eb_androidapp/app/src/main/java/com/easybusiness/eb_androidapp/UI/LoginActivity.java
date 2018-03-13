@@ -173,4 +173,5 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
             loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
 }

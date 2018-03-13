@@ -37,7 +37,7 @@ public class ViewSuppliersFragment extends Fragment {
 
 //        Uri.Builder builder = new Uri.Builder().appendQueryParameter("Limit", String.valueOf(3));
 //        String query = builder.build().getEncodedQuery();
-//        new AddEmployee_GetCountriesAsyncTask(query, getActivity(), v).execute();
+//        new GetCountriesAsyncTask(query, getActivity(), v).execute();
 
         Button addSupplierBtn = v.findViewById(R.id.add_supplier_btn);
         addSupplierBtn.setOnClickListener(new View.OnClickListener() {

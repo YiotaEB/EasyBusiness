@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.easybusiness.eb_androidapp.AsyncTask.GetEmployeeAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.GetEmployeesAsyncTask;
 import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.EmployeeAdapter;
@@ -111,7 +111,7 @@ public class ViewEmployeesFragment extends Fragment {
         Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
         String query = builder.build().getEncodedQuery();
 
-        new GetEmployeeAsyncTask(query, getActivity(), v).execute();
+        new GetEmployeesAsyncTask(query, getActivity(), v).execute();
 
     }
 }
