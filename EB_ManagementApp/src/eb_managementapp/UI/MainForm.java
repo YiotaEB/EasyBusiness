@@ -7,33 +7,23 @@ package eb_managementapp.UI;
 
 import Utilities.HTTPConnection;
 import eb_managementapp.Entities.Customers;
+import eb_managementapp.Entities.Users;
 import org.json.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
 import java.util.ArrayList;
-import javax.swing.JDesktopPane;
+import java.util.Date;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 
-/**
- *
- * @author panay
- */
 public class MainForm extends javax.swing.JFrame {
 
     /**
@@ -140,6 +130,76 @@ public class MainForm extends javax.swing.JFrame {
             customersTableModel.addRow(currentRow);
         }
         customerDetailsTable.setModel(customersTableModel);
+        
+    }
+    
+    public void getEmployees() {
+        ArrayList<Users> employeesList = new ArrayList<>();
+
+        //Get customers from api
+        String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "Limit=2&SessionID=92389a58728010c6216d4c009efb79ef");
+        try {
+            JSONObject jsonObject = new JSONObject(employeesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int userID = currentItem.getInt("userID");
+                    String username = currentItem.getString("Username");
+                    String firstname = currentItem.getString("Firstname");
+                    String lastname = currentItem.getString("Lastname");
+                    String password = currentItem.getString("Password");
+                    //Date dateOfHired = currentItem.getTime();
+                    int countryID = currentItem.getInt("CountryID");
+                    String city = currentItem.getString("City");
+                    String telephone = currentItem.getString("Telephone");
+                    String address = currentItem.getString("Address");
+                    int userLevelID = currentItem.getInt("UserLevelID");
+
+                    Users employees = new Users(userID, username,password,userLevelID,firstname, lastname,0,city, address,telephone,countryID );
+                    employeesList.add(employees);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + employeesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel employeesTableModel = new DefaultTableModel();
+        
+        //Add the table columns:
+        employeesTableModel.addColumn("ID");
+        employeesTableModel.addColumn("Username");
+        employeesTableModel.addColumn("Firstname");
+        employeesTableModel.addColumn("Lastname");
+        employeesTableModel.addColumn("Telephone");
+        employeesTableModel.addColumn("Address");
+        employeesTableModel.addColumn("City");
+        employeesTableModel.addColumn("Country");
+        
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < employeesList.size(); i++) {
+            Object[] currentRow = { 
+                employeesList.get(i).getUserID(), 
+                employeesList.get(i).getUsername(),
+                employeesList.get(i).getFirstname(),
+                employeesList.get(i).getLastname(),
+                employeesList.get(i).getTelephone(),
+                employeesList.get(i).getAddress(),
+                employeesList.get(i).getCity(),
+                employeesList.get(i).getCountryID()
+            };
+            employeesTableModel.addRow(currentRow);
+        }
+        customerDetailsTable.setModel(employeesTableModel);
         
     }
 

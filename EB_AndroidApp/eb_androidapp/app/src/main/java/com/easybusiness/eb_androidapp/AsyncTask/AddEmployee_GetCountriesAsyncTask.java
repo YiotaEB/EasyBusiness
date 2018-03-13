@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.easybusiness.eb_androidapp.Entities.Countries;
+import com.easybusiness.eb_androidapp.Entities.Customers;
 import com.easybusiness.eb_androidapp.R;
 
 import org.json.JSONArray;
@@ -15,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /*
 
@@ -27,14 +33,16 @@ Uri.Builder builder = new Uri.Builder()
             String query = builder.build().getEncodedQuery();
  */
 
-public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
+public class AddEmployee_GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
 
     private String query;
     private String responseData;
     private Activity activity;
     private View view;
+    private ArrayList<Countries> countries;
+    private ArrayAdapter<Countries> adapter;
 
-    public GetCountriesAsyncTask(String query, Activity activity, View view) {
+    public AddEmployee_GetCountriesAsyncTask(String query, Activity activity, View view) {
         this.query = query;
         this.activity = activity;
         this.view = view;
@@ -71,21 +79,24 @@ public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
                     JSONArray dataArray = outterObject.getJSONArray("Data");
-                    responseData = "";
                     for (int i = 0; i < dataArray.length(); i++) {
-                        responseData += (dataArray.getJSONObject(i).getString("Name") + "\r\n");
+                        JSONObject jsonObject = dataArray.getJSONObject(i);
+                        String name = jsonObject.getString("Name");
+                        int id = jsonObject.getInt("ID");
+                        Countries c = new Countries(id, name);
+                        countries.add(c);
                     }
+
+                    adapter = new ArrayAdapter<Countries>(activity, android.R.layout.simple_list_item_1, countries);
+
 
                 }
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //TODO CHANGE:
-                        AlertDialog.Builder b = new AlertDialog.Builder(activity);
-                        b.setTitle(title);
-                        b.setMessage(message);
-                        b.create().show();
+                        Spinner countriesSpinner = view.findViewById(R.id.country_spinner);
+                        countriesSpinner.setAdapter(adapter);
                     }
                 });
 

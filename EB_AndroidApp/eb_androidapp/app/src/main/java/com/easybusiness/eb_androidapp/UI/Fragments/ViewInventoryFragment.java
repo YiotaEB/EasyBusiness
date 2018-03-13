@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.easybusiness.eb_androidapp.AsyncTask.GetCountriesAsyncTask;
 import com.easybusiness.eb_androidapp.AsyncTask.GetProductsAsyncTask;
 import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliesAsyncTask;
 import com.easybusiness.eb_androidapp.R;

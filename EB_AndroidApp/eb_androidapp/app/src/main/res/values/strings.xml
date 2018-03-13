@@ -39,7 +39,8 @@
 
     <!-- Strings related to viewCustomers & addCustomers activity -->
     <string name="customer_list_text">Customers</string>
-    <string name="Name">Name</string>
+    <string name="Firstname">First name</string>
+    <string name="Lastname">Last name</string>
     <string name="Telephone">Telephone</string>
     <string name="Address">Address</string>
     <string name="City">City</string>

@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.easybusiness.eb_androidapp.AsyncTask.GetCountriesAsyncTask;
-import com.easybusiness.eb_androidapp.AsyncTask.GetCustomersAsyncTask;
 import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliersAsyncTask;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
@@ -39,7 +37,7 @@ public class ViewSuppliersFragment extends Fragment {
 
 //        Uri.Builder builder = new Uri.Builder().appendQueryParameter("Limit", String.valueOf(3));
 //        String query = builder.build().getEncodedQuery();
-//        new GetCountriesAsyncTask(query, getActivity(), v).execute();
+//        new AddEmployee_GetCountriesAsyncTask(query, getActivity(), v).execute();
 
         Button addSupplierBtn = v.findViewById(R.id.add_supplier_btn);
         addSupplierBtn.setOnClickListener(new View.OnClickListener() {

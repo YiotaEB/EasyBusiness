@@ -11,15 +11,31 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/employees_name_layout"
+        android:id="@+id/employees_firstname_layout"
         >
 
         <EditText
-            android:id="@+id/employees_name_edittext"
+            android:id="@+id/employees_firstname_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Base.TextAppearance.AppCompat"
-            android:hint="@string/Name"/>
+            android:hint="@string/Firstname"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/employees_lastname_layout"
+        android:layout_below="@+id/employees_firstname_layout"
+        >
+
+        <EditText
+            android:id="@+id/employees_lastname_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat"
+            android:hint="@string/Lastname"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -27,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/employees_address_layout"
-        android:layout_below="@+id/employees_name_layout"
+        android:layout_below="@+id/employees_lastname_layout"
         >
 
         <EditText
