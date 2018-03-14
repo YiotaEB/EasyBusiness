@@ -11,6 +11,7 @@ import eb_managementapp.Entities.Users;
 import org.json.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -33,6 +34,8 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
 
         getCustomers();
+        
+        getEmployees();
         
         
         
@@ -75,7 +78,7 @@ public class MainForm extends javax.swing.JFrame {
         ArrayList<Customers> customersList = new ArrayList<>();
 
         //Get customers from api
-        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "Limit=2&SessionID=92389a58728010c6216d4c009efb79ef");
+        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "Limit=2&SessionID=aa");
         try {
             JSONObject jsonObject = new JSONObject(customersJSON);
             final String status = jsonObject.getString("Status");
@@ -137,7 +140,7 @@ public class MainForm extends javax.swing.JFrame {
         ArrayList<Users> employeesList = new ArrayList<>();
 
         //Get customers from api
-        String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "Limit=2&SessionID=92389a58728010c6216d4c009efb79ef");
+        String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "Limit=2&SessionID=aa");
         try {
             JSONObject jsonObject = new JSONObject(employeesJSON);
             final String status = jsonObject.getString("Status");
@@ -149,19 +152,23 @@ public class MainForm extends javax.swing.JFrame {
                 for (int i = 0; i < dataArray.length(); i++) {
                     JSONObject currentItem = dataArray.getJSONObject(i);
 
-                    int userID = currentItem.getInt("userID");
+                    int userID = currentItem.getInt("UserID");
                     String username = currentItem.getString("Username");
                     String firstname = currentItem.getString("Firstname");
                     String lastname = currentItem.getString("Lastname");
                     String password = currentItem.getString("Password");
-                    //Date dateOfHired = currentItem.getTime();
+                    
+                    //TODO Check:
+                    long dateHiredLong = currentItem.getLong("DateHired");
+                    int dateHired = (int) dateHiredLong;
+
                     int countryID = currentItem.getInt("CountryID");
                     String city = currentItem.getString("City");
                     String telephone = currentItem.getString("Telephone");
                     String address = currentItem.getString("Address");
                     int userLevelID = currentItem.getInt("UserLevelID");
 
-                    Users employees = new Users(userID, username,password,userLevelID,firstname, lastname,0,city, address,telephone,countryID );
+                    Users employees = new Users(userID, username,password,userLevelID,firstname, lastname, dateHired,city, address,telephone,countryID );
                     employeesList.add(employees);
                 }
             } else {
@@ -180,6 +187,7 @@ public class MainForm extends javax.swing.JFrame {
         employeesTableModel.addColumn("Username");
         employeesTableModel.addColumn("Firstname");
         employeesTableModel.addColumn("Lastname");
+        employeesTableModel.addColumn("Date Hired");
         employeesTableModel.addColumn("Telephone");
         employeesTableModel.addColumn("Address");
         employeesTableModel.addColumn("City");
@@ -192,6 +200,7 @@ public class MainForm extends javax.swing.JFrame {
                 employeesList.get(i).getUsername(),
                 employeesList.get(i).getFirstname(),
                 employeesList.get(i).getLastname(),
+                Users.DATE_FORMAT.format(new Date(employeesList.get(i).getDateHired())),
                 employeesList.get(i).getTelephone(),
                 employeesList.get(i).getAddress(),
                 employeesList.get(i).getCity(),
@@ -199,7 +208,7 @@ public class MainForm extends javax.swing.JFrame {
             };
             employeesTableModel.addRow(currentRow);
         }
-        customerDetailsTable.setModel(employeesTableModel);
+        employeesTable.setModel(employeesTableModel);
         
     }
 

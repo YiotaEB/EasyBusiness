@@ -1,60 +1,69 @@
 package eb_managementapp.UI.Forms;
 
+import Utilities.HTTPConnection;
 import eb_managementapp.DB.ConnectionCreator;
+import eb_managementapp.Entities.Countries;
+import eb_managementapp.Entities.Userlevels;
+import eb_managementapp.Entities.Users;
 import eb_managementapp.UI.Components.JTableUtilities;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class AddUsersForm extends javax.swing.JFrame {
 
     final String TITLE = "Add Employees";
-
-    Vector<String> employeeNumber;
-    Vector<String> employeeFirstName;
-    Vector<String> employeeLastName;
-    Vector<String> employeeUsername;
-    Vector<String> employeePosition;
-    Vector<String> columnNames;
+    
+//    Vector<String> employeeNumber;
+//    Vector<String> employeeFirstName;
+//    Vector<String> employeeLastName;
+//    Vector<String> employeeUsername;
+//    Vector<String> employeePosition;
+//    Vector<String> columnNames;
 
     public AddUsersForm() {
         initComponents();
         
-        employeeNumber = new Vector<>();
-        employeeFirstName = new Vector<>();
-        employeeLastName = new Vector<>();
-        employeeUsername = new Vector<>();
-        employeePosition = new Vector<>();
-        columnNames = new Vector<>();
-        
-
-        //COUNTRIES SELECTION COMBOBOX
-        try {
-            //Select Statment to choose countries
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getCountryStatement = connection.createStatement();
-            String qr = " Select Name From Countries";
-            ResultSet rs = getCountryStatement.executeQuery(qr);
-
-            countryComboBox.removeAllItems();
-            // iterate through the java resultset
-            while (rs.next()) {
-                String typeName = rs.getString("Name");
-                countryComboBox.addItem(typeName);
-            }
-            getCountryStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        employeeNumber = new Vector<>();
+//        employeeFirstName = new Vector<>();
+//        employeeLastName = new Vector<>();
+//        employeeUsername = new Vector<>();
+//        employeePosition = new Vector<>();
+//        columnNames = new Vector<>();
+//        
+//
+//        //COUNTRIES SELECTION COMBOBOX
+//        try {
+//            //Select Statment to choose countries
+//            ConnectionCreator connectionCreator = new ConnectionCreator();
+//            Connection connection = connectionCreator.connect();
+//
+//            Statement getCountryStatement = connection.createStatement();
+//            String qr = " Select Name From Countries";
+//            ResultSet rs = getCountryStatement.executeQuery(qr);
+//
+//            countryComboBox.removeAllItems();
+//            // iterate through the java resultset
+//            while (rs.next()) {
+//                String typeName = rs.getString("Name");
+//                countryComboBox.addItem(typeName);
+//            }
+//            getCountryStatement.close();
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         updateUsersComboBox();
         
@@ -168,9 +177,9 @@ public class AddUsersForm extends javax.swing.JFrame {
                             .addComponent(employeeNameLabel)
                             .addComponent(employeeLastNameLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lastNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(employeeNameTextField)))
+                        .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(employeeNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(employeeDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(employeeDetailsPanelLayout.createSequentialGroup()
@@ -295,7 +304,7 @@ public class AddUsersForm extends javax.swing.JFrame {
                             .addGroup(employmentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(dateOfHirePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                                 .addComponent(positionComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         employmentDetailsPanelLayout.setVerticalGroup(
             employmentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -450,65 +459,67 @@ public class AddUsersForm extends javax.swing.JFrame {
 
     private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed
 
-        columnNames.clear();
-        columnNames.add("#");
-        columnNames.add("FirstName");
-        columnNames.add("LastName");
-        columnNames.add("Username");
-        columnNames.add("Position");
-        Vector<Vector<String>> data = new Vector<>();
-
-        try {
-            //SELECT From User_Types
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getUserStatement = connection.createStatement();
-            String query = "SELECT\n"
-                    + "Users.FirstName AS FirstName,\n"
-                    + "Users.LastName AS LastName,\n"
-                    + "Users.Username AS Username,\n"
-                    + "User_Types.Name As Position\n"
-                    + "FROM Users, User_Types\n"
-                    + "WHERE User_Types.ID=Users.UserTypeID";
-            ResultSet rs = getUserStatement.executeQuery(query);
-
-            Integer i = 0;
-
-            data.clear();
-            employeeNumber.clear();
-            employeeFirstName.clear();
-            employeeLastName.clear();
-            employeeUsername.clear();
-
-            while (rs.next()) {
-                i++;
-                employeeNumber.add(i.toString());
-                employeeFirstName.add(rs.getString("FirstName"));
-                employeeLastName.add(rs.getString("LastName"));
-                employeeUsername.add(rs.getString("Username"));
-                employeePosition.add(rs.getString("Position"));
-            }
-            getUserStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        for (int i = 0; i < employeeNumber.size(); i++) {
-            Vector<String> row = new Vector<>();
-            row.add(employeeNumber.get(i));
-            row.add(employeeFirstName.get(i));
-            row.add(employeeLastName.get(i));
-            row.add(employeeUsername.get(i));
-            row.add(employeePosition.get(i));
-            data.add(row);
-        }
-
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-        employeesTable.setModel(model);
-
-        JTableUtilities.setJTableColumnsWidth(employeesTable, employeesTable.getWidth(), 9, 24, 24, 23, 20);
+        getUsers();
+        
+//        columnNames.clear();
+//        columnNames.add("#");
+//        columnNames.add("FirstName");
+//        columnNames.add("LastName");
+//        columnNames.add("Username");
+//        columnNames.add("Position");
+//        Vector<Vector<String>> data = new Vector<>();
+//
+//        try {
+//            //SELECT From User_Types
+//            ConnectionCreator connectionCreator = new ConnectionCreator();
+//            Connection connection = connectionCreator.connect();
+//
+//            Statement getUserStatement = connection.createStatement();
+//            String query = "SELECT\n"
+//                    + "Users.FirstName AS FirstName,\n"
+//                    + "Users.LastName AS LastName,\n"
+//                    + "Users.Username AS Username,\n"
+//                    + "User_Types.Name As Position\n"
+//                    + "FROM Users, User_Types\n"
+//                    + "WHERE User_Types.ID=Users.UserTypeID";
+//            ResultSet rs = getUserStatement.executeQuery(query);
+//
+//            Integer i = 0;
+//
+//            data.clear();
+//            employeeNumber.clear();
+//            employeeFirstName.clear();
+//            employeeLastName.clear();
+//            employeeUsername.clear();
+//
+//            while (rs.next()) {
+//                i++;
+//                employeeNumber.add(i.toString());
+//                employeeFirstName.add(rs.getString("FirstName"));
+//                employeeLastName.add(rs.getString("LastName"));
+//                employeeUsername.add(rs.getString("Username"));
+//                employeePosition.add(rs.getString("Position"));
+//            }
+//            getUserStatement.close();
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        for (int i = 0; i < employeeNumber.size(); i++) {
+//            Vector<String> row = new Vector<>();
+//            row.add(employeeNumber.get(i));
+//            row.add(employeeFirstName.get(i));
+//            row.add(employeeLastName.get(i));
+//            row.add(employeeUsername.get(i));
+//            row.add(employeePosition.get(i));
+//            data.add(row);
+//        }
+//
+//        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+//        employeesTable.setModel(model);
+//
+//        JTableUtilities.setJTableColumnsWidth(employeesTable, employeesTable.getWidth(), 9, 24, 24, 23, 20);
 
 
     }//GEN-LAST:event_viewEmployeesButtonActionPerformed
@@ -612,6 +623,221 @@ public class AddUsersForm extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void getUsers() {
+        ArrayList<Users> usersList = new ArrayList<>();
+
+        //Get customers from api
+        String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(usersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int userID = currentItem.getInt("UserID");
+                    String username = currentItem.getString("Username");
+                    String firstname = currentItem.getString("Firstname");
+                    String lastname = currentItem.getString("Lastname");
+                    String password = currentItem.getString("Password");
+                    long dateHiredLong = currentItem.getLong("DateHired");
+                    int dateHired = (int) dateHiredLong;
+                    int countryID = currentItem.getInt("CountryID");
+                    String city = currentItem.getString("City");
+                    String telephone = currentItem.getString("Telephone");
+                    String address = currentItem.getString("Address");
+                    int userLevelID = currentItem.getInt("UserLevelID");
+
+                    Users user = new Users(userID, username,password,userLevelID,firstname, lastname, dateHired,city, address,telephone,countryID );
+                    usersList.add(user);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + usersJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel employeesTableModel = new DefaultTableModel();
+        
+        //Add the table columns:
+        employeesTableModel.addColumn("ID");
+        employeesTableModel.addColumn("Username");
+        employeesTableModel.addColumn("Firstname");
+        employeesTableModel.addColumn("Lastname");
+        employeesTableModel.addColumn("Date Hired");
+        employeesTableModel.addColumn("Telephone");
+        
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < usersList.size(); i++) {
+            Object[] currentRow = { 
+                usersList.get(i).getUserID(), 
+                usersList.get(i).getUsername(),
+                usersList.get(i).getFirstname(),
+                usersList.get(i).getLastname(),
+                Users.DATE_FORMAT.format(new Date(usersList.get(i).getDateHired())),
+                usersList.get(i).getTelephone(),
+            };
+            employeesTableModel.addRow(currentRow);
+        }
+        employeesTable.setModel(employeesTableModel);
+        
+    }
+    
+    //TODO
+    public void getCountries() {
+        ArrayList<Users> usersList = new ArrayList<>();
+
+        //Get customers from api
+        String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(usersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int userID = currentItem.getInt("UserID");
+                    String username = currentItem.getString("Username");
+                    String firstname = currentItem.getString("Firstname");
+                    String lastname = currentItem.getString("Lastname");
+                    String password = currentItem.getString("Password");
+                    long dateHiredLong = currentItem.getLong("DateHired");
+                    int dateHired = (int) dateHiredLong;
+                    int countryID = currentItem.getInt("CountryID");
+                    String city = currentItem.getString("City");
+                    String telephone = currentItem.getString("Telephone");
+                    String address = currentItem.getString("Address");
+                    int userLevelID = currentItem.getInt("UserLevelID");
+
+                    Users user = new Users(userID, username,password,userLevelID,firstname, lastname, dateHired,city, address,telephone,countryID );
+                    usersList.add(user);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + usersJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel employeesTableModel = new DefaultTableModel();
+        
+        //Add the table columns:
+        employeesTableModel.addColumn("ID");
+        employeesTableModel.addColumn("Username");
+        employeesTableModel.addColumn("Firstname");
+        employeesTableModel.addColumn("Lastname");
+        employeesTableModel.addColumn("Date Hired");
+        employeesTableModel.addColumn("Telephone");
+        employeesTableModel.addColumn("Address");
+        employeesTableModel.addColumn("City");
+        employeesTableModel.addColumn("Country");
+        
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < usersList.size(); i++) {
+            Object[] currentRow = { 
+                usersList.get(i).getUserID(), 
+                usersList.get(i).getUsername(),
+                usersList.get(i).getFirstname(),
+                usersList.get(i).getLastname(),
+                Users.DATE_FORMAT.format(new Date(usersList.get(i).getDateHired())),
+                usersList.get(i).getTelephone(),
+                usersList.get(i).getAddress(),
+                usersList.get(i).getCity(),
+                usersList.get(i).getCountryID()
+            };
+            employeesTableModel.addRow(currentRow);
+        }
+        employeesTable.setModel(employeesTableModel);
+        
+    }
+    
+    //TODO
+    public void getPositions() {
+        ArrayList<Users> usersList = new ArrayList<>();
+
+        //Get customers from api
+        String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(usersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int userID = currentItem.getInt("UserID");
+                    String username = currentItem.getString("Username");
+                    String firstname = currentItem.getString("Firstname");
+                    String lastname = currentItem.getString("Lastname");
+                    String password = currentItem.getString("Password");
+                    long dateHiredLong = currentItem.getLong("DateHired");
+                    int dateHired = (int) dateHiredLong;
+                    int countryID = currentItem.getInt("CountryID");
+                    String city = currentItem.getString("City");
+                    String telephone = currentItem.getString("Telephone");
+                    String address = currentItem.getString("Address");
+                    int userLevelID = currentItem.getInt("UserLevelID");
+
+                    Users user = new Users(userID, username,password,userLevelID,firstname, lastname, dateHired,city, address,telephone,countryID );
+                    usersList.add(user);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + usersJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel employeesTableModel = new DefaultTableModel();
+        
+        //Add the table columns:
+        employeesTableModel.addColumn("ID");
+        employeesTableModel.addColumn("Username");
+        employeesTableModel.addColumn("Firstname");
+        employeesTableModel.addColumn("Lastname");
+        employeesTableModel.addColumn("Date Hired");
+        employeesTableModel.addColumn("Telephone");
+        employeesTableModel.addColumn("Address");
+        employeesTableModel.addColumn("City");
+        employeesTableModel.addColumn("Country");
+        
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < usersList.size(); i++) {
+            Object[] currentRow = { 
+                usersList.get(i).getUserID(), 
+                usersList.get(i).getUsername(),
+                usersList.get(i).getFirstname(),
+                usersList.get(i).getLastname(),
+                Users.DATE_FORMAT.format(new Date(usersList.get(i).getDateHired())),
+                usersList.get(i).getTelephone(),
+                usersList.get(i).getAddress(),
+                usersList.get(i).getCity(),
+                usersList.get(i).getCountryID()
+            };
+            employeesTableModel.addRow(currentRow);
+        }
+        employeesTable.setModel(employeesTableModel);
+        
     }
     
     /**
