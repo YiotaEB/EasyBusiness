@@ -129,7 +129,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                 }
                 //Unknown error
                 else {
-                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity);
+                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

@@ -102,7 +102,7 @@ public class LogoutAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 }
                 //Unknown error
                 else {
-                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity);
+                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -139,7 +139,9 @@ public class LogoutAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
                 sharedPreferences.edit().clear().apply();
                 Intent i = new Intent(activity, LoginActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 activity.startActivity(i);
+                activity.finish();
             }
         }
     }

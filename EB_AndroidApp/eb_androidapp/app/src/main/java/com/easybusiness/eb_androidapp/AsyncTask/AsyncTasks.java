@@ -61,10 +61,10 @@ public class AsyncTasks {
         return alertDialogBuilder.create();
     }
 
-    public static AlertDialog createUnknownErrorDialog(final Activity activity) {
+    public static AlertDialog createUnknownErrorDialog(final Activity activity, String title, String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-        alertDialogBuilder.setTitle(R.string.unknown_error);
-        alertDialogBuilder.setMessage(R.string.unknown_error_message);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setIcon(R.drawable.ic_error_black_24dp);
         alertDialogBuilder.setPositiveButton(R.string.dismiss, new DialogInterface.OnClickListener() {
             @Override
