@@ -100,5 +100,9 @@
     <string name="add_product">Add Product</string>
     <string name="select_date_of_hire">Select Date of Hire</string>
     <string name="username">Username</string>
+    <string name="name">Name</string>
+    <string name="products">Products:</string>
+    <string name="select_products">Select Products</string>
+    <string name="save">Save</string>
 
 </resources>

@@ -10,41 +10,26 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/supplier_firstname_layout"
+        android:id="@+id/supplier_name_layout"
         >
 
         <EditText
-            android:id="@+id/supllier_firstname_edittext"
+            android:id="@+id/supplier_name_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Firstname"/>
+            android:hint="@string/name"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/supplier_lastname_layout"
-        android:layout_below="@+id/supplier_firstname_layout"
-        >
-
-        <EditText
-            android:id="@+id/supllier_lastname_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/Lastname"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/supplier_lastname_layout"
+        android:layout_below="@+id/supplier_name_layout"
         android:id="@+id/supplier_telephone_layout"
         >
 
         <EditText
-            android:id="@+id/supllier_telephone_edittext"
+            android:id="@+id/supplier_telephone_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Telephone"/>
@@ -59,7 +44,7 @@
         >
 
         <EditText
-            android:id="@+id/supllier_address_edittext"
+            android:id="@+id/supplier_address_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Address"/>
@@ -77,7 +62,7 @@
             android:id="@+id/supplier_city_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Telephone"/>
+            android:hint="@string/City"/>
 
     </android.support.design.widget.TextInputLayout>
 
