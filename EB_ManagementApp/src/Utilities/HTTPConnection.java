@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class HTTPConnection {
     
@@ -78,6 +80,7 @@ public class HTTPConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        showMessageDialog(null, "HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName) + ". Please make sure you have an internet connection.", "Connection Error", JOptionPane.PLAIN_MESSAGE);
         throw new RuntimeException("HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName));
     }
 }
