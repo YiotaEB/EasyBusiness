@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textPersonName"
-                    android:hint="@string/Firstname" />
+                    android:hint="@string/name" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -54,7 +54,7 @@
                 android:id="@+id/customer_address_input">
 
                 <EditText
-                    android:id="@+id/customer_address_text"
+                    android:id="@+id/customer_address_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/Address" />
@@ -76,7 +76,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
-                android:id="@+id/country_spinner"
+                android:id="@+id/customer_country_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
@@ -88,7 +88,7 @@
                 android:id="@+id/customer_products_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/country_spinner"
+                android:layout_below="@id/customer_country_spinner"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:textSize="17sp"
