@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AddEmployeesFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <!--Supplier Name-->
+            <Spinner
+                android:id="@+id/supplier_name_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="@string/select_type" />
+
+            <!--Supply Name-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/supplier_name_spinner"
+                android:id="@+id/supply_name_input"
+                >
+
+                <EditText
+                    android:id="@+id/supply_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName"
+                    android:hint="@string/name" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Quantity-->
+            <Spinner
+                android:id="@+id/supply_quantity_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/supply_name_input"
+                android:text="@string/select_type" />
+
+            <!--Price-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/supply_quantity_spinner"
+                android:id="@+id/supply_price_input"
+                >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/supply_price_edittext"
+                android:layout_below="@id/supply_quantity_spinner"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/add_supply_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:layout_below="@id/supply_price_input"
+                android:layout_marginTop="25dp"
+                android:text="@string/add_supply" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

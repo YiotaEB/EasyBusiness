@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AddEmployeesFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <!--Type-->
+            <Spinner
+                android:id="@+id/product_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="@string/select_type" />
+
+            <!--Name Edit Text-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_type_spinner"
+                android:id="@+id/product_name_input"
+                >
+
+                <EditText
+                    android:id="@+id/product_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName"
+                    android:hint="@string/name" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Size-->
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:id="@+id/product_size_list"
+                android:layout_below="@id/product_name_input"
+                android:layout_marginBottom="10dp"
+                >
+
+            </ListView>
+
+
+            <!--Quantity-->
+            <Spinner
+                android:id="@+id/product_quantity_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/product_size_list"
+                android:text="@string/select_type" />
+
+            <!--Price-->
+            <TextView
+                android:id="@+id/product_price_textview"
+                android:text="@string/product_price"
+                android:layout_below="@id/product_quantity_spinner"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/product_price_edittext"
+                android:layout_below="@id/product_quantity_spinner"/>
+
+            <Button
+                android:id="@+id/add_product_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:layout_below="@id/product_price_textview"
+                android:layout_marginTop="25dp"
+                android:text="@string/add_product_inventory" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

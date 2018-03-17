@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import com.easybusiness.eb_androidapp.AsyncTask.GetCustomersAsyncTask;
-import com.easybusiness.eb_androidapp.AsyncTask.GetProductsAsyncTask;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 

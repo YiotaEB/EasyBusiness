@@ -26,6 +26,8 @@ public class ViewInventoryFragment extends Fragment {
     public static final String TAG = "ViewInventoryFragment";
     public static final String TITLE = "Inventory";
 
+    View v;
+
 
     public ViewInventoryFragment() {
         // Required empty public constructor
@@ -36,7 +38,7 @@ public class ViewInventoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_view_inventory, container, false);
+        v = inflater.inflate(R.layout.fragment_view_inventory, container, false);
 
         //add tabs
         TabLayout tabLayout = v.findViewById(R.id.tab_layout);
@@ -66,6 +68,14 @@ public class ViewInventoryFragment extends Fragment {
             }
         });
 
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
 
@@ -75,7 +85,5 @@ public class ViewInventoryFragment extends Fragment {
         new GetProductsAsyncTask(query, getActivity(), v).execute();
         new GetSuppliesAsyncTask(query, getActivity(), v).execute();
 
-        return v;
     }
-
 }
