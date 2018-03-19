@@ -13,7 +13,6 @@ import com.easybusiness.eb_androidapp.Model.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.LoginActivity;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
-import com.easybusiness.eb_androidapp.Utilities.Hash;
 
 import org.json.JSONObject;
 
@@ -74,8 +73,6 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
                 JSONObject outterObject = new JSONObject(responseData);
                 System.out.println(responseData);
                 final String status = outterObject.getString("Status");
-                final String title = outterObject.getString("Title");
-                final String message = outterObject.getString("Message");
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
 

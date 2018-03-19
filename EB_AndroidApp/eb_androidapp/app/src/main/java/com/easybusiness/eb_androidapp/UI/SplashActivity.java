@@ -18,8 +18,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private View view;
 
-    //TODO: This activity should check if the user is already logged in.
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -372,6 +372,16 @@ public class AddEmployeesFragment extends Fragment {
 
                         adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, positionNames);
 
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final View progressView = activity.findViewById(R.id.add_employees_progress);
+                                final View employeeAddView = activity.findViewById(R.id.add_employees_view);
+                                progressView.setVisibility(View.GONE);
+                                employeeAddView.setVisibility(View.VISIBLE);
+                            }
+                        });
+
                     }
                     //ERROR:
                     else {

@@ -32,7 +32,7 @@ Uri.Builder builder = new Uri.Builder()
             String query = builder.build().getEncodedQuery();
  */
 
-public class GetEmployeesAsyncTask extends AsyncTask<Void,Void,Void> {
+public class GetEmployeesAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private String query;
     private String responseData;
@@ -82,7 +82,7 @@ public class GetEmployeesAsyncTask extends AsyncTask<Void,Void,Void> {
                         String firstName = jsonObject.getString("Firstname");
                         String lastName = jsonObject.getString("Lastname");
                         String telephone = jsonObject.getString("Telephone");
-                        Users p = new Users(0, "","", 0, firstName, lastName, 0,"", "",telephone, 0);
+                        Users p = new Users(0, "", "", 0, firstName, lastName, 0, "", "", telephone, 0);
                         employees.add(p);
                     }
 
@@ -97,12 +97,17 @@ public class GetEmployeesAsyncTask extends AsyncTask<Void,Void,Void> {
                         @Override
                         public void run() {
                             employeesListview.setAdapter(employeeAdapter);
+
+                            final View progressView = activity.findViewById(R.id.view_employees_progress);
+                            final View employeeView = activity.findViewById(R.id.view_employees_view);
+                            progressView.setVisibility(View.GONE);
+                            employeeView.setVisibility(View.VISIBLE);
+
                         }
                     });
 
 
-                }
-                else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
+                } else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
