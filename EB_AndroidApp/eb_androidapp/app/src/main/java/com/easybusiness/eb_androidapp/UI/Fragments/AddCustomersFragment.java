@@ -95,6 +95,7 @@ public class AddCustomersFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().getActionBar().setTitle(TITLE);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         getRequiredFields();

@@ -78,4 +78,9 @@ public class ViewInventoryFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setTitle(TITLE);
+    }
 }

@@ -29,4 +29,9 @@ public class ViewSalesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_view_sales, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setTitle(TITLE);
+    }
 }

@@ -30,4 +30,9 @@ public class ViewRoutesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_view_routes, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setTitle(TITLE);
+    }
 }

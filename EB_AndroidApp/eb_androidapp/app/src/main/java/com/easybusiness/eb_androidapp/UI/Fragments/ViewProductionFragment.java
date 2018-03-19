@@ -30,5 +30,9 @@ public class ViewProductionFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_view_production, container, false);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setTitle(TITLE);
+    }
 }

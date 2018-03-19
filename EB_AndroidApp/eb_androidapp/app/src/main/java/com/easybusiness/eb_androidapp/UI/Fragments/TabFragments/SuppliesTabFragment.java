@@ -11,6 +11,9 @@ import com.easybusiness.eb_androidapp.R;
 
 public class SuppliesTabFragment extends Fragment {
 
+    public static final String TAG = "ViewSuppliesFragment";
+    public static final String TITLE = "View Supplies";
+
     public SuppliesTabFragment() {
         // Required empty public constructor
     }
@@ -27,4 +30,9 @@ public class SuppliesTabFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setTitle(TITLE);
+    }
 }
