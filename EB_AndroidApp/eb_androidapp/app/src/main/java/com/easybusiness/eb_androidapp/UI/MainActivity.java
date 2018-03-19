@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String APP_MODE_STRING = "APP_MODE";
     public static final String PREFERENCE_USERNAME = "preference-username";
+    public static final String PREFERENCE_PASSWORD_HASH = "preference-password-hash";
     public static final String PREFERENCE_FIRSTNAME = "preference-firstname";
     public static final String PREFERENCE_LASTNAME = "preference-lastname";
     public static final String PREFERENCE_SESSIONID = "preference-sessionID";

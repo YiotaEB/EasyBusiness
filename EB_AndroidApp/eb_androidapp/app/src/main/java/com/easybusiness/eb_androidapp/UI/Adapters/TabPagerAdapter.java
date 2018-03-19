@@ -3,12 +3,13 @@ package com.easybusiness.eb_androidapp.UI.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ProductsTabFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.SuppliesTabFragment;
 
-public class TabPagerAdapter extends FragmentStatePagerAdapter {
+public class TabPagerAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
 
     public TabPagerAdapter(FragmentManager fm, int numOfTabs) {
@@ -35,4 +36,5 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return numOfTabs;
     }
+
 }

@@ -2,6 +2,7 @@ package com.easybusiness.eb_androidapp.UI.Fragments.TabFragments;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.easybusiness.eb_androidapp.AsyncTask.GetProductsAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliesAsyncTask;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddProductFragment;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
@@ -21,8 +25,11 @@ public class ProductsTabFragment extends Fragment {
     public static final String TAG = "ViewProductsFragment";
     public static final String TITLE = "View Products";
 
+    View v;
+
     public ProductsTabFragment() {
         // Required empty public constructor
+        System.out.println("CONSTRUCTOR CALLLED");
     }
 
 
@@ -30,7 +37,7 @@ public class ProductsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tab_products, container, false);
+        v = inflater.inflate(R.layout.fragment_tab_products, container, false);
 
         ImageButton addProductBtn =v.findViewById(R.id.addProduct);
         addProductBtn.setOnClickListener(new View.OnClickListener() {
@@ -47,13 +54,7 @@ public class ProductsTabFragment extends Fragment {
             }
         });
 
-//        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
-//
-//        Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
-//        String query = builder.build().getEncodedQuery();
-//
-//        new GetSuppliersAsyncTask(query, getActivity(), v).execute();
+        System.out.println("CREATED TAB FRAG");
 
 
         return v;
@@ -62,6 +63,17 @@ public class ProductsTabFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(TITLE);
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
+
+        Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
+        String query = builder.build().getEncodedQuery();
+
+        new GetProductsAsyncTask(query, getActivity(), v).execute();
+
+        System.out.println("RESUMED TAG FRAG");
+
     }
+
 }

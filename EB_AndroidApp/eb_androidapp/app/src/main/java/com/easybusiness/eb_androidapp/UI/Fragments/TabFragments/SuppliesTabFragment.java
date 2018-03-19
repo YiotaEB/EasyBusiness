@@ -1,7 +1,10 @@
 package com.easybusiness.eb_androidapp.UI.Fragments.TabFragments;
 
 
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -9,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.easybusiness.eb_androidapp.AsyncTask.GetProductsAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliesAsyncTask;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddProductFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddSupplyFragment;
@@ -19,6 +24,8 @@ public class SuppliesTabFragment extends Fragment {
     public static final String TAG = "ViewSuppliesFragment";
     public static final String TITLE = "View Supplies";
 
+    View v;
+
     public SuppliesTabFragment() {
         // Required empty public constructor
     }
@@ -28,7 +35,7 @@ public class SuppliesTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tab_supplies, container, false);
+        v = inflater.inflate(R.layout.fragment_tab_supplies, container, false);
 
         ImageButton addSupplyBtn =v.findViewById(R.id.addSupply);
         addSupplyBtn.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +60,14 @@ public class SuppliesTabFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(TITLE);
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
+
+        Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
+        String query = builder.build().getEncodedQuery();
+
+        new GetSuppliesAsyncTask(query, getActivity(), v).execute();
+
     }
 }

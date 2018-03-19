@@ -2,6 +2,7 @@ package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,7 +28,7 @@ public class ViewInventoryFragment extends Fragment {
     public static final String TITLE = "Inventory";
 
     View v;
-
+    TabLayout tabLayout;
 
     public ViewInventoryFragment() {
         // Required empty public constructor
@@ -41,15 +42,26 @@ public class ViewInventoryFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_view_inventory, container, false);
 
         //add tabs
-        TabLayout tabLayout = v.findViewById(R.id.tab_layout);
+        tabLayout = v.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Products"));
         tabLayout.addTab(tabLayout.newTab().setText("Supplies"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        System.out.println("CREATED INV FRAG!");
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(TITLE);
+
         final ViewPager viewPager = v.findViewById(R.id.pager);
-        final TabPagerAdapter adapter = new TabPagerAdapter
-                (getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        final TabPagerAdapter adapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+
         viewPager.setAdapter(adapter);
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -67,23 +79,6 @@ public class ViewInventoryFragment extends Fragment {
 
             }
         });
-
-
-        return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().setTitle(TITLE);
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
-
-        Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
-        String query = builder.build().getEncodedQuery();
-
-        new GetProductsAsyncTask(query, getActivity(), v).execute();
-        new GetSuppliesAsyncTask(query, getActivity(), v).execute();
 
     }
 

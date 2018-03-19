@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
-import com.easybusiness.eb_androidapp.Entities.Countries;
 import com.easybusiness.eb_androidapp.Entities.ProductTypes;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
@@ -42,7 +40,7 @@ import java.util.ArrayList;
 public class AddProductFragment extends Fragment {
 
     public static final String TAG = "AddProductFragment";
-    public static final String TITLE = "AddProducts";
+    public static final String TITLE = "Add Product";
 
     private ArrayList<ProductTypes> productType;
 
@@ -131,17 +129,10 @@ public class AddProductFragment extends Fragment {
     }
 
     private void getRequiredFields() {
-        new GetProductTypeAsyncTask("", getActivity(), v).execute();
-
-        Uri.Builder builder = new Uri.Builder()
-                .appendQueryParameter("SessionID", sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""));
-
-        //String userLevelsQuery = builder.build().getEncodedQuery();
-
-        // new AddEmployeesFragment.GetUserLevelsAsyncTask(userLevelsQuery, getActivity(), v).execute();
+        new GetProductTypesAsyncTask("", getActivity(), v).execute();
     }
 
-    private class GetProductTypeAsyncTask extends AsyncTask<Void,Void,Void> {
+    private class GetProductTypesAsyncTask extends AsyncTask<Void,Void,Void> {
 
         private String query;
         private String responseData;
@@ -149,7 +140,7 @@ public class AddProductFragment extends Fragment {
         private View view;
         private ArrayAdapter<String> adapter;
 
-        public GetProductTypeAsyncTask(String query, Activity activity, View view) {
+        public GetProductTypesAsyncTask(String query, Activity activity, View view) {
             this.query = query;
             this.activity = activity;
             this.view = view;
@@ -159,10 +150,17 @@ public class AddProductFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("SessionID", sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""))
+                    .appendQueryParameter("Limit", "0");
+            query = builder.toString();
+
             if (query == null) query = "";
 
+            System.out.println("QUERY: " + query);
+
             try {
-                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "ProductTypes", "GetMultiple"));
+                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Producttypes", "GetMultiple"));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 byte[] outputBytes = query.getBytes("UTF-8");
@@ -214,7 +212,7 @@ public class AddProductFragment extends Fragment {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Spinner productTypesSpinner = view.findViewById(R.id.product_type_spinner);
+                            Spinner productTypesSpinner = activity.findViewById(R.id.product_type_spinner);
                             productTypesSpinner.setAdapter(adapter);
                         }
                     });
