@@ -68,20 +68,6 @@ public class AddProductFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_add_product, container, false);
 
-//        Button selectProductButton = v.findViewById(R.id.add_customer_select_products_Btn);
-//        selectProductButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Fragment newFragment = new SelectProductsFragment();
-//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-//                getActivity().setTitle(SelectProductsFragment.TITLE);
-//                fragmentTransaction.replace(R.id.frame, newFragment, AddCustomersFragment.TAG);
-//                fragmentTransaction.addToBackStack(newFragment.getTag());
-//                fragmentTransaction.commit();
-//                ((MainActivity) getActivity()).setMenuItemChecked(newFragment);
-//            }
-//        });
 
         addProductBtn = v.findViewById(R.id.add_product_Btn);
         productQuantitySpinner = v.findViewById(R.id.product_quantity_spinner);
