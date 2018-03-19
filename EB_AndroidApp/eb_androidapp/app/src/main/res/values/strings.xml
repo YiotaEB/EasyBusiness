@@ -104,5 +104,10 @@
     <string name="products">Products:</string>
     <string name="select_products">Select Products</string>
     <string name="save">Save</string>
+    <string name="product_type">Type</string>
+    <string name="select_type">Select Type</string>
+    <string name="product_price">Price</string>
+    <string name="add_supply">Add Supply</string>
+    <string name="add_product_inventory">Add Product</string>
 
 </resources>

@@ -86,12 +86,13 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
                         products.add(p);
                     }
 
-                    final ListView productsListview = activity.findViewById(R.id.productsList);
+
                     String [] items = new String[products.size()];
                     for (int i = 0; i < items.length; i++)
                         items[i] = products.get(i).getName();
                     final ProductAdapter productAdapter = new ProductAdapter(activity, products);
 
+                    final ListView productsListview = activity.findViewById(R.id.productsList);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -102,10 +103,10 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
 
                 }
                 else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
+                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
                             alertDialog.show();
                         }
                     });
