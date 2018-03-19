@@ -82,6 +82,8 @@ public class AddProductFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        getActivity().setTitle(TITLE);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         getRequiredFields();
 

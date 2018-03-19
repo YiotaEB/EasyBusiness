@@ -43,7 +43,7 @@ public class SelectProductsFragment extends Fragment {
     public void onResume() {
 
         super.onResume();
-        getActivity().getActionBar().setTitle(TITLE);
+        getActivity().setTitle(TITLE);
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");

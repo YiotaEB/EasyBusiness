@@ -64,6 +64,6 @@ public class ViewCustomersFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(TITLE);
+        getActivity().setTitle(TITLE);
     }
 }

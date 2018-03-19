@@ -118,7 +118,7 @@ public class AddEmployeesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        getActivity().getActionBar().setTitle(TITLE);
+        getActivity().setTitle(TITLE);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         getRequiredFields();

@@ -30,4 +30,9 @@ public class AddSupplyFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(TITLE);
+    }
 }

@@ -81,7 +81,7 @@ public class AddSuppliersFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(TITLE);
+        getActivity().setTitle(TITLE);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         getRequiredFields();
