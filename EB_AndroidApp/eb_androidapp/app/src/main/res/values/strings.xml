@@ -44,7 +44,7 @@
     <string name="Telephone">Telephone</string>
     <string name="Address">Address</string>
     <string name="City">City</string>
-    <string name="Country">Country:</string>
+    <string name="Country">Country</string>
     <string name="Select_Country">Select Country</string>
     <string name="Products">Products</string>
     <string name="Add_Customer">Add Customer</string>
@@ -109,5 +109,13 @@
     <string name="product_price">Price</string>
     <string name="add_supply">Add Supply</string>
     <string name="add_product_inventory">Add Product</string>
+    <string name="delete_item">Delete item</string>
+    <string name="are_you_sure_delete">Are you sure you would like to delete</string>
+    <string name="no">No</string>
+    <string name="delete">Delete</string>
+    <string name="has_been_delete">has been deleted.</string>
+    <string name="date_hired">Date Hired</string>
+    <string name="edit">Edit</string>
+    <string name="to_pdf">To PDF</string>
 
 </resources>

@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.R;
@@ -103,7 +101,7 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
 
                 }
                 else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
-                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
+                    final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

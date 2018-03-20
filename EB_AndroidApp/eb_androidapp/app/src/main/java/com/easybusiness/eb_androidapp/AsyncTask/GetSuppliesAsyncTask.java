@@ -103,7 +103,7 @@ public class GetSuppliesAsyncTask extends AsyncTask<Void,Void,Void> {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
+                            final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                             alertDialog.show();
                         }
                     });

@@ -10,6 +10,7 @@ import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.EmployeeAdapter;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeesFragment;
+import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -82,10 +83,18 @@ public class GetEmployeesAsyncTask extends AsyncTask<Void, Void, Void> {
                         String firstName = jsonObject.getString("Firstname");
                         String lastName = jsonObject.getString("Lastname");
                         String telephone = jsonObject.getString("Telephone");
-                        Users p = new Users(0, "", "", 0, firstName, lastName, 0, "", "", telephone, 0);
+                        int userlevelID = jsonObject.getInt("UserLevelID");
+                        int id = jsonObject.getInt("UserID");
+                        int dateHired = jsonObject.getInt("DateHired");
+                        String city = jsonObject.getString("City");
+                        String address = jsonObject.getString("Address");
+                        int countryID = jsonObject.getInt("CountryID");
+                        String username = jsonObject.getString("Username");
+                        Users p = new Users(id, username, "", userlevelID, firstName, lastName, dateHired, city, address, telephone, countryID);
                         employees.add(p);
                     }
-
+                    MainActivity mainActivity = (MainActivity) activity;
+                    mainActivity.EMPLOYEES_DATA = employees;
                     final ListView employeesListview = activity.findViewById(R.id.employees_list_view);
 //                    String [] items = new String[employees.size()];
 //                    for (int i = 0; i < items.length; i++)
@@ -111,7 +120,7 @@ public class GetEmployeesAsyncTask extends AsyncTask<Void, Void, Void> {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
+                            final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                             alertDialog.show();
                         }
                     });

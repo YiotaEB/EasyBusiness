@@ -61,7 +61,7 @@ public class AsyncTasks {
         return alertDialogBuilder.create();
     }
 
-    public static AlertDialog createUnknownErrorDialog(final Activity activity, String title, String message) {
+    public static AlertDialog createGeneralErrorDialog(final Activity activity, String title, String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);

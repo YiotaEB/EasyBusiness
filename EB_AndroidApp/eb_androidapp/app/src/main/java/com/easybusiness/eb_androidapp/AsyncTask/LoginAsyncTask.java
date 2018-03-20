@@ -14,7 +14,6 @@ import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 import com.easybusiness.eb_androidapp.Utilities.Hash;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -132,7 +131,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                 }
                 //Unknown error
                 else {
-                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
+                    final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

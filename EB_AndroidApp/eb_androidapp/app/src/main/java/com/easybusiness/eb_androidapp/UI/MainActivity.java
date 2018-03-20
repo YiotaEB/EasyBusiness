@@ -18,7 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.easybusiness.eb_androidapp.AsyncTask.GetUserLevelsAsyncTask;
 import com.easybusiness.eb_androidapp.AsyncTask.LogoutAsyncTask;
+import com.easybusiness.eb_androidapp.Entities.UserLevels;
+import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.Model.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddCustomersFragment;
@@ -33,6 +36,8 @@ import com.easybusiness.eb_androidapp.UI.Fragments.ViewProductionFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewRoutesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSalesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSuppliersFragment;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -69,10 +74,14 @@ public class MainActivity extends AppCompatActivity
     private String currentUserFirstname;
     private String currentUserLastname;
     private String currentUserLevelID;
+    public ArrayList<Users> EMPLOYEES_DATA = new ArrayList<>();
+    public ArrayList<UserLevels> USERLEVELS_DATA = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        new GetUserLevelsAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
 
         appMode = (AppMode) getIntent().getSerializableExtra(APP_MODE_STRING);
 
@@ -279,6 +288,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
     }
 
+    //TODO:
     public void setMenuItemChecked(Fragment fragment) {
         switch (appMode) {
             case MODE_ADMIN:
@@ -288,12 +298,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //private Fragment getLastFragment() {
-        //int index = getFragmentManager().getBackStackEntryCount() - 1;
-       // FragmentManager.BackStackEntry backEntry = getFragmentManager().getBackStackEntryAt(index);
-        //String tag = backEntry.getName();
-       // Fragment fragment = getFragmentManager().findFragmentByTag(tag);
-       // return fragment;
-   // }
+    public String getUserLevelNameFromID(int id) {
+        if (USERLEVELS_DATA == null)  return String.valueOf(id);
+        for (int i = 0; i < USERLEVELS_DATA.size(); i++) {
+            if (USERLEVELS_DATA.get(i).getUserLevelID() == id) {
+                return USERLEVELS_DATA.get(i).getUserLevelName();
+            }
+        }
+        return "Missing User Level Name";
+    }
 
 }

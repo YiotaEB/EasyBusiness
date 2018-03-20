@@ -34,9 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -224,7 +222,7 @@ public class AddSuppliersFragment extends Fragment {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
+                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                                 alertDialog.show();
                             }
                         });
@@ -333,7 +331,7 @@ public class AddSuppliersFragment extends Fragment {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
+                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                                 alertDialog.show();
                             }
                         });

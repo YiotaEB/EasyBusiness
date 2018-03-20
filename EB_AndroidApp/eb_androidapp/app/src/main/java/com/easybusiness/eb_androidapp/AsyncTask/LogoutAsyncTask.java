@@ -102,7 +102,7 @@ public class LogoutAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 }
                 //Unknown error
                 else {
-                    final AlertDialog alertDialog = AsyncTasks.createUnknownErrorDialog(activity, title, message);
+                    final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

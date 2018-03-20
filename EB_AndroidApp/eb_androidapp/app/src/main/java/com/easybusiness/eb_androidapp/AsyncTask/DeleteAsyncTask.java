@@ -2,15 +2,18 @@ package com.easybusiness.eb_androidapp.AsyncTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.easybusiness.eb_androidapp.Entities.UserLevels;
 import com.easybusiness.eb_androidapp.R;
+import com.easybusiness.eb_androidapp.UI.LoginActivity;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -30,17 +33,49 @@ Uri.Builder builder = new Uri.Builder()
             String query = builder.build().getEncodedQuery();
  */
 
-public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
+public class DeleteAsyncTask extends AsyncTask<Void,Void,Void> {
 
+    private String entityName;
+    private int itemID = -1;
+    private String itemName;
+    private static final String entityEndpoint = "Delete";
     private String query;
     private String responseData;
     private Activity activity;
     private View view;
 
-    public GetUserLevelsAsyncTask(String query, Activity activity, View view) {
-        this.query = query;
+    public DeleteAsyncTask(String entityName, int itemID, final String itemName, Activity activity, View view, DialogInterface startingDialog) {
+
+        if (startingDialog != null) {
+            startingDialog.dismiss();
+        }
+
+        this.entityName = entityName;
         this.activity = activity;
         this.view = view;
+        this.itemID = itemID;
+        this.itemName = itemName;
+        final String sessionID = PreferenceManager.getDefaultSharedPreferences(activity).getString(MainActivity.PREFERENCE_SESSIONID, null);
+        if (sessionID == null) {
+            activity.startActivity(new Intent(activity, LoginActivity.class));
+            activity.finish();
+        }
+        if (entityName == null || entityName.isEmpty()) {
+            throw new RuntimeException("Entity name to delete cannot be blank.");
+        }
+        if (itemID < 0) {
+            throw new RuntimeException("Item ID to delete cannot be < 0.");
+        }
+
+        String itemIDName = "ID";
+        if (entityName.equals("Users")) itemIDName = "UserID";
+
+        Uri.Builder builder = new Uri.Builder()
+                .appendQueryParameter(itemIDName, String.valueOf(itemID))
+                .appendQueryParameter("SessionID", sessionID);
+
+        query = builder.build().getEncodedQuery();
+        System.out.println(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), entityName, entityEndpoint) + query);
     }
 
     @Override
@@ -49,7 +84,7 @@ public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
         if (query == null) query = "";
 
         try {
-            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Userlevels", "GetMultiple"));
+            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), entityName, entityEndpoint));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
             byte[] outputBytes = query.getBytes("UTF-8");
@@ -65,7 +100,6 @@ public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
             if (statusCode == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 responseData = AsyncTasks.convertStreamToString(inputStream);
-                System.out.println(responseData);
 
                 JSONObject outterObject = new JSONObject(responseData);
                 final String status = outterObject.getString("Status");
@@ -73,18 +107,12 @@ public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
                 final String message = outterObject.getString("Message");
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                    MainActivity mainActivity = (MainActivity) activity;
-                    JSONArray dataArray = outterObject.getJSONArray("Data");
-                    for (int i = 0; i < dataArray.length(); i++) {
-                        JSONObject jsonObject = dataArray.getJSONObject(i);
-                        int levelid = jsonObject.getInt("UserLevelID");
-                        String levelName = jsonObject.getString("UserLevelName");
-                        int showInt = jsonObject.getInt("Show");
-                        boolean show = false;
-                        if (showInt > 0) show = true;
-                        mainActivity.USERLEVELS_DATA.add(new UserLevels(levelid, levelName, show));
-                    }
-
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, itemName + " " + activity.getString(R.string.has_been_delete), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
                 else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
                     activity.runOnUiThread(new Runnable() {
@@ -95,6 +123,7 @@ public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
                         }
                     });
                 }
+
 
             }
             //CONNECTION ERROR
@@ -107,6 +136,7 @@ public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
                     }
                 });
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
