@@ -122,5 +122,6 @@
     <string name="size">Size</string>
     <string name="productType">Type</string>
     <string name="supplysupplier">Supplier</string>
+    <string name="inventory">Inventory</string>
 
 </resources>

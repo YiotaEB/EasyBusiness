@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -36,7 +37,7 @@ public class ViewEmployeesFragment extends Fragment {
     public static final String TITLE = "Employees";
 
     private SearchView searchView;
-    private ListView employeesListView;
+    public ListView employeesListView;
     private Button addEmployeeBtn;
     private Button refreshButton;
     public static EmployeeAdapter allEmployeesAdapter;
@@ -65,15 +66,16 @@ public class ViewEmployeesFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
                 MainActivity mainActivity = (MainActivity) getActivity();
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_NAME_KEY, mainActivity.EMPLOYEES_DATA.get(i).getFirstname() + " " + mainActivity.EMPLOYEES_DATA.get(i).getLastname());
+                bundle.putInt(ViewEmployeeFragment.EMPLOYEE_ID_KEY, mainActivity.EMPLOYEES_DATA.get(i).getUserID());
+                bundle.putString(ViewEmployeeFragment.EMPLOYEE_FIRSTNAME_KEY, mainActivity.EMPLOYEES_DATA.get(i).getFirstname());
+                bundle.putString(ViewEmployeeFragment.EMPLOYEE_SURNAME_KEY, mainActivity.EMPLOYEES_DATA.get(i).getLastname());
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_POSITION, mainActivity.getUserLevelNameFromID(mainActivity.EMPLOYEES_DATA.get(i).getUserLevelID()));
+                bundle.putInt(ViewEmployeeFragment.EMPLOYEE_POSITION_ID, mainActivity.EMPLOYEES_DATA.get(i).getUserLevelID() - 1);
+                bundle.putInt(ViewEmployeeFragment.EMPLOYEE_COUNTRY_ID, mainActivity.EMPLOYEES_DATA.get(i).getCountryID() - 1);
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_USERNAME, mainActivity.EMPLOYEES_DATA.get(i).getUsername());
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_CITY, mainActivity.EMPLOYEES_DATA.get(i).getCity());
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_ADDRESS, mainActivity.EMPLOYEES_DATA.get(i).getAddress());
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_TELEPHONE, mainActivity.EMPLOYEES_DATA.get(i).getTelephone());
-                //TODO SIMILAR TO POSITIONS, GET THEM FROM DB:
-
-
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_COUNTRY,  String.valueOf(mainActivity.getCountryFromCountryID(mainActivity.EMPLOYEES_DATA.get(i).getCountryID())));
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY");
                 Date date = new Date(mainActivity.EMPLOYEES_DATA.get(i).getDateHired());
@@ -94,7 +96,7 @@ public class ViewEmployeesFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Users", mainActivity.EMPLOYEES_DATA.get(i).getUserID(), mainActivity.EMPLOYEES_DATA.get(i).getFirstname());
+                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Users", mainActivity.EMPLOYEES_DATA.get(i).getUserID(), mainActivity.EMPLOYEES_DATA.get(i).getFirstname(), new ViewEmployeesFragment());
                 dialog.show();
                 return true;
             }

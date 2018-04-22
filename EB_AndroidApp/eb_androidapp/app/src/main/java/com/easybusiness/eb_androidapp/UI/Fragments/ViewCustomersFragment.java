@@ -87,7 +87,7 @@ public class ViewCustomersFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Customers", mainActivity.CUSTOMERS_DATA.get(i).getID(), mainActivity.CUSTOMERS_DATA.get(i).getName());
+                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Customers", mainActivity.CUSTOMERS_DATA.get(i).getID(), mainActivity.CUSTOMERS_DATA.get(i).getName(), new ViewCustomersFragment());
                 dialog.show();
                 return true;
             }

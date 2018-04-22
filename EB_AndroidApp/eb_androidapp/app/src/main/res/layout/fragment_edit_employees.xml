@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.EditEmployeesFragment">
+
+    <ProgressBar
+        android:id="@+id/edit_employees_progress"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/edit_employees_view"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Firstname-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employees_firstname_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_employees_firstname_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:singleLine="true"
+                    android:hint="@string/Firstname"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Lastname-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_employees_lastname_layout"
+                android:layout_below="@+id/employees_firstname_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_employees_lastname_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Lastname"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Username-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_employees_username_layout"
+                android:layout_below="@+id/edit_employees_lastname_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_employees_username_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/username"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Address-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_employees_address_layout"
+                android:layout_below="@+id/edit_employees_username_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_employees_address_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Address"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Telephone-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_employees_telephone_layout"
+                android:layout_below="@+id/edit_employees_address_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_employees_telephone_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Telephone"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--City-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_employees_city_layout"
+                android:layout_below="@+id/edit_employees_telephone_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_employees_city_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/City"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Country-->
+            <TextView
+                android:id="@+id/edit_country_textview"
+                android:text="@string/Select_Country"
+                android:layout_below="@id/edit_employees_city_layout"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/edit_country_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@id/edit_country_textview"
+                android:text="@string/Select_Country" />
+
+            <!--Position-->
+            <TextView
+                android:id="@+id/edit_position_textview"
+                android:text="@string/Select_Position"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/edit_country_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/edit_position_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/edit_position_textview"
+                android:text="@string/Select_Position" />
+
+            <Button
+                android:id="@+id/edit_employees_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:layout_below="@id/edit_position_spinner"
+                android:layout_marginTop="25dp"
+                android:text="@string/save" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

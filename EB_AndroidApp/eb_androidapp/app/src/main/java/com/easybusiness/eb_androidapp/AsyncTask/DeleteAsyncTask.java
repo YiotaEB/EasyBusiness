@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.R;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeesFragment;
 import com.easybusiness.eb_androidapp.UI.LoginActivity;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
@@ -43,6 +45,7 @@ public class DeleteAsyncTask extends AsyncTask<Void,Void,Void> {
     private String responseData;
     private Activity activity;
     private View view;
+    private Fragment sender;
 
     public DeleteAsyncTask(String entityName, int itemID, final String itemName, Activity activity, View view, DialogInterface startingDialog) {
 
@@ -55,6 +58,7 @@ public class DeleteAsyncTask extends AsyncTask<Void,Void,Void> {
         this.view = view;
         this.itemID = itemID;
         this.itemName = itemName;
+        this.sender = sender;
         final String sessionID = PreferenceManager.getDefaultSharedPreferences(activity).getString(MainActivity.PREFERENCE_SESSIONID, null);
         if (sessionID == null) {
             activity.startActivity(new Intent(activity, LoginActivity.class));

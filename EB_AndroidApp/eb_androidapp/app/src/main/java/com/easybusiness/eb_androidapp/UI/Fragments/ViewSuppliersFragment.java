@@ -85,7 +85,7 @@ public class ViewSuppliersFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Suppliers", mainActivity.SUPPLIER_DATA.get(i).getID(), mainActivity.SUPPLIER_DATA.get(i).getName());
+                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Suppliers", mainActivity.SUPPLIER_DATA.get(i).getID(), mainActivity.SUPPLIER_DATA.get(i).getName(), new ViewSuppliersFragment());
                 dialog.show();
                 return true;
             }

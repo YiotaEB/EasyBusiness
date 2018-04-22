@@ -33,6 +33,7 @@ public class ViewInventoryFragment extends Fragment {
 
     private Button viewProducts;
     private Button viewSupplies;
+    private ViewPager pager;
     View v;
     TabLayout tabLayout;
 
@@ -53,7 +54,6 @@ public class ViewInventoryFragment extends Fragment {
 //        tabLayout.addTab(tabLayout.newTab().setText("Supplies"));
 //        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        System.out.println("CREATED INV FRAG!");
 
         return v;
     }
