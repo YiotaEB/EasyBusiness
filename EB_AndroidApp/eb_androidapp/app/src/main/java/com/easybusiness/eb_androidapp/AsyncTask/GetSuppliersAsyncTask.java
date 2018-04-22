@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.easybusiness.eb_androidapp.Entities.Suppliers;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.SupplierAdapter;
+import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,6 +84,9 @@ public class GetSuppliersAsyncTask extends AsyncTask<Void,Void,Void> {
                         Suppliers p = new Suppliers(0, name, 0, " ", telephone, "");
                         suppliers.add(p);
                     }
+
+                    MainActivity mainActivity = (MainActivity) activity;
+                    mainActivity.SUPPLIER_DATA = suppliers;
 
                     final ListView supplierListview = activity.findViewById(R.id.supplier_List_View);
                     String [] items = new String[suppliers.size()];

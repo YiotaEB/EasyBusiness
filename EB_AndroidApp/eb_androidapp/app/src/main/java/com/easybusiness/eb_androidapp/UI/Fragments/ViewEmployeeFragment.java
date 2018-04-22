@@ -1,21 +1,19 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
-import android.bluetooth.le.AdvertiseData;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
+
 
 import com.easybusiness.eb_androidapp.R;
 
-import java.security.acl.LastOwnerException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,7 +68,7 @@ public class ViewEmployeeFragment extends Fragment {
         usernameTextview = v.findViewById(R.id.viewEmployee_username_textview);
         cityTextview = v.findViewById(R.id.viewEmployee_city_textview);
         addressTextview = v.findViewById(R.id.viewEmployee_address_textview);
-        countryTextview = v.findViewById(R.id.viewEmployee_address_textview);
+        countryTextview = v.findViewById(R.id.viewEmployee_country_textview);
         dateHiredTextview = v.findViewById(R.id.viewEmployee_datehired_textview);
         nameTextview = v.findViewById(R.id.viewEmployee_name);
         telephoneTextview = v.findViewById(R.id.viewEmployee_telephone_textview);

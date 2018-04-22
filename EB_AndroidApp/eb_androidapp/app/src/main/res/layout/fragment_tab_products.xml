@@ -15,7 +15,7 @@
             android:layout_height="35dp">
 
             <SearchView
-                android:id="@+id/products_searchview"
+                android:id="@+id/products_search_view"
                 android:background="@color/lightGray"
                 android:layout_width="0dp"
                 android:layout_weight="9"
@@ -23,9 +23,23 @@
 
             </SearchView>
 
+            <Button
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:id="@+id/refresh_products"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/ic_refresh_black_24dp" />
+
+            <Button
+                android:id="@+id/print_products_list_btn"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/ic_local_printshop_black_24dp" />
+
 
             <ImageButton
-                android:id="@+id/addProduct"
+                android:id="@+id/addProductButton"
                 android:src="@drawable/ic_add_box_black_48dp"
                 android:tint="@color/darkGreen"
                 android:background="?android:selectableItemBackground"

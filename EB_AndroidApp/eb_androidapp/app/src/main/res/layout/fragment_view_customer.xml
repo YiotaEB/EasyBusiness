@@ -1,0 +1,190 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewCustomerFragment">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/viewCustomer_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="4dp"
+        >
+
+        <RelativeLayout
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/viewCustomer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:text="NAME + SURNAME"
+                />
+
+            <ScrollView
+                android:layout_marginTop="20dp"
+                android:id="@+id/viewCustomer_ScrollView"
+                android:layout_below="@id/viewCustomer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <!--TELEPHONE-->
+                    <LinearLayout
+                        android:id="@+id/viewCustomer_TelephoneLayout"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="@string/Telephone"
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginLeft="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="7"
+                            android:id="@+id/viewCustomer_telephone_textview"
+                            android:clickable="true"
+                            android:text="TELEPHONE" />
+
+                    </LinearLayout>
+
+
+                    <!--CITY-->
+                    <LinearLayout
+                        android:id="@+id/viewCustomer_CityLayout"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/viewCustomer_TelephoneLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="@string/City"
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginLeft="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="7"
+                            android:id="@+id/viewCustomer_city_textview"
+                            android:clickable="true"
+                            android:text="CITY" />
+
+                    </LinearLayout>
+
+                    <!--ADDRESS-->
+                    <LinearLayout
+                        android:id="@+id/viewCustomer_AddressLayout"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/viewCustomer_CityLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="@string/Address"
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginLeft="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="7"
+                            android:id="@+id/viewCustomer_address_textview"
+                            android:clickable="true"
+                            android:text="ADDRESS" />
+
+                    </LinearLayout>
+
+                    <!--COUNTRY-->
+                    <LinearLayout
+                        android:id="@+id/viewCustomer_CountryLayout"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/viewCustomer_AddressLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="@string/Country"
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginLeft="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="7"
+                            android:id="@+id/viewCustomer_country_textview"
+                            android:clickable="true"
+                            android:text="COUNTRY" />
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/viewCustomer_layoutButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/viewCustomer_editButton"
+            android:text="@string/edit"
+            android:background="@color/colorOpposite"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/viewCustomer_ToPDFButton"
+            android:text="@string/to_pdf"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

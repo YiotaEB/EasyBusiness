@@ -36,7 +36,7 @@ public class ViewEmployeesFragment extends Fragment {
     public static final String TITLE = "Employees";
 
     private SearchView searchView;
-    private ListView employeesListview;
+    private ListView employeesListView;
     private Button addEmployeeBtn;
     private Button refreshButton;
     public static EmployeeAdapter allEmployeesAdapter;
@@ -54,13 +54,13 @@ public class ViewEmployeesFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_view_employees, container, false);
 
-        employeesListview = v.findViewById(R.id.employees_list_view);
+        employeesListView = v.findViewById(R.id.employees_list_view);
         searchView = v.findViewById(R.id.employees_search_view);
         addEmployeeBtn = v.findViewById(R.id.add_employees_btn);
         refreshButton = v.findViewById(R.id.refresh_employees);
 
         //VIEW (Short click)
-        employeesListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        employeesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
@@ -88,7 +88,7 @@ public class ViewEmployeesFragment extends Fragment {
         });
 
         //DELETE (Long click)
-        employeesListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        employeesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -124,9 +124,9 @@ public class ViewEmployeesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                employeesListview.setAdapter(allEmployeesAdapter);
+                employeesListView.setAdapter(allEmployeesAdapter);
 
-                final EmployeeAdapter adapter = (EmployeeAdapter) employeesListview.getAdapter();
+                final EmployeeAdapter adapter = (EmployeeAdapter) employeesListView.getAdapter();
                 ArrayList<Users> searchedUsers = new ArrayList<>();
                 System.out.println("ADAPTER SIZE: " + adapter.getCount());
                 for (int i = 0; i < adapter.getCount(); i++) {
@@ -144,7 +144,7 @@ public class ViewEmployeesFragment extends Fragment {
                     }
                 }
                 final EmployeeAdapter newAdapter = new EmployeeAdapter(getActivity(), searchedUsers);
-                employeesListview.setAdapter(newAdapter);
+                employeesListView.setAdapter(newAdapter);
                 return true;
             }
         });

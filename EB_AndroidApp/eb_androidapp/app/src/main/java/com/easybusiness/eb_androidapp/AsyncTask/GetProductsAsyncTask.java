@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.ProductAdapter;
+import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -84,6 +85,8 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
                         products.add(p);
                     }
 
+                    MainActivity mainActivity = (MainActivity) activity;
+                    mainActivity.PRODUCT_DATA = products;
 
                     String [] items = new String[products.size()];
                     for (int i = 0; i < items.length; i++)

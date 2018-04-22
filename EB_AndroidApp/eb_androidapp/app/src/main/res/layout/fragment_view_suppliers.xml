@@ -18,6 +18,15 @@
         android:text="Supplier List:"/>
 
     <Button
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:id="@+id/refresh_suppliers"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="11dp"
+        android:layout_toLeftOf="@id/print_supplier_list_btn"
+        android:background="@drawable/ic_refresh_black_24dp" />
+
+    <Button
         android:id="@+id/print_supplier_list_btn"
         android:layout_width="43dp"
         android:layout_height="43dp"

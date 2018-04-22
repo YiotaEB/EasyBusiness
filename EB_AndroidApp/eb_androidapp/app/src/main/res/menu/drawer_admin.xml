@@ -41,6 +41,16 @@
             android:icon="@drawable/ic_group_black_24dp"
             android:title="@string/admin_nav_employees" />
 
+        <item
+            android:id="@+id/users_nav_routes"
+            android:icon="@drawable/ic_local_shipping_black_24dp"
+            android:title="@string/users_nav_routes" />
+
+        <item
+            android:id="@+id/users_nav_delivery_stock"
+            android:icon="@drawable/ic_store_mall_directory_black_24dp"
+            android:title="@string/users_nav_delivery_stock" />
+
     </group>
 
 </menu>

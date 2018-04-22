@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.easybusiness.eb_androidapp.Entities.Customers;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.CustomerAdapter;
+import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -84,7 +85,10 @@ public class GetCustomersAsyncTask extends AsyncTask<Void,Void,Void> {
                         customers.add(p);
                     }
 
-                    final ListView customersListview = activity.findViewById(R.id.customer_list_view);
+                    MainActivity mainActivity = (MainActivity) activity;
+                    mainActivity.CUSTOMERS_DATA = customers;
+
+                    final ListView customersListview = activity.findViewById(R.id.customer_List_view);
                     String [] items = new String[customers.size()];
                     for (int i = 0; i < items.length; i++)
                         items[i] = customers.get(i).getName();

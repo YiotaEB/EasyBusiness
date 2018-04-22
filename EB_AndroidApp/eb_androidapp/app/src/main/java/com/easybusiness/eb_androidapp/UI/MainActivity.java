@@ -20,6 +20,10 @@ import android.widget.TextView;
 
 import com.easybusiness.eb_androidapp.AsyncTask.GetUserLevelsAsyncTask;
 import com.easybusiness.eb_androidapp.AsyncTask.LogoutAsyncTask;
+import com.easybusiness.eb_androidapp.Entities.Customers;
+import com.easybusiness.eb_androidapp.Entities.Products;
+import com.easybusiness.eb_androidapp.Entities.Suppliers;
+import com.easybusiness.eb_androidapp.Entities.Supplies;
 import com.easybusiness.eb_androidapp.Entities.UserLevels;
 import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.Model.AppMode;
@@ -74,6 +78,10 @@ public class MainActivity extends AppCompatActivity
     private String currentUserFirstname;
     private String currentUserLastname;
     private String currentUserLevelID;
+    public ArrayList<Customers> CUSTOMERS_DATA = new ArrayList<>();
+    public ArrayList<Suppliers> SUPPLIER_DATA = new ArrayList<>();
+    public ArrayList<Supplies> SUPPLY_DATA = new ArrayList<>();
+    public ArrayList<Products> PRODUCT_DATA = new ArrayList<>();
     public ArrayList<Users> EMPLOYEES_DATA = new ArrayList<>();
     public ArrayList<UserLevels> USERLEVELS_DATA = new ArrayList<>();
 
