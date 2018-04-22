@@ -69,7 +69,7 @@ public class ViewCustomersFragment extends Fragment {
                 bundle.putString(ViewCustomerFragment.CUSTOMER_ADDRESS, mainActivity.CUSTOMERS_DATA.get(i).getAddress());
                 bundle.putString(ViewCustomerFragment.CUSTOMER_TELEPHONE, mainActivity.CUSTOMERS_DATA.get(i).getTelephone());
                 //TODO Customers Products take from the DB
-                bundle.putString(ViewCustomerFragment.CUSTOMER_COUNTRY, String.valueOf(mainActivity.CUSTOMERS_DATA.get(i).getCountryID()));
+                bundle.putString(ViewCustomerFragment.CUSTOMER_COUNTRY, mainActivity.getCountryFromCountryID(mainActivity.CUSTOMERS_DATA.get(i).getCountryID()));
                 //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY");
 
                 Fragment newFragment = new ViewCustomerFragment();

@@ -43,6 +43,7 @@ public class EmployeeAdapter extends ArrayAdapter<Users> {
         final TextView employeeAdapterTelephone= view.findViewById(R.id.employee_adapter_telephone);
 
 
+
         //set TextViews
         employeeAdapterId.setText(String.valueOf(position+1));
         employeeAdapterFirstName.setText(employeeList.get(position).getFirstname());

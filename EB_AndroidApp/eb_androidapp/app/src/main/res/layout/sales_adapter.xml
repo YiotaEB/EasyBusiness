@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/sales_adapter_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_alignParentStart="true"
+        android:text="100"/>
+
+    <TextView
+        android:id="@+id/sales_adapter_customer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_toRightOf="@+id/sales_adapter_id"
+        android:layout_marginLeft="20dp"
+        android:text="Cutomer"/>
+
+    <TextView
+        android:id="@+id/sales_adapter_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/darkGray"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:text="$250"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp" />
+
+
+
+
+</RelativeLayout>

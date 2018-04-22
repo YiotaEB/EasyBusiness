@@ -2,6 +2,7 @@ package com.easybusiness.eb_androidapp.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.easybusiness.eb_androidapp.AsyncTask.GetCountriesAsyncTask;
 import com.easybusiness.eb_androidapp.AsyncTask.GetUserLevelsAsyncTask;
 import com.easybusiness.eb_androidapp.AsyncTask.LogoutAsyncTask;
+import com.easybusiness.eb_androidapp.Entities.Countries;
 import com.easybusiness.eb_androidapp.Entities.Customers;
 import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.Entities.Suppliers;
@@ -78,18 +81,24 @@ public class MainActivity extends AppCompatActivity
     private String currentUserFirstname;
     private String currentUserLastname;
     private String currentUserLevelID;
+
+
     public ArrayList<Customers> CUSTOMERS_DATA = new ArrayList<>();
     public ArrayList<Suppliers> SUPPLIER_DATA = new ArrayList<>();
     public ArrayList<Supplies> SUPPLY_DATA = new ArrayList<>();
     public ArrayList<Products> PRODUCT_DATA = new ArrayList<>();
     public ArrayList<Users> EMPLOYEES_DATA = new ArrayList<>();
     public ArrayList<UserLevels> USERLEVELS_DATA = new ArrayList<>();
+    public ArrayList<Countries> COUNTRY_DATA = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         new GetUserLevelsAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
+        //Get Countries
+        new GetCountriesAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
 
         appMode = (AppMode) getIntent().getSerializableExtra(APP_MODE_STRING);
 
@@ -314,6 +323,16 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return "Missing User Level Name";
+    }
+
+    public String getCountryFromCountryID(int id) {
+        if (COUNTRY_DATA == null)  return String.valueOf(id);
+        for (int i = 0; i < COUNTRY_DATA.size(); i++) {
+            if (COUNTRY_DATA.get(i).getID()==id) {
+                return COUNTRY_DATA.get(i).getName();
+            }
+        }
+        return "Missing Country Name";
     }
 
 }

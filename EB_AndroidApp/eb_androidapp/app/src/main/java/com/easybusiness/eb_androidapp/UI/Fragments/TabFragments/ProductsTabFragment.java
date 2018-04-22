@@ -103,7 +103,6 @@ public class ProductsTabFragment extends Fragment {
             }
         });
 
-
         return v;
     }
 

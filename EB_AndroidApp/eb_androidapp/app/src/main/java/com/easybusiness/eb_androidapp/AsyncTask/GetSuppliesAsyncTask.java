@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.easybusiness.eb_androidapp.Entities.Supplies;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.SuppliesAdapter;
+import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,6 +84,9 @@ public class GetSuppliesAsyncTask extends AsyncTask<Void,Void,Void> {
                         Supplies p = new Supplies(0, name, 0, quantity, 0);
                         supplies.add(p);
                     }
+
+                    MainActivity mainActivity = (MainActivity) activity;
+                    mainActivity.SUPPLY_DATA = supplies;
 
                     final ListView suppliesListview = activity.findViewById(R.id.suppliesList);
                     String [] items = new String[supplies.size()];

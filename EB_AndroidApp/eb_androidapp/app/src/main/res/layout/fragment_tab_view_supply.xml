@@ -4,15 +4,17 @@
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_margin="10dp"
-    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ViewProductTabFragment">
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ViewSupplyTabFragment">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/viewProduct_cardview"
+        android:id="@+id/viewSupply_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@color/white"
         card_view:cardCornerRadius="4dp"
         >
+
+
 
         <RelativeLayout
             android:padding="15dp"
@@ -20,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/viewProduct_name"
+                android:id="@+id/viewSupply_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Base.TextAppearance.AppCompat.Title"
@@ -31,8 +33,8 @@
 
             <ScrollView
                 android:layout_marginTop="20dp"
-                android:id="@+id/viewProduct_ScrollView"
-                android:layout_below="@id/viewProduct_name"
+                android:id="@+id/viewSupply_ScrollView"
+                android:layout_below="@id/viewSupply_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -41,13 +43,39 @@
                     android:layout_height="wrap_content">
 
 
-                    <!--Price-->
+                    <!--Supplier-->
                     <LinearLayout
-                        android:id="@+id/viewProduct_PriceLayout"
+                        android:id="@+id/viewSupply_SupplierLayout"
                         android:orientation="horizontal"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="@string/supplysupplier"
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginLeft="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="7"
+                            android:id="@+id/viewSupply_supplier_textview"
+                            android:clickable="true"
+                            android:text="Supplier" />
+
+                    </LinearLayout>
+
+                    <!--Price-->
+                    <LinearLayout
+                        android:id="@+id/viewSupply_PriceLayout"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/viewSupply_SupplierLayout">
 
                         <TextView
                             android:text="@string/price"
@@ -60,7 +88,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="0dp"
                             android:layout_weight="7"
-                            android:id="@+id/viewProduct_price_textview"
+                            android:id="@+id/viewSupply_price_textview"
                             android:clickable="true"
                             android:text="PRICE" />
 
@@ -69,9 +97,9 @@
 
                     <!--Quantity-->
                     <LinearLayout
-                        android:id="@+id/viewProduct_QuantityLayout"
+                        android:id="@+id/viewSupply_QuantityLayout"
                         android:orientation="horizontal"
-                        android:layout_below="@id/viewProduct_PriceLayout"
+                        android:layout_below="@id/viewSupply_PriceLayout"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -87,61 +115,9 @@
                             android:layout_height="wrap_content"
                             android:layout_width="0dp"
                             android:layout_weight="7"
-                            android:id="@+id/viewProduct_quantity_textview"
+                            android:id="@+id/viewSupply_quantity_textview"
                             android:clickable="true"
                             android:text="QUANTITY" />
-
-                    </LinearLayout>
-
-                    <!--Size-->
-                    <LinearLayout
-                        android:id="@+id/viewProduct_SizeLayout"
-                        android:orientation="horizontal"
-                        android:layout_below="@id/viewProduct_QuantityLayout"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:text="@string/size"
-                            android:layout_width="0dp"
-                            android:layout_weight="3"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_marginLeft="30dp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:layout_weight="7"
-                            android:id="@+id/viewProduct_size_textview"
-                            android:clickable="true"
-                            android:text="SIZE" />
-
-                    </LinearLayout>
-
-                    <!--Product Type-->
-                    <LinearLayout
-                        android:id="@+id/viewProduct_TypeLayout"
-                        android:orientation="horizontal"
-                        android:layout_below="@id/viewProduct_SizeLayout"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:text="@string/productType"
-                            android:layout_width="0dp"
-                            android:layout_weight="3"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_marginLeft="30dp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:layout_weight="7"
-                            android:id="@+id/viewProduct_type_textview"
-                            android:clickable="true"
-                            android:text="PRODUCT TYPE" />
 
                     </LinearLayout>
 
@@ -160,12 +136,12 @@
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:id="@+id/viewProduct_layoutButtons"
+        android:id="@+id/viewSupply_layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/viewProduct_editButton"
+            android:id="@+id/viewSupply_editButton"
             android:text="@string/edit"
             android:background="@color/colorOpposite"
             android:textColor="@color/black"
@@ -175,7 +151,7 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/viewProduct_ToPDFButton"
+            android:id="@+id/viewSupply_ToPDFButton"
             android:text="@string/to_pdf"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/white"

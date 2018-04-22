@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ListView;
 
-import com.easybusiness.eb_androidapp.Entities.Products;
+import com.easybusiness.eb_androidapp.Entities.Countries;
 import com.easybusiness.eb_androidapp.R;
-import com.easybusiness.eb_androidapp.UI.Adapters.ProductAdapter;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
@@ -19,18 +17,26 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
+/*
 
-public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
+Sample query builder:
+
+Uri.Builder builder = new Uri.Builder()
+                .appendQueryParameter("username", edit_username.getText().toString())
+                .appendQueryParameter("password", edit_password.getText().toString());
+
+            String query = builder.build().getEncodedQuery();
+ */
+
+public class GetCountriesAsyncTask extends AsyncTask<Void,Void,Void> {
 
     private String query;
     private String responseData;
     private Activity activity;
     private View view;
-    ArrayList<Products> products = null;
 
-    public GetProductsAsyncTask(String query, Activity activity, View view) {
+    public GetCountriesAsyncTask(String query, Activity activity, View view) {
         this.query = query;
         this.activity = activity;
         this.view = view;
@@ -42,7 +48,7 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
         if (query == null) query = "";
 
         try {
-            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Products", "GetMultiple"));
+            URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Countries", "GetMultiple"));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
             byte[] outputBytes = query.getBytes("UTF-8");
@@ -58,6 +64,7 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
             if (statusCode == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 responseData = AsyncTasks.convertStreamToString(inputStream);
+                System.out.println(responseData);
 
                 JSONObject outterObject = new JSONObject(responseData);
                 final String status = outterObject.getString("Status");
@@ -65,44 +72,25 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
                 final String message = outterObject.getString("Message");
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                    products = new ArrayList<>();
+                    MainActivity mainActivity = (MainActivity) activity;
                     JSONArray dataArray = outterObject.getJSONArray("Data");
                     for (int i = 0; i < dataArray.length(); i++) {
                         JSONObject jsonObject = dataArray.getJSONObject(i);
-                        String name = jsonObject.getString("Name");
-                        int quantityInStock = jsonObject.getInt("QuantityInStock");
-                        Products p = new Products(0, name, 0, quantityInStock, 0, 0, 0);
-                        products.add(p);
+                        int id = jsonObject.getInt("ID");
+                        String countryName = jsonObject.getString("Name");
+                        mainActivity.COUNTRY_DATA.add(new Countries(id, countryName));
                     }
-
-                    MainActivity mainActivity = (MainActivity) activity;
-                    mainActivity.PRODUCT_DATA = products;
-
-                    String [] items = new String[products.size()];
-                    for (int i = 0; i < items.length; i++)
-                        items[i] = products.get(i).getName();
-                    final ProductAdapter productAdapter = new ProductAdapter(activity, products);
-
-                    final ListView productsListview = activity.findViewById(R.id.productsList);
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            productsListview.setAdapter(productAdapter);
-                        }
-                    });
-
 
                 }
                 else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
-                    final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
                             alertDialog.show();
                         }
                     });
                 }
-
 
             }
             //CONNECTION ERROR
@@ -115,7 +103,6 @@ public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
                     }
                 });
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,8 +1,10 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
-
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.easybusiness.eb_androidapp.AsyncTask.GetCountriesAsyncTask;
 import com.easybusiness.eb_androidapp.R;
+import com.easybusiness.eb_androidapp.UI.MainActivity;
+
+import static com.easybusiness.eb_androidapp.UI.MainActivity.PREFERENCE_SESSIONID;
 
 
 /**
@@ -96,6 +102,9 @@ public class ViewEmployeeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        new GetCountriesAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(PREFERENCE_SESSIONID, ""), getActivity(), v).execute();
+
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

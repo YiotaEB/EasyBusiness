@@ -72,7 +72,9 @@ public class ViewEmployeesFragment extends Fragment {
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_ADDRESS, mainActivity.EMPLOYEES_DATA.get(i).getAddress());
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_TELEPHONE, mainActivity.EMPLOYEES_DATA.get(i).getTelephone());
                 //TODO SIMILAR TO POSITIONS, GET THEM FROM DB:
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_COUNTRY, String.valueOf(mainActivity.EMPLOYEES_DATA.get(i).getCountryID()));
+
+
+                bundle.putString(ViewEmployeeFragment.EMPLOYEE_COUNTRY,  String.valueOf(mainActivity.getCountryFromCountryID(mainActivity.EMPLOYEES_DATA.get(i).getCountryID())));
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY");
                 Date date = new Date(mainActivity.EMPLOYEES_DATA.get(i).getDateHired());
                 bundle.putString(ViewEmployeeFragment.EMPLOYEE_DATEHIRED, simpleDateFormat.format(date));
@@ -116,6 +118,7 @@ public class ViewEmployeesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getActivity().setTitle(TITLE);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

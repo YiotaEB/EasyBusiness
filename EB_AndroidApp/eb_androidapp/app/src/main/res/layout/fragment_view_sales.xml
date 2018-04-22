@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewSalesFragment">
+
+    <TextView
+        android:id="@+id/sales_list_text"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="Sales" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sales_list_text"
+        android:id="@+id/addSaleButton"
+        android:text="Add Sale"
+        android:layout_centerHorizontal="true"/>
+
 
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"
-        android:id="@+id/graph" />
+        android:layout_below="@+id/addSaleButton"
+        android:id="@+id/graph"/>
 
-</android.support.constraint.ConstraintLayout>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/daily_sales_list_view"
+        android:layout_below="@id/graph">
+
+    </ListView>
+
+</RelativeLayout>
