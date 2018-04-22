@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
     private String currentUserFirstname;
     private String currentUserLastname;
-    private String currentUserLevelID;
+    public static String currentUserLevelID;
 
 
     public ArrayList<Customers> CUSTOMERS_DATA = new ArrayList<>();
@@ -91,11 +91,21 @@ public class MainActivity extends AppCompatActivity
     public ArrayList<UserLevels> USERLEVELS_DATA = new ArrayList<>();
     public ArrayList<Countries> COUNTRY_DATA = new ArrayList<>();
 
+    private View navHeader;
+    private TextView nameTextView;
+    public static TextView userLevelTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        currentUserFirstname = sharedPreferences.getString(PREFERENCE_FIRSTNAME, "None");
+        currentUserLastname = sharedPreferences.getString(PREFERENCE_LASTNAME, "None");
+        currentUserLevelID = sharedPreferences.getString(PREFERENCE_USERLEVELID, "-1");
+
+        //Get User Levels
         new GetUserLevelsAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
         //Get Countries
         new GetCountriesAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
@@ -124,14 +134,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //----------------------
-        View navHeader = navigationView.getHeaderView(0);
-        TextView nameTextView = navHeader.findViewById(R.id.drawer_name);
-        TextView userLevelTextView = navHeader.findViewById(R.id.drawer_userlevel);
+        navHeader = navigationView.getHeaderView(0);
+        nameTextView = navHeader.findViewById(R.id.drawer_name);
+        userLevelTextView = navHeader.findViewById(R.id.drawer_userlevel);
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        currentUserFirstname = sharedPreferences.getString(PREFERENCE_FIRSTNAME, "None");
-        currentUserLastname = sharedPreferences.getString(PREFERENCE_LASTNAME, "None");
-        currentUserLevelID = sharedPreferences.getString(PREFERENCE_USERLEVELID, "-1");
+
         String nameString = currentUserFirstname + " " + currentUserLastname;
         nameTextView.setText(nameString);
         userLevelTextView.setText(currentUserLevelID); //TODO Actual name of user level.
