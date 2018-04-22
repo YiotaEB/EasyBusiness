@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
     private EditText passwordEditText;
     private View progressView;
     private View loginFormView;
+    private Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,15 +79,11 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
         progressView = findViewById(R.id.login_progress);
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
-        if (loginTask != null) {
-            return;
-        }
+
+//        if (loginTask != null) {
+//            return;
+//        }
 
         // Reset errors.
         usernameEditText.setError(null);
@@ -142,10 +139,8 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
+    public void showProgress(final boolean show) {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -172,6 +167,14 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
             progressView.setVisibility(show ? View.VISIBLE : View.GONE);
             loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+
+        mEmailSignInButton.setEnabled(true);
+
+    }
+
+
+    public View getProgressView() {
+        return progressView;
     }
 
 }

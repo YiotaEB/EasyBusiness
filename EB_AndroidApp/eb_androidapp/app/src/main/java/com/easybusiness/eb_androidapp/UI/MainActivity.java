@@ -105,11 +105,6 @@ public class MainActivity extends AppCompatActivity
         currentUserLastname = sharedPreferences.getString(PREFERENCE_LASTNAME, "None");
         currentUserLevelID = sharedPreferences.getString(PREFERENCE_USERLEVELID, "-1");
 
-        //Get User Levels
-        new GetUserLevelsAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
-        //Get Countries
-        new GetCountriesAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
-
         appMode = (AppMode) getIntent().getSerializableExtra(APP_MODE_STRING);
 
         switch (appMode) {
@@ -141,7 +136,13 @@ public class MainActivity extends AppCompatActivity
 
         String nameString = currentUserFirstname + " " + currentUserLastname;
         nameTextView.setText(nameString);
-        userLevelTextView.setText(currentUserLevelID); //TODO Actual name of user level.
+        userLevelTextView.setText(currentUserLevelID);
+
+        //Get User Levels
+        new GetUserLevelsAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
+        //Get Countries
+        new GetCountriesAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
+
 
         showDefaultFragment();
 

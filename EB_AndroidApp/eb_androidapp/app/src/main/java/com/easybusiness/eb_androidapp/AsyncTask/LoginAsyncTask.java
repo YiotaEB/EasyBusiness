@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.easybusiness.eb_androidapp.Model.AppMode;
 import com.easybusiness.eb_androidapp.R;
+import com.easybusiness.eb_androidapp.UI.LoginActivity;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 import com.easybusiness.eb_androidapp.Utilities.Hash;
 
@@ -38,6 +40,9 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+
+        final ProgressBar progressBar = (ProgressBar) ((LoginActivity)activity).getProgressView();
+        progressBar.setVisibility(View.VISIBLE);
 
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             return null;
@@ -75,10 +80,11 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                 final String status = outterObject.getString("Status");
                 final String title = outterObject.getString("Title");
                 final String message = outterObject.getString("Message");
-                final String firstName = outterObject.getString("Firstname");
-                final String lastName = outterObject.getString("Lastname");
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
+
+                    final String firstName = outterObject.getString("Firstname");
+                    final String lastName = outterObject.getString("Lastname");
                     String sessionID = outterObject.getString("SessionID");
                     int userLevelID = outterObject.getInt("UserLevelID");
 
@@ -114,6 +120,8 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            ((LoginActivity) activity).showProgress(false);
+                            progressBar.setVisibility(View.VISIBLE);
                         }
                     });
                     alertDialogBuilder.setNegativeButton(R.string.abort, new DialogInterface.OnClickListener() {
@@ -131,7 +139,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                 }
                 //Unknown error
                 else {
-                    final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
+                    final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
