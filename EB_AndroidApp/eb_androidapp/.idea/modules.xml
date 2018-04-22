@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\hfnov\Desktop\Easy Business\EB_AndroidApp\eb_androidapp\app\app.iml" filepath="C:\Users\hfnov\Desktop\Easy Business\EB_AndroidApp\eb_androidapp\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/eb_androidapp.iml" filepath="$PROJECT_DIR$/eb_androidapp.iml" />
+      <module fileurl="file://C:\Users\hfnov\Desktop\Easy Business\EB_AndroidApp\eb_androidapp\eb_androidapp.iml" filepath="C:\Users\hfnov\Desktop\Easy Business\EB_AndroidApp\eb_androidapp\eb_androidapp.iml" />
     </modules>
   </component>
 </project>

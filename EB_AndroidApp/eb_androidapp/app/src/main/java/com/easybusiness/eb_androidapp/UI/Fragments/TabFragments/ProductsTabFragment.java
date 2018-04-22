@@ -110,6 +110,8 @@ public class ProductsTabFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        getActivity().setTitle(TITLE);
+
         searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

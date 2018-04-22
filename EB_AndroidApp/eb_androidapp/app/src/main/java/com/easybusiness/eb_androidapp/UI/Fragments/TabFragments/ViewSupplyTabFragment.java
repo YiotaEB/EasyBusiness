@@ -78,6 +78,8 @@ public class ViewSupplyTabFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        getActivity().setTitle(title);
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             title = bundle.getString(SUPPLY_NAME_KEY);

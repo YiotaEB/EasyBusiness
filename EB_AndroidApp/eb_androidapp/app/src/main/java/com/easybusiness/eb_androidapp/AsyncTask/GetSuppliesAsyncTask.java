@@ -79,9 +79,12 @@ public class GetSuppliesAsyncTask extends AsyncTask<Void,Void,Void> {
                     JSONArray dataArray = outterObject.getJSONArray("Data");
                     for (int i = 0; i < dataArray.length(); i++) {
                         JSONObject jsonObject = dataArray.getJSONObject(i);
+                        int id = jsonObject.getInt("ID");
                         String name = jsonObject.getString("Name");
+                        int supplierID = jsonObject.getInt("SupplierID");
+                        double price = jsonObject.getDouble("Price");
                         int quantity = jsonObject.getInt("Quantity");
-                        Supplies p = new Supplies(0, name, 0, quantity, 0);
+                        Supplies p = new Supplies(id, name, supplierID, quantity, (float) price);
                         supplies.add(p);
                     }
 

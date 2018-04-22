@@ -82,6 +82,8 @@ public class ViewProductTabFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        getActivity().setTitle(title);
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             title = bundle.getString(PRODUCT_NAME_KEY);
