@@ -5,15 +5,27 @@
  */
 package eb_managementapp.UI.Forms;
 
+import Utilities.HTTPConnection;
 import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import eb_managementapp.Entities.Countries;
+import eb_managementapp.Entities.Userlevels;
+import eb_managementapp.Entities.Users;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -23,9 +35,39 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
     //final variables:
     final String TITLE = "Easy Business - Company Details";
+    
+    private ArrayList<Users> usersList;
+    private ArrayList<Countries> countriesList;
+    private ArrayList<Userlevels> positionsList;
 
     public CompanyDetailsForm() {
         initComponents();
+        
+        //COUNTRIES SELECTION COMBOBOX
+        try {
+            //Select Statment to choose countries
+            ConnectionCreator connectionCreator = new ConnectionCreator();
+            Connection connection = connectionCreator.connect();
+
+            Statement getCountryStatement = connection.createStatement();
+            String qr = " Select Name From Countries";
+            ResultSet rs = getCountryStatement.executeQuery(qr);
+
+            countryComboBox.removeAllItems();
+            // iterate through the java resultset
+            while (rs.next()) {
+                String typeName = rs.getString("Name");
+                countryComboBox.addItem(typeName);
+            }
+            getCountryStatement.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        getCountries();
+        getPositions();
+        
         this.setTitle(TITLE);
         setVisible(true);
     }
@@ -56,11 +98,6 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         emailTextField = new javax.swing.JTextField();
         addressLabel = new javax.swing.JLabel();
         addressTextField = new javax.swing.JTextField();
-        companyWorkingHoursLabel = new javax.swing.JPanel();
-        startTimeLabel = new javax.swing.JLabel();
-        startTimeCompoBox = new javax.swing.JComboBox<>();
-        finishTimeLabel1 = new javax.swing.JLabel();
-        finishTimeCompoBox = new javax.swing.JComboBox<>();
         buttonPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
@@ -228,45 +265,6 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
                 .addGap(140, 140, 140))
         );
 
-        companyWorkingHoursLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Company Working Hours", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-
-        startTimeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        startTimeLabel.setText("Start Time:");
-
-        startTimeCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        finishTimeLabel1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        finishTimeLabel1.setText("Finish Time:");
-
-        finishTimeCompoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        javax.swing.GroupLayout companyWorkingHoursLabelLayout = new javax.swing.GroupLayout(companyWorkingHoursLabel);
-        companyWorkingHoursLabel.setLayout(companyWorkingHoursLabelLayout);
-        companyWorkingHoursLabelLayout.setHorizontalGroup(
-            companyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(companyWorkingHoursLabelLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(startTimeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(startTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addComponent(finishTimeLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(finishTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        companyWorkingHoursLabelLayout.setVerticalGroup(
-            companyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(companyWorkingHoursLabelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(companyWorkingHoursLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(startTimeLabel)
-                    .addComponent(startTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(finishTimeLabel1)
-                    .addComponent(finishTimeCompoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         cancelButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -288,7 +286,7 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(431, Short.MAX_VALUE)
                 .addComponent(cancelButton)
                 .addGap(18, 18, 18)
                 .addComponent(nextButton)
@@ -297,10 +295,11 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(nextButton))
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -309,21 +308,20 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(companyDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(companyWorkingHoursLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(companyDetails, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(companyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(companyDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(companyWorkingHoursLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -400,6 +398,203 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_faxTextFieldActionPerformed
 
+    private void addUser() {
+
+        //Get field values:
+        String firstname = employeeNameTextField.getText().toString();
+        String lastname = lastNameTextField.getText().toString();
+        String username = firstname.charAt(0) + lastname;
+        String city = employeeCityTextField.getText().toString();
+        String address = employeeCityTextField.getText().toString();
+        String telephone = employeeTelephoneTextField.getText().toString();
+        int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
+        int positionID = positionsList.get(positionComboBox.getSelectedIndex()).getUserLevelID();
+        Date dateHiredDate = dateOfHirePicker.getDate();
+        int dateHired = dateHiredDate.getDate(); //TODO Show correct day.
+
+        //Make the call:
+        String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create", 
+                "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username + 
+                        "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID +
+                        "&UserLevelID=" + positionID + "&Password= " + "&DateHired=" + dateHired
+        );
+        try {
+            JSONObject jsonObject = new JSONObject(addUsersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + addUsersJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                //Reset fields:
+                setVisible(true);
+                countryComboBox.setSelectedIndex(0);
+                employeeNameTextField.setText("");
+                lastNameTextField.setText("");
+                employeeCityTextField.setText("");
+                employeeAddressTextField.setText("");
+                employeeTelephoneTextField.setText("");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        getUsers();
+    }
+
+    public void getUsers() {
+        usersList = new ArrayList<>();
+        viewEmployeesButton.setEnabled(false);
+
+        //Get customers from api
+        String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(usersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int userID = currentItem.getInt("UserID");
+                    String username = currentItem.getString("Username");
+                    String firstname = currentItem.getString("Firstname");
+                    String lastname = currentItem.getString("Lastname");
+                    String password = currentItem.getString("Password");
+                    long dateHiredLong = currentItem.getLong("DateHired");
+                    int dateHired = (int) dateHiredLong;
+                    int countryID = currentItem.getInt("CountryID");
+                    String city = currentItem.getString("City");
+                    String telephone = currentItem.getString("Telephone");
+                    String address = currentItem.getString("Address");
+                    int userLevelID = currentItem.getInt("UserLevelID");
+
+                    Users user = new Users(userID, username, password, userLevelID, firstname, lastname, dateHired, city, address, telephone, countryID);
+                    usersList.add(user);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + usersJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel employeesTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        employeesTableModel.addColumn("ID");
+        employeesTableModel.addColumn("Username");
+        employeesTableModel.addColumn("Firstname");
+        employeesTableModel.addColumn("Lastname");
+        employeesTableModel.addColumn("Date Hired");
+        employeesTableModel.addColumn("Telephone");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < usersList.size(); i++) {
+            Object[] currentRow = {
+                usersList.get(i).getUserID(),
+                usersList.get(i).getUsername(),
+                usersList.get(i).getFirstname(),
+                usersList.get(i).getLastname(),
+                Users.DATE_FORMAT.format(new Date(usersList.get(i).getDateHired())),
+                usersList.get(i).getTelephone(),};
+            employeesTableModel.addRow(currentRow);
+        }
+        employeesTable.setModel(employeesTableModel);
+        viewEmployeesButton.setEnabled(true);
+    }
+
+    public void getCountries() {
+        countriesList = new ArrayList<>();
+        countryComboBox.removeAllItems();
+
+        //Get customers from api
+        String countriesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Countries", "GetMultiple", "");
+        try {
+            JSONObject jsonObject = new JSONObject(countriesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+
+                    Countries c = new Countries(id, name);
+                    countriesList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + countriesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < countriesList.size(); i++) {
+            countryComboBox.addItem(countriesList.get(i).getName());
+        }
+
+    }
+
+    public void getPositions() {
+        positionsList = new ArrayList<>();
+        positionComboBox.removeAllItems();
+
+        //Get customers from api
+        String positionsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Userlevels", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(positionsJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("UserLevelID");
+                    String name = currentItem.getString("UserLevelName");
+                    boolean show;
+                    int showInt = currentItem.getInt("Show");
+                    if (showInt > 0) {
+                        show = true;
+                    } else {
+                        show = false;
+                    }
+                    if (show) {
+                        Userlevels u = new Userlevels(id, name, show);
+                        positionsList.add(u);
+                    }
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + positionsJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < positionsList.size(); i++) {
+            positionComboBox.addItem(positionsList.get(i).getUserLevelName());
+        }
+
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -448,18 +643,13 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
     private javax.swing.JTextField companyNameTextField;
     private javax.swing.JComboBox<String> companyTypeComboBox;
     private javax.swing.JLabel companyTypeLabel;
-    private javax.swing.JPanel companyWorkingHoursLabel;
     private javax.swing.JComboBox<String> countryComboBox;
     private javax.swing.JLabel countryLabel;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailTextField;
     private javax.swing.JLabel faxLabel;
     private javax.swing.JTextField faxTextField;
-    private javax.swing.JComboBox<String> finishTimeCompoBox;
-    private javax.swing.JLabel finishTimeLabel1;
     private javax.swing.JButton nextButton;
-    private javax.swing.JComboBox<String> startTimeCompoBox;
-    private javax.swing.JLabel startTimeLabel;
     private javax.swing.JLabel telephoneLabel;
     private javax.swing.JTextField telephoneTextField;
     // End of variables declaration//GEN-END:variables

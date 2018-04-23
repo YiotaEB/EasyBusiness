@@ -5,24 +5,33 @@
  */
 package eb_managementapp.UI.Forms;
 
+import Utilities.HTTPConnection;
 import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.addProductsForm;
+import eb_managementapp.Entities.Productsizes;
+import eb_managementapp.Entities.Producttypes;
+import eb_managementapp.Entities.Unittypes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class AddProductTypeForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AddType
-     */
+    final String TITLE = "Add Type";
+    
+    private ArrayList<Producttypes> productTypeList;
+    
     public AddProductTypeForm() {
         initComponents();
 
-        final String TITLE = "Add Type";
+        
 
         setTitle(TITLE);
         setVisible(true);
@@ -152,27 +161,92 @@ public class AddProductTypeForm extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
 
-        ConnectionCreator connectionCreator = new ConnectionCreator();
-        Connection connection = connectionCreator.connect();
+//        ConnectionCreator connectionCreator = new ConnectionCreator();
+//        Connection connection = connectionCreator.connect();
+//
+//        String queryInsertProducts = " insert into ProductTypes (Name)"
+//                + "values ('" + nameTypeTextField.getText() + "')";
+//
+//        try {
+//            //Create insert preparedstatement for administrator
+//            PreparedStatement prepareTypeStatement = connection.prepareStatement(queryInsertProducts);
+//            prepareTypeStatement.execute();
+//
+//            showMessageDialog(null, "Type Added -->" + nameTypeTextField.getText());
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AddProductTypeForm.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        setVisible(true);
+//        addProductsForm = new AddProductsForm();
 
-        String queryInsertProducts = " insert into ProductTypes (Name)"
-                + "values ('" + nameTypeTextField.getText() + "')";
-
-        try {
-            //Create insert preparedstatement for administrator
-            PreparedStatement prepareTypeStatement = connection.prepareStatement(queryInsertProducts);
-            prepareTypeStatement.execute();
-
-            showMessageDialog(null, "Type Added -->" + nameTypeTextField.getText());
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddProductTypeForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        setVisible(true);
-        addProductsForm = new AddProductsForm();
+        addType();
     }//GEN-LAST:event_addButtonActionPerformed
 
+    private void addType() {
+
+        //Get field values:
+        String name = nameTypeTextField.getText();
+
+        //Make the call:
+        String addTypeJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Producttypes", "Create",
+                "SessionID=aa&ID=1&Name=" + name );
+        try {
+            JSONObject jsonObject = new JSONObject(addTypeJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + addTypeJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                //Reset fields:
+                setVisible(true);
+                nameTypeTextField.setText("");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        getProductType();
+    }
+
+
+    public void getProductType() {
+        productTypeList = new ArrayList<>();
+
+        //Get sizes from api
+        String sizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Producttypes", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(sizesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int typeID = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+
+                    Producttypes productTypes = new Producttypes(typeID, name);
+                    productTypeList.add(productTypes);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + sizesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
     /**
      * @param args the command line arguments
      */

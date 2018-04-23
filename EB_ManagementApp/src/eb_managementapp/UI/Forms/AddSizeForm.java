@@ -5,29 +5,36 @@
  */
 package eb_managementapp.UI.Forms;
 
+import Utilities.HTTPConnection;
 import eb_managementapp.DB.ConnectionCreator;
-import static eb_managementapp.EB_ManagementApp.addProductsForm;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import eb_managementapp.Entities.Unittypes;
+import eb_managementapp.Entities.Productsizes;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class AddSizeForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AddSize
-     */
-    public AddSizeForm() {
-        initComponents();
-        final String TITLE = "Add Size";
+    final String TITLE = "Add Size";
 
+    private ArrayList<Productsizes> productSize;
+    private ArrayList<Unittypes> unitTypeList;
+
+    public AddSizeForm() {
+    initComponents();
+//
+//        //UNIT TYPE SELECTION COMBOBOX
         try {
+            //Select Statment to choose unitType
             //SELECT From ProductType
             ConnectionCreator connectionCreator = new ConnectionCreator();
             Connection connection = connectionCreator.connect();
@@ -50,6 +57,7 @@ public class AddSizeForm extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        getUnitTypes();
 
         setTitle(TITLE);
         setVisible(true);
@@ -185,30 +193,138 @@ public class AddSizeForm extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
 
-        ConnectionCreator connectionCreator = new ConnectionCreator();
-        Connection connection = connectionCreator.connect();
+//        ConnectionCreator connectionCreator = new ConnectionCreator();
+//        Connection connection = connectionCreator.connect();
+//
+//        String queryInsertSize = " insert into ProductSizes (Name,UnitTypeID)"
+//                + "values ('" + sizeTextField.getText()+typeComboBox.getItemAt(typeComboBox.getSelectedIndex()) + "',"+(typeComboBox.getSelectedIndex()+1)+")";
+//
+//        try {
+//            //Create insert preparedstatement for administrator
+//            PreparedStatement prepareSizeStatement = connection.prepareStatement(queryInsertSize);
+//            prepareSizeStatement.execute();
+//
+//            showMessageDialog(null, "Size Added -->" + sizeTextField.getText());
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AddSizeForm.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        setVisible(false);
+//        addProductsForm = new AddProductsForm();
 
-        String queryInsertSize = " insert into ProductSizes (Name,UnitTypeID)"
-                + "values ('" + sizeTextField.getText()+typeComboBox.getItemAt(typeComboBox.getSelectedIndex()) + "',"+(typeComboBox.getSelectedIndex()+1)+")";
-
-        try {
-            //Create insert preparedstatement for administrator
-            PreparedStatement prepareSizeStatement = connection.prepareStatement(queryInsertSize);
-            prepareSizeStatement.execute();
-
-            showMessageDialog(null, "Size Added -->" + sizeTextField.getText());
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddSizeForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        setVisible(false);
-        addProductsForm = new AddProductsForm();
+        addSize();
     }//GEN-LAST:event_addButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void addSize() {
+
+        //Get field values:
+        String name = sizeTextField.getText().toString() + unitTypeList.get(typeComboBox.getSelectedIndex()).getName();
+        int unitTypeID = unitTypeList.get(typeComboBox.getSelectedIndex()).getID();
+
+        //Make the call:
+        String addSizeJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "Create",
+                "SessionID=aa&ID=1&Name=" + name + "&UnitTypeID=" + unitTypeID
+        );
+        try {
+            JSONObject jsonObject = new JSONObject(addSizeJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + addSizeJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                //Reset fields:
+                setVisible(true);
+                typeComboBox.setSelectedIndex(0);
+                sizeTextField.setText("");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        getProductSize();
+    }
+
+
+    public void getProductSize() {
+        productSize = new ArrayList<>();
+
+        //Get sizes from api
+        String sizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(sizesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int sizeID = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+                    int unitTypeID = currentItem.getInt("UnitTypeID");
+
+                    Productsizes productSizes = new Productsizes(sizeID, name, unitTypeID);
+                    productSize.add(productSizes);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + sizesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    
+    public void getUnitTypes() {
+        unitTypeList = new ArrayList<>();
+        typeComboBox.removeAllItems();
+
+        //Get customers from api
+        String unitTypeJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Unittypes", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(unitTypeJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+
+                    Unittypes c = new Unittypes(id, name);
+                    unitTypeList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + unitTypeJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < unitTypeList.size(); i++) {
+            typeComboBox.addItem(unitTypeList.get(i).getName());
+        }
+
+    }
+
+
+        /**
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -220,16 +336,24 @@ public class AddSizeForm extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddSizeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSizeForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddSizeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSizeForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddSizeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSizeForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddSizeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSizeForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

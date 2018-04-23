@@ -69,9 +69,9 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
             if (statusCode == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 String responseData = AsyncTasks.convertStreamToString(inputStream);
-
+                System.out.println("RESPONSE DATA " + responseData);
                 JSONObject outterObject = new JSONObject(responseData);
-                System.out.println(responseData);
+
                 final String status = outterObject.getString("Status");
 
                 if (status.equals(AsyncTasks.RESPONSE_OK)) {
