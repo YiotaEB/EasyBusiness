@@ -66,20 +66,8 @@ public class ViewEmployeesFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
                 MainActivity mainActivity = (MainActivity) getActivity();
-                bundle.putInt(ViewEmployeeFragment.EMPLOYEE_ID_KEY, mainActivity.EMPLOYEES_DATA.get(i).getUserID());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_FIRSTNAME_KEY, mainActivity.EMPLOYEES_DATA.get(i).getFirstname());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_SURNAME_KEY, mainActivity.EMPLOYEES_DATA.get(i).getLastname());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_POSITION, mainActivity.getUserLevelNameFromID(mainActivity.EMPLOYEES_DATA.get(i).getUserLevelID()));
-                bundle.putInt(ViewEmployeeFragment.EMPLOYEE_POSITION_ID, mainActivity.EMPLOYEES_DATA.get(i).getUserLevelID() - 1);
-                bundle.putInt(ViewEmployeeFragment.EMPLOYEE_COUNTRY_ID, mainActivity.EMPLOYEES_DATA.get(i).getCountryID() - 1);
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_USERNAME, mainActivity.EMPLOYEES_DATA.get(i).getUsername());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_CITY, mainActivity.EMPLOYEES_DATA.get(i).getCity());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_ADDRESS, mainActivity.EMPLOYEES_DATA.get(i).getAddress());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_TELEPHONE, mainActivity.EMPLOYEES_DATA.get(i).getTelephone());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_COUNTRY,  String.valueOf(mainActivity.getCountryFromCountryID(mainActivity.EMPLOYEES_DATA.get(i).getCountryID())));
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY");
-                Date date = new Date(mainActivity.EMPLOYEES_DATA.get(i).getDateHired());
-                bundle.putString(ViewEmployeeFragment.EMPLOYEE_DATEHIRED, simpleDateFormat.format(date));
+                Users user = mainActivity.EMPLOYEES_DATA.get(i);
+                bundle.putSerializable(ViewEmployeeFragment.EMPLOYEE_KEY, user);
 
                 Fragment newFragment = new ViewEmployeeFragment();
                 newFragment.setArguments(bundle);

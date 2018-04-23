@@ -16,8 +16,11 @@ import android.widget.Toast;
 
 
 import com.easybusiness.eb_androidapp.AsyncTask.GetCountriesAsyncTask;
+import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
+
+import java.util.Date;
 
 import static com.easybusiness.eb_androidapp.UI.MainActivity.PREFERENCE_SESSIONID;
 
@@ -29,42 +32,20 @@ public class ViewEmployeeFragment extends Fragment {
 
     public static final String TAG = "ViewEmployeeFragment";
 
-    public static final String EMPLOYEE_ID_KEY = "employee-id";
-    public static final String EMPLOYEE_FIRSTNAME_KEY = "employee-firstname";
-    public static final String EMPLOYEE_SURNAME_KEY = "employee-surname";
-    public static final String EMPLOYEE_POSITION = "employee-position";
-    public static final String EMPLOYEE_POSITION_ID = "employee-position-id";
-    public static final String EMPLOYEE_CITY = "employee-city";
-    public static final String EMPLOYEE_ADDRESS = "employee-address";
-    public static final String EMPLOYEE_COUNTRY = "employee-country";
-    public static final String EMPLOYEE_COUNTRY_ID = "employee-country-id";
-    public static final String EMPLOYEE_DATEHIRED = "employee-datehired";
-    public static final String EMPLOYEE_USERNAME = "employee-username";
-    public static final String EMPLOYEE_TELEPHONE = "employee-telephone";
+    public static final String EMPLOYEE_KEY = "employee-key";
 
     private View v;
     private String title = "Employee";
-    private int id = 0;
-    private String username = "";
-    private String firstname = "";
-    private String surname = "";
-    private String dateHired = "";
-    private String city = "";
-    private String address = "";
-    private String country = "";
-    private int countryID = -1;
-    private String position = "";
-    private int positionID = -1;
-    private String telephone = "";
+    public static Users user;
 
-    private TextView positionTextview;
-    private TextView usernameTextview;
-    private TextView cityTextview;
-    private TextView addressTextview;
-    private TextView countryTextview;
-    private TextView dateHiredTextview;
-    private TextView nameTextview;
-    private TextView telephoneTextview;
+    public static TextView positionTextview;
+    public static TextView usernameTextview;
+    public static TextView cityTextview;
+    public static TextView addressTextview;
+    public static TextView countryTextview;
+    public static TextView dateHiredTextview;
+    public static TextView nameTextview;
+    public static TextView telephoneTextview;
 
     private Button editButton;
     private Button toPDFButton;
@@ -96,19 +77,7 @@ public class ViewEmployeeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(EMPLOYEE_ID_KEY, id);
-                bundle.putString(EMPLOYEE_FIRSTNAME_KEY, firstname);
-                bundle.putString(EMPLOYEE_SURNAME_KEY, surname);
-                bundle.putString(EMPLOYEE_USERNAME, username);
-                bundle.putString(EMPLOYEE_POSITION, position);
-                bundle.putString(EMPLOYEE_CITY, city);
-                bundle.putString(EMPLOYEE_ADDRESS, address);
-                bundle.putString(EMPLOYEE_COUNTRY, country);
-                bundle.putString(EMPLOYEE_DATEHIRED, dateHired);
-                bundle.putString(EMPLOYEE_TELEPHONE, telephone);
-                bundle.putInt(EMPLOYEE_COUNTRY_ID, countryID);
-                bundle.putInt(EMPLOYEE_POSITION_ID, positionID);
-
+                bundle.putSerializable(EMPLOYEE_KEY, user);
 
                 Fragment newFragment = new EditEmployeesFragment();
                 newFragment.setArguments(bundle);
@@ -134,35 +103,33 @@ public class ViewEmployeeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        new GetCountriesAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(PREFERENCE_SESSIONID, ""), getActivity(), v).execute();
+        final String SESSION_ID = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(PREFERENCE_SESSIONID, "");
+
+        new GetCountriesAsyncTask("SessionID=" + SESSION_ID, getActivity(), v).execute();
 
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            id = bundle.getInt(EMPLOYEE_ID_KEY);
-            title = bundle.getString(EMPLOYEE_FIRSTNAME_KEY) + " " + bundle.getString(EMPLOYEE_SURNAME_KEY);
-            username = bundle.getString(EMPLOYEE_USERNAME);
-            firstname = bundle.getString(EMPLOYEE_FIRSTNAME_KEY);
-            surname = bundle.getString(EMPLOYEE_SURNAME_KEY);
-            position = bundle.getString(EMPLOYEE_POSITION);
-            city = bundle.getString(EMPLOYEE_CITY);
-            address = bundle.getString(EMPLOYEE_ADDRESS);
-            country = bundle.getString(EMPLOYEE_COUNTRY);
-            countryID = bundle.getInt(EMPLOYEE_COUNTRY_ID);
-            positionID = bundle.getInt(EMPLOYEE_POSITION_ID);
-            dateHired = bundle.getString(EMPLOYEE_DATEHIRED);
-            telephone = bundle.getString(EMPLOYEE_TELEPHONE);
+            user = (Users) bundle.getSerializable(EMPLOYEE_KEY);
+            title = user.getFirstname() + " " + user.getLastname();
         }
 
+        MainActivity activity = ((MainActivity) getActivity());
+        String positionName = activity.getUserLevelNameFromID(user.getUserLevelID());
+        String countryName = activity.getCountryFromCountryID(user.getCountryID());
+        String formattedDate = MainActivity.DATE_FORMAT.format(new Date(user.getDateHired()));
+
         getActivity().setTitle(title);
-        usernameTextview.setText(username);
-        positionTextview.setText(position);
-        cityTextview.setText(city);
-        addressTextview.setText(address);
-        countryTextview.setText(country);
-        dateHiredTextview.setText(dateHired);
+        usernameTextview.setText(user.getUsername());
+        positionTextview.setText(positionName);
+        cityTextview.setText(user.getCity());
+        addressTextview.setText(user.getAddress());
+        countryTextview.setText(countryName);
+        dateHiredTextview.setText(formattedDate);
         nameTextview.setText(title);
-        telephoneTextview.setText(telephone);
+        telephoneTextview.setText(user.getTelephone());
+
+        //new GetEmployeeAsyncTask("UserID=" + user.getUserID() + "&SessionID=" + SESSION_ID, getActivity(), v).execute();
 
     }
 

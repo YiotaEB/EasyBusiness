@@ -44,6 +44,7 @@ import com.easybusiness.eb_androidapp.UI.Fragments.ViewRoutesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSalesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSuppliersFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -342,5 +343,7 @@ public class MainActivity extends AppCompatActivity
         }
         return "Missing Country Name";
     }
+
+    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("ddMM-YYYY");
 
 }

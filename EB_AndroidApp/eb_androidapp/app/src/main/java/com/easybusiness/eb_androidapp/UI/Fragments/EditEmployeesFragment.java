@@ -54,18 +54,7 @@ public class EditEmployeesFragment extends Fragment {
     private ArrayList<UserLevels> positions;
 
     private String title = TITLE;
-    private int id = 0;
-    private String username = "";
-    private String firstname = "";
-    private String surname = "";
-    private String dateHired = "";
-    private String city = "";
-    private String address = "";
-    private String country = "";
-    private int countryID = -1;
-    private String position = "";
-    private int positionID = -1;
-    private String telephone = "";
+    private Users user;
 
     private View v;
     private EditText firstnameEditText;
@@ -107,23 +96,8 @@ public class EditEmployeesFragment extends Fragment {
         //Give values to the fields:
         Bundle bundle = getArguments();
         if (bundle != null) {
-            id = bundle.getInt(ViewEmployeeFragment.EMPLOYEE_ID_KEY);
-            title = bundle.getString(ViewEmployeeFragment.EMPLOYEE_FIRSTNAME_KEY) + " " + bundle.getString(ViewEmployeeFragment.EMPLOYEE_SURNAME_KEY);
-            firstname = bundle.getString(ViewEmployeeFragment.EMPLOYEE_FIRSTNAME_KEY);
-            surname = bundle.getString(ViewEmployeeFragment.EMPLOYEE_SURNAME_KEY);
-            username = bundle.getString(ViewEmployeeFragment.EMPLOYEE_USERNAME);
-            position = bundle.getString(ViewEmployeeFragment.EMPLOYEE_POSITION);
-            positionID = bundle.getInt(ViewEmployeeFragment.EMPLOYEE_POSITION_ID);
-            countryID = bundle.getInt(ViewEmployeeFragment.EMPLOYEE_COUNTRY_ID);
-            city = bundle.getString(ViewEmployeeFragment.EMPLOYEE_CITY);
-            address = bundle.getString(ViewEmployeeFragment.EMPLOYEE_ADDRESS);
-            country = bundle.getString(ViewEmployeeFragment.EMPLOYEE_COUNTRY);
-            dateHired = bundle.getString(ViewEmployeeFragment.EMPLOYEE_DATEHIRED);
-            telephone = bundle.getString(ViewEmployeeFragment.EMPLOYEE_TELEPHONE);
+            user = (Users) bundle.getSerializable(ViewEmployeeFragment.EMPLOYEE_KEY);
         }
-
-        System.out.println("POSITION ID --> " + positionID);
-        System.out.println("COUNTRY ID --> " + countryID);
 
         return v;
     }
@@ -141,7 +115,6 @@ public class EditEmployeesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (checkInput()) {
-                    Timestamp timestamp = new Timestamp(year, month, day, 0, 0, 0, 0);
                     new EditEmployeeAsyncTask(
                             getActivity(),
                             view,
@@ -152,12 +125,12 @@ public class EditEmployeesFragment extends Fragment {
         });
 
         //Set values for the inputs:
-        firstnameEditText.setText(firstname);
-        lastnameEditText.setText(surname);
-        usernameEditText.setText(username);
-        addressEditText.setText(address);
-        telephoneEditText.setText(telephone);
-        cityEditText.setText(city);
+        firstnameEditText.setText(user.getFirstname());
+        lastnameEditText.setText(user.getLastname());
+        usernameEditText.setText(user.getUsername());
+        addressEditText.setText(user.getAddress());
+        telephoneEditText.setText(user.getTelephone());
+        cityEditText.setText(user.getCity());
     }
 
     private boolean checkInput() {
@@ -298,7 +271,7 @@ public class EditEmployeesFragment extends Fragment {
                         public void run() {
                             Spinner countriesSpinner = view.findViewById(R.id.edit_country_spinner);
                             countriesSpinner.setAdapter(adapter);
-                            countriesSpinner.setSelection(countryID);
+                            countriesSpinner.setSelection(user.getCountryID() - 1);
                         }
                     });
 
@@ -412,7 +385,7 @@ public class EditEmployeesFragment extends Fragment {
                         public void run() {
                             Spinner positionsSpinner = view.findViewById(R.id.edit_position_spinner);
                             positionsSpinner.setAdapter(adapter);
-                            positionsSpinner.setSelection(positionID);
+                            positionsSpinner.setSelection(user.getUserLevelID() - 1);
                         }
                     });
 
@@ -445,25 +418,26 @@ public class EditEmployeesFragment extends Fragment {
 
         public EditEmployeeAsyncTask(Activity activity, View view, String sessionID) {
 
+            System.out.println("COUNTRIES SIZE: " + countries.size());
+
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("UserID", "0")
+                    .appendQueryParameter("UserID", String.valueOf(user.getUserID()))
                     .appendQueryParameter("SessionID", sessionID)
-                    .appendQueryParameter("Username", username)
-                    .appendQueryParameter("Password", " ")
-                    .appendQueryParameter("UserLevelID", String.valueOf(position))
-                    .appendQueryParameter("Firstname", firstname)
-                    .appendQueryParameter("Lastname", surname)
-                    .appendQueryParameter("DateHired", String.valueOf(dateHired).substring(0, String.valueOf(dateHired).length() - 4))
-                    .appendQueryParameter("City", city)
-                    .appendQueryParameter("Address", address)
-                    .appendQueryParameter("Telephone", telephone)
-                    .appendQueryParameter("CountryID", String.valueOf(countryID));
+                    .appendQueryParameter("Username", String.valueOf(usernameEditText.getText()))
+                    .appendQueryParameter("Password", " ") //TODO
+                    .appendQueryParameter("UserLevelID", String.valueOf(user.getUserLevelID()))
+                    .appendQueryParameter("Firstname", String.valueOf(firstnameEditText.getText()))
+                    .appendQueryParameter("Lastname", String.valueOf(lastnameEditText.getText()))
+                    .appendQueryParameter("DateHired", String.valueOf(user.getDateHired()).substring(0, String.valueOf(user.getDateHired()).length() - 4))
+                    .appendQueryParameter("City", String.valueOf(cityEditText.getText()))
+                    .appendQueryParameter("Address", String.valueOf(addressEditText.getText()))
+                    .appendQueryParameter("Telephone", String.valueOf(telephoneEditText.getText()))
+                    .appendQueryParameter("CountryID", String.valueOf(countries.get(countrySpinner.getSelectedItemPosition()).getID()));
 
             this.query = builder.build().getEncodedQuery();
             System.out.println(query);
             this.activity = activity;
             this.view = view;
-            countries = new ArrayList<>();
         }
 
         @Override
@@ -472,7 +446,7 @@ public class EditEmployeesFragment extends Fragment {
 
 
             try {
-                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Users", "Create"));
+                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Users", "Update"));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 byte[] outputBytes = query.getBytes("UTF-8");
@@ -499,7 +473,7 @@ public class EditEmployeesFragment extends Fragment {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(activity, "Employee '" + firstname + "' created.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(activity, "Employee '" + user.getFirstname() + "' saved.", Toast.LENGTH_LONG).show();
                                 FragmentManager fm = getActivity().getSupportFragmentManager();
                                 fm.popBackStack();
                                 if (view != null) {
