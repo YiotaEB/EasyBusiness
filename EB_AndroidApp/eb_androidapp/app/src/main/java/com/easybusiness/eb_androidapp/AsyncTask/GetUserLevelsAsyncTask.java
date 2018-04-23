@@ -86,13 +86,14 @@ public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
                     }
 
                     //Set the user level's name in the navigation view
+                    String currentUserLevelName = "";
                     for (int i = 0; i < mainActivity.USERLEVELS_DATA.size(); i++) {
                         if (mainActivity.USERLEVELS_DATA.get(i).getUserLevelID() == Integer.parseInt(MainActivity.currentUserLevelID)) {
-                            String currentUserLevelName = mainActivity.USERLEVELS_DATA.get(i).getUserLevelName();
-                            MainActivity.userLevelTextView.setText(currentUserLevelName);
+                            currentUserLevelName = mainActivity.USERLEVELS_DATA.get(i).getUserLevelName();
                             break;
                         }
                     }
+                    MainActivity.userLevelTextView.setText(currentUserLevelName);
 
 
                 }
