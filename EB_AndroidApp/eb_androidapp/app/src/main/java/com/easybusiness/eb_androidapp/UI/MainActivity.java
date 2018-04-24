@@ -344,6 +344,6 @@ public class MainActivity extends AppCompatActivity
         return "Missing Country Name";
     }
 
-    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("ddMM-YYYY");
+    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-YYYY");
 
 }

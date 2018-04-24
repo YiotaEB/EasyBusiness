@@ -419,6 +419,7 @@ public class EditEmployeesFragment extends Fragment {
         public EditEmployeeAsyncTask(Activity activity, View view, String sessionID) {
 
             System.out.println("COUNTRIES SIZE: " + countries.size());
+            System.out.println("Date Hired: " + user.getDateHired());
 
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("UserID", String.valueOf(user.getUserID()))
@@ -428,7 +429,7 @@ public class EditEmployeesFragment extends Fragment {
                     .appendQueryParameter("UserLevelID", String.valueOf(user.getUserLevelID()))
                     .appendQueryParameter("Firstname", String.valueOf(firstnameEditText.getText()))
                     .appendQueryParameter("Lastname", String.valueOf(lastnameEditText.getText()))
-                    .appendQueryParameter("DateHired", String.valueOf(user.getDateHired()).substring(0, String.valueOf(user.getDateHired()).length() - 4))
+                    .appendQueryParameter("DateHired", String.valueOf(user.getDateHired()))
                     .appendQueryParameter("City", String.valueOf(cityEditText.getText()))
                     .appendQueryParameter("Address", String.valueOf(addressEditText.getText()))
                     .appendQueryParameter("Telephone", String.valueOf(telephoneEditText.getText()))

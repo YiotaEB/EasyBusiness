@@ -9,7 +9,7 @@
 
     <ProgressBar
         android:id="@+id/edit_employees_progress"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
 
     <ScrollView
         android:id="@+id/edit_employees_view"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

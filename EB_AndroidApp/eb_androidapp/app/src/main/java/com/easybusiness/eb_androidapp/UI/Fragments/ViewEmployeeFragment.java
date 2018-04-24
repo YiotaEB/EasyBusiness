@@ -1,8 +1,11 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -11,15 +14,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.AsyncTask.GetCountriesAsyncTask;
 import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 
 import static com.easybusiness.eb_androidapp.UI.MainActivity.PREFERENCE_SESSIONID;
@@ -38,14 +50,17 @@ public class ViewEmployeeFragment extends Fragment {
     private String title = "Employee";
     public static Users user;
 
-    public static TextView positionTextview;
-    public static TextView usernameTextview;
-    public static TextView cityTextview;
-    public static TextView addressTextview;
-    public static TextView countryTextview;
-    public static TextView dateHiredTextview;
-    public static TextView nameTextview;
-    public static TextView telephoneTextview;
+    private View layout;
+    private ProgressBar progressBar;
+
+    private TextView positionTextview;
+    private TextView usernameTextview;
+    private TextView cityTextview;
+    private TextView addressTextview;
+    private TextView countryTextview;
+    private TextView dateHiredTextview;
+    private TextView nameTextview;
+    private TextView telephoneTextview;
 
     private Button editButton;
     private Button toPDFButton;
@@ -60,6 +75,9 @@ public class ViewEmployeeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_view_employee, container, false);
+
+        layout = v.findViewById(R.id.view_single_employee_layout);
+        progressBar = v.findViewById(R.id.view_single_employee_progress);
 
         positionTextview = v.findViewById(R.id.viewEmployee_position_textview);
         usernameTextview = v.findViewById(R.id.viewEmployee_username_textview);
@@ -129,7 +147,138 @@ public class ViewEmployeeFragment extends Fragment {
         nameTextview.setText(title);
         telephoneTextview.setText(user.getTelephone());
 
-        //new GetEmployeeAsyncTask("UserID=" + user.getUserID() + "&SessionID=" + SESSION_ID, getActivity(), v).execute();
+        System.out.println("----------- ON RESUME CALLED ------------");
+
+        new GetSingleEmployeeAsyncTask(getActivity(), "UserID=" + user.getUserID() + "&SessionID=" + SESSION_ID).execute();
+
+    }
+
+    private class GetSingleEmployeeAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private String responseData;
+        private String query;
+        private Activity activity;
+
+        public GetSingleEmployeeAsyncTask(Activity activity, String query) {
+            this.query = query;
+            this.activity = activity;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    layout.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            });
+
+
+            if (query == null) query = "";
+
+            try {
+                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Users", "GetByID"));
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                byte[] outputBytes = query.getBytes("UTF-8");
+                urlConnection.setRequestMethod("POST");
+                urlConnection.connect();
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(outputBytes);
+                os.close();
+                int statusCode = urlConnection.getResponseCode();
+                urlConnection.disconnect();
+
+                //OK
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    responseData = AsyncTasks.convertStreamToString(inputStream);
+
+                    JSONObject outterObject = new JSONObject(responseData);
+                    System.out.println(responseData);
+
+                    final String status = outterObject.getString("Status");
+                    final String title = outterObject.getString("Title");
+                    final String message = outterObject.getString("Message");
+
+                    if (status.equals(AsyncTasks.RESPONSE_OK)) {
+                        JSONObject jsonObject = outterObject.getJSONObject("Data");
+                        String firstName = jsonObject.getString("Firstname");
+                        String lastName = jsonObject.getString("Lastname");
+                        String telephone = jsonObject.getString("Telephone");
+                        int userlevelID = jsonObject.getInt("UserLevelID");
+                        int id = jsonObject.getInt("UserID");
+                        int dateHired = jsonObject.getInt("DateHired");
+                        String city = jsonObject.getString("City");
+                        String address = jsonObject.getString("Address");
+                        int countryID = jsonObject.getInt("CountryID");
+                        String username = jsonObject.getString("Username");
+
+                        user = new Users(id, username, "", userlevelID, firstName, lastName, dateHired, city, address, telephone, countryID);
+
+                        MainActivity mainActivity = (MainActivity) activity;
+                        final String positionName = mainActivity.getUserLevelNameFromID(userlevelID);
+                        final String countryName = mainActivity.getCountryFromCountryID(countryID);
+                        final String formattedDate = MainActivity.DATE_FORMAT.format(new Date(dateHired));
+
+
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                usernameTextview.setText(user.getUsername());
+                                nameTextview.setText(user.getFirstname() + " " + user.getLastname());
+                                activity.setTitle(user.getFirstname() + " " + user.getLastname());
+                                positionTextview.setText(positionName);
+                                cityTextview.setText(user.getCity());
+                                addressTextview.setText(user.getAddress());
+                                countryTextview.setText(countryName);
+                                dateHiredTextview.setText(formattedDate);
+                                telephoneTextview.setText(user.getTelephone());
+                            }
+                        });
+
+
+                    } else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+                    //CONNECTION ERROR
+                    else {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    layout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+
+            return null;
+
+        }
 
     }
 
