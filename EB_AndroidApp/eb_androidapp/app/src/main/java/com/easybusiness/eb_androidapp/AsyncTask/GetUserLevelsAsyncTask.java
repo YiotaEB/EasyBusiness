@@ -93,7 +93,15 @@ public class GetUserLevelsAsyncTask extends AsyncTask<Void,Void,Void> {
                             break;
                         }
                     }
-                    MainActivity.userLevelTextView.setText(currentUserLevelName);
+
+                    final String userLevelName = currentUserLevelName;
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MainActivity.userLevelTextView.setText(userLevelName);
+                        }
+                    });
 
 
                 }
