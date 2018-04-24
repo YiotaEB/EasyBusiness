@@ -12,6 +12,7 @@ import java.util.Vector;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Suppliers;
+import eb_managementapp.Entities.Suppliersupplies;
 import eb_managementapp.Entities.Supplies;
 import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
@@ -33,15 +34,12 @@ import org.json.JSONObject;
 
 public class SuppliersForm extends javax.swing.JFrame {
 
-
-    
     final String TITLE = "Add Suppliers";
-    
+
     private ArrayList<Suppliers> suppliersList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Supplies> suppliesList;
-    
-
+    private ArrayList<Suppliersupplies> supplierSuppliesList;
 
     public SuppliersForm() {
         initComponents();
@@ -53,7 +51,6 @@ public class SuppliersForm extends javax.swing.JFrame {
 //        suppliesPrice = new Vector<>();
 //        suppliesQuantity = new Vector<>();
 //        columnNames = new Vector<>();
-
         //COUNTRIES SELECTION COMBOBOX
         try {
             //Select Statment to choose countries
@@ -75,7 +72,7 @@ public class SuppliersForm extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //SUPPLIERS SELECTION COMBOBOX
         try {
             //Select Statment to choose countries
@@ -100,6 +97,7 @@ public class SuppliersForm extends javax.swing.JFrame {
 
         getCountries();
         getSuppliers();
+        getSupplierSupplies();
 
         setTitle(TITLE);
         setVisible(true);
@@ -538,7 +536,6 @@ public class SuppliersForm extends javax.swing.JFrame {
 //        suppliersTable.setModel(model);
 //
 //        JTableUtilities.setJTableColumnsWidth(suppliersTable, suppliersTable.getWidth(), 10, 30, 27, 15, 18);
-
         getSuppliers();
     }//GEN-LAST:event_viewSuppliersButtonActionPerformed
 
@@ -646,8 +643,8 @@ public class SuppliersForm extends javax.swing.JFrame {
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
 
         //Make the call:
-        String addSuppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "Create", 
-                "SessionID=aa&ID=1&Name=" + name + "&CountryID=" + countryID  + "&Address=" + address + "&Telephone=" + telephone +  "&City=" + city 
+        String addSuppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "Create",
+                "SessionID=aa&ID=1&Name=" + name + "&CountryID=" + countryID + "&Address=" + address + "&Telephone=" + telephone + "&City=" + city
         );
         try {
             JSONObject jsonObject = new JSONObject(addSuppliersJSON);
@@ -674,7 +671,7 @@ public class SuppliersForm extends javax.swing.JFrame {
 
         getSuppliers();
     }
-    
+
     private void addSupplies() {
 
         //Get field values:
@@ -683,10 +680,9 @@ public class SuppliersForm extends javax.swing.JFrame {
         String price = priceTextField.getText().toString();
         int suppliersID = suppliersList.get(supplierComboBox.getSelectedIndex()).getID();
 
-
         //Make the call:
-        String addSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "Create", 
-                "SessionID=aa&ID=1&Name=" + name + "&SupplierID=" + suppliersID  + "&Quantity=" + quantity + "&Price=" + price 
+        String addSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "Create",
+                "SessionID=aa&ID=1&Name=" + name + "&SupplierID=" + suppliersID + "&Quantity=" + quantity + "&Price=" + price
         );
         try {
             JSONObject jsonObject = new JSONObject(addSuppliesJSON);
@@ -713,8 +709,84 @@ public class SuppliersForm extends javax.swing.JFrame {
         getSupplies();
     }
 
+    public void getSupplierSupplies() {
+        supplierSuppliesList = new ArrayList<>();
+        getSupplies();
+        getSuppliers();
+        viewSuppliersButton.setEnabled(false);
+
+        //Get customers from api
+        String supplierSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliersupplies", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(supplierSuppliesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int supplierSuppliesID = currentItem.getInt("ID");
+                    int supplierID = currentItem.getInt("SupplierID");
+                    int supplyID = currentItem.getInt("SupplyID");
+
+                    Suppliersupplies supplierSupplies = new Suppliersupplies(supplierSuppliesID, supplierID, supplyID);
+                    supplierSuppliesList.add(supplierSupplies);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + supplierSuppliesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel suppliersTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        suppliersTableModel.addColumn("ID");
+        suppliersTableModel.addColumn("Supplier");
+        suppliersTableModel.addColumn("Supplies");
+        suppliersTableModel.addColumn("Price");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < supplierSuppliesList.size(); i++) {
+
+            //Put Supplier Name in the Table
+            String supplierName = "";
+            for (int j = 0; j < suppliersList.size(); j++) {
+                if (suppliersList.get(j).getID() == supplierSuppliesList.get(i).getSupplierID()) {
+                    supplierName = suppliersList.get(j).getName();
+                }
+            }
+
+            //Put Supplies Name in the Table
+            String suppliesName = "";
+            float suppliesPrice = 0;
+            for (int j = 0; j < suppliesList.size(); j++) {
+                if (suppliesList.get(j).getID() == supplierSuppliesList.get(i).getSupplyID()) {
+                    suppliesName = suppliesList.get(j).getName();
+                    
+                }
+            }
+
+            Object[] currentRow = {
+                supplierSuppliesList.get(i).getID(),
+                supplierName,
+                suppliesName,
+            suppliesPrice = suppliesList.get(i).getPrice()};
+            suppliersTableModel.addRow(currentRow);
+        }
+        suppliersTable.setModel(suppliersTableModel);
+        viewSuppliersButton.setEnabled(true);
+    }
+
     public void getSuppliers() {
         suppliersList = new ArrayList<>();
+        getSupplies();
         viewSuppliersButton.setEnabled(false);
 
         //Get customers from api
@@ -748,24 +820,25 @@ public class SuppliersForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        //Create a new model for the table:
-        DefaultTableModel suppliersTableModel = new DefaultTableModel();
-
-        //Add the table columns:
-        suppliersTableModel.addColumn("ID");
-        suppliersTableModel.addColumn("Supplier");
-        suppliersTableModel.addColumn("Supplies");
-        suppliersTableModel.addColumn("Price");
-
-        //Add each item in the list as a row in the table:
-        for (int i = 0; i < suppliersList.size(); i++) {
-            Object[] currentRow = {
-                suppliersList.get(i).getID(),
-                suppliersList.get(i).getName(),};
-            suppliersTableModel.addRow(currentRow);
-        }
-        suppliersTable.setModel(suppliersTableModel);
-        viewSuppliersButton.setEnabled(true);
+//        //Create a new model for the table:
+//        DefaultTableModel suppliersTableModel = new DefaultTableModel();
+//
+//        //Add the table columns:
+//        suppliersTableModel.addColumn("ID");
+//        suppliersTableModel.addColumn("Supplier");
+//        suppliersTableModel.addColumn("Supplies");
+//        suppliersTableModel.addColumn("Price");
+//
+//        //Add each item in the list as a row in the table:
+//        for (int i = 0; i < suppliersList.size(); i++) {
+//
+//            Object[] currentRow = {
+//                suppliersList.get(i).getID(),
+//                suppliersList.get(i).getName(),};
+//            suppliersTableModel.addRow(currentRow);
+//        }
+//        suppliersTable.setModel(suppliersTableModel);
+//        viewSuppliersButton.setEnabled(true);
     }
 
     public void getCountries() {
@@ -804,7 +877,7 @@ public class SuppliersForm extends javax.swing.JFrame {
         }
 
     }
-    
+
     public void getSupplies() {
         suppliesList = new ArrayList<>();
         viewSuppliersButton.setEnabled(false);
@@ -827,7 +900,7 @@ public class SuppliersForm extends javax.swing.JFrame {
                     int supplierID = currentItem.getInt("SupplierID");
                     int quantity = currentItem.getInt("Quantity");
                     float price = currentItem.getFloat("Price");
-                    
+
                     Supplies supplies = new Supplies(suppliesID, name, supplierID, quantity, price);
                     suppliesList.add(supplies);
                 }
@@ -838,58 +911,29 @@ public class SuppliersForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //Create a new model for the table:
-        DefaultTableModel suppliersTableModel = new DefaultTableModel();
-
-        //    Vector<String> supplierNumbers;
-//    Vector<String> supplierNames;
-//    Vector<String> supplierIDs;
-//    Vector<String> suppliesNames;
-//    Vector<String> suppliesPrice;
-//    Vector<String> suppliesQuantity;
-//    Vector<String> columnNames;
-
-
-        //Add the table columns:
-        suppliersTableModel.addColumn("ID");
-        suppliersTableModel.addColumn("Supplier");
-        suppliersTableModel.addColumn("Supplies");
-        suppliersTableModel.addColumn("Price");
-
-        //Add each item in the list as a row in the table:
-        for (int i = 0; i < suppliersList.size(); i++) {
-            Object[] currentRow = {
-                suppliersList.get(i).getID(),
-                suppliersList.get(i).getName(),};
-            suppliersTableModel.addRow(currentRow);
-        }
-        suppliersTable.setModel(suppliersTableModel);
-        viewSuppliersButton.setEnabled(true);
     }
-
-//    
-//    public void updateSuppliersComboBox() {
-//        try {
-//            ConnectionCreator connectionCreator = new ConnectionCreator();
-//            Connection connection = connectionCreator.connect();
-//
-//            Statement getSupplierStatement = connection.createStatement();
-//            String qr2 = " Select ID,Name From Suppliers";
-//            ResultSet rs2 = getSupplierStatement.executeQuery(qr2);
-//
-//            supplierComboBox.removeAllItems();
-//            supplierIDs.clear();
-//            while (rs2.next()) {
-//                supplierIDs.add(rs2.getString("ID"));
-//                supplierComboBox.addItem(rs2.getString("Name"));
-//            }
-//            getSupplierStatement.close();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    //    
+    //    public void updateSuppliersComboBox() {
+    //        try {
+    //            ConnectionCreator connectionCreator = new ConnectionCreator();
+    //            Connection connection = connectionCreator.connect();
+    //
+    //            Statement getSupplierStatement = connection.createStatement();
+    //            String qr2 = " Select ID,Name From Suppliers";
+    //            ResultSet rs2 = getSupplierStatement.executeQuery(qr2);
+    //
+    //            supplierComboBox.removeAllItems();
+    //            supplierIDs.clear();
+    //            while (rs2.next()) {
+    //                supplierIDs.add(rs2.getString("ID"));
+    //                supplierComboBox.addItem(rs2.getString("Name"));
+    //            }
+    //            getSupplierStatement.close();
+    //
+    //        } catch (SQLException ex) {
+    //            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
+    //        }
+    //    }
 
     /**
      * @param args the command line arguments

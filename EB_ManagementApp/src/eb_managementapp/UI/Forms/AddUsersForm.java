@@ -443,7 +443,7 @@ public class AddUsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_dateOfHirePickerActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        System.exit(0);
+       //System.exit(0);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed

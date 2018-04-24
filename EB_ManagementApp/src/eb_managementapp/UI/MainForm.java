@@ -6,8 +6,21 @@
 package eb_managementapp.UI;
 
 import Utilities.HTTPConnection;
+import static eb_managementapp.EB_ManagementApp.addUsersForm;
+import static eb_managementapp.EB_ManagementApp.customersForm;
+import static eb_managementapp.EB_ManagementApp.addSupplierForm;
+import static eb_managementapp.EB_ManagementApp.addSupplierForm;
+import eb_managementapp.Entities.Countries;
+import eb_managementapp.Entities.Customerproducts;
 import eb_managementapp.Entities.Customers;
+import eb_managementapp.Entities.Products;
+import eb_managementapp.Entities.Suppliers;
+import eb_managementapp.Entities.Suppliersupplies;
+import eb_managementapp.Entities.Supplies;
 import eb_managementapp.Entities.Users;
+import eb_managementapp.UI.Forms.CustomersForm;
+import eb_managementapp.UI.Forms.SuppliersForm;
+import eb_managementapp.UI.Forms.AddUsersForm;
 import org.json.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,18 +40,24 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 public class MainForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainForm
-     */
+    private ArrayList<Products> productsList;
+    private ArrayList<Countries> countriesList;
+    private ArrayList<Customers> customersList;
+    private ArrayList<Users> employeesList;
+    private ArrayList<Suppliers> suppliersList;
+    private ArrayList<Supplies> suppliesList;
+    private ArrayList<Customerproducts> customerProductsList;
+     private ArrayList<Suppliersupplies> supplierSuppliesList;
+
     public MainForm() {
         initComponents();
 
         getCustomers();
-        
+        getCustomerProducts();
         getEmployees();
-        
-        
-        
+        getSuppliers();
+        getSupplies();
+        getSupplierSupplies();
 
         customerScrollPanel.setViewportView(customerDetailsTable);
 
@@ -73,9 +92,10 @@ public class MainForm extends javax.swing.JFrame {
         this.setVisible(true);
 
     }
-    
+
     public void getCustomers() {
-        ArrayList<Customers> customersList = new ArrayList<>();
+        customersList = new ArrayList<>();
+        getCountries();
 
         //Get customers from api
         String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "Limit=2&SessionID=aa");
@@ -111,7 +131,7 @@ public class MainForm extends javax.swing.JFrame {
 
         //Create a new model for the table:
         DefaultTableModel customersTableModel = new DefaultTableModel();
-        
+
         //Add the table columns:
         customersTableModel.addColumn("ID");
         customersTableModel.addColumn("Name");
@@ -119,25 +139,175 @@ public class MainForm extends javax.swing.JFrame {
         customersTableModel.addColumn("Address");
         customersTableModel.addColumn("City");
         customersTableModel.addColumn("Country");
-        
+
         //Add each item in the list as a row in the table:
         for (int i = 0; i < customersList.size(); i++) {
-            Object[] currentRow = { 
-                customersList.get(i).getID(), 
+
+            //Put Countries Name in the Table
+            String countryName = "";
+            for (int j = 0; j < countriesList.size(); j++) {
+                if (countriesList.get(j).getID() == customersList.get(i).getCountryID()) {
+                    countryName = countriesList.get(j).getName();
+                }
+            }
+
+            Object[] currentRow = {
+                customersList.get(i).getID(),
                 customersList.get(i).getName(),
                 customersList.get(i).getTelephone(),
                 customersList.get(i).getAddress(),
                 customersList.get(i).getCity(),
-                customersList.get(i).getCountryID()
+                countryName
             };
             customersTableModel.addRow(currentRow);
         }
         customerDetailsTable.setModel(customersTableModel);
-        
+
     }
-    
+
+    public void getCustomerProducts() {
+        customerProductsList = new ArrayList<>();
+        getProducts();
+        getCustomers();
+
+        //Get customers from api
+        String customerProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "GetMultiple", "Limit=2&SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(customerProductsJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    int customerID = currentItem.getInt("CustomerID");
+                    int productsID = currentItem.getInt("ProductID");
+
+                    Customerproducts customerProducts = new Customerproducts(id, customerID, productsID);
+                    customerProductsList.add(customerProducts);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + customerProductsJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel customersProductsTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        customersProductsTableModel.addColumn("ID");
+        customersProductsTableModel.addColumn("Customer");
+        customersProductsTableModel.addColumn("Product");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < customerProductsList.size(); i++) {
+            //Put Customers Name in the Table
+            String customerName = "";
+            for (int j = 0; j < customersList.size(); j++) {
+                if (customersList.get(j).getID() == customerProductsList.get(i).getCustomerID()) {
+                    customerName = customersList.get(j).getName();
+                }
+            }
+            //Put Products Name in the Table
+            String productName = "";
+            for (int j = 0; j < productsList.size(); j++) {
+                if (productsList.get(j).getID() == customerProductsList.get(i).getProductID()) {
+                    productName = productsList.get(j).getName();
+                }
+            }
+            
+            Object[] currentRow = {
+                customerProductsList.get(i).getID(),
+                customerName,
+                productName
+            };
+            customersProductsTableModel.addRow(currentRow);
+        }
+        customerProductsTable.setModel(customersProductsTableModel);
+
+    }
+
+    public void getSuppliers() {
+        suppliersList = new ArrayList<>();
+        getCountries();
+
+        //Get customers from api
+        String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "GetMultiple", "Limit=2&SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(suppliersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int supplierID = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+                    int countryID = currentItem.getInt("CountryID");
+                    String address = currentItem.getString("Address");
+                    String telephone = currentItem.getString("Telephone");
+                    String city = currentItem.getString("City");
+
+                    Suppliers supplier = new Suppliers(supplierID, name, countryID, address, telephone, city);
+                    suppliersList.add(supplier);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + suppliersJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel supplierTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        supplierTableModel.addColumn("ID");
+        supplierTableModel.addColumn("Name");
+        supplierTableModel.addColumn("Telephone");
+        supplierTableModel.addColumn("Address");
+        supplierTableModel.addColumn("City");
+        supplierTableModel.addColumn("Country");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < suppliersList.size(); i++) {
+
+            //Put Countries Name in the Table
+            String countryName = "";
+            for (int j = 0; j < countriesList.size(); j++) {
+                if (countriesList.get(j).getID() == customersList.get(i).getCountryID()) {
+                    countryName = countriesList.get(j).getName();
+                }
+            }
+
+            Object[] currentRow = {
+                suppliersList.get(i).getID(),
+                suppliersList.get(i).getName(),
+                suppliersList.get(i).getTelephone(),
+                suppliersList.get(i).getAddress(),
+                suppliersList.get(i).getCity(),
+                countryName
+            };
+            supplierTableModel.addRow(currentRow);
+        }
+        supplierDetailsTable.setModel(supplierTableModel);
+
+    }
+
     public void getEmployees() {
-        ArrayList<Users> employeesList = new ArrayList<>();
+        employeesList = new ArrayList<>();
+        getCountries();
 
         //Get customers from api
         String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "Limit=2&SessionID=aa");
@@ -157,7 +327,7 @@ public class MainForm extends javax.swing.JFrame {
                     String firstname = currentItem.getString("Firstname");
                     String lastname = currentItem.getString("Lastname");
                     String password = currentItem.getString("Password");
-                    
+
                     //TODO Check:
                     long dateHiredLong = currentItem.getLong("DateHired");
                     int dateHired = (int) dateHiredLong;
@@ -168,7 +338,7 @@ public class MainForm extends javax.swing.JFrame {
                     String address = currentItem.getString("Address");
                     int userLevelID = currentItem.getInt("UserLevelID");
 
-                    Users employees = new Users(userID, username,password,userLevelID,firstname, lastname, dateHired,city, address,telephone,countryID );
+                    Users employees = new Users(userID, username, password, userLevelID, firstname, lastname, dateHired, city, address, telephone, countryID);
                     employeesList.add(employees);
                 }
             } else {
@@ -181,7 +351,7 @@ public class MainForm extends javax.swing.JFrame {
 
         //Create a new model for the table:
         DefaultTableModel employeesTableModel = new DefaultTableModel();
-        
+
         //Add the table columns:
         employeesTableModel.addColumn("ID");
         employeesTableModel.addColumn("Username");
@@ -192,11 +362,20 @@ public class MainForm extends javax.swing.JFrame {
         employeesTableModel.addColumn("Address");
         employeesTableModel.addColumn("City");
         employeesTableModel.addColumn("Country");
-        
+
         //Add each item in the list as a row in the table:
         for (int i = 0; i < employeesList.size(); i++) {
-            Object[] currentRow = { 
-                employeesList.get(i).getUserID(), 
+
+            //Put Countries Name in the Table
+            String countryName = "";
+            for (int j = 0; j < countriesList.size(); j++) {
+                if (countriesList.get(j).getID() == customersList.get(i).getCountryID()) {
+                    countryName = countriesList.get(j).getName();
+                }
+            }
+
+            Object[] currentRow = {
+                employeesList.get(i).getUserID(),
                 employeesList.get(i).getUsername(),
                 employeesList.get(i).getFirstname(),
                 employeesList.get(i).getLastname(),
@@ -204,12 +383,191 @@ public class MainForm extends javax.swing.JFrame {
                 employeesList.get(i).getTelephone(),
                 employeesList.get(i).getAddress(),
                 employeesList.get(i).getCity(),
-                employeesList.get(i).getCountryID()
+                countryName
             };
             employeesTableModel.addRow(currentRow);
         }
         employeesTable.setModel(employeesTableModel);
-        
+
+    }
+
+    public void getSupplies() {
+        suppliesList = new ArrayList<>();
+
+        //Get customers from api
+        String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(suppliersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int suppliesID = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+                    int supplierID = currentItem.getInt("SupplierID");
+                    int quantity = currentItem.getInt("Quantity");
+                    float price = currentItem.getFloat("Price");
+
+                    Supplies supplies = new Supplies(suppliesID, name, supplierID, quantity, price);
+                    suppliesList.add(supplies);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + suppliersJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getCountries() {
+        countriesList = new ArrayList<>();
+
+        //Get customers from api
+        String countriesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Countries", "GetMultiple", "");
+        try {
+            JSONObject jsonObject = new JSONObject(countriesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+
+                    Countries c = new Countries(id, name);
+                    countriesList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + countriesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        for (int i = 0; i < countriesList.size(); i++) {
+//            customerDetailsTable.addItem(countriesList.get(i).getName());
+//        }
+    }
+
+    public void getProducts() {
+        productsList = new ArrayList<>();
+
+        //Get customers from api
+        String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(productsJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+                    float price = currentItem.getFloat("Price");
+                    int quantity = currentItem.getInt("QuantityInStock");
+                    int productSizeID = currentItem.getInt("ProductSizeID");
+                    int productTypeID = currentItem.getInt("ProductTypeID");
+                    int productSuppliesID = currentItem.getInt("ProductSuppliesID");
+
+                    Products c = new Products(id, name,price,quantity,productSizeID,productTypeID,productSuppliesID);
+                    productsList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + productsJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public void getSupplierSupplies() {
+        supplierSuppliesList = new ArrayList<>();
+        getSupplies();
+        getSuppliers();
+
+        //Get customers from api
+        String supplierSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliersupplies", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(supplierSuppliesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int supplierSuppliesID = currentItem.getInt("ID");
+                    int supplierID = currentItem.getInt("SupplierID");
+                    int supplyID = currentItem.getInt("SupplyID");
+
+                    Suppliersupplies supplierSupplies = new Suppliersupplies(supplierSuppliesID, supplierID, supplyID);
+                    supplierSuppliesList.add(supplierSupplies);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + supplierSuppliesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel supplierSuppliesTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        supplierSuppliesTableModel.addColumn("ID");
+        supplierSuppliesTableModel.addColumn("Supplier");
+        supplierSuppliesTableModel.addColumn("Supplies");
+        supplierSuppliesTableModel.addColumn("Price");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < supplierSuppliesList.size(); i++) {
+
+            //Put Supplier Name in the Table
+            String supplierName = "";
+            for (int j = 0; j < suppliersList.size(); j++) {
+                if (suppliersList.get(j).getID() == supplierSuppliesList.get(i).getSupplierID()) {
+                    supplierName = suppliersList.get(j).getName();
+                }
+            }
+
+            //Put Supplies Name in the Table
+            String suppliesName = "";
+            float suppliesPrice = 0;
+            for (int j = 0; j < suppliesList.size(); j++) {
+                if (suppliesList.get(j).getID() == supplierSuppliesList.get(i).getSupplyID()) {
+                    suppliesName = suppliesList.get(j).getName();
+                    
+                }
+            }
+
+            Object[] currentRow = {
+                supplierSuppliesList.get(i).getID(),
+                supplierName,
+                suppliesName,
+            suppliesPrice = suppliesList.get(i).getPrice()};
+            supplierSuppliesTableModel.addRow(currentRow);
+        }
+        suppliesTable.setModel(supplierSuppliesTableModel);
     }
 
     /**
@@ -306,7 +664,7 @@ public class MainForm extends javax.swing.JFrame {
         refreshCustProductsBtn = new javax.swing.JButton();
         importCustProductsBtn = new javax.swing.JButton();
         custProScrollPanel = new javax.swing.JScrollPane();
-        custProductsTable = new javax.swing.JTable();
+        customerProductsTable = new javax.swing.JTable();
         customersGraphsPanel = new javax.swing.JPanel();
         customersGraphsPanel2 = new javax.swing.JPanel();
         employees = new javax.swing.JPanel();
@@ -328,7 +686,7 @@ public class MainForm extends javax.swing.JFrame {
         searchSupplierTxt = new javax.swing.JTextField();
         refreshSuplTableBtn = new javax.swing.JButton();
         supplierScrollPanel = new javax.swing.JScrollPane();
-        customerDetailsTable1 = new javax.swing.JTable();
+        supplierDetailsTable = new javax.swing.JTable();
         suppliesTab = new javax.swing.JTabbedPane();
         suppliesTabPanel = new javax.swing.JPanel();
         importSuppliesBtn = new javax.swing.JButton();
@@ -337,7 +695,7 @@ public class MainForm extends javax.swing.JFrame {
         printSuppliesBtn = new javax.swing.JButton();
         refreshSuppliesTableBtn = new javax.swing.JButton();
         suppliesTabPane = new javax.swing.JScrollPane();
-        custSalesTable1 = new javax.swing.JTable();
+        suppliesTable = new javax.swing.JTable();
         purchasesHistoryPanel = new javax.swing.JPanel();
         exportPurchFilesBtn = new javax.swing.JButton();
         printPurchasesBtn = new javax.swing.JButton();
@@ -350,11 +708,24 @@ public class MainForm extends javax.swing.JFrame {
         suppliesGraphPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         file = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
         view = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
         options = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
+        jMenu9 = new javax.swing.JMenu();
         tools = new javax.swing.JMenu();
+        jMenu10 = new javax.swing.JMenu();
+        jMenu11 = new javax.swing.JMenu();
+        jMenu12 = new javax.swing.JMenu();
         help = new javax.swing.JMenu();
-        about = new javax.swing.JMenu();
+        helpContentMenu = new javax.swing.JMenu();
+        aboutMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -946,7 +1317,7 @@ public class MainForm extends javax.swing.JFrame {
         );
         salesLayout.setVerticalGroup(
             salesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         tabPanel.addTab("Sales", sales);
@@ -966,6 +1337,11 @@ public class MainForm extends javax.swing.JFrame {
         printCusDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
 
         importCustomerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+        importCustomerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importCustomerBtnActionPerformed(evt);
+            }
+        });
 
         searchCustomerTxt.setText("Search....");
         searchCustomerTxt.addActionListener(new java.awt.event.ActionListener() {
@@ -1119,7 +1495,7 @@ public class MainForm extends javax.swing.JFrame {
 
         importCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
 
-        custProductsTable.setModel(new javax.swing.table.DefaultTableModel(
+        customerProductsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1130,7 +1506,7 @@ public class MainForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        custProScrollPanel.setViewportView(custProductsTable);
+        custProScrollPanel.setViewportView(customerProductsTable);
 
         javax.swing.GroupLayout custProductsPanelLayout = new javax.swing.GroupLayout(custProductsPanel);
         custProductsPanel.setLayout(custProductsPanelLayout);
@@ -1274,6 +1650,11 @@ public class MainForm extends javax.swing.JFrame {
         refreshBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
 
         importEmplBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+        importEmplBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importEmplBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout employeeListPanelLayout = new javax.swing.GroupLayout(employeeListPanel);
         employeeListPanel.setLayout(employeeListPanelLayout);
@@ -1305,9 +1686,9 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchTxt)
                     .addComponent(importEmplBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout employeesLayout = new javax.swing.GroupLayout(employees);
@@ -1329,8 +1710,8 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(noEmployeesLb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(employeeListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addComponent(employeeListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         tabPanel.addTab("Employees", employees);
@@ -1365,7 +1746,7 @@ public class MainForm extends javax.swing.JFrame {
 
         refreshSuplTableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
 
-        customerDetailsTable1.setModel(new javax.swing.table.DefaultTableModel(
+        supplierDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1376,7 +1757,7 @@ public class MainForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        supplierScrollPanel.setViewportView(customerDetailsTable1);
+        supplierScrollPanel.setViewportView(supplierDetailsTable);
 
         javax.swing.GroupLayout suppliersDetailsPanel1Layout = new javax.swing.GroupLayout(suppliersDetailsPanel1);
         suppliersDetailsPanel1.setLayout(suppliersDetailsPanel1Layout);
@@ -1436,7 +1817,7 @@ public class MainForm extends javax.swing.JFrame {
 
         refreshSuppliesTableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
 
-        custSalesTable1.setModel(new javax.swing.table.DefaultTableModel(
+        suppliesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1447,7 +1828,7 @@ public class MainForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        suppliesTabPane.setViewportView(custSalesTable1);
+        suppliesTabPane.setViewportView(suppliesTable);
 
         javax.swing.GroupLayout suppliesTabPanelLayout = new javax.swing.GroupLayout(suppliesTabPanel);
         suppliesTabPanel.setLayout(suppliesTabPanelLayout);
@@ -1627,22 +2008,66 @@ public class MainForm extends javax.swing.JFrame {
         tabPanel.addTab("Suppliers", suppliers);
 
         file.setText("File");
+
+        jMenu1.setText("jMenu1");
+        file.add(jMenu1);
+
+        jMenu2.setText("jMenu1");
+        file.add(jMenu2);
+
+        jMenu3.setText("jMenu1");
+        file.add(jMenu3);
+
         menuBar.add(file);
 
         view.setText("View");
+
+        jMenu4.setText("jMenu1");
+        view.add(jMenu4);
+
+        jMenu5.setText("jMenu1");
+        view.add(jMenu5);
+
+        jMenu6.setText("jMenu1");
+        view.add(jMenu6);
+
         menuBar.add(view);
 
         options.setText("Options");
+
+        jMenu7.setText("jMenu1");
+        options.add(jMenu7);
+
+        jMenu8.setText("jMenu1");
+        options.add(jMenu8);
+
+        jMenu9.setText("jMenu1");
+        options.add(jMenu9);
+
         menuBar.add(options);
 
         tools.setText("Tools");
+
+        jMenu10.setText("jMenu1");
+        tools.add(jMenu10);
+
+        jMenu11.setText("jMenu1");
+        tools.add(jMenu11);
+
+        jMenu12.setText("jMenu1");
+        tools.add(jMenu12);
+
         menuBar.add(tools);
 
         help.setText("Help");
-        menuBar.add(help);
 
-        about.setText("About");
-        menuBar.add(about);
+        helpContentMenu.setText("jMenu1");
+        help.add(helpContentMenu);
+
+        aboutMenu.setText("jMenu1");
+        help.add(aboutMenu);
+
+        menuBar.add(help);
 
         setJMenuBar(menuBar);
 
@@ -1744,6 +2169,16 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
+    private void importCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importCustomerBtnActionPerformed
+         setVisible(true);
+        customersForm = new CustomersForm();
+    }//GEN-LAST:event_importCustomerBtnActionPerformed
+
+    private void importEmplBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importEmplBtnActionPerformed
+        setVisible(true);
+        addUsersForm = new AddUsersForm();
+    }//GEN-LAST:event_importEmplBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1780,16 +2215,14 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu about;
+    private javax.swing.JMenu aboutMenu;
     private javax.swing.JScrollPane custProScrollPanel;
     private javax.swing.JPanel custProductsPanel;
-    private javax.swing.JTable custProductsTable;
     private javax.swing.JPanel custSalesPanel;
     private javax.swing.JTable custSalesTable;
-    private javax.swing.JTable custSalesTable1;
     private javax.swing.JPanel customerDetailsPanel;
     private javax.swing.JTable customerDetailsTable;
-    private javax.swing.JTable customerDetailsTable1;
+    private javax.swing.JTable customerProductsTable;
     private javax.swing.JScrollPane customerScrollPanel;
     private javax.swing.JTabbedPane customerTabPanel;
     private javax.swing.JPanel customers;
@@ -1813,6 +2246,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton exportSuppliesFilesBtn;
     private javax.swing.JMenu file;
     private javax.swing.JMenu help;
+    private javax.swing.JMenu helpContentMenu;
     private javax.swing.JPanel home;
     private javax.swing.JButton importCustProductsBtn;
     private javax.swing.JButton importCustSalesBtn;
@@ -1834,6 +2268,18 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
     private javax.swing.JList<String> jList3;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu10;
+    private javax.swing.JMenu jMenu11;
+    private javax.swing.JMenu jMenu12;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -1902,6 +2348,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField searchSuppliesTxt;
     private javax.swing.JTextField searchTxt;
     private javax.swing.JPanel statistics;
+    private javax.swing.JTable supplierDetailsTable;
     private javax.swing.JPanel supplierGraphPanel;
     private javax.swing.JScrollPane supplierScrollPanel;
     private javax.swing.JPanel suppliers;
@@ -1911,6 +2358,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane suppliesTab;
     private javax.swing.JScrollPane suppliesTabPane;
     private javax.swing.JPanel suppliesTabPanel;
+    private javax.swing.JTable suppliesTable;
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JMenu tools;
     private javax.swing.JMenu view;
