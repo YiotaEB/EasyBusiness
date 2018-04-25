@@ -44,57 +44,6 @@ public class SuppliersForm extends javax.swing.JFrame {
     public SuppliersForm() {
         initComponents();
 
-//        supplierNumbers = new Vector<>();
-//        supplierNames = new Vector<>();
-//        supplierIDs = new Vector<>();
-//        suppliesNames = new Vector<>();
-//        suppliesPrice = new Vector<>();
-//        suppliesQuantity = new Vector<>();
-//        columnNames = new Vector<>();
-        //COUNTRIES SELECTION COMBOBOX
-        try {
-            //Select Statment to choose countries
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getCountryStatement = connection.createStatement();
-            String qr = " Select Name From Countries";
-            ResultSet rs = getCountryStatement.executeQuery(qr);
-
-            countryComboBox.removeAllItems();
-            // iterate through the java resultset
-            while (rs.next()) {
-                String typeName = rs.getString("Name");
-                countryComboBox.addItem(typeName);
-            }
-            getCountryStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        //SUPPLIERS SELECTION COMBOBOX
-        try {
-            //Select Statment to choose countries
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getSupplierStatement = connection.createStatement();
-            String qr = " Select Name From Suppliers";
-            ResultSet rs = getSupplierStatement.executeQuery(qr);
-
-            supplierComboBox.removeAllItems();
-            // iterate through the java resultset
-            while (rs.next()) {
-                String supplierName = rs.getString("Name");
-                supplierComboBox.addItem(supplierName);
-            }
-            getSupplierStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         getCountries();
         getSuppliers();
         getSupplierSupplies();
@@ -677,6 +626,7 @@ public class SuppliersForm extends javax.swing.JFrame {
 
     public void getSuppliers() {
         suppliersList = new ArrayList<>();
+        supplierComboBox.removeAllItems();
         getSupplies();
         viewSuppliersButton.setEnabled(false);
 
@@ -709,6 +659,10 @@ public class SuppliersForm extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        
+        for (int i = 0; i < suppliersList.size(); i++) {
+            supplierComboBox.addItem(suppliersList.get(i).getName());
         }
 
     }

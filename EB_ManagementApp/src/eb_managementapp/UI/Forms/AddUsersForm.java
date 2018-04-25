@@ -443,7 +443,7 @@ public class AddUsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_dateOfHirePickerActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-       //System.exit(0);
+       this.setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed
@@ -455,7 +455,7 @@ public class AddUsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_partTimeRadioButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        // TODO add your handling code here:
+       this.setVisible(false);
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void positionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionComboBoxActionPerformed
