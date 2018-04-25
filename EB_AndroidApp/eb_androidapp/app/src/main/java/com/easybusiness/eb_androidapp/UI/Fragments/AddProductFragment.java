@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
+import com.easybusiness.eb_androidapp.Entities.ProductSizes;
 import com.easybusiness.eb_androidapp.Entities.ProductTypes;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
@@ -45,14 +46,20 @@ public class AddProductFragment extends Fragment {
     private ArrayList<ProductTypes> productType;
 
     private View v;
-    private Spinner productTypeSpinner;
-    private EditText productNameEditText;
-    private Spinner productQuantitySpinner;
-    private EditText productPriceEditText;
-    private Button addProductBtn;
-    private SharedPreferences sharedPreferences;
 
-    private ListView productSizeList;
+    private EditText productNameEditText;
+    private EditText productPriceEditText;
+    private EditText productQuantityEditText;
+
+    private Spinner productTypeSpinner;
+    private Spinner productSizeSpinner;
+    private Button productSuppliesButton;
+    private Button addProductButton;
+
+    private ArrayList<ProductTypes> productTypes;
+    private ArrayList<ProductSizes> productSizes;
+
+    private SharedPreferences sharedPreferences;
 
 
     public AddProductFragment() {
@@ -64,14 +71,17 @@ public class AddProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_add_product, container, false);
+        v = inflater.inflate(R.layout.fragment_add_product, container, false);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        addProductBtn = v.findViewById(R.id.add_product_Btn);
-        productQuantitySpinner = v.findViewById(R.id.product_quantity_spinner);
-        productPriceEditText = v.findViewById(R.id.product_price_edittext);
         productNameEditText = v.findViewById(R.id.product_name_edittext);
+        productPriceEditText = v.findViewById(R.id.product_price_edittext);
+        productQuantityEditText = v.findViewById(R.id.product_quantity_edittext);
         productTypeSpinner = v.findViewById(R.id.product_type_spinner);
+        productSizeSpinner = v.findViewById(R.id.product_size_spinner);
+        productSuppliesButton = v.findViewById(R.id.product_supplies_button);
+        addProductButton = v.findViewById(R.id.addProductButton);
 
         return v;
     }
@@ -82,24 +92,23 @@ public class AddProductFragment extends Fragment {
 
         getActivity().setTitle(TITLE);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         getRequiredFields();
 
-        addProductBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkInput()) {
-                    new AddProductAsyncTask(
-                            getActivity(),
-                            v,
-                            sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""),
-                            productNameEditText.getText().toString(),
-                            productPriceEditText.getText().toString(),
-                            productType.get(productTypeSpinner.getSelectedItemPosition()).getID()
-                    ).execute();
-                }
-            }
-        });
+//        addProductBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (checkInput()) {
+//                    new AddProductAsyncTask(
+//                            getActivity(),
+//                            v,
+//                            sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""),
+//                            productNameEditText.getText().toString(),
+//                            productPriceEditText.getText().toString(),
+//                            productType.get(productTypeSpinner.getSelectedItemPosition()).getID()
+//                    ).execute();
+//                }
+//            }
+//        });
 
     }
 
@@ -125,42 +134,46 @@ public class AddProductFragment extends Fragment {
             productPriceEditText.setError(null);
         }
 
+        //Check Quantity:
+        if (productQuantityEditText.getText().toString().trim().isEmpty()) {
+            productQuantityEditText.setError("Please provide a valid answer.");
+            flag = false;
+        }
+        else {
+            productQuantityEditText.setError(null);
+        }
+
         return flag;
     }
 
     private void getRequiredFields() {
-        new GetProductTypesAsyncTask("", getActivity(), v).execute();
+        new GetProductTypesAsyncTask().execute();
+        //new GetProductSizesAsyncTask().execute();
     }
 
     private class GetProductTypesAsyncTask extends AsyncTask<Void,Void,Void> {
 
-        private String query;
         private String responseData;
-        private Activity activity;
-        private View view;
         private ArrayAdapter<String> adapter;
 
-        public GetProductTypesAsyncTask(String query, Activity activity, View view) {
-            this.query = query;
-            this.activity = activity;
-            this.view = view;
-            productType = new ArrayList<>();
+        public GetProductTypesAsyncTask() {
         }
 
         @Override
         protected Void doInBackground(Void... params) {
 
+            String query;
+
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("SessionID", sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""))
-                    .appendQueryParameter("Limit", "0");
+                    .appendQueryParameter("SessionID", sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""));
             query = builder.toString();
 
             if (query == null) query = "";
 
-            System.out.println("QUERY: " + query);
+            System.out.println("PRODUCT TYPES QUERY: " + query);
 
             try {
-                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Producttypes", "GetMultiple"));
+                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Producttypes", "GetMultiple"));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 byte[] outputBytes = query.getBytes("UTF-8");
@@ -185,45 +198,45 @@ public class AddProductFragment extends Fragment {
 
                     if (status.equals(AsyncTasks.RESPONSE_OK)) {
                         JSONArray dataArray = outterObject.getJSONArray("Data");
-                        ArrayList<String> productName = new ArrayList<>();
+                        ArrayList<String> productNames = new ArrayList<>();
+                        productTypes = new ArrayList<>();
                         for (int i = 0; i < dataArray.length(); i++) {
                             JSONObject jsonObject = dataArray.getJSONObject(i);
                             String name = jsonObject.getString("Name");
                             int id = jsonObject.getInt("ID");
                             ProductTypes c = new ProductTypes(id, name);
                             productType.add(c);
-                            productName.add(c.getName());
+                            productNames.add(c.getName());
                         }
 
-                        adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, productName);
+                        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, productNames);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                productTypeSpinner.setAdapter(adapter);
+                            }
+                        });
 
                     }
                     //ERROR:
                     else {
-                        activity.runOnUiThread(new Runnable() {
+                        getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
+                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
                                 alertDialog.show();
                             }
                         });
                     }
 
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Spinner productTypesSpinner = activity.findViewById(R.id.product_type_spinner);
-                            productTypesSpinner.setAdapter(adapter);
-                        }
-                    });
-
                 }
                 //CONNECTION ERROR
                 else {
-                    activity.runOnUiThread(new Runnable() {
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
+                            final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
                             alertDialog.show();
                         }
                     });
@@ -236,6 +249,106 @@ public class AddProductFragment extends Fragment {
 
     }
 
+    private class GetProductSizesAsyncTask extends AsyncTask<Void,Void,Void> {
+
+        private String responseData;
+        private ArrayAdapter<String> adapter;
+
+        public GetProductSizesAsyncTask() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            String query;
+
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("SessionID", sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""));
+            query = builder.toString();
+
+            if (query == null) query = "";
+
+            System.out.println("PRODUCT SIZES QUERY: " + query);
+
+            try {
+                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Productsizes", "GetMultiple"));
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                byte[] outputBytes = query.getBytes("UTF-8");
+                urlConnection.setRequestMethod("POST");
+                urlConnection.connect();
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(outputBytes);
+                os.close();
+                int statusCode = urlConnection.getResponseCode();
+                urlConnection.disconnect();
+
+                //OK
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    responseData = AsyncTasks.convertStreamToString(inputStream);
+
+                    System.out.println(responseData);
+                    JSONObject outterObject = new JSONObject(responseData);
+                    final String status = outterObject.getString("Status");
+                    final String title = outterObject.getString("Title");
+                    final String message = outterObject.getString("Message");
+
+                    if (status.equals(AsyncTasks.RESPONSE_OK)) {
+                        JSONArray dataArray = outterObject.getJSONArray("Data");
+                        ArrayList<String> productSizeNames = new ArrayList<>();
+                        productSizes = new ArrayList<>();
+                        for (int i = 0; i < dataArray.length(); i++) {
+                            JSONObject jsonObject = dataArray.getJSONObject(i);
+                            String name = jsonObject.getString("Name");
+                            int id = jsonObject.getInt("ID");
+                            int unitTypeID = jsonObject.getInt("UnitTypeID");
+                            ProductSizes s = new ProductSizes(id, name, unitTypeID);
+                            productSizes.add(s);
+                            productSizeNames.add(s.getName());
+                        }
+
+                        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, productSizeNames);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                productSizeSpinner.setAdapter(adapter);
+                            }
+                        });
+
+                    }
+                    //ERROR:
+                    else {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+                }
+                //CONNECTION ERROR
+                else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
+                            alertDialog.show();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+    }
+
+    //TODO
     private class AddProductAsyncTask extends AsyncTask<Void,Void,Void> {
 
         private String name;

@@ -123,5 +123,8 @@
     <string name="productType">Type</string>
     <string name="supplysupplier">Supplier</string>
     <string name="inventory">Inventory</string>
+    <string name="product_name">Product name</string>
+    <string name="select_size">Select Size</string>
+    <string name="select_product_supplies">Select product supplies</string>
 
 </resources>
