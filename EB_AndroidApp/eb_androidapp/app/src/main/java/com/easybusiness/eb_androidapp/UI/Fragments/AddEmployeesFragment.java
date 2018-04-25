@@ -134,7 +134,7 @@ public class AddEmployeesFragment extends Fragment {
                             usernameEditText.getText().toString().toLowerCase(),
                             firstnameEditText.getText().toString(),
                             lastnameEditText.getText().toString(),
-                            positions.get(positionSpinner.getSelectedItemPosition()).getUserLevelID(),
+                            positions.get(positionSpinner.getSelectedItemPosition()).getUserLevelID() - 1,
                             timestamp.getTime(),
                             cityEditText.getText().toString(),
                             addressEditText.getText().toString(),
