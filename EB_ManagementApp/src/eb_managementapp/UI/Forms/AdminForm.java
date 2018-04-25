@@ -5,30 +5,43 @@
  */
 package eb_managementapp.UI.Forms;
 
-import eb_managementapp.UI.Forms.LoginForm;
+import Utilities.HTTPConnection;
+import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.DB.ConnectionCreator;
-import static eb_managementapp.EB_ManagementApp.loginForm;
+import static eb_managementapp.EB_ManagementApp.setUpForm;
+import eb_managementapp.Entities.Countries;
+import eb_managementapp.Entities.Userlevels;
+import eb_managementapp.Entities.Users;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  *
  * @author panay
  */
 public class AdminForm extends javax.swing.JFrame {
 
-     //final variables:
+    //final variables:
     final String TITLE = "Administrator Set Up";
-    
-    
+    private ArrayList<Users> usersList;
+    private ArrayList<Countries> countriesList;
+    private ArrayList<Userlevels> positionsList;
+
     public AdminForm() {
         initComponents();
-         //COUNTRIES SELECTION COMBOBOX
+        //COUNTRIES SELECTION COMBOBOX
         try {
             //Select Statment to choose countries
             ConnectionCreator connectionCreator = new ConnectionCreator();
@@ -49,6 +62,7 @@ public class AdminForm extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        getCountries();
 
         setVisible(true);
     }
@@ -74,7 +88,7 @@ public class AdminForm extends javax.swing.JFrame {
         cityLabel = new javax.swing.JLabel();
         cityTextField = new javax.swing.JTextField();
         adminAddressLabel = new javax.swing.JLabel();
-        adminAddressTextField = new javax.swing.JTextField();
+        addressTextField = new javax.swing.JTextField();
         loginInfoPanel = new javax.swing.JPanel();
         usernameLabel = new javax.swing.JLabel();
         usernameTextField = new javax.swing.JTextField();
@@ -140,9 +154,9 @@ public class AdminForm extends javax.swing.JFrame {
         adminAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         adminAddressLabel.setText("Address:");
 
-        adminAddressTextField.addActionListener(new java.awt.event.ActionListener() {
+        addressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminAddressTextFieldActionPerformed(evt);
+                addressTextFieldActionPerformed(evt);
             }
         });
 
@@ -171,7 +185,7 @@ public class AdminForm extends javax.swing.JFrame {
                             .addGroup(administratorDetailsLayout.createSequentialGroup()
                                 .addComponent(adminAddressLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(adminAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(administratorDetailsLayout.createSequentialGroup()
                                 .addComponent(countryLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -200,7 +214,7 @@ public class AdminForm extends javax.swing.JFrame {
                     .addGroup(administratorDetailsLayout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(adminAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(adminAddressLabel))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,9 +380,9 @@ public class AdminForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cityTextFieldActionPerformed
 
-    private void adminAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminAddressTextFieldActionPerformed
+    private void addressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_adminAddressTextFieldActionPerformed
+    }//GEN-LAST:event_addressTextFieldActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         System.exit(0);
@@ -388,34 +402,98 @@ public class AdminForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
-        ConnectionCreator connectionCreator = new ConnectionCreator();
-        Connection connection = connectionCreator.connect();
+        addAdmin();
+        this.setVisible(false);
+        setUpForm = new SetUpForm();
+    }//GEN-LAST:event_nextButtonActionPerformed
 
-        // Insert Statement for the Administrator
+    private void addAdmin() {
 
-        String queryInsertUser = " insert into Users (UserID,UserDetailsID,Username, Password, ConfirmPassword,  FirstName, LastName)"
-        + "values ('0','0','"+usernameTextField.getText()+"','"+passwordField.getSelectedText()+"','"+confirmPasswordField.getSelectedText()+"','"+nameTextField.getText()+"','"+lastNameTextField.getText()+"')";
+        //Get field values:
+        String firstname = nameTextField.getText().toString();
+        String lastname = lastNameTextField.getText().toString();
+        String username = firstname.charAt(0) + lastname;
+        String password = passwordField.getText().toString();
+        String confirmPassword = confirmPasswordField.getText().toString();
+        String city = cityTextField.getText().toString();
+        String address = addressTextField.getText().toString();
+        String telephone = adminTelephoneTextField.getText().toString();
+        int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
+        int positionID = 1;
+        int dateHired = 0;
 
-        String queryInsertUserDetails = " insert into UserDetails (UserDetailsID,countryID, Telephone,City, Address)"
-        + "values ('0', 0,'"+adminTelephoneTextField.getText()+"','"+cityTextField.getText()+"', '"+adminAddressTextField.getText()+"')";
-
+        if (!password.equals(confirmPassword)) {
+            showMessageDialog(null, "The passwords you provided do not match.", "Invalid Password", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        //Make the call:
+        String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create",
+                "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
+                + "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID
+                + "&UserLevelID=" + positionID + "&Password= " + "&DateHired=" + dateHired
+        );
         try {
-            //Create insert preparedstatement for administrator
-            PreparedStatement preparedUserStatement = connection.prepareStatement(queryInsertUser);
-            preparedUserStatement.execute();
+            JSONObject jsonObject = new JSONObject(addUsersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
 
-            PreparedStatement preparedUserDetailsStatement = connection.prepareStatement(queryInsertUserDetails);
-            preparedUserDetailsStatement.execute();
+            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
-            showMessageDialog(null, "Company Added -->" + usernameTextField.getText());
-
-        } catch (SQLException ex) {
-            Logger.getLogger(CompanyDetailsForm.class.getName()).log(Level.SEVERE, null, ex);
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + addUsersJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                //Reset fields:
+                setVisible(true);
+                countryComboBox.setSelectedIndex(0);
+                nameTextField.setText("");
+                lastNameTextField.setText("");
+                cityTextField.setText("");
+                addressTextField.setText("");
+                adminTelephoneTextField.setText("");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        this.setVisible(false);
-        loginForm = new LoginForm ();
-    }//GEN-LAST:event_nextButtonActionPerformed
+    }
+
+    public void getCountries() {
+        countriesList = new ArrayList<>();
+        countryComboBox.removeAllItems();
+
+        //Get customers from api
+        String countriesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Countries", "GetMultiple", "");
+        try {
+            JSONObject jsonObject = new JSONObject(countriesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    String name = currentItem.getString("Name");
+
+                    Countries c = new Countries(id, name);
+                    countriesList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + countriesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < countriesList.size(); i++) {
+            countryComboBox.addItem(countriesList.get(i).getName());
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -453,8 +531,8 @@ public class AdminForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField addressTextField;
     private javax.swing.JLabel adminAddressLabel;
-    private javax.swing.JTextField adminAddressTextField;
     private javax.swing.JLabel adminTelephoneLabel;
     private javax.swing.JTextField adminTelephoneTextField;
     private javax.swing.JPanel administratorDetails;

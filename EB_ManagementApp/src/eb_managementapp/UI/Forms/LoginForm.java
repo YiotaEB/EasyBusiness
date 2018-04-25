@@ -1,15 +1,25 @@
 package eb_managementapp.UI.Forms;
 
+import Utilities.HTTPConnection;
 import eb_managementapp.UI.Forms.AdminForm;
 import static eb_managementapp.EB_ManagementApp.adminForm;
 import static eb_managementapp.EB_ManagementApp.mainForm;
 import eb_managementapp.UI.MainForm;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class LoginForm extends javax.swing.JFrame {
 
     //final variables:
-    final String TITLE= "Easy Business - Login";
+    final String TITLE = "Easy Business - Login";
+    public static final String SESSION_FILENAME = "applicationSession";
 
     //Constructor
     public LoginForm() {
@@ -166,10 +176,10 @@ public class LoginForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        
-            this.setVisible(false);
-            mainForm = new MainForm ();
-            
+        this.setVisible(false);
+        login();
+       
+
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
@@ -178,8 +188,48 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
-            adminForm = new AdminForm ();
+        adminForm = new AdminForm();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void login() {
+
+        String username = userTextField.getText();
+        String password = passwordField.getText();
+        
+        //Check if the username is valid
+        if(username.trim().isEmpty()){
+            showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
+        //Get login from api
+        String loginJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Login", "", "Username="+ username + "&Password=" + password);
+        
+        try {
+            JSONObject jsonObject = new JSONObject(loginJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                String sessionID = jsonObject.getString("SessionID");
+                
+                mainForm = new MainForm();
+                PrintWriter writer = new PrintWriter(SESSION_FILENAME,"UTF-8");
+                writer.println(sessionID);
+                writer.close();
+
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                this.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+
+    }
 
     /**
      * @param args the command line arguments
