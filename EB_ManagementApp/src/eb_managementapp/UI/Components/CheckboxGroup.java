@@ -76,6 +76,11 @@ public class CheckboxGroup extends JPanel {
             
             add(new JScrollPane(content));
         }
+        
+        public List<JCheckBox> getCheckBoxes(){
+            
+            return checkBoxes;
+        }
 
         
 

@@ -6,6 +6,7 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
+import Utilities.Hash;
 import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
@@ -169,7 +170,7 @@ public class AdminForm extends javax.swing.JFrame {
                     .addGroup(administratorDetailsLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(nameLabel)
-                        .addGap(16, 16, 16)
+                        .addGap(18, 18, 18)
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lastNameLabel)
@@ -199,32 +200,32 @@ public class AdminForm extends javax.swing.JFrame {
         administratorDetailsLayout.setVerticalGroup(
             administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, administratorDetailsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameLabel)
+                    .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lastNameLabel))
                 .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(administratorDetailsLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameLabel)
-                            .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lastNameLabel))
-                        .addGap(11, 11, 11)
+                        .addGap(22, 22, 22)
                         .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(adminTelephoneLabel)
                             .addComponent(adminTelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(administratorDetailsLayout.createSequentialGroup()
-                        .addGap(52, 52, 52)
+                        .addGap(18, 18, 18)
                         .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(adminAddressLabel))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cityTextField)
-                    .addComponent(cityLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(cityLabel)
+                    .addComponent(cityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(countryLabel))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         loginInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
@@ -347,8 +348,8 @@ public class AdminForm extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(administratorDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(administratorDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(4, 4, 4)
                 .addComponent(loginInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -422,7 +423,30 @@ public class AdminForm extends javax.swing.JFrame {
         int positionID = 1;
         int dateHired = 0;
 
-        if (!password.equals(confirmPassword)) {
+        //Check if the firstname is valid
+        if (firstname.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid firstname", "Invalid Firstname", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        //Check if the username is valid
+        if (username.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Check if the password is valid
+        if (password.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Check if the lastname is valid
+        if (lastname.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid lastname", "Invalid lastname", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmPassword) || confirmPassword.trim().isEmpty()) {
             showMessageDialog(null, "The passwords you provided do not match.", "Invalid Password", JOptionPane.PLAIN_MESSAGE);
             return;
         }
@@ -430,8 +454,9 @@ public class AdminForm extends javax.swing.JFrame {
         String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create",
                 "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
                 + "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID
-                + "&UserLevelID=" + positionID + "&Password= " + "&DateHired=" + dateHired
+                + "&UserLevelID=" + positionID + "&Password=" + Hash.MD5(password) + "&DateHired=" + dateHired
         );
+
         try {
             JSONObject jsonObject = new JSONObject(addUsersJSON);
             final String status = jsonObject.getString("Status");
@@ -449,8 +474,12 @@ public class AdminForm extends javax.swing.JFrame {
                 nameTextField.setText("");
                 lastNameTextField.setText("");
                 cityTextField.setText("");
+                passwordField.setText("");
                 addressTextField.setText("");
                 adminTelephoneTextField.setText("");
+
+                System.out.println("PASSWORD " + passwordField.getText());
+
             }
         } catch (Exception e) {
             e.printStackTrace();

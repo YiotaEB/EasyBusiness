@@ -10,7 +10,6 @@ import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
-import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,14 +34,12 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
     //final variables:
     final String TITLE = "Easy Business - Company Details";
-    
-    private ArrayList<Users> usersList;
+
     private ArrayList<Countries> countriesList;
-    private ArrayList<Userlevels> positionsList;
 
     public CompanyDetailsForm() {
         initComponents();
-        
+
         //COUNTRIES SELECTION COMBOBOX
         try {
             //Select Statment to choose countries
@@ -66,8 +63,7 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         }
 
         getCountries();
-        getPositions();
-        
+
         this.setTitle(TITLE);
         setVisible(true);
     }
@@ -286,36 +282,11 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
-        /*ConnectionCreator connectionCreator = new ConnectionCreator();
-        Connection connection = connectionCreator.connect();
+        addCompany();
+        this.setVisible(false);
+        setUpForm = new SetUpForm();
 
-        // Insert Statement dor the Company and the Administrator
-        String queryInsertCompany = " insert into Companies (Name, UniqueCode, CompanyTypeID, CountryID, City, Address, Telephone,Email, Fax, WorkingStartTime, WorkingFinishTime ) "
-                + "values ('"+CompanyNameTextField.getText()+"','1234567',1, 2, '"+CityTextField.getText()+"','"+AddressTextField.getText()+"','"+TelephoneTextField.getText()+"','"+EmailTextField.getText()+"','"+FaxTextField.getText()+"',9,17)";
-        
-        //String queryInsertUser = " insert into Users (UserID,Username, Password, ConfirmPassword,  FirstName, LastName,IDNumber, Telephone, Email, CountryID, City, Address)"
-          //      + "values ('1233','"+UserNameTextField.getText()+"','"+PasswordField.getSelectedText()+"','"+ConfirmPasswordField.getSelectedText()+"','"+NameTextField.getText()+"','"+LastNameTextField.getText()+"','"+IDNumberTextField.getText()+"', '"+AdminTelephoneTextField.getText()+"','"+AdminEmailTextField.getText()+"', 2, '"+AdminCityTextField.getText()+"', '"+AdminAddressTextField.getText()+"')";
-        
-        try {
-        //Create insert preparedstatement for company and administrator
-        PreparedStatement preparedCompanyStatement = connection.prepareStatement(queryInsertCompany);
-        preparedCompanyStatement.execute();
-        
-        //PreparedStatement preparedUserStatement = connection.prepareStatement(queryInsertUser);   
-       // preparedUserStatement.execute();
-            
-        showMessageDialog(null, "Company Added -->" + CompanyNameTextField.getText());
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(CompanyDetailsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        
-        
-        
-            this.setVisible(false);
-            setUpForm = new SetUpForm();
-        
-        
+
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
@@ -326,28 +297,21 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void addUser() {
+    private void addCompany() {
 
         //Get field values:
-        String firstname = employeeNameTextField.getText().toString();
-        String lastname = lastNameTextField.getText().toString();
-        String username = firstname.charAt(0) + lastname;
-        String city = employeeCityTextField.getText().toString();
-        String address = employeeCityTextField.getText().toString();
-        String telephone = employeeTelephoneTextField.getText().toString();
+        String companyName = companyNameTextField.getText().toString();
+        String city = cityTextField.getText().toString();
+        String address = addressTextField.getText().toString();
+        String telephone = telephoneTextField.getText().toString();
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
-        int positionID = positionsList.get(positionComboBox.getSelectedIndex()).getUserLevelID();
-        Date dateHiredDate = dateOfHirePicker.getDate();
-        int dateHired = dateHiredDate.getDate(); //TODO Show correct day.
 
         //Make the call:
-        String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create", 
-                "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username + 
-                        "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID +
-                        "&UserLevelID=" + positionID + "&Password= " + "&DateHired=" + dateHired
+        String addCompanyJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Companyinformation", "Create",
+                "SessionID=aa&CompanyName=" + companyName +  "&CountryID=" + countryID + "&Telephone=" + telephone + "&City=" + city + "&Address=" + address 
         );
         try {
-            JSONObject jsonObject = new JSONObject(addUsersJSON);
+            JSONObject jsonObject = new JSONObject(addCompanyJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
@@ -355,89 +319,20 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
             showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
             if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addUsersJSON);
+                System.out.println("Fail " + addCompanyJSON);
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
                 setVisible(true);
                 countryComboBox.setSelectedIndex(0);
-                employeeNameTextField.setText("");
-                lastNameTextField.setText("");
-                employeeCityTextField.setText("");
-                employeeAddressTextField.setText("");
-                employeeTelephoneTextField.setText("");
+                companyNameTextField.setText("");
+                cityTextField.setText("");
+                addressTextField.setText("");
+                telephoneTextField.setText("");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        getUsers();
-    }
-
-    public void getUsers() {
-        usersList = new ArrayList<>();
-        viewEmployeesButton.setEnabled(false);
-
-        //Get customers from api
-        String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
-        try {
-            JSONObject jsonObject = new JSONObject(usersJSON);
-            final String status = jsonObject.getString("Status");
-            final String title = jsonObject.getString("Title");
-            final String message = jsonObject.getString("Message");
-
-            if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                JSONArray dataArray = jsonObject.getJSONArray("Data");
-                for (int i = 0; i < dataArray.length(); i++) {
-                    JSONObject currentItem = dataArray.getJSONObject(i);
-
-                    int userID = currentItem.getInt("UserID");
-                    String username = currentItem.getString("Username");
-                    String firstname = currentItem.getString("Firstname");
-                    String lastname = currentItem.getString("Lastname");
-                    String password = currentItem.getString("Password");
-                    long dateHiredLong = currentItem.getLong("DateHired");
-                    int dateHired = (int) dateHiredLong;
-                    int countryID = currentItem.getInt("CountryID");
-                    String city = currentItem.getString("City");
-                    String telephone = currentItem.getString("Telephone");
-                    String address = currentItem.getString("Address");
-                    int userLevelID = currentItem.getInt("UserLevelID");
-
-                    Users user = new Users(userID, username, password, userLevelID, firstname, lastname, dateHired, city, address, telephone, countryID);
-                    usersList.add(user);
-                }
-            } else {
-                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + usersJSON);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //Create a new model for the table:
-        DefaultTableModel employeesTableModel = new DefaultTableModel();
-
-        //Add the table columns:
-        employeesTableModel.addColumn("ID");
-        employeesTableModel.addColumn("Username");
-        employeesTableModel.addColumn("Firstname");
-        employeesTableModel.addColumn("Lastname");
-        employeesTableModel.addColumn("Date Hired");
-        employeesTableModel.addColumn("Telephone");
-
-        //Add each item in the list as a row in the table:
-        for (int i = 0; i < usersList.size(); i++) {
-            Object[] currentRow = {
-                usersList.get(i).getUserID(),
-                usersList.get(i).getUsername(),
-                usersList.get(i).getFirstname(),
-                usersList.get(i).getLastname(),
-                Users.DATE_FORMAT.format(new Date(usersList.get(i).getDateHired())),
-                usersList.get(i).getTelephone(),};
-            employeesTableModel.addRow(currentRow);
-        }
-        employeesTable.setModel(employeesTableModel);
-        viewEmployeesButton.setEnabled(true);
     }
 
     public void getCountries() {
@@ -477,52 +372,6 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
     }
 
-    public void getPositions() {
-        positionsList = new ArrayList<>();
-        positionComboBox.removeAllItems();
-
-        //Get customers from api
-        String positionsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Userlevels", "GetMultiple", "SessionID=aa");
-        try {
-            JSONObject jsonObject = new JSONObject(positionsJSON);
-            final String status = jsonObject.getString("Status");
-            final String title = jsonObject.getString("Title");
-            final String message = jsonObject.getString("Message");
-
-            if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                JSONArray dataArray = jsonObject.getJSONArray("Data");
-                for (int i = 0; i < dataArray.length(); i++) {
-                    JSONObject currentItem = dataArray.getJSONObject(i);
-
-                    int id = currentItem.getInt("UserLevelID");
-                    String name = currentItem.getString("UserLevelName");
-                    boolean show;
-                    int showInt = currentItem.getInt("Show");
-                    if (showInt > 0) {
-                        show = true;
-                    } else {
-                        show = false;
-                    }
-                    if (show) {
-                        Userlevels u = new Userlevels(id, name, show);
-                        positionsList.add(u);
-                    }
-                }
-            } else {
-                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + positionsJSON);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        for (int i = 0; i < positionsList.size(); i++) {
-            positionComboBox.addItem(positionsList.get(i).getUserLevelName());
-        }
-
-    }
-    
-    
     /**
      * @param args the command line arguments
      */

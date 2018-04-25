@@ -476,66 +476,6 @@ public class SuppliersForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void viewSuppliersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewSuppliersButtonActionPerformed
-
-//        columnNames.clear();
-//        columnNames.add("#");
-//        columnNames.add("Supplier Name");
-//        columnNames.add("Supplies Name");
-//        columnNames.add("Price");
-//        columnNames.add("Quantity");
-//        Vector<Vector<String>> data = new Vector<>();
-//
-//        try {
-//            //SELECT From ProductType
-//            ConnectionCreator connectionCreator = new ConnectionCreator();
-//            Connection connection = connectionCreator.connect();
-//
-//            Statement getSupplierListStatement = connection.createStatement();
-//            String query = " SELECT \n"
-//                    + "	Suppliers.Name AS SupplierName,\n"
-//                    + "  Supplies.Name AS SupplyName,\n"
-//                    + "  Supplies.Price, Supplies.Quantity\n"
-//                    + "FROM \n"
-//                    + "	Supplies, Suppliers\n"
-//                    + "WHERE Supplies.SupplierID = Suppliers.ID";
-//            ResultSet rs = getSupplierListStatement.executeQuery(query);
-//
-//            Integer i = 0;
-//
-//            data.clear();
-//            supplierNumbers.clear();
-//            supplierNames.clear();
-//            suppliesPrice.clear();
-//            suppliesQuantity.clear();
-//
-//            while (rs.next()) {
-//                i++;
-//                supplierNumbers.add(i.toString());
-//                supplierNames.add(rs.getString("SupplierName"));
-//                suppliesNames.add(rs.getString("SupplyName"));
-//                suppliesPrice.add("€ " + rs.getString("Price"));
-//                suppliesQuantity.add(rs.getString("Quantity"));
-//            }
-//            getSupplierListStatement.close();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        for (int i = 0; i < supplierNumbers.size(); i++) {
-//            Vector<String> row = new Vector<>();
-//            row.add(supplierNumbers.get(i));
-//            row.add(supplierNames.get(i));
-//            row.add(suppliesNames.get(i));
-//            row.add(suppliesPrice.get(i));
-//            row.add(suppliesQuantity.get(i));
-//            data.add(row);
-//        }
-//
-//        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-//        suppliersTable.setModel(model);
-//
-//        JTableUtilities.setJTableColumnsWidth(suppliersTable, suppliersTable.getWidth(), 10, 30, 27, 15, 18);
         getSuppliers();
     }//GEN-LAST:event_viewSuppliersButtonActionPerformed
 
@@ -565,31 +505,6 @@ public class SuppliersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addSuppliersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliersButtonActionPerformed
-//        ConnectionCreator connectionCreator = new ConnectionCreator();
-//        Connection connection = connectionCreator.connect();
-//
-//        String queryInsertSuppliers = " insert into Suppliers (Name,Telephone,City,Address,CountryID)"
-//                + "values ('" + supplierNameTextField.getText() + "','" + supplierTelephoneTextField.getText() + "','" + supplierCityTextField.getText() + "', '" + supplierAddressTextField.getText() + "',0)";
-//
-//        try {
-//            //Create insert preparedstatement for administrator
-//            PreparedStatement prepareSupplierStatement = connection.prepareStatement(queryInsertSuppliers);
-//            prepareSupplierStatement.execute();
-//
-//            showMessageDialog(null, "Supplier Added -->" + supplierNameTextField.getText());
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        setVisible(true);
-//        countryComboBox.setSelectedIndex(0);
-//        supplierNameTextField.setText("");
-//        supplierAddressTextField.setText("");
-//        supplierCityTextField.setText("");
-//        supplierTelephoneTextField.setText("");
-//
-//        updateSuppliersComboBox();
         addSupplier();
     }//GEN-LAST:event_addSuppliersButtonActionPerformed
 
@@ -598,30 +513,6 @@ public class SuppliersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_supplierCityTextFieldActionPerformed
 
     private void addSuppliesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliesButtonActionPerformed
-//        ConnectionCreator connectionCreator = new ConnectionCreator();
-//        Connection connection = connectionCreator.connect();
-//
-//        String queryInsertSupplies = " insert into Supplies (Name,SupplierID,Quantity,Price)"
-//                + " values ('" + suppliesNameTextField.getText() + "'," + (supplierIDs.get(supplierComboBox.getSelectedIndex())) + ", " + quantitySpinner.getValue() + "," + priceTextField.getText() + ")";
-//
-//        System.out.println(queryInsertSupplies);
-//
-//        try {
-//            //Create insert preparedstatement for administrator
-//            PreparedStatement prepareSuppliesStatement = connection.prepareStatement(queryInsertSupplies);
-//            prepareSuppliesStatement.execute();
-//
-//            showMessageDialog(null, "Supplies Added -->" + suppliesNameTextField.getText());
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        setVisible(true);
-//        suppliesNameTextField.setText("");
-//        quantitySpinner.setValue(0);
-//        priceTextField.setText("");
-
         addSupplies();
     }//GEN-LAST:event_addSuppliesButtonActionPerformed
 
@@ -769,7 +660,7 @@ public class SuppliersForm extends javax.swing.JFrame {
             for (int j = 0; j < suppliesList.size(); j++) {
                 if (suppliesList.get(j).getID() == supplierSuppliesList.get(i).getSupplyID()) {
                     suppliesName = suppliesList.get(j).getName();
-                    
+
                 }
             }
 
@@ -777,7 +668,7 @@ public class SuppliersForm extends javax.swing.JFrame {
                 supplierSuppliesList.get(i).getID(),
                 supplierName,
                 suppliesName,
-            suppliesPrice = suppliesList.get(i).getPrice()};
+                suppliesPrice = suppliesList.get(i).getPrice()};
             suppliersTableModel.addRow(currentRow);
         }
         suppliersTable.setModel(suppliersTableModel);
@@ -820,25 +711,6 @@ public class SuppliersForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-//        //Create a new model for the table:
-//        DefaultTableModel suppliersTableModel = new DefaultTableModel();
-//
-//        //Add the table columns:
-//        suppliersTableModel.addColumn("ID");
-//        suppliersTableModel.addColumn("Supplier");
-//        suppliersTableModel.addColumn("Supplies");
-//        suppliersTableModel.addColumn("Price");
-//
-//        //Add each item in the list as a row in the table:
-//        for (int i = 0; i < suppliersList.size(); i++) {
-//
-//            Object[] currentRow = {
-//                suppliersList.get(i).getID(),
-//                suppliersList.get(i).getName(),};
-//            suppliersTableModel.addRow(currentRow);
-//        }
-//        suppliersTable.setModel(suppliersTableModel);
-//        viewSuppliersButton.setEnabled(true);
     }
 
     public void getCountries() {
