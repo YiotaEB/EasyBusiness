@@ -357,10 +357,21 @@ public class EditEmployeesFragment extends Fragment {
                         }
 
                         adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, positionNames);
+                        System.out.println("Found adapter size = "  + adapter.getCount());
 
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                positionSpinner.setAdapter(adapter);
+                                int selectedSpinnerPosition = 0;
+                                for (int i = 0; i < positions.size(); i++) {
+                                    if (positions.get(i).getUserLevelID() == user.getUserLevelID()) {
+                                        selectedSpinnerPosition = i;
+                                        break;
+                                    }
+                                }
+                                System.out.println("Selected spinner position: " + selectedSpinnerPosition);
+                                positionSpinner.setSelection(selectedSpinnerPosition);
                                 final View progressView = activity.findViewById(R.id.edit_employees_progress);
                                 final View employeeAddView = activity.findViewById(R.id.edit_employees_view);
                                 progressView.setVisibility(View.GONE);
@@ -379,15 +390,6 @@ public class EditEmployeesFragment extends Fragment {
                             }
                         });
                     }
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Spinner positionsSpinner = view.findViewById(R.id.edit_position_spinner);
-                            positionsSpinner.setAdapter(adapter);
-                            positionsSpinner.setSelection(user.getUserLevelID() - 1);
-                        }
-                    });
 
                 }
                 //CONNECTION ERROR

@@ -88,21 +88,20 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_PASSWORD_HASH, password).apply();
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_USERLEVELID, String.valueOf(userLevelID)).apply();
 
+                    Intent i = new Intent(activity, MainActivity.class);
 
                     //Admins:
                     if (userLevelID <= 2) {
-                        Intent i = new Intent(activity, MainActivity.class);
                         i.putExtra(MainActivity.APP_MODE_STRING, AppMode.MODE_ADMIN);
-                        activity.startActivity(i);
-                        activity.finish();
                     }
                     //Users:
                     else {
-                        Intent i = new Intent(activity, MainActivity.class);
                         i.putExtra(MainActivity.APP_MODE_STRING, AppMode.MODE_USER);
-                        activity.startActivity(i);
-                        activity.finish();
                     }
+
+                    activity.startActivity(i);
+                    activity.finish();
+                    return null;
                 }
                 else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
                     Intent intent = new Intent(activity, LoginActivity.class);
@@ -111,6 +110,7 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
                 }
                 //Unknown error
                 else {
+                    System.out.println("LoginExistingAsyncTask - Unknown Error");
                     Intent intent = new Intent(activity, LoginActivity.class);
                     activity.startActivity(intent);
                     activity.finish();
@@ -120,6 +120,7 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
             }
             //Connection error
             else {
+                System.out.println("LoginExistingAsyncTask - Connection Error");
                 Intent intent = new Intent(activity, LoginActivity.class);
                 activity.startActivity(intent);
                 activity.finish();
@@ -128,11 +129,11 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        finally {
-            Intent intent = new Intent(activity, LoginActivity.class);
-            activity.startActivity(intent);
-            activity.finish();
-        }
+//        finally {
+//            Intent intent = new Intent(activity, LoginActivity.class);
+//            activity.startActivity(intent);
+//            activity.finish();
+//        }
 
 
         return null;
