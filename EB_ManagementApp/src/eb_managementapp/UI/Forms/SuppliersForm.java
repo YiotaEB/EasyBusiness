@@ -738,29 +738,7 @@ public class SuppliersForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    //    
-    //    public void updateSuppliersComboBox() {
-    //        try {
-    //            ConnectionCreator connectionCreator = new ConnectionCreator();
-    //            Connection connection = connectionCreator.connect();
-    //
-    //            Statement getSupplierStatement = connection.createStatement();
-    //            String qr2 = " Select ID,Name From Suppliers";
-    //            ResultSet rs2 = getSupplierStatement.executeQuery(qr2);
-    //
-    //            supplierComboBox.removeAllItems();
-    //            supplierIDs.clear();
-    //            while (rs2.next()) {
-    //                supplierIDs.add(rs2.getString("ID"));
-    //                supplierComboBox.addItem(rs2.getString("Name"));
-    //            }
-    //            getSupplierStatement.close();
-    //
-    //        } catch (SQLException ex) {
-    //            Logger.getLogger(SuppliersForm.class.getName()).log(Level.SEVERE, null, ex);
-    //        }
-    //    }
-
+    
     /**
      * @param args the command line arguments
      */
