@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class HTTPConnection {
-    
+
     public static final String RESPONSE_OK = "OK";
     public static final String RESPONSE_ERROR = "Error";
 
@@ -71,16 +71,25 @@ public class HTTPConnection {
             if (statusCode == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 responseData = convertStreamToString(inputStream);
-
+                urlConnection.disconnect();
                 return responseData;
+            } else {
+                showMessageDialog(null, "HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName) + ". Please make sure you have an internet connection.", "Connection Error", JOptionPane.PLAIN_MESSAGE);
+                throw new RuntimeException("HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName));
             }
+
             
-            urlConnection.disconnect();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        showMessageDialog(null, "HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName) + ". Please make sure you have an internet connection.", "Connection Error", JOptionPane.PLAIN_MESSAGE);
-        throw new RuntimeException("HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName));
+        finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        
+        return null;
+
     }
 }

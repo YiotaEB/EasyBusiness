@@ -14,6 +14,7 @@ import static eb_managementapp.EB_ManagementApp.addProductsForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Customerproducts;
 import eb_managementapp.Entities.Customers;
+import eb_managementapp.Entities.Productionbatches;
 import eb_managementapp.Entities.Products;
 import eb_managementapp.Entities.Suppliers;
 import eb_managementapp.Entities.Suppliersupplies;
@@ -21,6 +22,8 @@ import eb_managementapp.Entities.Supplies;
 import eb_managementapp.Entities.Users;
 import eb_managementapp.Entities.Producttypes;
 import eb_managementapp.Entities.Productsizes;
+import eb_managementapp.Entities.Saleproducts;
+import eb_managementapp.Entities.Sales;
 import eb_managementapp.UI.Forms.AddProductsForm;
 import eb_managementapp.UI.Forms.AddSuppliersForm;
 import eb_managementapp.UI.Forms.AddSuppliesForm;
@@ -44,7 +47,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class MainForm extends javax.swing.JFrame {
+public final class MainForm extends javax.swing.JFrame {
 
     private ArrayList<Products> productsList;
     private ArrayList<Countries> countriesList;
@@ -53,9 +56,12 @@ public class MainForm extends javax.swing.JFrame {
     private ArrayList<Suppliers> suppliersList;
     private ArrayList<Supplies> suppliesList;
     private ArrayList<Customerproducts> customerProductsList;
-     private ArrayList<Suppliersupplies> supplierSuppliesList;
+    private ArrayList<Suppliersupplies> supplierSuppliesList;
     private ArrayList<Producttypes> productTypesList;
-     private ArrayList<Productsizes> productSizesList;
+    private ArrayList<Productsizes> productSizesList;
+    private ArrayList<Productionbatches> productionList;
+    private ArrayList<Saleproducts> saleProductsList;
+    private ArrayList<Sales> salesList;
 
     public MainForm() {
         initComponents();
@@ -66,6 +72,10 @@ public class MainForm extends javax.swing.JFrame {
         getSuppliers();
         getSupplies();
         getProducts();
+        getProduction();
+        getSales();
+        getSaleProducts();
+
         getSupplierSupplies();
 
         customerScrollPanel.setViewportView(customerDetailsTable);
@@ -101,13 +111,180 @@ public class MainForm extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
+//    private void addSales() {
+//        getSales();
+//
+//
+//        quantityInStock = quantitySold - Integer.parseInt(quantitySpinner.getValue().toString());
+//
+//        System.out.println("Custoer ID: " + customerID);
+//        System.out.println("Sales product ID: " + saleProductsID);
+//
+//        //Add sale:
+//        String addSaleJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "Create",
+//                "SessionID=aa&ID=1&CustomerID=" + customerID + "&SaleProductsID=" + saleProductsID + "&Tax=0" + "&SaleTimeDate=0"
+//        );
+//        
+//        System.out.println("Add Sale HTTP -> " + addSaleJSON);
+//
+//        //Add Sales Products:
+//        String addSaleProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Saleproducts", "Create",
+//                "SessionID=aa&ID=1&SaleID=" + saleID + "&ProductID=" + productID + "&QuantitySold=" + quantitySold
+//        );
+//        
+//        System.out.println("Add SaleProducts HTTP -> " + addSaleProductsJSON);
+//
+//        String updateProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Update",
+//                "SessionID=aa&ID=" + productID + "&Name=" + productName + "&Price=" + price + "&QuantityInStock="
+//                + quantityInStock + "&ProductTypeID=" + productTypeID + "&ProductSizeID=" + productSizeID + "&ProductSuppliesID=" + productSuppliesID);
+//
+//        System.out.println("Update Products HTTP -> " + updateProductsJSON);
+//
+//        try {
+//            JSONObject jsonObject = new JSONObject(addSaleJSON);
+//            final String status = jsonObject.getString("Status");
+//            final String title = jsonObject.getString("Title");
+//            final String message = jsonObject.getString("Message");
+//
+//            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+//
+//            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+//                System.out.println("Fail " + addSaleJSON);
+//            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+//                //Reset fields:
+//                setVisible(true);
+//                customerComboBox.setSelectedIndex(0);
+//                productsComboBox.setSelectedIndex(0);
+//                productSizeComboBox.setSelectedIndex(0);
+//                quantitySpinner.setValue(0);
+//                //todo date
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+    private void addSales() {
+
+        //Update the sales:
+        getCustomers();
+        getProducts();
+        getSales();
+
+        //Get fields to add a new sale:
+        int customerID = -1;
+        int salesProductID = -1;
+        int tax = 0;
+        long salesTimeDate = System.currentTimeMillis();
+
+        customerID = customersList.get(customerComboBox.getSelectedIndex()).getID();
+        salesProductID = 0; //Update later
+
+        //Add the new sale:
+        String addSaleJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "Create",
+                "SessionID=aa&ID=1&CustomerID=" + customerID + "&SaleProductID=" + salesProductID + "&Tax=" + tax + "&SaleTimeDate=" + salesTimeDate
+        );
+
+        System.out.println("Add Sale HTTP -> " + addSaleJSON);
+
+        //Get the ID of the added Sale:
+        String lastSaleIDJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "GetMaxID", "");
+
+        if (lastSaleIDJSON.equals("0")) {
+            showMessageDialog(null, "Failed to add Sale", "Error", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
+        //Get fields for SalesProducts:
+        String saleID = lastSaleIDJSON;
+        int productID = productsList.get(productComboBox.getSelectedIndex()).getID();
+        int quantitySold = Integer.parseInt(productionQuantitySpinner.getValue().toString());
+        
+        //Add SalesProduct:
+        String addSalesProductJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Saleproducts", "Create",
+                "SessionID=aa&ID=1&SaleID=" + saleID + "&ProductID=" + productID + "&QuantitySold=" + quantitySold
+                );
+        
+        System.out.println("Add SaleProducts HTTP -> " + addSalesProductJSON);
+        
+        //Get ID of the added SaleProducts:
+        String lastSaleProductsIDJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Saleproducts", "GetMaxID", "");
+        salesProductID = Integer.parseInt(lastSaleProductsIDJSON);
+        
+        //Update the latest Sales' SaleProductsID:
+        String updateSalesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "Update",
+                "SessionID=aa&ID=" + saleID + "&SaleProductID=" + salesProductID + "&Tax=" + tax + "&SaleTimeDate=" + salesTimeDate
+        );
+        
+        System.out.println("Update Sales HTTP -> " + updateSalesJSON);
+
+    }
+
+    private void addProduction() {
+        getProducts();
+
+        //Get field values:
+        String productionQuantity = productionQuantitySpinner.getValue().toString();
+        int bottleSize = productSizesList.get(bottleSizeComboBox.getSelectedIndex()).getID();
+        int currentID = productComboBox.getSelectedIndex();
+        int productID = productsList.get(currentID).getID();
+        String productName = productsList.get(currentID).getName();
+        double price = productsList.get(currentID).getPrice();
+        int quantityInStock = productsList.get(currentID).getQuantityInStock();
+        int productSizeID = productsList.get(currentID).getProductSizeID();
+        int productTypeID = productsList.get(currentID).getProductTypeID();
+        int productSuppliesID = productsList.get(currentID).getProductSuppliesID();
+
+//        Date productionDate = dateOfProduction.getDate();
+//        int dateProduction = productionDate.getDate(); //TODO Show correct day.
+        quantityInStock += Integer.parseInt(bottleQuantitySpinner.getValue().toString());
+
+        //Make the call:
+        String addProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productionbatches", "Create",
+                "SessionID=aa&ID=1&QuantityProduced=" + productionQuantity + "&ProductID=" + productID + "&ProductionDate=0"
+        );
+        System.out.println("Add Production HTTP -> " + addProductionJSON);
+
+        String updateProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Update",
+                "SessionID=aa&ID=" + productID + "&Name=" + productName + "&Price=" + price + "&QuantityInStock="
+                + quantityInStock + "&ProductTypeID=" + productTypeID + "&ProductSizeID=" + productSizeID + "&ProductSuppliesID=" + productSuppliesID);
+
+        System.out.println("Update Products HTTP -> " + addProductionJSON);
+
+        try {
+            JSONObject jsonObject = new JSONObject(addProductionJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + addProductionJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                //Reset fields:
+                setVisible(true);
+                productComboBox.setSelectedIndex(0);
+                bottleSizeComboBox.setSelectedIndex(0);
+                bottleQuantitySpinner.setValue(0);
+                productionQuantitySpinner.setValue(0);
+                //todo date
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getCustomers() {
         customersList = new ArrayList<>();
         getCountries();
 
+        customerComboBox.removeAllItems();
+
         //Get customers from api
-        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "Limit=2&SessionID=aa");
+        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "SessionID=aa");
         try {
+            System.out.println("Get Customers HTTP -> " + customersJSON);
             JSONObject jsonObject = new JSONObject(customersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -179,8 +356,9 @@ public class MainForm extends javax.swing.JFrame {
         getCustomers();
 
         //Get customers from api
-        String customerProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "GetMultiple", "Limit=2&SessionID=aa");
+        String customerProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "GetMultiple", "SessionID=aa");
         try {
+            System.out.println("Get Customer Products HTTP -> " + customerProductsJSON);
             JSONObject jsonObject = new JSONObject(customerProductsJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -204,6 +382,10 @@ public class MainForm extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        for (int i = 0; i < customersList.size(); i++) {
+            customerComboBox.addItem(customersList.get(i).getName());
         }
 
         //Create a new model for the table:
@@ -230,7 +412,7 @@ public class MainForm extends javax.swing.JFrame {
                     productName = productsList.get(j).getName();
                 }
             }
-            
+
             Object[] currentRow = {
                 customerProductsList.get(i).getID(),
                 customerName,
@@ -247,8 +429,9 @@ public class MainForm extends javax.swing.JFrame {
         getCountries();
 
         //Get customers from api
-        String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "GetMultiple", "Limit=2&SessionID=aa");
+        String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "GetMultiple", "SessionID=aa");
         try {
+            System.out.println("Get Suppliers HTTP -> " + suppliersJSON);
             JSONObject jsonObject = new JSONObject(suppliersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -294,7 +477,7 @@ public class MainForm extends javax.swing.JFrame {
             //Put Countries Name in the Table
             String countryName = "";
             for (int j = 0; j < countriesList.size(); j++) {
-                if (countriesList.get(j).getID() == customersList.get(i).getCountryID()) {
+                if (countriesList.get(j).getID() == customersList.get(j).getCountryID()) {
                     countryName = countriesList.get(j).getName();
                 }
             }
@@ -318,8 +501,9 @@ public class MainForm extends javax.swing.JFrame {
         getCountries();
 
         //Get customers from api
-        String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "Limit=2&SessionID=aa");
+        String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
         try {
+            System.out.println("Get Users HTTP -> " + employeesJSON);
             JSONObject jsonObject = new JSONObject(employeesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -377,7 +561,7 @@ public class MainForm extends javax.swing.JFrame {
             //Put Countries Name in the Table
             String countryName = "";
             for (int j = 0; j < countriesList.size(); j++) {
-                if (countriesList.get(j).getID() == customersList.get(i).getCountryID()) {
+                if (countriesList.get(j).getID() == customersList.get(j).getCountryID()) {
                     countryName = countriesList.get(j).getName();
                 }
             }
@@ -406,6 +590,7 @@ public class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "GetMultiple", "SessionID=aa");
         try {
+            System.out.println("Get Supplies  HTTP -> " + suppliersJSON);
             JSONObject jsonObject = new JSONObject(suppliersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -432,8 +617,8 @@ public class MainForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-         //Create a new model for the table:
+
+        //Create a new model for the table:
         DefaultTableModel suppliesTableModel = new DefaultTableModel();
 
         //Add the table columns:
@@ -460,8 +645,7 @@ public class MainForm extends javax.swing.JFrame {
                 supplierName,
                 suppliesList.get(i).getQuantity(),
                 suppliesList.get(i).getPrice()
-                
-               
+
             };
             suppliesTableModel.addRow(currentRow);
         }
@@ -474,6 +658,7 @@ public class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String countriesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Countries", "GetMultiple", "");
         try {
+            System.out.println("Get countries HTTP -> " + countriesJSON);
             JSONObject jsonObject = new JSONObject(countriesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -498,9 +683,6 @@ public class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-//        for (int i = 0; i < countriesList.size(); i++) {
-//            customerDetailsTable.addItem(countriesList.get(i).getName());
-//        }
     }
 
     public void getProductType() {
@@ -533,9 +715,12 @@ public class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void getProductSize() {
         productSizesList = new ArrayList<>();
+
+        bottleSizeComboBox.removeAllItems();
+        productSizeComboBox.removeAllItems();
 
         //Get product Sizes from api
         String productSizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "GetMultiple", "SessionID=aa");
@@ -554,7 +739,7 @@ public class MainForm extends javax.swing.JFrame {
                     String name = currentItem.getString("Name");
                     int unitTypeID = currentItem.getInt("UnitTypeID");
 
-                    Productsizes c = new Productsizes(id, name,unitTypeID);
+                    Productsizes c = new Productsizes(id, name, unitTypeID);
                     productSizesList.add(c);
                 }
             } else {
@@ -564,16 +749,20 @@ public class MainForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        for (int i = 0; i < countriesList.size(); i++) {
-//            customerDetailsTable.addItem(countriesList.get(i).getName());
-//        }
+        for (int i = 0; i < productSizesList.size(); i++) {
+            bottleSizeComboBox.addItem(productSizesList.get(i).getName());
+            productSizeComboBox.addItem(productSizesList.get(i).getName());
+        }
     }
-    
+
     public void getProducts() {
         productsList = new ArrayList<>();
         getProductType();
+        getProduction();
         getProductSize();
+
+        productComboBox.removeAllItems();
+        productsComboBox.removeAllItems();
 
         //Get customers from api
         String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "GetMultiple", "SessionID=aa");
@@ -596,7 +785,7 @@ public class MainForm extends javax.swing.JFrame {
                     int productTypeID = currentItem.getInt("ProductTypeID");
                     int productSuppliesID = currentItem.getInt("ProductSuppliesID");
 
-                    Products c = new Products(id, name,price,quantity,productSizeID,productTypeID,productSuppliesID);
+                    Products c = new Products(id, name, price, quantity, productSizeID, productTypeID, productSuppliesID);
                     productsList.add(c);
                 }
             } else {
@@ -606,6 +795,12 @@ public class MainForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        for (int i = 0; i < productsList.size(); i++) {
+            productsComboBox.addItem(productsList.get(i).getName());
+            productComboBox.addItem(productsList.get(i).getName());
+        }
+
         //Create a new model for the table:
         DefaultTableModel productsTableModel = new DefaultTableModel();
 
@@ -627,8 +822,8 @@ public class MainForm extends javax.swing.JFrame {
                     productSizeName = productSizesList.get(j).getName();
                 }
             }
-            
-             //Put productType Name in the Table
+
+            //Put productType Name in the Table
             String productTypeName = "";
             for (int j = 0; j < productTypesList.size(); j++) {
                 if (productTypesList.get(j).getID() == productsList.get(i).getID()) {
@@ -643,14 +838,202 @@ public class MainForm extends javax.swing.JFrame {
                 productsList.get(i).getQuantityInStock(),
                 productsList.get(i).getPrice(),
                 productTypeName
-                
-               
+
             };
             productsTableModel.addRow(currentRow);
         }
         productsDetailsTable.setModel(productsTableModel);
     }
-    
+
+    public void getProduction() {
+        productionList = new ArrayList<>();
+
+        getProductSize();
+
+        //Get customers from api
+        String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productionbatches", "GetMultiple", "SessionID=aa");
+        try {
+            JSONObject jsonObject = new JSONObject(productsJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    int quantityProduced = currentItem.getInt("QuantityProduced");
+                    int productID = currentItem.getInt("ProductID");
+                    int productionDate = currentItem.getInt("ProductionDate");
+
+                    Productionbatches c = new Productionbatches(id, quantityProduced, productID, productionDate);
+                    productionList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + productsJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel productsTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        productsTableModel.addColumn("ID");
+        productsTableModel.addColumn("Production Date");
+        productsTableModel.addColumn("Product Name");
+        productsTableModel.addColumn("Quantity Produced");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < productionList.size(); i++) {
+
+            //Put productType Name in the Table
+            String productTypeName = "";
+            for (int j = 0; j < productsList.size(); j++) {
+                if (productsList.get(j).getID() == productionList.get(i).getID()) {
+                    productTypeName = productsList.get(j).getName();
+                }
+            }
+
+            Object[] currentRow = {
+                productionList.get(i).getID(),
+                productionList.get(i).getProductionDate(),
+                productTypeName,
+                productionList.get(i).getQuantityProduced()
+
+            };
+            productsTableModel.addRow(currentRow);
+        }
+        productionDetailsTable.setModel(productsTableModel);
+    }
+
+    public void getSaleProducts() {
+        saleProductsList = new ArrayList<>();
+
+        //Get customers from api
+        String saleProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Saleproducts", "GetMultiple", "SessionID=aa");
+        try {
+            System.out.println("Get Sale Products HTTP -> " + saleProductsJSON);
+            JSONObject jsonObject = new JSONObject(saleProductsJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    int saleID = currentItem.getInt("SaleID");
+                    int productID = currentItem.getInt("ProductID");
+                    int quantitySold = currentItem.getInt("QuantitySold");
+
+                    Saleproducts c = new Saleproducts(id, saleID, productID, quantitySold);
+                    saleProductsList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + saleProductsJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getSales() {
+        salesList = new ArrayList<>();
+        getProducts();
+        getSaleProducts();
+
+        //Get customers from api
+        String salesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "GetMultiple", "SessionID=aa");
+        try {
+            System.out.println("Get Sales HTTP -> " + salesJSON);
+            JSONObject jsonObject = new JSONObject(salesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int id = currentItem.getInt("ID");
+                    int customerID = currentItem.getInt("CustomerID");
+                    int saleProductsID = currentItem.getInt("SaleProductsID");
+                    int tax = currentItem.getInt("Tax");
+                    int saleTimeDate = currentItem.getInt("SaleTimeDate");
+
+                    Sales c = new Sales(id, customerID, saleProductsID, tax, saleTimeDate);
+                    salesList.add(c);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + salesJSON);
+            }
+        } catch (JSONException e) {
+            System.out.println(e);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        //Create a new model for the table:
+        DefaultTableModel productsTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        productsTableModel.addColumn("ID");
+        productsTableModel.addColumn("Date");
+        productsTableModel.addColumn("Customer");
+        productsTableModel.addColumn("Product Name");
+        productsTableModel.addColumn("Quantity");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < salesList.size(); i++) {
+
+            //Put product Name in the Table
+            String productName = "";
+            for (int j = 0; j < productsList.size(); j++) {
+                if (productsList.get(j).getID() == salesList.get(i).getID()) {
+                    productName = productsList.get(j).getName();
+                }
+            }
+
+            //Put customerName in the Table
+            String customerName = "";
+            for (int j = 0; j < customersList.size(); j++) {
+                if (customersList.get(j).getID() == salesList.get(i).getID()) {
+                    customerName = customersList.get(j).getName();
+                }
+            }
+
+            //Put quantity in the Table
+            int quantity = 0;
+            for (int j = 0; j < saleProductsList.size(); j++) {
+                if (saleProductsList.get(j).getID() == salesList.get(i).getID()) {
+                    quantity = saleProductsList.get(j).getQuantitySold();
+                }
+            }
+
+            Object[] currentRow = {
+                salesList.get(i).getID(),
+                salesList.get(i).getSaleTimeDate(),
+                customerName,
+                productName,
+                quantity
+
+            };
+            productsTableModel.addRow(currentRow);
+        }
+        salesDetailsTable.setModel(productsTableModel);
+    }
+
     public void getSupplierSupplies() {
         supplierSuppliesList = new ArrayList<>();
         getSupplies();
@@ -659,6 +1042,7 @@ public class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String supplierSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliersupplies", "GetMultiple", "SessionID=aa");
         try {
+            System.out.println("Get supplier supplies HTTP -> " + supplierSuppliesJSON);
             JSONObject jsonObject = new JSONObject(supplierSuppliesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -710,7 +1094,7 @@ public class MainForm extends javax.swing.JFrame {
             for (int j = 0; j < suppliesList.size(); j++) {
                 if (suppliesList.get(j).getID() == supplierSuppliesList.get(i).getSupplyID()) {
                     suppliesName = suppliesList.get(j).getName();
-                    
+
                 }
             }
 
@@ -718,7 +1102,7 @@ public class MainForm extends javax.swing.JFrame {
                 supplierSuppliesList.get(i).getID(),
                 supplierName,
                 suppliesName,
-            suppliesPrice = suppliesList.get(i).getPrice()};
+                suppliesPrice = suppliesList.get(i).getPrice()};
             supplierSuppliesTableModel.addRow(currentRow);
         }
         suppliesTable.setModel(supplierSuppliesTableModel);
@@ -769,39 +1153,44 @@ public class MainForm extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         productNameTextField = new javax.swing.JLabel();
         productNameTextField1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        productComboBox = new javax.swing.JComboBox<>();
         productNameTextField2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jSpinner1 = new javax.swing.JSpinner();
+        bottleSizeComboBox = new javax.swing.JComboBox<>();
+        productionQuantitySpinner = new javax.swing.JSpinner();
         productNameTextField3 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
+        bottleQuantitySpinner = new javax.swing.JSpinner();
+        addBottlesQuantityButton = new javax.swing.JButton();
         productNameTextField4 = new javax.swing.JLabel();
         productNameTextField5 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        addBottlesQuantity = new javax.swing.JButton();
+        dateOfProduction = new org.jdesktop.swingx.JXDatePicker();
+        hireDateLabel = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
+        productionScrollPanel = new javax.swing.JScrollPane();
+        productionDetailsTable = new javax.swing.JTable();
+        searchProductionDate = new javax.swing.JTextField();
         sales = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        saleScrollPanel = new javax.swing.JScrollPane();
+        salesDetailsTable = new javax.swing.JTable();
+        searchSale = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jPanel7 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
         jPanel10 = new javax.swing.JPanel();
         productNameTextField6 = new javax.swing.JLabel();
         productNameTextField7 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        customerComboBox = new javax.swing.JComboBox<>();
         productNameTextField8 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jSpinner3 = new javax.swing.JSpinner();
-        jButton3 = new javax.swing.JButton();
+        productSizeComboBox = new javax.swing.JComboBox<>();
+        quantitySpinner = new javax.swing.JSpinner();
+        addSaleButton = new javax.swing.JButton();
         productNameTextField9 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        productsComboBox = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         customers = new javax.swing.JPanel();
         noCustomerLb = new javax.swing.JLabel();
         customerDetailsPanel = new javax.swing.JPanel();
@@ -1258,17 +1647,22 @@ public class MainForm extends javax.swing.JFrame {
         productNameTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField1.setText("Bottle Sizes:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        productComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         productNameTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        productNameTextField2.setText("Product Quantity:");
+        productNameTextField2.setText("Production Quantity:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        bottleSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         productNameTextField3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField3.setText("Bottle Quantity:");
 
-        jButton1.setText("Add Bottles Quanity");
+        addBottlesQuantityButton.setText("Add Bottles Quantity");
+        addBottlesQuantityButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBottlesQuantityButtonActionPerformed(evt);
+            }
+        });
 
         productNameTextField4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField4.setText("Remaining Quantity:");
@@ -1276,87 +1670,151 @@ public class MainForm extends javax.swing.JFrame {
         productNameTextField5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField5.setText("example - 500 litres");
 
-        jButton2.setText("Finish");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        addBottlesQuantity.setText("Finish");
+        addBottlesQuantity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addBottlesQuantityActionPerformed(evt);
             }
         });
+
+        dateOfProduction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateOfProductionActionPerformed(evt);
+            }
+        });
+
+        hireDateLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        hireDateLabel.setText("Production Date:");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(productNameTextField2)
-                    .addComponent(productNameTextField)
-                    .addComponent(productNameTextField1)
-                    .addComponent(productNameTextField3)
-                    .addComponent(productNameTextField4))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, 100, Short.MAX_VALUE)
-                                    .addComponent(jSpinner1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jSpinner2, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(74, 74, 74)
-                                .addComponent(jButton1)))
-                        .addContainerGap(483, Short.MAX_VALUE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jButton2))
-                            .addComponent(productNameTextField5))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(16, 16, 16)
+                                .addComponent(productNameTextField))
+                            .addComponent(hireDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(productComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateOfProduction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(productNameTextField2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(productionQuantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(72, 72, 72)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(productNameTextField1)
+                            .addComponent(productNameTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bottleQuantitySpinner)
+                            .addComponent(bottleSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(addBottlesQuantityButton)
+                        .addGap(23, 23, 23)))
+                .addGap(297, 297, 297))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(productNameTextField4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(addBottlesQuantity))
+                    .addComponent(productNameTextField5))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(23, 23, 23)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(productNameTextField)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(productNameTextField2)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(productNameTextField3)
+                    .addComponent(bottleQuantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hireDateLabel)
+                    .addComponent(dateOfProduction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(productNameTextField1)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(productNameTextField3)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18)
+                    .addComponent(bottleSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(productNameTextField)
+                    .addComponent(productComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(productNameTextField2)
+                            .addComponent(productionQuantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(addBottlesQuantityButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(productNameTextField4)
                     .addComponent(productNameTextField5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(addBottlesQuantity)
+                .addContainerGap())
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Supplies for each Production"));
+
+        productionDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        productionScrollPanel.setViewportView(productionDetailsTable);
+
+        searchProductionDate.setText("Search....");
+        searchProductionDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchProductionDateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 719, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productionScrollPanel)
+                .addContainerGap())
+            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                    .addGap(730, 730, 730)
+                    .addComponent(searchProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(77, Short.MAX_VALUE)))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 213, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(productionScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                .addGap(96, 96, 96))
+            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createSequentialGroup()
+                    .addGap(6, 6, 6)
+                    .addComponent(searchProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(348, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout productionLayout = new javax.swing.GroupLayout(production);
@@ -1365,34 +1823,69 @@ public class MainForm extends javax.swing.JFrame {
             productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addGroup(productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(161, Short.MAX_VALUE))
         );
         productionLayout.setVerticalGroup(
             productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Production", production);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Items Daily Sales"));
 
+        salesDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        saleScrollPanel.setViewportView(salesDetailsTable);
+
+        searchSale.setText("Search....");
+        searchSale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchSaleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 782, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(611, Short.MAX_VALUE)
+                .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(saleScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                    .addContainerGap(32, Short.MAX_VALUE)
+                    .addComponent(saleScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -1415,14 +1908,7 @@ public class MainForm extends javax.swing.JFrame {
             .addGap(0, 173, Short.MAX_VALUE)
         );
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item - Orage Juice", "Item - Lemon Juice" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList2);
-
-        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Production"));
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Sale"));
 
         productNameTextField6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField6.setText("Customer:");
@@ -1430,120 +1916,117 @@ public class MainForm extends javax.swing.JFrame {
         productNameTextField7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField7.setText("Product Size:");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        customerComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        customerComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                customerComboBoxActionPerformed(evt);
             }
         });
 
         productNameTextField8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField8.setText("Product Quantity:");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        productSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton3.setText("Add Sale");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        addSaleButton.setText("Add Sale");
+        addSaleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                addSaleButtonActionPerformed(evt);
             }
         });
 
         productNameTextField9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         productNameTextField9.setText("Product :");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        productsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        productsComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productsComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(productNameTextField6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(customerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(productNameTextField8)
+                            .addComponent(productNameTextField9)
                             .addComponent(productNameTextField7)
-                            .addComponent(productNameTextField9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(productNameTextField8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(productsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(84, 84, 84))
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jComboBox4, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jSpinner3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(74, 74, 74)
-                                .addComponent(jButton3)))))
-                .addContainerGap(483, Short.MAX_VALUE))
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(productSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(addSaleButton))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(23, 23, 23))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(productNameTextField6)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                    .addComponent(customerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(productNameTextField9))
-                .addGap(15, 15, 15)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(productNameTextField8)
-                            .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(productNameTextField7)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(34, Short.MAX_VALUE))
+                    .addComponent(productNameTextField9)
+                    .addComponent(productsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(productSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(productNameTextField7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(productNameTextField8)
+                    .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(addSaleButton)
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(4, 4, 4))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(14, 14, 14))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(191, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Daily Sales", jPanel2);
@@ -1552,11 +2035,11 @@ public class MainForm extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1089, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 701, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Weekly Sales", jPanel4);
@@ -1565,27 +2048,14 @@ public class MainForm extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1089, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 701, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Monthly Sales", jPanel3);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1089, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 701, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Yearly Sales", jPanel5);
 
         javax.swing.GroupLayout salesLayout = new javax.swing.GroupLayout(sales);
         sales.setLayout(salesLayout);
@@ -2426,20 +2896,12 @@ public class MainForm extends javax.swing.JFrame {
         addSuppliersForm = new AddSuppliersForm();
     }//GEN-LAST:event_importSupplierBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void addBottlesQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBottlesQuantityActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    }//GEN-LAST:event_addBottlesQuantityActionPerformed
 
     private void importCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importCustomerBtnActionPerformed
-         setVisible(true);
+        setVisible(true);
         customersForm = new CustomersForm();
     }//GEN-LAST:event_importCustomerBtnActionPerformed
 
@@ -2465,6 +2927,34 @@ public class MainForm extends javax.swing.JFrame {
     private void searchSuppliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSuppliesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchSuppliesActionPerformed
+
+    private void dateOfProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateOfProductionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateOfProductionActionPerformed
+
+    private void addBottlesQuantityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBottlesQuantityButtonActionPerformed
+        addProduction();
+    }//GEN-LAST:event_addBottlesQuantityButtonActionPerformed
+
+    private void searchProductionDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProductionDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchProductionDateActionPerformed
+
+    private void addSaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSaleButtonActionPerformed
+        addSales();
+    }//GEN-LAST:event_addSaleButtonActionPerformed
+
+    private void customerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerComboBoxActionPerformed
+
+    private void productsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_productsComboBoxActionPerformed
+
+    private void searchSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSaleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchSaleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2503,10 +2993,16 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;
+    private javax.swing.JButton addBottlesQuantity;
+    private javax.swing.JButton addBottlesQuantityButton;
+    private javax.swing.JButton addSaleButton;
+    private javax.swing.JSpinner bottleQuantitySpinner;
+    private javax.swing.JComboBox<String> bottleSizeComboBox;
     private javax.swing.JScrollPane custProScrollPanel;
     private javax.swing.JPanel custProductsPanel;
     private javax.swing.JPanel custSalesPanel;
     private javax.swing.JTable custSalesTable;
+    private javax.swing.JComboBox<String> customerComboBox;
     private javax.swing.JPanel customerDetailsPanel;
     private javax.swing.JTable customerDetailsTable;
     private javax.swing.JTable customerProductsTable;
@@ -2519,6 +3015,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JTable dailyProductionTable;
     private javax.swing.JTable dailyPurchasesTable;
     private javax.swing.JTable dailySalesTable;
+    private org.jdesktop.swingx.JXDatePicker dateOfProduction;
     private javax.swing.JPanel dialyProduction;
     private javax.swing.JPanel employeeListPanel;
     private javax.swing.JScrollPane employeeScrollPanel;
@@ -2534,6 +3031,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu file;
     private javax.swing.JMenu help;
     private javax.swing.JMenu helpContentMenu;
+    private javax.swing.JLabel hireDateLabel;
     private javax.swing.JPanel home;
     private javax.swing.JButton importCustSalesBtn;
     private javax.swing.JButton importCustomerBtn;
@@ -2544,16 +3042,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton importSuppliesButton;
     private javax.swing.JTabbedPane invenrotyTabPanel;
     private javax.swing.JPanel inventory;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
@@ -2570,16 +3059,11 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel latestPurchases;
     private javax.swing.JPanel latestSales;
@@ -2598,6 +3082,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton printPurchasesBtn;
     private javax.swing.JButton printSupDetailsBtn1;
     private javax.swing.JButton printSuppliesBtn;
+    private javax.swing.JComboBox<String> productComboBox;
     private javax.swing.JLabel productNameTextField;
     private javax.swing.JLabel productNameTextField1;
     private javax.swing.JLabel productNameTextField2;
@@ -2608,8 +3093,13 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel productNameTextField7;
     private javax.swing.JLabel productNameTextField8;
     private javax.swing.JLabel productNameTextField9;
+    private javax.swing.JComboBox<String> productSizeComboBox;
     private javax.swing.JPanel production;
+    private javax.swing.JTable productionDetailsTable;
+    private javax.swing.JSpinner productionQuantitySpinner;
     private javax.swing.JScrollPane productionScrollPane;
+    private javax.swing.JScrollPane productionScrollPanel;
+    private javax.swing.JComboBox<String> productsComboBox;
     private javax.swing.JPanel productsDetailsPanel;
     private javax.swing.JTable productsDetailsTable;
     private javax.swing.JScrollPane productsScrollPanel;
@@ -2618,6 +3108,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JTable purchHistoryTable;
     private javax.swing.JPanel purchasesHistoryPanel;
     private javax.swing.JScrollPane purchasesScrollPanel;
+    private javax.swing.JSpinner quantitySpinner;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton refreshCusDetailsBtn;
     private javax.swing.JButton refreshCustProductsBtn;
@@ -2627,13 +3118,17 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton refreshSuplTableBtn;
     private javax.swing.JButton refreshSuppliesTable;
     private javax.swing.JButton refreshSuppliesTableBtn;
+    private javax.swing.JScrollPane saleScrollPanel;
     private javax.swing.JPanel sales;
+    private javax.swing.JTable salesDetailsTable;
     private javax.swing.JScrollPane salesScrollPanel;
     private javax.swing.JTextField searchCustProductsTxt;
     private javax.swing.JTextField searchCustSalesTxt;
     private javax.swing.JTextField searchCustomerTxt;
+    private javax.swing.JTextField searchProductionDate;
     private javax.swing.JTextField searchProducts;
     private javax.swing.JTextField searchPurchasesTxt;
+    private javax.swing.JTextField searchSale;
     private javax.swing.JTextField searchSupplierTxt;
     private javax.swing.JTextField searchSupplies;
     private javax.swing.JTextField searchSuppliesTxt;

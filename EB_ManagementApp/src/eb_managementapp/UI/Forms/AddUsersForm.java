@@ -31,28 +31,6 @@ public class AddUsersForm extends javax.swing.JFrame {
     public AddUsersForm() {
         initComponents();
 
-        //COUNTRIES SELECTION COMBOBOX
-        try {
-            //Select Statment to choose countries
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getCountryStatement = connection.createStatement();
-            String qr = " Select Name From Countries";
-            ResultSet rs = getCountryStatement.executeQuery(qr);
-
-            countryComboBox.removeAllItems();
-            // iterate through the java resultset
-            while (rs.next()) {
-                String typeName = rs.getString("Name");
-                countryComboBox.addItem(typeName);
-            }
-            getCountryStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         getCountries();
         getPositions();
 
@@ -88,8 +66,6 @@ public class AddUsersForm extends javax.swing.JFrame {
         positionComboBox = new javax.swing.JComboBox<>();
         hireDateLabel = new javax.swing.JLabel();
         dateOfHirePicker = new org.jdesktop.swingx.JXDatePicker();
-        fullTimeRadioButton = new javax.swing.JRadioButton();
-        partTimeRadioButton = new javax.swing.JRadioButton();
         addNewEmployeesButton = new javax.swing.JButton();
         buttonPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
@@ -246,19 +222,6 @@ public class AddUsersForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGroup.add(fullTimeRadioButton);
-        fullTimeRadioButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        fullTimeRadioButton.setText("Full Time");
-
-        buttonGroup.add(partTimeRadioButton);
-        partTimeRadioButton.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        partTimeRadioButton.setText("Part Time");
-        partTimeRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                partTimeRadioButtonActionPerformed(evt);
-            }
-        });
-
         addNewEmployeesButton.setText("Add New Emplyees");
         addNewEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,15 +247,9 @@ public class AddUsersForm extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(hireDateLabel)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(employmentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(employmentDetailsPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(fullTimeRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(partTimeRadioButton))
-                            .addGroup(employmentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(dateOfHirePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                                .addComponent(positionComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGroup(employmentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dateOfHirePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                            .addComponent(positionComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         employmentDetailsPanelLayout.setVerticalGroup(
@@ -306,11 +263,7 @@ public class AddUsersForm extends javax.swing.JFrame {
                 .addGroup(employmentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hireDateLabel)
                     .addComponent(dateOfHirePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(employmentDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fullTimeRadioButton)
-                    .addComponent(partTimeRadioButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(addNewEmployeesButton)
                 .addGap(11, 11, 11))
         );
@@ -377,10 +330,10 @@ public class AddUsersForm extends javax.swing.JFrame {
         viewEmployeesPanelLayout.setVerticalGroup(
             viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
-                .addComponent(employeesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(employeesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(viewEmployeesButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -403,13 +356,13 @@ public class AddUsersForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(employeeDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(employmentDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(viewEmployeesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
@@ -449,10 +402,6 @@ public class AddUsersForm extends javax.swing.JFrame {
     private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed
         getUsers();
     }//GEN-LAST:event_viewEmployeesButtonActionPerformed
-
-    private void partTimeRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partTimeRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_partTimeRadioButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
        this.setVisible(false);
@@ -718,11 +667,9 @@ public class AddUsersForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane employeesScrollPane;
     private javax.swing.JTable employeesTable;
     private javax.swing.JPanel employmentDetailsPanel;
-    private javax.swing.JRadioButton fullTimeRadioButton;
     private javax.swing.JLabel hireDateLabel;
     private javax.swing.JTextField lastNameTextField;
     private javax.swing.JButton nextButton;
-    private javax.swing.JRadioButton partTimeRadioButton;
     private javax.swing.JComboBox<String> positionComboBox;
     private javax.swing.JLabel positionLabel;
     private javax.swing.JButton viewEmployeesButton;
