@@ -1190,7 +1190,15 @@ public final class MainForm extends javax.swing.JFrame {
         productNameTextField9 = new javax.swing.JLabel();
         productsComboBox = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        weeklySalesScrollPanel = new javax.swing.JScrollPane();
+        weeklySalesDetailsTable = new javax.swing.JTable();
+        searchWeeklySale = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        monthlySalesScrollPanel = new javax.swing.JScrollPane();
+        monthlySalesDetailsTable = new javax.swing.JTable();
+        searceMonthlySale = new javax.swing.JTextField();
         customers = new javax.swing.JPanel();
         noCustomerLb = new javax.swing.JLabel();
         customerDetailsPanel = new javax.swing.JPanel();
@@ -1694,7 +1702,6 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
@@ -1721,8 +1728,7 @@ public final class MainForm extends javax.swing.JFrame {
                             .addComponent(bottleSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(54, 54, 54)
-                        .addComponent(addBottlesQuantityButton)
-                        .addGap(23, 23, 23)))
+                        .addComponent(addBottlesQuantityButton)))
                 .addGap(297, 297, 297))
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
@@ -2031,28 +2037,136 @@ public final class MainForm extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Daily Sales", jPanel2);
 
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Items Weekly Sales"));
+
+        weeklySalesDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        weeklySalesScrollPanel.setViewportView(weeklySalesDetailsTable);
+
+        searchWeeklySale.setText("Search....");
+        searchWeeklySale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchWeeklySaleActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(943, Short.MAX_VALUE)
+                .addComponent(searchWeeklySale, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel11Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(weeklySalesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(searchWeeklySale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 254, Short.MAX_VALUE))
+            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                    .addContainerGap(44, Short.MAX_VALUE)
+                    .addComponent(weeklySalesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
+        );
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(393, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Weekly Sales", jPanel4);
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder("Items Monthly Sales"));
+
+        monthlySalesDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        monthlySalesScrollPanel.setViewportView(monthlySalesDetailsTable);
+
+        searceMonthlySale.setText("Search....");
+        searceMonthlySale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searceMonthlySaleActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addContainerGap(943, Short.MAX_VALUE)
+                .addComponent(searceMonthlySale, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel12Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(monthlySalesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(searceMonthlySale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 254, Short.MAX_VALUE))
+            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                    .addContainerGap(44, Short.MAX_VALUE)
+                    .addComponent(monthlySalesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
+        );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(393, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Monthly Sales", jPanel3);
@@ -2956,6 +3070,14 @@ public final class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchSaleActionPerformed
 
+    private void searchWeeklySaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWeeklySaleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchWeeklySaleActionPerformed
+
+    private void searceMonthlySaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searceMonthlySaleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searceMonthlySaleActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3056,6 +3178,8 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3068,6 +3192,8 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel latestPurchases;
     private javax.swing.JPanel latestSales;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JTable monthlySalesDetailsTable;
+    private javax.swing.JScrollPane monthlySalesScrollPanel;
     private javax.swing.JButton moreProdDetailsBtn;
     private javax.swing.JButton morePurchDetailsBtn;
     private javax.swing.JButton moreSalesDetailsBtn;
@@ -3122,6 +3248,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel sales;
     private javax.swing.JTable salesDetailsTable;
     private javax.swing.JScrollPane salesScrollPanel;
+    private javax.swing.JTextField searceMonthlySale;
     private javax.swing.JTextField searchCustProductsTxt;
     private javax.swing.JTextField searchCustSalesTxt;
     private javax.swing.JTextField searchCustomerTxt;
@@ -3133,6 +3260,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField searchSupplies;
     private javax.swing.JTextField searchSuppliesTxt;
     private javax.swing.JTextField searchTxt;
+    private javax.swing.JTextField searchWeeklySale;
     private javax.swing.JPanel statistics;
     private javax.swing.JTable supplierDetailsTable;
     private javax.swing.JPanel supplierGraphPanel;
@@ -3152,5 +3280,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JMenu tools;
     private javax.swing.JMenu view;
+    private javax.swing.JTable weeklySalesDetailsTable;
+    private javax.swing.JScrollPane weeklySalesScrollPanel;
     // End of variables declaration//GEN-END:variables
 }
