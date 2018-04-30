@@ -37,54 +37,21 @@ import org.json.JSONObject;
 
 public class CustomersForm extends javax.swing.JFrame {
 
-//    Vector<String> customerNumbers;
-//    Vector<String> customerNames;
-//    Vector<String> customerProducts;
-//    Vector<String> columnNames;
     private ArrayList<Customers> customersList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Customerproducts> customerProductsList;
-    private ArrayList<Products> productsList;
 
     CheckboxGroup productsGroup;
 
     public CustomersForm() {
         initComponents();
-
-        String[] sizeNamesArray = new String[1];
-
-//            //DefaultSizes List
-//            String qr2 = " Select Name From Products";
-//            ResultSet rs2;
-//            rs2 = getProductsStatement.executeQuery(qr2);
-//
-//            Vector<String> productNames = new Vector<>();
-//            // iterate through the java resultset
-//            while (rs2.next()) {
-//                productNames.add(rs2.getString("Name"));
-//            }
-//            getProductsStatement.close();
-//
-//            //copy all elements from sizeNames (Vector) to sizeNamesArray(Array)
-//            sizeNamesArray = new String[productNames.size()];
-//            for (int i = 0; i < sizeNamesArray.length; i++) {
-//                sizeNamesArray[i] = productNames.get(i);
-//            }
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        CheckboxGroup group = new CheckboxGroup(sizeNamesArray);
-//
-//        group.setBounds(new Rectangle(new Point(110, 240), group.getPreferredSize()));
-//        customerPanel.add(group);
         pack();
         setLocationRelativeTo(null);
 
-        getProducts();
         getCountries();
+        getCustomers();
         setVisible(true);
+        setTitle("Add customers");
     }
 
     /**
@@ -107,7 +74,6 @@ public class CustomersForm extends javax.swing.JFrame {
         customerCityTextField = new javax.swing.JTextField();
         customerCountryLabel = new javax.swing.JLabel();
         countryComboBox = new javax.swing.JComboBox<>();
-        suppliesList = new javax.swing.JLabel();
         addNewCustomertButton = new javax.swing.JButton();
         buttonPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
@@ -121,12 +87,10 @@ public class CustomersForm extends javax.swing.JFrame {
 
         customerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
-        customerNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         customerNameLabel.setText("Customer Name:");
 
         customerNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        customerTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         customerTelephoneLabel.setText("Telephone:");
 
         customerTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +99,6 @@ public class CustomersForm extends javax.swing.JFrame {
             }
         });
 
-        customerAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         customerAddressLabel.setText("Address:");
 
         customerAddressTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +107,6 @@ public class CustomersForm extends javax.swing.JFrame {
             }
         });
 
-        customerCityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         customerCityLabel.setText("City:");
 
         customerCityTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -153,7 +115,6 @@ public class CustomersForm extends javax.swing.JFrame {
             }
         });
 
-        customerCountryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         customerCountryLabel.setText("Country:");
 
         countryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -162,9 +123,6 @@ public class CustomersForm extends javax.swing.JFrame {
                 countryComboBoxActionPerformed(evt);
             }
         });
-
-        suppliesList.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        suppliesList.setText("Products:");
 
         addNewCustomertButton.setText("Add Customer");
         addNewCustomertButton.addActionListener(new java.awt.event.ActionListener() {
@@ -209,11 +167,7 @@ public class CustomersForm extends javax.swing.JFrame {
                                         .addGap(14, 14, 14)
                                         .addComponent(customerCountryLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(suppliesList)
-                                .addGap(172, 172, 172)))
+                                        .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -243,9 +197,7 @@ public class CustomersForm extends javax.swing.JFrame {
                 .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(customerCountryLabel))
-                .addGap(18, 18, 18)
-                .addComponent(suppliesList, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
                 .addComponent(addNewCustomertButton)
                 .addContainerGap())
         );
@@ -289,7 +241,7 @@ public class CustomersForm extends javax.swing.JFrame {
 
         customerScrollPanel.setViewportView(customerTable);
 
-        viewCustomersButton.setText("View Customers");
+        viewCustomersButton.setText("Refresh");
         viewCustomersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewCustomersButtonActionPerformed(evt);
@@ -354,6 +306,15 @@ public class CustomersForm extends javax.swing.JFrame {
         setUpForm = new SetUpForm();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        setVisible(false);
+        setUpForm = new SetUpForm();
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void viewCustomersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCustomersButtonActionPerformed
+        getCustomers();
+    }//GEN-LAST:event_viewCustomersButtonActionPerformed
+
     private void addNewCustomertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewCustomertButtonActionPerformed
         addCustomer();
     }//GEN-LAST:event_addNewCustomertButtonActionPerformed
@@ -361,6 +322,10 @@ public class CustomersForm extends javax.swing.JFrame {
     private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_countryComboBoxActionPerformed
+
+    private void customerCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerCityTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerCityTextFieldActionPerformed
 
     private void customerAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerAddressTextFieldActionPerformed
         // TODO add your handling code here:
@@ -370,19 +335,6 @@ public class CustomersForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_customerTelephoneTextFieldActionPerformed
 
-    private void customerCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerCityTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customerCityTextFieldActionPerformed
-
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        setVisible(false);
-        setUpForm = new SetUpForm();
-    }//GEN-LAST:event_nextButtonActionPerformed
-
-    private void viewCustomersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCustomersButtonActionPerformed
-        getCustomerProducts();
-    }//GEN-LAST:event_viewCustomersButtonActionPerformed
-
     private void addCustomer() {
 
         //Get field values:
@@ -391,103 +343,22 @@ public class CustomersForm extends javax.swing.JFrame {
         String address = customerAddressTextField.getText().toString();
         String telephone = customerTelephoneTextField.getText().toString();
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
-        ArrayList<Integer> customerProductIDs = new ArrayList();
 
         //Make the call:
         String addCustomersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "Create",
                 "SessionID=aa&ID=1&Name=" + name + "&CountryID=" + countryID + "&Address=" + address + "&Telephone=" + telephone + "&City=" + city + "&CustomerProductsID=0"
         );
 
-        //Get last customer's ID
-        String getCustomersSizeJSON = HTTPConnection.executePost("http://panickapps.com/eb/API/", "Customers", "GetMaxID", "");
-        int lastCustomerID = -1;
-        try {
-             lastCustomerID = Integer.parseInt(getCustomersSizeJSON);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //Get Selected Products
-        List<JCheckBox> checkBoxes = productsGroup.getCheckBoxes();
-        for (int i = 1; i < checkBoxes.size(); i++) {
-
-            if (checkBoxes.get(i).isSelected()) {
-                customerProductIDs.add(productsList.get(i - 1).getID());
-            }
-
-        }
-        
-
-        //Add Each Product to Customer Products for this customer
-        for(int i = 0; i<customerProductIDs.size(); i++){
-            String currentProductJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "Create", "ID=1&SessionID=aa&ProductID=" + customerProductIDs.get(i) + "&CustomerID=" + lastCustomerID);
-            System.out.println(currentProductJSON);
-            
-        }
-        
-        //Get Last CustomerProducts ID 
-        int lastCustomerProductsID=-1;
-        String getCustomerProductsJSON = HTTPConnection.executePost("http://panickapps.com/eb/API/", "Customerproducts", "GetMaxID", "");
-
-        try {
-            lastCustomerProductsID = Integer.parseInt(getCustomerProductsJSON);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //Get customerProduct
-        
-        System.out.println("Nicos: " + lastCustomerProductsID);
-        
-        int pCustomerID = -1;
-        int pProductID = -1;
-        String getPJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "GetByID", "SessionID=aa&ID=" + lastCustomerProductsID);
-        try {
-            JSONObject jsonObject = new JSONObject(getPJSON);
-            System.out.println(getPJSON);
-            pCustomerID = jsonObject.getInt("CustomerID");
-            pProductID = jsonObject.getInt("ProductID");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-       
-        //Update the customerProductsID
-        String updatedJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "Update", "SessionID=aa&ID=" + lastCustomerProductsID + "&ProductID=" + pProductID + "&CustomerID=" + pCustomerID );
-        
-        try {
-            JSONObject jsonObject = new JSONObject(addCustomersJSON);
-            final String status = jsonObject.getString("Status");
-            final String title = jsonObject.getString("Title");
-            final String message = jsonObject.getString("Message");
-
-            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addCustomersJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                //Reset fields:
-                setVisible(true);
-                countryComboBox.setSelectedIndex(0);
-                customerNameTextField.setText("");
-                customerCityTextField.setText("");
-                customerAddressTextField.setText("");
-                customerTelephoneTextField.setText("");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Add customer HTTP -> " + addCustomersJSON);
 
         getCustomers();
     }
 
     public void getCustomers() {
         customersList = new ArrayList<>();
-        getCountries();
 
         //Get customers from api
-        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "Limit=2&SessionID=aa");
+        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "SessionID=aa");
         try {
             JSONObject jsonObject = new JSONObject(customersJSON);
             final String status = jsonObject.getString("Status");
@@ -510,6 +381,41 @@ public class CustomersForm extends javax.swing.JFrame {
                     Customers customer = new Customers(id, name, countryID, city, telephone, address, customerProductsID);
                     customersList.add(customer);
                 }
+
+                //Add to table:
+                DefaultTableModel customersTableModel = new DefaultTableModel();
+
+                //Add the table columns:
+                customersTableModel.addColumn("ID");
+                customersTableModel.addColumn("Name");
+                customersTableModel.addColumn("Country");
+                customersTableModel.addColumn("City");
+                customersTableModel.addColumn("Address");
+                customersTableModel.addColumn("Telephone");
+
+                //Add each item in the list as a row in the table:
+                for (int i = 0; i < customersList.size(); i++) {
+
+                    //Put Countries Name in the Table
+                    String countryName = "";
+                    for (int j = 0; j < countriesList.size(); j++) {
+                        if (countriesList.get(j).getID() == customersList.get(i).getCountryID()) {
+                            countryName = countriesList.get(j).getName();
+                        }
+                    }
+
+                    Object[] currentRow = {
+                        customersList.get(i).getID(),
+                        customersList.get(i).getName(),
+                        customersList.get(i).getCity(),
+                        customersList.get(i).getAddress(),
+                        customersList.get(i).getTelephone(),
+                        countryName
+                    };
+                    customersTableModel.addRow(currentRow);
+                }
+                customerTable.setModel(customersTableModel);
+
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
                 System.out.println("Fail " + customersJSON);
@@ -517,121 +423,6 @@ public class CustomersForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void getProducts() {
-        productsList = new ArrayList<>();
-
-        //Get customers from api
-        String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "GetMultiple", "SessionID=aa");
-        try {
-            JSONObject jsonObject = new JSONObject(productsJSON);
-            final String status = jsonObject.getString("Status");
-            final String title = jsonObject.getString("Title");
-            final String message = jsonObject.getString("Message");
-
-            if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                JSONArray dataArray = jsonObject.getJSONArray("Data");
-                for (int i = 0; i < dataArray.length(); i++) {
-                    JSONObject currentItem = dataArray.getJSONObject(i);
-
-                    int id = currentItem.getInt("ID");
-                    String name = currentItem.getString("Name");
-                    float price = currentItem.getFloat("Price");
-                    int quantity = currentItem.getInt("QuantityInStock");
-                    int productSizeID = currentItem.getInt("ProductSizeID");
-                    int productTypeID = currentItem.getInt("ProductTypeID");
-                    int productSuppliesID = currentItem.getInt("ProductSuppliesID");
-
-                    Products c = new Products(id, name, price, quantity, productSizeID, productTypeID, productSuppliesID);
-                    productsList.add(c);
-                }
-            } else {
-                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productsJSON);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String[] productNames = new String[productsList.size()];
-        for (int i = 0; i < productsList.size(); i++) {
-            productNames[i] = productsList.get(i).getName();
-        }
-        productsGroup = new CheckboxGroup(productNames);
-
-        productsGroup.setBounds(new Rectangle(new Point(110, 240), productsGroup.getPreferredSize()));
-        customerPanel.add(productsGroup);
-
-    }
-
-    public void getCustomerProducts() {
-        customerProductsList = new ArrayList<>();
-        getProducts();
-        getCustomers();
-
-        //Get customers from api
-        String customerProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "GetMultiple", "Limit=2&SessionID=aa");
-        try {
-            JSONObject jsonObject = new JSONObject(customerProductsJSON);
-            final String status = jsonObject.getString("Status");
-            final String title = jsonObject.getString("Title");
-            final String message = jsonObject.getString("Message");
-
-            if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                JSONArray dataArray = jsonObject.getJSONArray("Data");
-                for (int i = 0; i < dataArray.length(); i++) {
-                    JSONObject currentItem = dataArray.getJSONObject(i);
-
-                    int id = currentItem.getInt("ID");
-                    int customerID = currentItem.getInt("CustomerID");
-                    int productsID = currentItem.getInt("ProductID");
-
-                    Customerproducts customerProducts = new Customerproducts(id, customerID, productsID);
-                    customerProductsList.add(customerProducts);
-                }
-            } else {
-                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + customerProductsJSON);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //Create a new model for the table:
-        DefaultTableModel customersProductsTableModel = new DefaultTableModel();
-
-        //Add the table columns:
-        customersProductsTableModel.addColumn("ID");
-        customersProductsTableModel.addColumn("Customer");
-        customersProductsTableModel.addColumn("Product");
-
-        //Add each item in the list as a row in the table:
-        for (int i = 0; i < customerProductsList.size(); i++) {
-            //Put Customers Name in the Table
-            String customerName = "";
-            for (int j = 0; j < customersList.size(); j++) {
-                if (customersList.get(j).getID() == customerProductsList.get(i).getCustomerID()) {
-                    customerName = customersList.get(j).getName();
-                }
-            }
-            //Put Products Name in the Table
-            String productName = "";
-            for (int j = 0; j < productsList.size(); j++) {
-                if (productsList.get(j).getID() == customerProductsList.get(i).getProductID()) {
-                    productName = productsList.get(j).getName();
-                }
-            }
-
-            Object[] currentRow = {
-                customerProductsList.get(i).getID(),
-                customerName,
-                productName
-            };
-            customersProductsTableModel.addRow(currentRow);
-        }
-        customerTable.setModel(customersProductsTableModel);
-
     }
 
     public void getCountries() {
@@ -725,7 +516,6 @@ public class CustomersForm extends javax.swing.JFrame {
     private javax.swing.JLabel customerTelephoneLabel;
     private javax.swing.JTextField customerTelephoneTextField;
     private javax.swing.JButton nextButton;
-    private javax.swing.JLabel suppliesList;
     private javax.swing.JButton viewCustomersButton;
     // End of variables declaration//GEN-END:variables
 }
