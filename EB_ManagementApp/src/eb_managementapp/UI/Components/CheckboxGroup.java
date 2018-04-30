@@ -25,64 +25,69 @@ import javax.swing.UIManager;
  * @author panay
  */
 public class CheckboxGroup extends JPanel {
-    
-    private static final Font SELECT_ALL_FONT = new Font("Tahoma", Font.BOLD,    12);
-    
+
+    private static final Font SELECT_ALL_FONT = new Font("Tahoma", Font.BOLD, 12);
+
     private JCheckBox all;
-        private List<JCheckBox> checkBoxes;
+    private List<JCheckBox> checkBoxes;
 
-        public CheckboxGroup(String... options) {
-            checkBoxes = new ArrayList<>(25);
-            setLayout(new BorderLayout());
-            JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
-            all = new JCheckBox("Select All");
-            all.setFont(SELECT_ALL_FONT);
-            all.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    for (JCheckBox cb : checkBoxes) {
-                        cb.setSelected(all.isSelected());
+    public CheckboxGroup(String... options) {
+        checkBoxes = new ArrayList<>();
+        setLayout(new BorderLayout());
+        JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
+        all = new JCheckBox("Select All");
+        all.setFont(SELECT_ALL_FONT);
+        all.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (JCheckBox cb : checkBoxes) {
+                    cb.setSelected(all.isSelected());
+                }
+            }
+        });
+        //header.add(all);
+        //add(header, BorderLayout.NORTH);
+
+        JPanel content = new ScrollablePane(new GridBagLayout());
+        //content.setBackground(UIManager.getColor("List.background"));
+        content.setBackground(Color.WHITE);
+
+        if (options.length > 0) {
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.anchor = GridBagConstraints.NORTHWEST;
+            gbc.weightx = 1;
+            content.add(all, gbc);
+            for (int index = 0; index < options.length - 1; index++) {
+                JCheckBox cb = new JCheckBox(options[index]);
+                
+                cb.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        cb.setSelected(true);
                     }
-                }
-            });
-            //header.add(all);
-            //add(header, BorderLayout.NORTH);
-
-            JPanel content = new ScrollablePane(new GridBagLayout());
-            //content.setBackground(UIManager.getColor("List.background"));
-            content.setBackground(Color.WHITE);
-            
-            if (options.length > 0) {
-
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridwidth = GridBagConstraints.REMAINDER;
-                gbc.anchor = GridBagConstraints.NORTHWEST;
-                gbc.weightx = 1;
-                content.add(all, gbc);
-                for (int index = 0; index < options.length -1; index++) {
-                    JCheckBox cb = new JCheckBox(options[index]);
-                    cb.setOpaque(false);
-                    checkBoxes.add(cb);
-                    content.add(cb, gbc);
-                }
-
-                JCheckBox cb = new JCheckBox(options[options.length - 1]);
+                });
+                
                 cb.setOpaque(false);
                 checkBoxes.add(cb);
-                gbc.weighty = 1;
                 content.add(cb, gbc);
-
             }
-            
-            add(new JScrollPane(content));
-        }
-        
-        public List<JCheckBox> getCheckBoxes(){
-            
-            return checkBoxes;
+
+            JCheckBox cb = new JCheckBox(options[options.length - 1]);
+            cb.setOpaque(false);
+            checkBoxes.add(cb);
+            gbc.weighty = 1;
+            content.add(cb, gbc);
+
         }
 
-        
+        add(new JScrollPane(content));
+    }
 
-    
+    public List<JCheckBox> getCheckBoxes() {
+
+        return checkBoxes;
+    }
+
 }

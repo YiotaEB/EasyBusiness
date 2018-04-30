@@ -151,8 +151,7 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        setVisible(true);
-        addProductsForm = new AddProductsForm();
+        setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void nameTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTypeTextFieldActionPerformed
@@ -160,27 +159,7 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_nameTypeTextFieldActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-
-//        ConnectionCreator connectionCreator = new ConnectionCreator();
-//        Connection connection = connectionCreator.connect();
-//
-//        String queryInsertProducts = " insert into ProductTypes (Name)"
-//                + "values ('" + nameTypeTextField.getText() + "')";
-//
-//        try {
-//            //Create insert preparedstatement for administrator
-//            PreparedStatement prepareTypeStatement = connection.prepareStatement(queryInsertProducts);
-//            prepareTypeStatement.execute();
-//
-//            showMessageDialog(null, "Type Added -->" + nameTypeTextField.getText());
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AddProductTypeForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        setVisible(true);
-//        addProductsForm = new AddProductsForm();
-
+        setVisible(false);
         addType();
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -204,7 +183,6 @@ public class AddProductTypeForm extends javax.swing.JFrame {
                 System.out.println("Fail " + addTypeJSON);
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
-                setVisible(true);
                 nameTypeTextField.setText("");
             }
         } catch (Exception e) {

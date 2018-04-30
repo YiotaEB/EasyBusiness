@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import org.json.JSONArray;
@@ -28,35 +29,12 @@ public class AddSizeForm extends javax.swing.JFrame {
 
     private ArrayList<Productsizes> productSize;
     private ArrayList<Unittypes> unitTypeList;
-
-    public AddSizeForm() {
+    private JFrame senderForm;
+    
+    public AddSizeForm(JFrame senderForm) {
     initComponents();
-//
-//        //UNIT TYPE SELECTION COMBOBOX
-        try {
-            //Select Statment to choose unitType
-            //SELECT From ProductType
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getSizeTypeStatement = connection.createStatement();
-
-            //typeComboBox
-            String qr = " Select Name From UnitTypes";
-            ResultSet rs;
-            rs = getSizeTypeStatement.executeQuery(qr);
-
-            typeComboBox.removeAllItems();
-            // iterate through the java resultset
-            while (rs.next()) {
-                String typeName = rs.getString("Name");
-                typeComboBox.addItem(typeName);
-            }
-            getSizeTypeStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddProductsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    
+    this.senderForm = senderForm;
         getUnitTypes();
 
         setTitle(TITLE);
@@ -188,32 +166,13 @@ public class AddSizeForm extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         setVisible(false);
-        setUpForm = new SetUpForm();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-
-//        ConnectionCreator connectionCreator = new ConnectionCreator();
-//        Connection connection = connectionCreator.connect();
-//
-//        String queryInsertSize = " insert into ProductSizes (Name,UnitTypeID)"
-//                + "values ('" + sizeTextField.getText()+typeComboBox.getItemAt(typeComboBox.getSelectedIndex()) + "',"+(typeComboBox.getSelectedIndex()+1)+")";
-//
-//        try {
-//            //Create insert preparedstatement for administrator
-//            PreparedStatement prepareSizeStatement = connection.prepareStatement(queryInsertSize);
-//            prepareSizeStatement.execute();
-//
-//            showMessageDialog(null, "Size Added -->" + sizeTextField.getText());
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AddSizeForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        setVisible(false);
-//        addProductsForm = new AddProductsForm();
-
+        setVisible(false);
         addSize();
+        AddProductsForm s = (AddProductsForm) senderForm;
+        s.getSizes();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void addSize() {
@@ -224,7 +183,7 @@ public class AddSizeForm extends javax.swing.JFrame {
 
         //Make the call:
         String addSizeJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "Create",
-                "SessionID=aa&ID=1&Name=" + name + "&UnitTypeID=" + unitTypeID
+                "SessionID=aa&ID=0&Name=" + name + "&UnitTypeID=" + unitTypeID
         );
         try {
             JSONObject jsonObject = new JSONObject(addSizeJSON);
@@ -238,7 +197,6 @@ public class AddSizeForm extends javax.swing.JFrame {
                 System.out.println("Fail " + addSizeJSON);
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
-                setVisible(true);
                 typeComboBox.setSelectedIndex(0);
                 sizeTextField.setText("");
             }
@@ -361,7 +319,7 @@ public class AddSizeForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddSizeForm().setVisible(true);
+                new AddSizeForm(new JFrame()).setVisible(true);
             }
         });
     }
