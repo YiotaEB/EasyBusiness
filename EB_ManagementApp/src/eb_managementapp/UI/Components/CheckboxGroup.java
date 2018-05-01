@@ -62,12 +62,12 @@ public class CheckboxGroup extends JPanel {
             for (int index = 0; index < options.length - 1; index++) {
                 JCheckBox cb = new JCheckBox(options[index]);
                 
-                cb.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        cb.setSelected(true);
-                    }
-                });
+//                cb.addActionListener(new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        cb.setSelected(true);
+//                    }
+//                });
                 
                 cb.setOpaque(false);
                 checkBoxes.add(cb);

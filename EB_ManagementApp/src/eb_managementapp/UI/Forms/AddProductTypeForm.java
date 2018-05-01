@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import org.json.JSONArray;
@@ -27,11 +28,12 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     final String TITLE = "Add Type";
     
     private ArrayList<Producttypes> productTypeList;
+    private JFrame sender;
     
-    public AddProductTypeForm() {
+    public AddProductTypeForm(JFrame sender) {
         initComponents();
 
-        
+        this.sender = sender;
 
         setTitle(TITLE);
         setVisible(true);
@@ -161,6 +163,8 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         setVisible(false);
         addType();
+        AddProductsForm senderForm = (AddProductsForm) sender;
+        senderForm.getProductTypes();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void addType() {
@@ -258,7 +262,7 @@ public class AddProductTypeForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddProductTypeForm().setVisible(true);
+                new AddProductTypeForm(new JFrame()).setVisible(true);
             }
         });
     }

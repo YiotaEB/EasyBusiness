@@ -17,6 +17,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
@@ -335,13 +336,13 @@ public class AddProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_viewProductsButtonActionPerformed
 
     private void addSizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSizeButtonActionPerformed
-        setVisible(true);
+        //setVisible(true);
         addSizeForm = new AddSizeForm(this);
     }//GEN-LAST:event_addSizeButtonActionPerformed
 
     private void addTypeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTypeButtonActionPerformed
         setVisible(true);
-        addProductTypeForm = new AddProductTypeForm();
+        addProductTypeForm = new AddProductTypeForm(this);
     }//GEN-LAST:event_addTypeButtonActionPerformed
 
     private void typeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeComboBoxActionPerformed
@@ -502,6 +503,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         //Get sizes from api
         String sizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Defaultsizes", "GetMultiple", "SessionID=aa");
         
+        System.out.println("Get Sizes HTTP -> " + sizesJSON);
         
         try {
             JSONObject jsonObject = new JSONObject(sizesJSON);
@@ -533,6 +535,7 @@ public class AddProductsForm extends javax.swing.JFrame {
          //Get productSizes from api
         String productSizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "GetMultiple", "SessionID=aa&Limit=0");
         
+        System.out.println("Get Sizes HTTP -> " + productSizesJSON);
         
         try {
             JSONObject jsonObject = new JSONObject(productSizesJSON);
@@ -567,13 +570,13 @@ public class AddProductsForm extends javax.swing.JFrame {
             sizesListString[i] = sizeList.get(i).getName();
         }
 
+        if (sizesCheckBoxGroup != null) {
+            sizesCheckBoxGroup.setVisible(false);
+        }
         sizesCheckBoxGroup = new CheckboxGroup(sizesListString);//String
         sizesCheckBoxGroup.setBounds(new Rectangle(new Point(80, 110), sizesCheckBoxGroup.getPreferredSize()));
         productPanel.add(sizesCheckBoxGroup);
         
-        invalidate();
-        validate();
-        repaint();
     }
 
     public void getProductTypes() {
