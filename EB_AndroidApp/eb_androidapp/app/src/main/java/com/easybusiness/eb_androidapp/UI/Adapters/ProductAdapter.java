@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ProductAdapter extends ArrayAdapter<Products> {
-    final ArrayList<Products>  productList;
 
+    final ArrayList<Products>  productList;
 
     public ProductAdapter(final Context context, ArrayList<Products> productList) {
         super(context, R.layout.product_adapter);
@@ -47,7 +47,7 @@ public class ProductAdapter extends ArrayAdapter<Products> {
         //set TextViews
         productAdapterId.setText(String.valueOf(position+1));
         productAdapterName.setText(productList.get(position).getName());
-        productAdapterQuantity.setText(String.valueOf(productList.get(position).getQuantityInStock()));
+        productAdapterQuantity.setText(String.valueOf(productList.get(position).getQuantityInStock()) + " items");
 
         return view;
     }

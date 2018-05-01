@@ -7,6 +7,20 @@
     android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ProductsTabFragment">
 
+    <ProgressBar
+        android:id="@+id/view_products_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
+
+    <RelativeLayout
+        android:id="@+id/view_products_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/layout_top_products"
             android:orientation="horizontal"
@@ -57,6 +71,8 @@
             android:layout_marginTop="10dp"
 
             />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

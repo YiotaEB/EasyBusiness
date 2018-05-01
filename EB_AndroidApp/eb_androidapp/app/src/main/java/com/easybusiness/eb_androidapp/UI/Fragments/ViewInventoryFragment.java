@@ -1,9 +1,12 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -14,14 +17,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
-import com.easybusiness.eb_androidapp.AsyncTask.GetProductsAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliesAsyncTask;
+import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.R;
+import com.easybusiness.eb_androidapp.UI.Adapters.ProductAdapter;
 import com.easybusiness.eb_androidapp.UI.Adapters.TabPagerAdapter;
 import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ProductsTabFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.SuppliesTabFragment;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +52,8 @@ public class ViewInventoryFragment extends Fragment {
     private ViewPager pager;
     View v;
     TabLayout tabLayout;
+
+
 
     public ViewInventoryFragment() {
         // Required empty public constructor

@@ -1,9 +1,11 @@
 package com.easybusiness.eb_androidapp.UI.Fragments.TabFragments;
 
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -16,10 +18,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 
-import com.easybusiness.eb_androidapp.AsyncTask.GetProductsAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.ProductAdapter;
@@ -27,6 +30,14 @@ import com.easybusiness.eb_androidapp.UI.Dialogs;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddProductFragment;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ProductsTabFragment extends Fragment {
@@ -40,6 +51,10 @@ public class ProductsTabFragment extends Fragment {
     private Button refreshButton;
     public static ProductAdapter allProductsAdapter;
     private View v;
+    private ProgressBar progressBar;
+    private View layout;
+
+    private ArrayList<Products> productsList;
 
     public ProductsTabFragment() {
         // Required empty public constructor
@@ -53,6 +68,8 @@ public class ProductsTabFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_tab_products, container, false);
 
+        progressBar = v.findViewById(R.id.view_products_progress);
+        layout = v.findViewById(R.id.view_products_layout);
 
         productListView = v.findViewById(R.id.productsList);
         searchView = v.findViewById(R.id.products_search_view);
@@ -65,11 +82,14 @@ public class ProductsTabFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
                 MainActivity mainActivity = (MainActivity) getActivity();
+                bundle.putInt(ViewProductTabFragment.PRODUCT_ID_KEY, mainActivity.PRODUCT_DATA.get(i).getID());
                 bundle.putString(ViewProductTabFragment.PRODUCT_NAME_KEY, mainActivity.PRODUCT_DATA.get(i).getName());
                 bundle.putString(ViewProductTabFragment.PRODUCT_PRICE, String.valueOf(mainActivity.PRODUCT_DATA.get(i).getPrice()));
                 bundle.putString(ViewProductTabFragment.PRODUCT_QUANTITY_IN_STOCK, String.valueOf(mainActivity.PRODUCT_DATA.get(i).getQuantityInStock()));
                 bundle.putString(ViewProductTabFragment.PRODUCT_SIZE,String.valueOf(mainActivity.PRODUCT_DATA.get(i).getProductSizeID()));
                 bundle.putString(ViewProductTabFragment.PRODUCT_TYPE, String.valueOf(mainActivity.PRODUCT_DATA.get(i).getProductTypeID()));
+                bundle.putInt(ViewProductTabFragment.PRODUCT_SIZE_ID, mainActivity.PRODUCT_DATA.get(i).getProductSizeID());
+                bundle.putInt(ViewProductTabFragment.PRODUCT_TYPE_ID, mainActivity.PRODUCT_DATA.get(i).getProductTypeID());
 
                 Fragment newFragment = new ViewProductTabFragment();
                 newFragment.setArguments(bundle);
@@ -88,6 +108,11 @@ public class ProductsTabFragment extends Fragment {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Products", mainActivity.PRODUCT_DATA.get(i).getID(), mainActivity.PRODUCT_DATA.get(i).getName(), new ProductsTabFragment());
                 dialog.show();
+                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
+                Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
+                String query = builder.build().getEncodedQuery();
+                new GetProductsAsyncTask(query, getActivity(), v).execute();
                 return true;
             }
         });
@@ -141,7 +166,7 @@ public class ProductsTabFragment extends Fragment {
                 return true;
             }
         });
-        addProductBtn =v.findViewById(R.id.addProductButton);
+        addProductBtn = v.findViewById(R.id.addProductButton);
         addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,8 +181,6 @@ public class ProductsTabFragment extends Fragment {
             }
         });
 
-        System.out.println("CREATED TAB FRAG");
-
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
 
@@ -166,7 +189,116 @@ public class ProductsTabFragment extends Fragment {
 
         new GetProductsAsyncTask(query, getActivity(), v).execute();
 
-        System.out.println("RESUMED TAG FRAG");
+    }
+
+    public class GetProductsAsyncTask extends AsyncTask<Void,Void,Void> {
+
+        private String query;
+        private String responseData;
+
+        public GetProductsAsyncTask(String query, Activity activity, View view) {
+            this.query = query;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            if (query == null) query = "";
+
+            try {
+                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Products", "GetMultiple"));
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                byte[] outputBytes = query.getBytes("UTF-8");
+                urlConnection.setRequestMethod("POST");
+                urlConnection.connect();
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(outputBytes);
+                os.close();
+                int statusCode = urlConnection.getResponseCode();
+                urlConnection.disconnect();
+
+                //OK
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    responseData = AsyncTasks.convertStreamToString(inputStream);
+
+                    JSONObject outterObject = new JSONObject(responseData);
+                    final String status = outterObject.getString("Status");
+                    final String title = outterObject.getString("Title");
+                    final String message = outterObject.getString("Message");
+
+                    if (status.equals(AsyncTasks.RESPONSE_OK)) {
+                        productsList = new ArrayList<>();
+                        JSONArray dataArray = outterObject.getJSONArray("Data");
+                        for (int i = 0; i < dataArray.length(); i++) {
+                            JSONObject jsonObject = dataArray.getJSONObject(i);
+                            int id = jsonObject.getInt("ID");
+                            String name = jsonObject.getString("Name");
+                            double price = jsonObject.getDouble("Price");
+                            int productSizeID = jsonObject.getInt("ProductSizeID");
+                            int productTypeID = jsonObject.getInt("ProductTypeID");
+                            int productSuppliesID = jsonObject.getInt("ProductSuppliesID");
+                            int quantityInStock = jsonObject.getInt("QuantityInStock");
+                            Products p = new Products(id, name, price, quantityInStock, productSizeID, productTypeID, productSuppliesID);
+                            productsList.add(p);
+                        }
+
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        mainActivity.PRODUCT_DATA = productsList;
+
+                        String [] items = new String[productsList.size()];
+                        for (int i = 0; i < items.length; i++)
+                            items[i] = productsList.get(i).getName();
+                        final ProductAdapter productAdapter = new ProductAdapter(getActivity(), productsList);
+
+                        final ListView productsListview = getActivity().findViewById(R.id.productsList);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                productsListview.setAdapter(productAdapter);
+                                progressBar.setVisibility(View.GONE);
+                                layout.setVisibility(View.VISIBLE);
+                            }
+                        });
+
+
+                    }
+                    else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
+                        final android.app.AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+
+                }
+                //CONNECTION ERROR
+                else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final android.app.AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
+                            alertDialog.show();
+                        }
+                    });
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
 
     }
 

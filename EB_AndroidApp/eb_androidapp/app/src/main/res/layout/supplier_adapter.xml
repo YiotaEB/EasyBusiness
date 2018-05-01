@@ -8,28 +8,42 @@
         android:id="@+id/supplier_adapter_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:textColor="@color/black"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:text="100"/>
 
     <TextView
         android:id="@+id/supplier_adapter_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:textColor="@color/black"
         android:layout_toRightOf="@+id/supplier_adapter_id"
         android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
         android:text="lemon"/>
 
     <TextView
         android:id="@+id/supplier_adapter_telephone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/darkGray"
-        style="@style/Base.TextAppearance.AppCompat.Title"
-        android:text="250250250"
-        android:layout_alignParentRight="true"
+        android:textColor="@color/black"
+        android:text="9965656"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/supplier_phonecall"
         android:layout_marginRight="10dp"/>
+
+    <ImageButton
+        android:layout_centerVertical="true"
+        android:id="@+id/supplier_phonecall"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_phone_black_36dp"
+        android:background="@color/transparent"
+        android:tint="@color/darkGreen"
+        android:layout_alignParentEnd="true"
+
+        />
 
 
 

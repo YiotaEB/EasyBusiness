@@ -8,40 +8,52 @@
         android:id="@+id/employee_adapter_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
         android:textColor="@color/black"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:text="100"/>
 
     <TextView
         android:id="@+id/employee_adapter_first_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
         android:textColor="@color/black"
-        android:layout_toRightOf="@+id/employee_adapter_id"
-        android:layout_marginLeft="20dp"
-        android:text="lemon"/>
+        android:layout_toEndOf="@+id/employee_adapter_id"
+        android:layout_marginStart="20dp"
+        android:layout_centerVertical="true"
+        android:text="Firstname"/>
 
     <TextView
         android:id="@+id/employee_adapter_last_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
         android:textColor="@color/black"
-        android:layout_toRightOf="@+id/employee_adapter_first_name"
-        android:layout_marginLeft="20dp"
-        android:text="lemon"/>
+        android:layout_toEndOf="@+id/employee_adapter_first_name"
+        android:layout_marginStart="3dp"
+        android:layout_centerVertical="true"
+        android:text="Lastname"/>
 
     <TextView
         android:id="@+id/employee_adapter_telephone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
         android:textColor="@color/black"
         android:text="250"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"/>
+        android:layout_toStartOf="@id/employee_phonecall"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"/>
+
+    <ImageButton
+        android:layout_centerVertical="true"
+        android:id="@+id/employee_phonecall"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_phone_black_36dp"
+        android:background="@color/transparent"
+        android:tint="@color/darkGreen"
+        android:layout_alignParentEnd="true"
+
+        />
 
 
 
