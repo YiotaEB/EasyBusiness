@@ -344,6 +344,12 @@ public class CustomersForm extends javax.swing.JFrame {
         String address = customerAddressTextField.getText().toString();
         String telephone = customerTelephoneTextField.getText().toString();
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
+        
+        //Check if the customer name is valid
+        if (name.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid customer name", "Invalid Customer Name", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
 
         //Make the call:
         String addCustomersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "Create",
@@ -387,7 +393,6 @@ public class CustomersForm extends javax.swing.JFrame {
                 DefaultTableModel customersTableModel = new DefaultTableModel();
 
                 //Add the table columns:
-                customersTableModel.addColumn("ID");
                 customersTableModel.addColumn("Name");
                 customersTableModel.addColumn("Country");
                 customersTableModel.addColumn("City");
@@ -406,7 +411,6 @@ public class CustomersForm extends javax.swing.JFrame {
                     }
 
                     Object[] currentRow = {
-                        customersList.get(i).getID(),
                         customersList.get(i).getName(),
                         customersList.get(i).getCity(),
                         customersList.get(i).getAddress(),

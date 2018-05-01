@@ -171,16 +171,26 @@ public class AddSizeForm extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         setVisible(false);
         addSize();
+        if(senderForm != null && (senderForm instanceof AddProductsForm)){
         AddProductsForm s = (AddProductsForm) senderForm;
         s.getSizes();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void addSize() {
 
         //Get field values:
-        String name = sizeTextField.getText().toString() + unitTypeList.get(typeComboBox.getSelectedIndex()).getName();
+        String name = sizeTextField.getText().toString(); 
         int unitTypeID = unitTypeList.get(typeComboBox.getSelectedIndex()).getID();
 
+        //Check if the product name is valid
+        if (name.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid product size", "Invalid Product Size", JOptionPane.PLAIN_MESSAGE);
+            this.setVisible(true);
+            return;
+        }
+        
+        name += unitTypeList.get(typeComboBox.getSelectedIndex()).getName();
         //Make the call:
         String addSizeJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "Create",
                 "SessionID=aa&ID=0&Name=" + name + "&UnitTypeID=" + unitTypeID

@@ -199,6 +199,7 @@ public class LoginForm extends javax.swing.JFrame {
         //Check if the username is valid
         if(username.trim().isEmpty()){
             showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
+            this.setVisible(true);
             return;
         }
         

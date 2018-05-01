@@ -1,7 +1,6 @@
 package eb_managementapp;
 
 import eb_managementapp.UI.Forms.AddProductsForm;
-import eb_managementapp.UI.Forms.SuppliersForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
 import eb_managementapp.UI.Forms.AdminForm;
 import eb_managementapp.UI.Forms.LoginForm;
@@ -23,7 +22,6 @@ public class EB_ManagementApp {
     public static AdminForm adminForm;
     public static AddUsersForm addUsersForm ;
     public static AddProductsForm addProductsForm;
-    public static SuppliersForm addSupplierForm;
     public static SetUpForm setUpForm;
     public static AddProductTypeForm addProductTypeForm;
     public static AddSizeForm addSizeForm;

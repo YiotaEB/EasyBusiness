@@ -36,35 +36,17 @@ public class AdminForm extends javax.swing.JFrame {
 
     //final variables:
     final String TITLE = "Administrator Set Up";
+    
     private ArrayList<Users> usersList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Userlevels> positionsList;
 
     public AdminForm() {
         initComponents();
-        //COUNTRIES SELECTION COMBOBOX
-        try {
-            //Select Statment to choose countries
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getCountryStatement = connection.createStatement();
-            String qr = " Select Name From Countries";
-            ResultSet rs = getCountryStatement.executeQuery(qr);
-
-            countryComboBox.removeAllItems();
-            // iterate through the java resultset
-            while (rs.next()) {
-                String typeName = rs.getString("Name");
-                countryComboBox.addItem(typeName);
-            }
-            getCountryStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         getCountries();
 
+        this.setTitle(TITLE);
         setVisible(true);
     }
 

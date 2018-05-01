@@ -444,6 +444,23 @@ public class AddProductsForm extends javax.swing.JFrame {
         float price = Float.parseFloat(priceTextField.getText());
         int quantityInStock = Integer.parseInt(quantitySpinner.getValue().toString());
         int productTypesID = productTypesList.get(typeComboBox.getSelectedIndex()).getID();
+        
+        //Check if the product name is valid
+        if (name.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid product name", "Invalid Product Name", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        //Check if the price is valid
+        if (price <= 0 || priceTextField.getText().trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid price", "Invalid Price", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        //Check if the quantity is valid
+        if (quantityInStock <=0) {
+            showMessageDialog(null, "Please provide a valid quantity", "Invalid Quantity", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
 
         ArrayList<Integer> sizeIDs = new ArrayList();
         for (int i = 0; i <sizesCheckBoxGroup.getCheckBoxes().size(); i++) {

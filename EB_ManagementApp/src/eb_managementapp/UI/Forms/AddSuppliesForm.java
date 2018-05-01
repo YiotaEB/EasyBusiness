@@ -6,7 +6,7 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
-import eb_managementapp.UI.MainForm;
+import static eb_managementapp.EB_ManagementApp.setUpForm;
 import static eb_managementapp.EB_ManagementApp.mainForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Suppliers;
@@ -236,6 +236,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         this.setVisible(false);
+        setUpForm = new SetUpForm();
     }//GEN-LAST:event_nextButtonActionPerformed
 
    
@@ -247,6 +248,13 @@ public class AddSuppliesForm extends javax.swing.JFrame {
         String quantity = quantitySpinner.getValue().toString();
         String price = priceTextField.getText().toString();
         int suppliersID = suppliersList.get(supplierComboBox.getSelectedIndex()).getID();
+        
+          //Check if the supply name is valid
+        if (name.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid supply name", "Invalid Supply", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
 
         //Make the call:
         String addSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "Create",

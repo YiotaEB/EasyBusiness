@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -287,7 +288,7 @@ public class AddUsersForm extends javax.swing.JFrame {
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(635, Short.MAX_VALUE)
                 .addComponent(cancelButton)
                 .addGap(18, 18, 18)
                 .addComponent(nextButton)
@@ -318,22 +319,22 @@ public class AddUsersForm extends javax.swing.JFrame {
         viewEmployeesPanel.setLayout(viewEmployeesPanelLayout);
         viewEmployeesPanelLayout.setHorizontalGroup(
             viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(viewEmployeesButton)
-                .addContainerGap())
             .addGroup(viewEmployeesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(employeesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(employeesScrollPane)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(viewEmployeesButton)))
+                .addContainerGap())
         );
         viewEmployeesPanelLayout.setVerticalGroup(
             viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
-                .addComponent(employeesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(employeesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewEmployeesButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -349,8 +350,7 @@ public class AddUsersForm extends javax.swing.JFrame {
                             .addComponent(employeeDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(employmentDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(viewEmployeesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(viewEmployeesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,7 +396,7 @@ public class AddUsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_dateOfHirePickerActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-       this.setVisible(false);
+        this.setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed
@@ -404,7 +404,7 @@ public class AddUsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_viewEmployeesButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-       this.setVisible(false);
+        this.setVisible(false);
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void positionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionComboBoxActionPerformed
@@ -427,13 +427,31 @@ public class AddUsersForm extends javax.swing.JFrame {
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
         int positionID = positionsList.get(positionComboBox.getSelectedIndex()).getUserLevelID();
         Date dateHiredDate = dateOfHirePicker.getDate();
-        int dateHired = dateHiredDate.getDate(); //TODO Show correct day.
+        int dateHired = 0;
+        if (dateHiredDate != null) {
+            dateHiredDate.getDate();
+        }
+        else {
+             showMessageDialog(null, "Please provide a valid date", "Invalid Date", JOptionPane.PLAIN_MESSAGE);
+        }
+
+        //Check if the firstname is valid
+        if (firstname.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid firstname", "Invalid Firstname", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Check if the lastname is valid
+        if (lastname.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid lastname", "Invalid lastname", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
 
         //Make the call:
-        String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create", 
-                "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username + 
-                        "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID +
-                        "&UserLevelID=" + positionID + "&Password= " + "&DateHired=" + dateHired
+        String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create",
+                "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
+                + "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID
+                + "&UserLevelID=" + positionID + "&Password= " + "&DateHired=" + dateHired
         );
         try {
             JSONObject jsonObject = new JSONObject(addUsersJSON);
@@ -466,6 +484,8 @@ public class AddUsersForm extends javax.swing.JFrame {
         usersList = new ArrayList<>();
         viewEmployeesButton.setEnabled(false);
 
+        long dateHiredLong = 0;
+        
         //Get customers from api
         String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
         try {
@@ -473,7 +493,7 @@ public class AddUsersForm extends javax.swing.JFrame {
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
-
+            
             if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 JSONArray dataArray = jsonObject.getJSONArray("Data");
                 for (int i = 0; i < dataArray.length(); i++) {
@@ -484,8 +504,9 @@ public class AddUsersForm extends javax.swing.JFrame {
                     String firstname = currentItem.getString("Firstname");
                     String lastname = currentItem.getString("Lastname");
                     String password = currentItem.getString("Password");
-                    long dateHiredLong = currentItem.getLong("DateHired");
+                    dateHiredLong = currentItem.getLong("DateHired");
                     int dateHired = (int) dateHiredLong;
+
                     int countryID = currentItem.getInt("CountryID");
                     String city = currentItem.getString("City");
                     String telephone = currentItem.getString("Telephone");
@@ -506,21 +527,34 @@ public class AddUsersForm extends javax.swing.JFrame {
         //Create a new model for the table:
         DefaultTableModel employeesTableModel = new DefaultTableModel();
 
+//        SimpleDateFormat format = new SimpleDateFormat();
+//        String date = format.format(new Date(dateHiredLong));
+
         //Add the table columns:
-        employeesTableModel.addColumn("ID");
         employeesTableModel.addColumn("Username");
         employeesTableModel.addColumn("Firstname");
         employeesTableModel.addColumn("Lastname");
+        employeesTableModel.addColumn("Position");
         employeesTableModel.addColumn("Date Hired");
         employeesTableModel.addColumn("Telephone");
 
         //Add each item in the list as a row in the table:
         for (int i = 0; i < usersList.size(); i++) {
+
+            //Put position in the Table
+            String position = "";
+            for (int j = 0; j < positionsList.size(); j++) {
+                if (usersList.get(i).getUserLevelID() == positionsList.get(j).getUserLevelID()) {
+                    position = positionsList.get(j).getUserLevelName();
+                    break;
+                }
+            }
+
             Object[] currentRow = {
-                usersList.get(i).getUserID(),
                 usersList.get(i).getUsername(),
                 usersList.get(i).getFirstname(),
                 usersList.get(i).getLastname(),
+                position,
                 Users.DATE_FORMAT.format(new Date(usersList.get(i).getDateHired())),
                 usersList.get(i).getTelephone(),};
             employeesTableModel.addRow(currentRow);

@@ -6,29 +6,14 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
-import eb_managementapp.DB.ConnectionCreator;
-import eb_managementapp.UI.MainForm;
-import java.util.Vector;
-import static eb_managementapp.EB_ManagementApp.mainForm;
+import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Suppliers;
 import eb_managementapp.Entities.Suppliersupplies;
 import eb_managementapp.Entities.Supplies;
-import eb_managementapp.Entities.Userlevels;
-import eb_managementapp.Entities.Users;
-import eb_managementapp.UI.Components.JTableUtilities;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
-import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -282,6 +267,7 @@ public class AddSuppliersForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         this.setVisible(false);
+        setUpForm = new SetUpForm();
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void addSupplier() {
@@ -292,6 +278,12 @@ public class AddSuppliersForm extends javax.swing.JFrame {
         String address = supplierAddressTextField.getText().toString();
         String telephone = supplierTelephoneTextField.getText().toString();
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
+        
+        //Check if the supplier name is valid
+        if (name.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid name", "Invalid Name", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
 
         //Make the call:
         String addSuppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "Create",

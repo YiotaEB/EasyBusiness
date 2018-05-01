@@ -28,7 +28,6 @@ import eb_managementapp.UI.Forms.AddProductsForm;
 import eb_managementapp.UI.Forms.AddSuppliersForm;
 import eb_managementapp.UI.Forms.AddSuppliesForm;
 import eb_managementapp.UI.Forms.CustomersForm;
-import eb_managementapp.UI.Forms.SuppliersForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
 import org.json.*;
 import java.awt.BorderLayout;

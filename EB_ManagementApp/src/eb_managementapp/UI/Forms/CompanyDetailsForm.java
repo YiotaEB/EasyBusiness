@@ -39,29 +39,7 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
     public CompanyDetailsForm() {
         initComponents();
-
-        //COUNTRIES SELECTION COMBOBOX
-        try {
-            //Select Statment to choose countries
-            ConnectionCreator connectionCreator = new ConnectionCreator();
-            Connection connection = connectionCreator.connect();
-
-            Statement getCountryStatement = connection.createStatement();
-            String qr = " Select Name From Countries";
-            ResultSet rs = getCountryStatement.executeQuery(qr);
-
-            countryComboBox.removeAllItems();
-            // iterate through the java resultset
-            while (rs.next()) {
-                String typeName = rs.getString("Name");
-                countryComboBox.addItem(typeName);
-            }
-            getCountryStatement.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AddUsersForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
         getCountries();
 
         this.setTitle(TITLE);
@@ -305,6 +283,12 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
         String address = addressTextField.getText().toString();
         String telephone = telephoneTextField.getText().toString();
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
+        
+        //Check if the product name is valid
+        if (companyName.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid company name", "Invalid Company Name", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
 
         //Make the call:
         String addCompanyJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Companyinformation", "Create",

@@ -163,8 +163,10 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         setVisible(false);
         addType();
+        if(sender != null && (sender instanceof AddProductsForm)){
         AddProductsForm senderForm = (AddProductsForm) sender;
         senderForm.getProductTypes();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void addType() {
@@ -172,6 +174,13 @@ public class AddProductTypeForm extends javax.swing.JFrame {
         //Get field values:
         String name = nameTypeTextField.getText();
 
+        //Check if the product name is valid
+        if (name.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid product type", "Invalid Product Type", JOptionPane.PLAIN_MESSAGE);
+            this.setVisible(true);
+            return;
+        }
+        
         //Make the call:
         String addTypeJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Producttypes", "Create",
                 "SessionID=aa&ID=1&Name=" + name );
