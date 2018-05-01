@@ -128,6 +128,9 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Intent intent = new Intent(activity, LoginActivity.class);
+            activity.startActivity(intent);
+            activity.finish();
         }
 //        finally {
 //            Intent intent = new Intent(activity, LoginActivity.class);

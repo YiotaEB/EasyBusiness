@@ -50,7 +50,6 @@ public class AddProductFragment extends Fragment {
     private EditText productQuantityEditText;
     private Spinner productTypeSpinner;
     private Spinner productSizeSpinner;
-    private Button productSuppliesButton;
     private Button addProductButton;
     ProgressBar progressBar;
     View layout;
@@ -82,7 +81,6 @@ public class AddProductFragment extends Fragment {
         productQuantityEditText = v.findViewById(R.id.product_quantity_edittext);
         productTypeSpinner = v.findViewById(R.id.product_type_spinner);
         productSizeSpinner = v.findViewById(R.id.product_size_spinner);
-        productSuppliesButton = v.findViewById(R.id.product_supplies_button);
         addProductButton = v.findViewById(R.id.add_product_button);
 
         addProductButton.setOnClickListener(new View.OnClickListener() {

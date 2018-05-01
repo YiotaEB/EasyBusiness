@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,8 @@ import java.util.Iterator;
 
 public class ProductAdapter extends ArrayAdapter<Products> {
 
-    final ArrayList<Products>  productList;
+    private ArrayList<Products>  productList;
+    private ArrayList<Products> orig;
 
     public ProductAdapter(final Context context, ArrayList<Products> productList) {
         super(context, R.layout.product_adapter);
@@ -50,6 +52,37 @@ public class ProductAdapter extends ArrayAdapter<Products> {
         productAdapterQuantity.setText(String.valueOf(productList.get(position).getQuantityInStock()) + " items");
 
         return view;
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final ArrayList<Products> results = new ArrayList<Products>();
+                if (orig == null)
+                    orig = productList;
+                if (constraint != null) {
+                    if (orig != null && orig.size() > 0) {
+                        for (final Products g : orig) {
+                            if (g.getName().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    oReturn.values = results;
+                }
+                return oReturn;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+                productList = (ArrayList<Products>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

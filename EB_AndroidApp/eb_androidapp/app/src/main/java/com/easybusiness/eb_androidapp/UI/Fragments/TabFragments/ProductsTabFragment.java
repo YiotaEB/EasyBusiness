@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,17 +50,14 @@ public class ProductsTabFragment extends Fragment {
     private ListView productListView;
     private ImageButton addProductBtn;
     private Button refreshButton;
-    public static ProductAdapter allProductsAdapter;
+    private static ProductAdapter allProductsAdapter;
     private View v;
     private ProgressBar progressBar;
     private View layout;
 
     private ArrayList<Products> productsList;
 
-    public ProductsTabFragment() {
-        // Required empty public constructor
-        System.out.println("CONSTRUCTOR CALLLED");
-    }
+    public ProductsTabFragment() { }
 
 
     @Override
@@ -108,6 +106,7 @@ public class ProductsTabFragment extends Fragment {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Products", mainActivity.PRODUCT_DATA.get(i).getID(), mainActivity.PRODUCT_DATA.get(i).getName(), new ProductsTabFragment());
                 dialog.show();
+                v.invalidate();
                 final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
                 Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
@@ -116,6 +115,8 @@ public class ProductsTabFragment extends Fragment {
                 return true;
             }
         });
+        //Make list view searchable:
+        productListView.setTextFilterEnabled(true);
 
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +129,31 @@ public class ProductsTabFragment extends Fragment {
             }
         });
 
+        //Searchview properties:
+        setupSearchView();
+
         return v;
+    }
+
+    private void setupSearchView() {
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)) {
+                    productListView.clearTextFilter();
+                } else {
+                    productListView.setFilterText(s);
+                }
+                return true;
+            }
+        });
+        searchView.setQueryHint("Search...");
     }
 
     @Override
@@ -137,35 +162,6 @@ public class ProductsTabFragment extends Fragment {
 
         getActivity().setTitle(TITLE);
 
-        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                productListView.setAdapter(allProductsAdapter);
-
-                final ProductAdapter adapter = (ProductAdapter) productListView.getAdapter();
-                ArrayList<Products> searchedProducts= new ArrayList<>();
-                System.out.println("ADAPTER SIZE: " + adapter.getCount());
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    Products products= adapter.getItem(i);
-                    if (products.getName() != null) {
-                        if (products.getName().toLowerCase().contains(newText.toLowerCase())) {
-                            searchedProducts.add(products);
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-                final ProductAdapter newAdapter = new ProductAdapter(getActivity(), searchedProducts);
-                productListView.setAdapter(newAdapter);
-
-                return true;
-            }
-        });
         addProductBtn = v.findViewById(R.id.addProductButton);
         addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,6 +253,7 @@ public class ProductsTabFragment extends Fragment {
                         for (int i = 0; i < items.length; i++)
                             items[i] = productsList.get(i).getName();
                         final ProductAdapter productAdapter = new ProductAdapter(getActivity(), productsList);
+                        allProductsAdapter = new ProductAdapter(getActivity(), productsList);
 
                         final ListView productsListview = getActivity().findViewById(R.id.productsList);
                         getActivity().runOnUiThread(new Runnable() {

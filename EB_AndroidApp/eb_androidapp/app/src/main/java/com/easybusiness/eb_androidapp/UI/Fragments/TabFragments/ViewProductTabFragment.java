@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.easybusiness.eb_androidapp.Entities.ProductSizes;
 import com.easybusiness.eb_androidapp.Entities.ProductTypes;
 import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
+import com.easybusiness.eb_androidapp.UI.Fragments.AddCustomersFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.SelectProductsFragment;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
@@ -108,7 +111,15 @@ public class ViewProductTabFragment extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "TODO", Toast.LENGTH_LONG).show();
+                Bundle bundle = new Bundle();
+                bundle.putInt(PRODUCT_ID_KEY, id);
+                Fragment newFragment = new EditProductTabFragment();
+                newFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
+                fragmentTransaction.replace(R.id.frame, newFragment, EditProductTabFragment.TAG);
+                fragmentTransaction.addToBackStack(newFragment.getTag());
+                fragmentTransaction.commit();
             }
         });
 
@@ -204,13 +215,21 @@ public class ViewProductTabFragment extends Fragment {
                     final String message = outterObject.getString("Message");
 
                     if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                        JSONObject jsonObject = outterObject.getJSONObject("Data");
-                        nameTextview.setText(jsonObject.getString("Name"));
+                        final JSONObject jsonObject = outterObject.getJSONObject("Data");
+                        final String name = jsonObject.getString("Name");
+                        nameTextview.setText(name);
                         priceTextview.setText("€" + jsonObject.getString("Price"));
                         quantityTextview.setText(jsonObject.getString("QuantityInStock"));
 
                         productSize = jsonObject.getInt("ProductSizeID");
                         productType  = jsonObject.getInt("ProductTypeID");
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getActivity().setTitle(name);
+                            }
+                        });
 
                     } else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
                         getActivity().runOnUiThread(new Runnable() {
