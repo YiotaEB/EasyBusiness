@@ -39,6 +39,7 @@ import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.RowFilter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
@@ -68,61 +69,27 @@ public final class MainForm extends javax.swing.JFrame {
     private ArrayList<Sales> salesList;
     private ArrayList<Userlevels> positionsList;
     private ArrayList<Supplytransactions> supplyTransactionList;
+    
+    private TableRowSorter<DefaultTableModel> sorter;
 
-    DefaultTableModel employeesTableModel;
+    private void employeesFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchTxt.getText(), 2);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
 
-    private TableRowSorter<TableModel> rowSorter
-            = new TableRowSorter<>(employeesTableModel);
-
-//    public EmployeesTableSortFilter() {
-//        employeesTableModel.
-//        employeesTable.setRowSorter(rowSorter);
-//
-////        JPanel panel = new JPanel(new BorderLayout());
-////        panel.add(new JLabel("Specify a word to match:"),
-////                BorderLayout.WEST);
-////        panel.add(jtfFilter, BorderLayout.CENTER);
-////
-////        setLayout(new BorderLayout());
-////        add(panel, BorderLayout.SOUTH);
-////        add(new JScrollPane(jTable), BorderLayout.CENTER);
-//        searchText.getDocument().addDocumentListener(new DocumentListener() {
-//
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//                String text = jtfFilter.getText();
-//
-//                if (text.trim().length() == 0) {
-//                    rowSorter.setRowFilter(null);
-//                } else {
-//                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-//                }
-//            }
-//
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                String text = jtfFilter.getText();
-//
-//                if (text.trim().length() == 0) {
-//                    rowSorter.setRowFilter(null);
-//                } else {
-//                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-//                }
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//        });
-//    }
     public MainForm() {
         initComponents();
 
-        tabPanel.addChangeListener(new ChangeListener() {
+        tabPanel.addChangeListener(
+                new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            public void stateChanged(ChangeEvent e
+            ) {
                 switch (tabPanel.getSelectedIndex()) {
 
                     //Home
@@ -202,33 +169,46 @@ public final class MainForm extends javax.swing.JFrame {
 
                 }
             }
-        });
+        }
+        );
 
         customerScrollPanel.setViewportView(customerDetailsTable);
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(80, "Marks", "Value 1");
-        dataset.setValue(70, "Marks", "Value 2");
-        dataset.setValue(75, "Marks", "Value 3");
+
+        dataset.setValue(
+                80, "Marks", "Value 1");
+        dataset.setValue(
+                70, "Marks", "Value 2");
+        dataset.setValue(
+                75, "Marks", "Value 3");
         JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
         CategoryPlot p = chart.getCategoryPlot();
+
         p.setRangeGridlinePaint(Color.black);
 
         //Panel (same window):
         ChartPanel chartPanel = new ChartPanel(chart);
-        statistics.setLayout(new java.awt.BorderLayout());
+
+        statistics.setLayout(
+                new java.awt.BorderLayout());
         statistics.add(chartPanel, BorderLayout.CENTER);
+
         statistics.validate();
 
         //Panel (same window):
         ChartPanel chartPanel2 = new ChartPanel(chart);
-        customersGraphsPanel2.setLayout(new java.awt.BorderLayout());
+
+        customersGraphsPanel2.setLayout(
+                new java.awt.BorderLayout());
         customersGraphsPanel2.add(chartPanel2, BorderLayout.CENTER);
+
         customersGraphsPanel2.validate();
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        this.setVisible(true);
+        this.setVisible(
+                true);
     }
 
     private void homeTab() {
@@ -609,6 +589,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void employeesTab() {
         refreshEmployeesBtn.setEnabled(false);
 
+        DefaultTableModel employeesTableModel = new DefaultTableModel();
+
         //Create a new model for the table:
         employeesTableModel = new DefaultTableModel();
 
@@ -657,6 +639,12 @@ public final class MainForm extends javax.swing.JFrame {
             };
             employeesTableModel.addRow(currentRow);
         }
+
+        //FILTERING:
+        sorter = new TableRowSorter<DefaultTableModel>(employeesTableModel);
+        employeesFilter(sorter);
+        employeesTable.setRowSorter(sorter);
+
         employeesTable.setModel(employeesTableModel);
         refreshEmployeesBtn.setEnabled(true);
         numOfEmployeesLabel.setText(String.valueOf(employeesList.size()));
@@ -2964,7 +2952,7 @@ public final class MainForm extends javax.swing.JFrame {
         ));
         employeeScrollPanel.setViewportView(employeesTable);
 
-        searchTxt.setText("Search....");
+        searchTxt.setToolTipText("Search...");
         searchTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchTxtActionPerformed(evt);
@@ -3664,16 +3652,24 @@ public final class MainForm extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
