@@ -2160,6 +2160,8 @@
                               <Component id="employeeScrollPanel" pref="1042" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="deletRow" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                                   <Component id="exportFilesBtn" min="-2" pref="27" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="printBtn" min="-2" pref="28" max="-2" attributes="0"/>
@@ -2179,12 +2181,15 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="printBtn" max="32767" attributes="0"/>
-                              <Component id="exportFilesBtn" alignment="0" max="32767" attributes="0"/>
-                              <Component id="refreshEmployeesBtn" max="32767" attributes="0"/>
-                              <Component id="searchTxt" alignment="0" max="32767" attributes="0"/>
-                              <Component id="importEmplBtn" alignment="1" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="printBtn" max="32767" attributes="0"/>
+                                  <Component id="exportFilesBtn" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="refreshEmployeesBtn" max="32767" attributes="0"/>
+                                  <Component id="searchTxt" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="importEmplBtn" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="deletRow" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="employeeScrollPanel" min="-2" pref="637" max="-2" attributes="0"/>
@@ -2261,6 +2266,14 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importEmplBtnActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="deletRow">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="deleteRow"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletRowActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

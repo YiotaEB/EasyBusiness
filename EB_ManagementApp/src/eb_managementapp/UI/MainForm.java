@@ -1562,6 +1562,50 @@ public final class MainForm extends javax.swing.JFrame {
         }
 
     }
+    
+    public void deleteEmployee(){
+        employeesList = new ArrayList<>();
+
+        //Get customers from api
+        String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Delete", "SessionID=aa");
+        try {
+            System.out.println("Get Users HTTP -> " + employeesJSON);
+            JSONObject jsonObject = new JSONObject(employeesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    int userID = currentItem.getInt("UserID");
+                    String username = currentItem.getString("Username");
+                    String firstname = currentItem.getString("Firstname");
+                    String lastname = currentItem.getString("Lastname");
+                    String password = currentItem.getString("Password");
+
+                    long dateHiredLong = currentItem.getLong("DateHired");
+                    int dateHired = (int) dateHiredLong;
+
+                    int countryID = currentItem.getInt("CountryID");
+                    String city = currentItem.getString("City");
+                    String telephone = currentItem.getString("Telephone");
+                    String address = currentItem.getString("Address");
+                    int userLevelID = currentItem.getInt("UserLevelID");
+
+                    Users employee = new Users(userID, username, password, userLevelID, firstname, lastname, dateHired, city, address, telephone, countryID);
+                    employeesList.remove(employee);
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + employeesJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1688,6 +1732,7 @@ public final class MainForm extends javax.swing.JFrame {
         printBtn = new javax.swing.JButton();
         refreshEmployeesBtn = new javax.swing.JButton();
         importEmplBtn = new javax.swing.JButton();
+        deletRow = new javax.swing.JButton();
         numOfEmployeesLabel = new javax.swing.JLabel();
         suppliers = new javax.swing.JPanel();
         noSuppliesLb = new javax.swing.JLabel();
@@ -2967,6 +3012,13 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        deletRow.setText("deleteRow");
+        deletRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletRowActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout employeeListPanelLayout = new javax.swing.GroupLayout(employeeListPanel);
         employeeListPanel.setLayout(employeeListPanelLayout);
         employeeListPanelLayout.setHorizontalGroup(
@@ -2977,6 +3029,8 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(employeeScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1042, Short.MAX_VALUE)
                     .addGroup(employeeListPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(deletRow)
+                        .addGap(26, 26, 26)
                         .addComponent(exportFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(printBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2992,12 +3046,14 @@ public final class MainForm extends javax.swing.JFrame {
             employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeListPanelLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(printBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exportFilesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(refreshEmployeesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchTxt)
-                    .addComponent(importEmplBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(printBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(exportFilesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshEmployeesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchTxt)
+                        .addComponent(importEmplBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(deletRow))
                 .addGap(18, 18, 18)
                 .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(292, Short.MAX_VALUE))
@@ -3599,6 +3655,16 @@ public final class MainForm extends javax.swing.JFrame {
         suppliersTab();
     }//GEN-LAST:event_refreshPurchasesTableBtnActionPerformed
 
+    private void deletRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletRowActionPerformed
+       
+        
+        employeesTableModel.removeRow(employeesTable.getSelectedRow());
+        deleteEmployee();
+        employeesTab();
+        
+        
+    }//GEN-LAST:event_deletRowActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3656,6 +3722,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTable dailyPurchasesTable;
     private javax.swing.JTable dailySalesTable;
     private org.jdesktop.swingx.JXDatePicker dateOfProduction;
+    private javax.swing.JButton deletRow;
     private javax.swing.JPanel dialyProduction;
     private javax.swing.JPanel employeeListPanel;
     private javax.swing.JScrollPane employeeScrollPanel;
