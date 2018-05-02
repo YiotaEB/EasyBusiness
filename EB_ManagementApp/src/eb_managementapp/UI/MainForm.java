@@ -42,6 +42,8 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -67,6 +69,55 @@ public final class MainForm extends javax.swing.JFrame {
     private ArrayList<Userlevels> positionsList;
     private ArrayList<Supplytransactions> supplyTransactionList;
 
+    DefaultTableModel employeesTableModel;
+
+    private TableRowSorter<TableModel> rowSorter
+            = new TableRowSorter<>(employeesTableModel);
+
+//    public EmployeesTableSortFilter() {
+//        employeesTableModel.
+//        employeesTable.setRowSorter(rowSorter);
+//
+////        JPanel panel = new JPanel(new BorderLayout());
+////        panel.add(new JLabel("Specify a word to match:"),
+////                BorderLayout.WEST);
+////        panel.add(jtfFilter, BorderLayout.CENTER);
+////
+////        setLayout(new BorderLayout());
+////        add(panel, BorderLayout.SOUTH);
+////        add(new JScrollPane(jTable), BorderLayout.CENTER);
+//        searchText.getDocument().addDocumentListener(new DocumentListener() {
+//
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//                String text = jtfFilter.getText();
+//
+//                if (text.trim().length() == 0) {
+//                    rowSorter.setRowFilter(null);
+//                } else {
+//                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+//                }
+//            }
+//
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                String text = jtfFilter.getText();
+//
+//                if (text.trim().length() == 0) {
+//                    rowSorter.setRowFilter(null);
+//                } else {
+//                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+//                }
+//            }
+//
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//            }
+//
+//        });
+//    }
+
     public MainForm() {
         initComponents();
 
@@ -77,7 +128,17 @@ public final class MainForm extends javax.swing.JFrame {
 
                     //Home
                     case 0:
-                        //TODO
+                        getProductSize();
+                        getProducts();
+                        getProduction();
+                        getCustomers();
+                        getSaleProducts();
+                        getSales();
+                        getSupplies();
+                        getSupplyTransactions();
+                        getSuppliers();
+                        getSupplierSupplies();
+                        homeTab();
                         break;
 
                     //Inventory
@@ -116,6 +177,8 @@ public final class MainForm extends javax.swing.JFrame {
                     case 4:
                         getCountries();
                         getCustomers();
+                        getProducts();
+                        getCustomerProducts();
                         customersTab();
 
                         break;
@@ -134,8 +197,8 @@ public final class MainForm extends javax.swing.JFrame {
                         getSupplyTransactions();
                         getCountries();
                         getSuppliers();
+                        getSupplierSupplies();
                         suppliersTab();
-
                         break;
 
                 }
@@ -169,6 +232,143 @@ public final class MainForm extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
+    private void homeTab(){
+        
+        /******************************************************************************************/
+        //DAILY PRODUCTION
+
+        //Create a new model for the table:
+        DefaultTableModel productsTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        productsTableModel.addColumn("No");
+        productsTableModel.addColumn("Production Date");
+        productsTableModel.addColumn("Product Name");
+        productsTableModel.addColumn("Quantity Produced");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < productionList.size(); i++) {
+
+            //Put productType Name in the Table
+            String productName = "";
+            for (int j = 0; j < productsList.size(); j++) {
+                if (productsList.get(j).getID() == productionList.get(i).getProductID()) {
+                    productName = productsList.get(j).getName();
+                    break;
+                }
+            }
+
+            Object[] currentRow = {
+                i + 1,
+                productionList.get(i).getProductionDate(),
+                productName,
+                productionList.get(i).getQuantityProduced()
+
+            };
+            productsTableModel.addRow(currentRow);
+        }
+        dailyProductionTable.setModel(productsTableModel);
+        /*****************************************************************************************/
+        
+        //Create a new model for the table:
+        DefaultTableModel salesTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        salesTableModel.addColumn("No");
+        salesTableModel.addColumn("Date");
+        salesTableModel.addColumn("Customer");
+        salesTableModel.addColumn("Total Revenue");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < salesList.size(); i++) {
+
+            double total = 0.0;
+            for (int j = 0; j < saleProductsList.size(); j++) {
+                int sold = saleProductsList.get(j).getQuantitySold();
+                System.out.println("Sold:" + sold);
+                double price = 0.0;
+                for (int k = 0; k < productsList.size(); k++) {
+                    if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
+                        price = productsList.get(k).getPrice();
+                        System.out.println("Price:" + price);
+                        break;
+                    }
+
+                }
+                total += (price * sold);
+            }
+
+            //Math.round(total);
+            //Put customerName in the Table
+            String customerName = "";
+            for (int j = 0; j < customersList.size(); j++) {
+                if (customersList.get(j).getID() == salesList.get(i).getID()) {
+                    customerName = customersList.get(j).getName();
+                }
+            }
+
+            Object[] currentRow = {
+                i + 1,
+                salesList.get(i).getSaleTimeDate(),
+                customerName,
+                String.valueOf(total)
+            };
+
+            salesTableModel.addRow(currentRow);
+        }
+        dailySalesTable.setModel(salesTableModel);
+        
+        /***************************************************************************************/
+         //SUPPLIER PURCHASES RECORDS TABLE
+        //Create a new model for the table:
+        DefaultTableModel supplyPurchasesTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        supplyPurchasesTableModel.addColumn("No");
+        supplyPurchasesTableModel.addColumn("Date");
+        supplyPurchasesTableModel.addColumn("Supplier");
+        supplyPurchasesTableModel.addColumn("Total");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < supplyTransactionList.size(); i++) {
+
+            double total = 0.0;
+            for (int j = 0; j < supplyTransactionList.size(); j++) {
+                int sold = supplyTransactionList.get(j).getQuantity();
+                System.out.println("Sold:" + sold);
+                double price = 0.0;
+                for (int k = 0; k < suppliesList.size(); k++) {
+                    if (suppliesList.get(k).getID() == supplyTransactionList.get(j).getSupplierSuppliesID()) {
+                        price = suppliesList.get(k).getPrice();
+                        System.out.println("Price:" + price);
+                        break;
+                    }
+
+                }
+                total += (price * sold);
+            }
+
+            //Put supplier Name in the Table
+            String supplierName = "";
+            for (int j = 0; j < suppliersList.size(); j++) {
+                if (suppliersList.get(j).getID() == supplyTransactionList.get(i).getSupplierSuppliesID()) {
+                    supplierName = suppliersList.get(j).getName();
+                }
+            }
+            Object[] currentRow = {
+                i + 1,
+                supplyTransactionList.get(i).getDateMade(),
+                supplierName,
+                "€" + String.format("%.2g%n", total)
+            };
+            supplyPurchasesTableModel.addRow(currentRow);
+        }
+        dailyPurchasesTable.setModel(supplyPurchasesTableModel);
+        
+        
+        
+    }
+    
     private void addSales() {
 
         //Update the sales:
@@ -360,13 +560,53 @@ public final class MainForm extends javax.swing.JFrame {
         customerDetailsTable.setModel(customersTableModel);
         refreshCusDetailsBtn.setEnabled(true);
         numOfCustomersLabel.setText(String.valueOf(customersList.size()));
+        /*****************************************************************************************************/
+        
+        //CUSTOMER PRODUCTS TABLE
+        refreshCustProductsBtn.setEnabled(false);
+        //Create a new model for the table:
+        DefaultTableModel customerProductsTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        customerProductsTableModel.addColumn("No");
+        customerProductsTableModel.addColumn("Customer");
+        customerProductsTableModel.addColumn("Product");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < customerProductsList.size(); i++) {
+
+          //Put supplier Name in the Table
+            String customerName = "";
+            for (int j = 0; j < customersList.size(); j++) {
+                if (customersList.get(j).getID() == customerProductsList.get(i).getCustomerID()) {
+                    customerName = customersList.get(j).getName();
+                }
+            }
+            
+            //Put supplier Name in the Table
+            String product = "";
+            for (int j = 0; j < productsList.size(); j++) {
+                if (productsList.get(j).getID() == customerProductsList.get(i).getProductID()) {
+                    product = productsList.get(j).getName();
+                }
+            }
+
+            Object[] currentRow = {
+                i + 1,
+                customerName,
+                product
+            };
+            customerProductsTableModel.addRow(currentRow);
+        }
+        customerProductsTable.setModel(customerProductsTableModel);
+        refreshCustProductsBtn.setEnabled(true);
     }
 
     private void employeesTab() {
         refreshEmployeesBtn.setEnabled(false);
 
         //Create a new model for the table:
-        DefaultTableModel employeesTableModel = new DefaultTableModel();
+        employeesTableModel = new DefaultTableModel();
 
         //Add the table columns:
         employeesTableModel.addColumn("No");
@@ -484,7 +724,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
 
             Object[] currentRow = {
-                customerProductsList.get(i).getID(),
+                i+1,
                 customerName,
                 productName
             };
@@ -529,7 +769,6 @@ public final class MainForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void suppliersTab() {
@@ -570,7 +809,48 @@ public final class MainForm extends javax.swing.JFrame {
         }
         supplierDetailsTable.setModel(supplierTableModel);
         refreshSuplTableBtn.setEnabled(true);
+        noSuppliesLb.setText(String.valueOf(suppliersList.size()));
 
+        //SUPPLIER SUPPLIES TABLE
+        refreshSuppliesTableBtn.setEnabled(false);
+        //Create a new model for the table:
+        DefaultTableModel supplyTableModel = new DefaultTableModel();
+
+        //Add the table columns:
+        supplyTableModel.addColumn("No");
+        supplyTableModel.addColumn("Supplier");
+        supplyTableModel.addColumn("Supply");
+
+        //Add each item in the list as a row in the table:
+        for (int i = 0; i < supplierSuppliesList.size(); i++) {
+
+          //Put supplier Name in the Table
+            String supplierName = "";
+            for (int j = 0; j < suppliersList.size(); j++) {
+                if (suppliersList.get(j).getID() == supplierSuppliesList.get(i).getSupplierID()) {
+                    supplierName = suppliersList.get(j).getName();
+                }
+            }
+            
+            //Put supplier Name in the Table
+            String supplyName = "";
+            for (int j = 0; j < suppliesList.size(); j++) {
+                if (suppliesList.get(j).getID() == supplierSuppliesList.get(i).getSupplyID()) {
+                    supplyName = suppliesList.get(j).getName();
+                }
+            }
+
+            Object[] currentRow = {
+                i + 1,
+                supplierName,
+                supplyName
+            };
+            supplyTableModel.addRow(currentRow);
+        }
+        suppliesTable.setModel(supplyTableModel);
+        refreshSuppliesTableBtn.setEnabled(true);
+
+        
         //SUPPLIER PURCHASES RECORDS TABLE
         refreshPurchasesTableBtn.setEnabled(false);
         //Create a new model for the table:
@@ -596,12 +876,12 @@ public final class MainForm extends javax.swing.JFrame {
                         System.out.println("Price:" + price);
                         break;
                     }
-                    
+
                 }
                 total += (price * sold);
             }
 
-            //Put customerName in the Table
+            //Put supplier Name in the Table
             String supplierName = "";
             for (int j = 0; j < suppliersList.size(); j++) {
                 if (suppliersList.get(j).getID() == supplyTransactionList.get(i).getSupplierSuppliesID()) {
@@ -738,7 +1018,7 @@ public final class MainForm extends javax.swing.JFrame {
         }
     }
 
-    public void suppliesTab() {
+    private void suppliesTab() {
         refreshSuppliesTable.setEnabled(false);
 
         //Create a new model for the table:
@@ -926,7 +1206,7 @@ public final class MainForm extends javax.swing.JFrame {
 
     }
 
-    public void productsTab() {
+    private void productsTab() {
         refreshProductsTable.setEnabled(false);
 
         //Create a new model for the table:
@@ -1007,7 +1287,7 @@ public final class MainForm extends javax.swing.JFrame {
         }
     }
 
-    public void productionTab() {
+    private void productionTab() {
         refreshProductionButton.setEnabled(false);
 
         //Create a new model for the table:
@@ -1116,7 +1396,7 @@ public final class MainForm extends javax.swing.JFrame {
         }
     }
 
-    public void salesTab() {
+    private void salesTab() {
         refreshSalesButton.setEnabled(false);
 
         //Create a new model for the table:
@@ -1388,14 +1668,6 @@ public final class MainForm extends javax.swing.JFrame {
         customerScrollPanel = new javax.swing.JScrollPane();
         customerDetailsTable = new javax.swing.JTable();
         customerTabPanel = new javax.swing.JTabbedPane();
-        custSalesPanel = new javax.swing.JPanel();
-        importCustSalesBtn = new javax.swing.JButton();
-        searchCustSalesTxt = new javax.swing.JTextField();
-        exportCustSalesBtn = new javax.swing.JButton();
-        printCustSalesBtn = new javax.swing.JButton();
-        refreshCustSalesTable = new javax.swing.JButton();
-        customersSalesTabPane = new javax.swing.JScrollPane();
-        custSalesTable = new javax.swing.JTable();
         custProductsPanel = new javax.swing.JPanel();
         exportCustProductsBtn = new javax.swing.JButton();
         printCustProductsBtn = new javax.swing.JButton();
@@ -2493,85 +2765,13 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(searchCustomerTxt)
                     .addComponent(importCustomerBtn, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addComponent(customerScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                .addComponent(customerScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         customerTabPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         customerTabPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         customerTabPanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        importCustSalesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
-
-        searchCustSalesTxt.setText("Search....");
-        searchCustSalesTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchCustSalesTxtActionPerformed(evt);
-            }
-        });
-
-        exportCustSalesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
-        exportCustSalesBtn.setPreferredSize(new java.awt.Dimension(49, 25));
-        exportCustSalesBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportCustSalesBtnActionPerformed(evt);
-            }
-        });
-
-        printCustSalesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
-
-        refreshCustSalesTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
-
-        custSalesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        customersSalesTabPane.setViewportView(custSalesTable);
-
-        javax.swing.GroupLayout custSalesPanelLayout = new javax.swing.GroupLayout(custSalesPanel);
-        custSalesPanel.setLayout(custSalesPanelLayout);
-        custSalesPanelLayout.setHorizontalGroup(
-            custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(custSalesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, custSalesPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(exportCustSalesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(printCustSalesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchCustSalesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshCustSalesTable, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(importCustSalesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(customersSalesTabPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        custSalesPanelLayout.setVerticalGroup(
-            custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(custSalesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(custSalesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(printCustSalesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exportCustSalesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(refreshCustSalesTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchCustSalesTxt)
-                    .addComponent(importCustSalesBtn, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addComponent(customersSalesTabPane, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        customerTabPanel.addTab("Customer Sales", custSalesPanel);
 
         exportCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
         exportCustProductsBtn.setPreferredSize(new java.awt.Dimension(49, 25));
@@ -2640,7 +2840,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(searchCustProductsTxt))
                 .addGap(43, 43, 43)
                 .addComponent(custProScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         customerTabPanel.addTab("Customer Prooducts", custProductsPanel);
@@ -2655,7 +2855,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         customersGraphsPanelLayout.setVerticalGroup(
             customersGraphsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 211, Short.MAX_VALUE)
         );
 
         customersGraphsPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customer Sales per month", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
@@ -2668,7 +2868,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         customersGraphsPanel2Layout.setVerticalGroup(
             customersGraphsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 251, Short.MAX_VALUE)
         );
 
         numOfCustomersLabel.setName("numOfCustomersLabel"); // NOI18N
@@ -2703,17 +2903,18 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(noCustomerLb)
                     .addComponent(numOfCustomersLabel))
                 .addGap(32, 32, 32)
-                .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(customersGraphsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(customerDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(customersGraphsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(customersLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(customerTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(customersLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(customersGraphsPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(470, Short.MAX_VALUE))
+                        .addComponent(customersGraphsPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(customersLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(customerTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(457, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Customers", customers);
@@ -2833,7 +3034,7 @@ public final class MainForm extends javax.swing.JFrame {
 
         tabPanel.addTab("Employees", employees);
 
-        noSuppliesLb.setText("No. Suppliers: ###");
+        noSuppliesLb.setText("No. Suppliers: ");
 
         suppliersDetailsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplier Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
@@ -3240,14 +3441,6 @@ public final class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchCustomerTxtActionPerformed
 
-    private void exportCustSalesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportCustSalesBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_exportCustSalesBtnActionPerformed
-
-    private void searchCustSalesTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCustSalesTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchCustSalesTxtActionPerformed
-
     private void exportCustProductsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportCustProductsBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_exportCustProductsBtnActionPerformed
@@ -3355,30 +3548,37 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void refreshEmployeesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshEmployeesBtnActionPerformed
         getEmployees();
+        employeesTab();
     }//GEN-LAST:event_refreshEmployeesBtnActionPerformed
 
     private void refreshCustProductsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshCustProductsBtnActionPerformed
         getCustomerProducts();
+        customersTab();
     }//GEN-LAST:event_refreshCustProductsBtnActionPerformed
 
     private void refreshCusDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshCusDetailsBtnActionPerformed
         getCustomers();
+        customersTab();
     }//GEN-LAST:event_refreshCusDetailsBtnActionPerformed
 
     private void refreshSuplTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSuplTableBtnActionPerformed
         getSuppliers();
+        suppliersTab();
     }//GEN-LAST:event_refreshSuplTableBtnActionPerformed
 
     private void refreshSuppliesTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSuppliesTableBtnActionPerformed
         getSupplierSupplies();
+        suppliersTab();
     }//GEN-LAST:event_refreshSuppliesTableBtnActionPerformed
 
     private void refreshProductsTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshProductsTableActionPerformed
         getProducts();
+        productsTab();
     }//GEN-LAST:event_refreshProductsTableActionPerformed
 
     private void refreshSuppliesTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSuppliesTableActionPerformed
         getSupplies();
+        suppliesTab();
     }//GEN-LAST:event_refreshSuppliesTableActionPerformed
 
     private void refreshSuplTableBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSuplTableBtn2ActionPerformed
@@ -3390,10 +3590,12 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshProductionButtonActionPerformed
 
     private void refreshSalesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSalesButtonActionPerformed
-        // TODO add your handling code here:
+        getSaleProducts();
+        salesTab();
     }//GEN-LAST:event_refreshSalesButtonActionPerformed
 
     private void refreshPurchasesTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshPurchasesTableBtnActionPerformed
+        getSupplyTransactions();
         suppliersTab();
     }//GEN-LAST:event_refreshPurchasesTableBtnActionPerformed
 
@@ -3441,8 +3643,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> bottleSizeComboBox;
     private javax.swing.JScrollPane custProScrollPanel;
     private javax.swing.JPanel custProductsPanel;
-    private javax.swing.JPanel custSalesPanel;
-    private javax.swing.JTable custSalesTable;
     private javax.swing.JComboBox<String> customerComboBox;
     private javax.swing.JPanel customerDetailsPanel;
     private javax.swing.JTable customerDetailsTable;
@@ -3452,7 +3652,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel customers;
     private javax.swing.JPanel customersGraphsPanel;
     private javax.swing.JPanel customersGraphsPanel2;
-    private javax.swing.JScrollPane customersSalesTabPane;
     private javax.swing.JTable dailyProductionTable;
     private javax.swing.JTable dailyPurchasesTable;
     private javax.swing.JTable dailySalesTable;
@@ -3465,7 +3664,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton expCusDetailsBtn;
     private javax.swing.JButton expSupDetailsBtn1;
     private javax.swing.JButton exportCustProductsBtn;
-    private javax.swing.JButton exportCustSalesBtn;
     private javax.swing.JButton exportFilesBtn;
     private javax.swing.JButton exportPurchFilesBtn;
     private javax.swing.JButton exportSuppliesFilesBtn;
@@ -3474,7 +3672,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu helpContentMenu;
     private javax.swing.JLabel hireDateLabel;
     private javax.swing.JPanel home;
-    private javax.swing.JButton importCustSalesBtn;
     private javax.swing.JButton importCustomerBtn;
     private javax.swing.JButton importEmplBtn;
     private javax.swing.JButton importProductsButton;
@@ -3525,7 +3722,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton printBtn;
     private javax.swing.JButton printCusDetailsBtn;
     private javax.swing.JButton printCustProductsBtn;
-    private javax.swing.JButton printCustSalesBtn;
     private javax.swing.JButton printPurchasesBtn;
     private javax.swing.JButton printSupDetailsBtn1;
     private javax.swing.JButton printSuppliesBtn;
@@ -3558,7 +3754,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JSpinner quantitySpinner;
     private javax.swing.JButton refreshCusDetailsBtn;
     private javax.swing.JButton refreshCustProductsBtn;
-    private javax.swing.JButton refreshCustSalesTable;
     private javax.swing.JButton refreshEmployeesBtn;
     private javax.swing.JButton refreshProductionButton;
     private javax.swing.JButton refreshProductsTable;
@@ -3574,7 +3769,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane salesScrollPanel;
     private javax.swing.JTextField searceMonthlySale;
     private javax.swing.JTextField searchCustProductsTxt;
-    private javax.swing.JTextField searchCustSalesTxt;
     private javax.swing.JTextField searchCustomerTxt;
     private javax.swing.JTextField searchProductionDate;
     private javax.swing.JTextField searchProducts;
