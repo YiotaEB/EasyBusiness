@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.easybusiness.eb_androidapp.UI.Fragments.ProductsFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewProductsFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.SuppliesFragment;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
@@ -21,7 +21,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                ProductsFragment productsTab = new ProductsFragment();
+                ViewProductsFragment productsTab = new ViewProductsFragment();
                 return productsTab;
             case 1:
                 SuppliesFragment suppliesTab = new SuppliesFragment();

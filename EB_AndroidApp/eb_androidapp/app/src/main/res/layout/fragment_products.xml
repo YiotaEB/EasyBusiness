@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ProductsFragment">
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewProductsFragment">
 
     <ProgressBar
         android:id="@+id/view_products_progress"

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".UI.Fragments.EditProductSupplies">
+
+    <ProgressBar
+        android:id="@+id/edit_productSupplies_progress"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/edit_productSupplies_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/edit_productSupplies_productTextview"
+                android:text="@string/select_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:id="@+id/selectProduct_Spinner"
+                android:layout_below="@+id/edit_productSupplies_productTextview"
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+            </Spinner>
+
+            <ListView
+                android:layout_marginTop="10dp"
+                android:id="@+id/productSupplies_listview"
+                android:layout_below="@id/selectProduct_Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+
+            <Button
+                android:layout_marginTop="20dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:id="@+id/add_productSupplyButton"
+                android:layout_below="@id/productSupplies_listview"
+                android:text="Add Product Supply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -24,6 +24,7 @@ public class ViewInventoryFragment extends Fragment {
 
     private Button viewProducts;
     private Button viewSupplies;
+    private Button editProductSupplies;
     private ViewPager pager;
     View v;
     TabLayout tabLayout;
@@ -41,42 +42,25 @@ public class ViewInventoryFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_view_inventory, container, false);
 
-        //add tabs
-//        tabLayout = v.findViewById(R.id.tab_layout);
-//        tabLayout.addTab(tabLayout.newTab().setText("Products"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Supplies"));
-//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-
-        return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().setTitle(TITLE);
-
-//        final ViewPager viewPager = v.findViewById(R.id.pager);
-//        final TabPagerAdapter adapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
-//
-//        viewPager.setAdapter(adapter);
-
+        editProductSupplies = v.findViewById(R.id.edit_product_supplies);
         viewProducts = v.findViewById(R.id.viewProducts);
+        viewSupplies = v.findViewById(R.id.viewSupplies);
+
         viewProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new ProductsFragment();
+                Fragment newFragment = new ViewProductsFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-                getActivity().setTitle(ProductsFragment.TITLE);
-                fragmentTransaction.replace(R.id.frame, newFragment, ProductsFragment.TAG);
+                getActivity().setTitle(ViewProductsFragment.TITLE);
+                fragmentTransaction.replace(R.id.frame, newFragment, ViewProductsFragment.TAG);
                 fragmentTransaction.addToBackStack(newFragment.getTag());
                 fragmentTransaction.commit();
                 ((MainActivity) getActivity()).setMenuItemChecked(newFragment);
             }
         });
 
-        viewSupplies = v.findViewById(R.id.viewSupplies);
+
         viewSupplies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,24 +74,30 @@ public class ViewInventoryFragment extends Fragment {
                 ((MainActivity) getActivity()).setMenuItemChecked(newFragment);
             }
         });
-//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                viewPager.setCurrentItem(tab.getPosition());
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+
+        editProductSupplies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment newFragment = new EditProductSupplies();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
+                getActivity().setTitle(EditProductSupplies.TITLE);
+                fragmentTransaction.replace(R.id.frame, newFragment, EditProductSupplies.TAG);
+                fragmentTransaction.addToBackStack(newFragment.getTag());
+                fragmentTransaction.commit();
+                ((MainActivity) getActivity()).setMenuItemChecked(newFragment);
+            }
+        });
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(TITLE);
+
+
 
     }
 

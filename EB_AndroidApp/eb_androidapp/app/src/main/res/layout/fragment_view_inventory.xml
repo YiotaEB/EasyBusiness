@@ -7,37 +7,51 @@
     android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewInventoryFragment">
 
-
-    <TextView
-        android:id="@+id/inventory_list_text"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:text="@string/inventory" />
-
     <LinearLayout
         android:orientation="vertical"
-        android:layout_below="@id/inventory_list_text"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
+            android:padding="10dp"
+            android:drawableEnd="@drawable/ic_local_offer_black_36dp"
+            android:drawableTint="@color/white"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="0dp"
-
+            android:layout_marginBottom="10dp"
             android:id="@+id/viewProducts"
             android:text="@string/Products" />
 
         <Button
+            android:padding="10dp"
+            android:drawableEnd="@drawable/ic_create_black_36dp"
+            android:drawableTint="@color/white"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:id="@+id/edit_product_supplies"
+            android:text="@string/edit_product_supplies" />
+
+        <Button
+            android:padding="10dp"
+            android:drawableEnd="@drawable/ic_widgets_black_36dp"
+            android:drawableTint="@color/white"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="0dp"
             android:id="@+id/viewSupplies"
             android:text="@string/Supplies" />
+
 
     </LinearLayout>
 

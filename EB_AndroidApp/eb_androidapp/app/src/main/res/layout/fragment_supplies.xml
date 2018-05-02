@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ProductsFragment">
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewProductsFragment">
 
         <LinearLayout
             android:id="@+id/layout_top_supplies"

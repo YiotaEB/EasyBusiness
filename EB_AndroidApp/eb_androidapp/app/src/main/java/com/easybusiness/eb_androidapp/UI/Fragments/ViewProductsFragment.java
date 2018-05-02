@@ -39,7 +39,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class ProductsFragment extends Fragment {
+public class ViewProductsFragment extends Fragment {
 
     public static final String TAG = "ViewProductsFragment";
     public static final String TITLE = "View Products";
@@ -55,7 +55,7 @@ public class ProductsFragment extends Fragment {
 
     private ArrayList<Products> productsList;
 
-    public ProductsFragment() { }
+    public ViewProductsFragment() { }
 
 
     @Override
@@ -102,7 +102,7 @@ public class ProductsFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Products", mainActivity.PRODUCT_DATA.get(i).getID(), mainActivity.PRODUCT_DATA.get(i).getName(), new ProductsFragment());
+                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Products", mainActivity.PRODUCT_DATA.get(i).getID(), mainActivity.PRODUCT_DATA.get(i).getName(), new ViewProductsFragment());
                 dialog.show();
                 v.invalidate();
                 final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
