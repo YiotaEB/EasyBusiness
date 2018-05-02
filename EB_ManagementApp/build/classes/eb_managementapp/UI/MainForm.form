@@ -193,7 +193,7 @@
                               <Component id="latestPurchases" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="129" max="32767" attributes="0"/>
+                      <EmptySpace pref="468" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -527,7 +527,7 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="productsScrollPanel" min="-2" pref="515" max="-2" attributes="0"/>
-                                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                                  <EmptySpace pref="363" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -557,6 +557,9 @@
                               <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshProductsTableActionPerformed"/>
+                          </Events>
                         </Component>
                         <Container class="javax.swing.JScrollPane" name="productsScrollPanel">
                           <AuxValues>
@@ -625,7 +628,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="suppliesDetailsPanel" pref="555" max="32767" attributes="0"/>
+                                  <Component id="suppliesDetailsPanel" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -698,6 +701,9 @@
                                   <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshSuppliesTableActionPerformed"/>
+                              </Events>
                             </Component>
                             <Container class="javax.swing.JScrollPane" name="suppliesScrollPanel">
                               <AuxValues>
@@ -750,6 +756,13 @@
                       </Group>
                       <EmptySpace pref="161" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="532" max="-2" attributes="0"/>
+                          <Component id="refreshSuplTableBtn2" min="-2" pref="29" max="-2" attributes="0"/>
+                          <EmptySpace pref="533" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -759,7 +772,14 @@
                       <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="72" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="352" max="-2" attributes="0"/>
+                          <Component id="refreshSuplTableBtn2" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="352" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1004,9 +1024,16 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="productionScrollPanel" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="productionScrollPanel" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="refreshProductionButton" min="-2" pref="29" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
@@ -1021,8 +1048,10 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                          <Component id="productionScrollPanel" pref="240" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          <Component id="refreshProductionButton" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="productionScrollPanel" pref="640" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
@@ -1065,8 +1094,28 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchProductionDateActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JButton" name="refreshProductionButton">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshProductionButtonActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="refreshSuplTableBtn2">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshSuplTableBtn2ActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="sales">
@@ -1139,7 +1188,7 @@
                                   <Component id="jScrollPane1" alignment="1" min="-2" pref="196" max="-2" attributes="0"/>
                                   <Component id="jPanel7" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="191" max="32767" attributes="0"/>
+                              <EmptySpace pref="530" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1158,8 +1207,10 @@
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace pref="611" max="32767" attributes="0"/>
+                                  <EmptySpace pref="564" max="32767" attributes="0"/>
                                   <Component id="searchSale" min="-2" pref="104" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="refreshSalesButton" min="-2" pref="29" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
@@ -1174,13 +1225,16 @@
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="searchSale" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="refreshSalesButton" pref="26" max="32767" attributes="0"/>
+                                      <Component id="searchSale" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="236" max="32767" attributes="0"/>
                               </Group>
                               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace pref="32" max="32767" attributes="0"/>
-                                      <Component id="saleScrollPanel" min="-2" pref="219" max="-2" attributes="0"/>
+                                      <EmptySpace pref="37" max="32767" attributes="0"/>
+                                      <Component id="saleScrollPanel" min="-2" pref="214" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -1215,6 +1269,16 @@
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchSaleActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="refreshSalesButton">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
+                            </Property>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshSalesButtonActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>
@@ -1460,7 +1524,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="393" max="32767" attributes="0"/>
+                              <EmptySpace pref="732" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1566,7 +1630,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="393" max="32767" attributes="0"/>
+                              <EmptySpace pref="732" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1669,6 +1733,8 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="noCustomerLb" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="numOfCustomersLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -1691,7 +1757,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="noCustomerLb" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="noCustomerLb" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="numOfCustomersLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="customersGraphsPanel" max="32767" attributes="0"/>
@@ -1707,7 +1776,7 @@
                               <Component id="customersGraphsPanel2" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="132" max="32767" attributes="0"/>
+                      <EmptySpace pref="470" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1715,7 +1784,7 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="noCustomerLb">
               <Properties>
-                <Property name="text" type="java.lang.String" value="No. Customers: ###"/>
+                <Property name="text" type="java.lang.String" value="No. Customers: "/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="customerDetailsPanel">
@@ -1812,6 +1881,9 @@
                       <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshCusDetailsBtnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="customerScrollPanel">
                   <AuxValues>
@@ -2053,6 +2125,9 @@
                           <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshCustProductsBtnActionPerformed"/>
+                      </Events>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="custProScrollPanel">
                       <AuxValues>
@@ -2127,6 +2202,11 @@
                 </DimensionLayout>
               </Layout>
             </Container>
+            <Component class="javax.swing.JLabel" name="numOfCustomersLabel">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="numOfCustomersLabel" noResource="true"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="employees">
@@ -2149,6 +2229,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Component id="noEmployeesLb" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="numOfEmployeesLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -2157,9 +2239,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="noEmployeesLb" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="noEmployeesLb" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="numOfEmployeesLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="employeeListPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="employeeListPanel" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -2168,7 +2253,7 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="noEmployeesLb">
               <Properties>
-                <Property name="text" type="java.lang.String" value="No. Employees: ###"/>
+                <Property name="text" type="java.lang.String" value="No. Employees: "/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="employeeListPanel">
@@ -2197,7 +2282,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="searchTxt" min="-2" pref="104" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="refreshBtn" min="-2" pref="29" max="-2" attributes="0"/>
+                                  <Component id="refreshEmployeesBtn" min="-2" pref="29" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                                   <Component id="importEmplBtn" min="-2" pref="29" max="-2" attributes="0"/>
                               </Group>
@@ -2209,16 +2294,17 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="printBtn" max="32767" attributes="0"/>
                               <Component id="exportFilesBtn" alignment="0" max="32767" attributes="0"/>
-                              <Component id="refreshBtn" max="32767" attributes="0"/>
+                              <Component id="refreshEmployeesBtn" max="32767" attributes="0"/>
                               <Component id="searchTxt" alignment="0" max="32767" attributes="0"/>
                               <Component id="importEmplBtn" alignment="1" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="employeeScrollPanel" min="-2" pref="243" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="employeeScrollPanel" min="-2" pref="637" max="-2" attributes="0"/>
+                          <EmptySpace pref="292" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2273,12 +2359,15 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="refreshBtn">
+                <Component class="javax.swing.JButton" name="refreshEmployeesBtn">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshEmployeesBtnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="importEmplBtn">
                   <Properties>
@@ -2292,6 +2381,11 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JLabel" name="numOfEmployeesLabel">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="numOfEmployeesLabel" noResource="true"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="suppliers">
@@ -2349,7 +2443,7 @@
                               <Component id="suppliesGraphPanel" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="132" max="32767" attributes="0"/>
+                      <EmptySpace pref="470" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2454,6 +2548,9 @@
                       <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshSuplTableBtnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="supplierScrollPanel">
                   <AuxValues>
@@ -2578,6 +2675,9 @@
                           <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshSuppliesTableBtnActionPerformed"/>
+                      </Events>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="suppliesTabPane">
                       <AuxValues>
@@ -2688,6 +2788,9 @@
                           <Image iconType="3" name="/eb_managementapp/UI/Images/Refresh_icon.svg.png"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshPurchasesTableBtnActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="importPurchaseBtn">
                       <Properties>
