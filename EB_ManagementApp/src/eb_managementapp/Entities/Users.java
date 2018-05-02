@@ -33,7 +33,7 @@ public class Users implements Serializable {
     private int UserLevelID;
     private String Firstname;
     private String Lastname;
-    private int DateHired;
+    private long DateHired;
     private String City;
     private String Address;
     private String Telephone;
@@ -47,7 +47,7 @@ public class Users implements Serializable {
             int UserLevelID,
             String Firstname,
             String Lastname,
-            int DateHired,
+            long DateHired,
             String City,
             String Address,
             String Telephone,
@@ -112,7 +112,7 @@ public class Users implements Serializable {
     /**
      * @return int
      */
-    public int getDateHired() {
+    public long getDateHired() {
         return this.DateHired;
     }
 
@@ -183,7 +183,7 @@ public class Users implements Serializable {
     /**
      * @param value bigint(13)
      */
-    public void setDateHired(int value) {
+    public void setDateHired(long value) {
         this.DateHired = value;
     }
 

@@ -117,7 +117,6 @@ public final class MainForm extends javax.swing.JFrame {
 //
 //        });
 //    }
-
     public MainForm() {
         initComponents();
 
@@ -232,11 +231,12 @@ public final class MainForm extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
-    private void homeTab(){
-        
-        /******************************************************************************************/
-        //DAILY PRODUCTION
+    private void homeTab() {
 
+        /**
+         * ***************************************************************************************
+         */
+        //DAILY PRODUCTION
         //Create a new model for the table:
         DefaultTableModel productsTableModel = new DefaultTableModel();
 
@@ -268,8 +268,10 @@ public final class MainForm extends javax.swing.JFrame {
             productsTableModel.addRow(currentRow);
         }
         dailyProductionTable.setModel(productsTableModel);
-        /*****************************************************************************************/
-        
+        /**
+         * **************************************************************************************
+         */
+
         //Create a new model for the table:
         DefaultTableModel salesTableModel = new DefaultTableModel();
 
@@ -317,9 +319,11 @@ public final class MainForm extends javax.swing.JFrame {
             salesTableModel.addRow(currentRow);
         }
         dailySalesTable.setModel(salesTableModel);
-        
-        /***************************************************************************************/
-         //SUPPLIER PURCHASES RECORDS TABLE
+
+        /**
+         * ************************************************************************************
+         */
+        //SUPPLIER PURCHASES RECORDS TABLE
         //Create a new model for the table:
         DefaultTableModel supplyPurchasesTableModel = new DefaultTableModel();
 
@@ -364,11 +368,9 @@ public final class MainForm extends javax.swing.JFrame {
             supplyPurchasesTableModel.addRow(currentRow);
         }
         dailyPurchasesTable.setModel(supplyPurchasesTableModel);
-        
-        
-        
+
     }
-    
+
     private void addSales() {
 
         //Update the sales:
@@ -560,8 +562,10 @@ public final class MainForm extends javax.swing.JFrame {
         customerDetailsTable.setModel(customersTableModel);
         refreshCusDetailsBtn.setEnabled(true);
         numOfCustomersLabel.setText(String.valueOf(customersList.size()));
-        /*****************************************************************************************************/
-        
+        /**
+         * **************************************************************************************************
+         */
+
         //CUSTOMER PRODUCTS TABLE
         refreshCustProductsBtn.setEnabled(false);
         //Create a new model for the table:
@@ -575,14 +579,14 @@ public final class MainForm extends javax.swing.JFrame {
         //Add each item in the list as a row in the table:
         for (int i = 0; i < customerProductsList.size(); i++) {
 
-          //Put supplier Name in the Table
+            //Put supplier Name in the Table
             String customerName = "";
             for (int j = 0; j < customersList.size(); j++) {
                 if (customersList.get(j).getID() == customerProductsList.get(i).getCustomerID()) {
                     customerName = customersList.get(j).getName();
                 }
             }
-            
+
             //Put supplier Name in the Table
             String product = "";
             for (int j = 0; j < productsList.size(); j++) {
@@ -602,7 +606,7 @@ public final class MainForm extends javax.swing.JFrame {
         refreshCustProductsBtn.setEnabled(true);
     }
 
-    private void employeesTab() {
+    public void employeesTab() {
         refreshEmployeesBtn.setEnabled(false);
 
         //Create a new model for the table:
@@ -724,7 +728,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
 
             Object[] currentRow = {
-                i+1,
+                i + 1,
                 customerName,
                 productName
             };
@@ -824,14 +828,14 @@ public final class MainForm extends javax.swing.JFrame {
         //Add each item in the list as a row in the table:
         for (int i = 0; i < supplierSuppliesList.size(); i++) {
 
-          //Put supplier Name in the Table
+            //Put supplier Name in the Table
             String supplierName = "";
             for (int j = 0; j < suppliersList.size(); j++) {
                 if (suppliersList.get(j).getID() == supplierSuppliesList.get(i).getSupplierID()) {
                     supplierName = suppliersList.get(j).getName();
                 }
             }
-            
+
             //Put supplier Name in the Table
             String supplyName = "";
             for (int j = 0; j < suppliesList.size(); j++) {
@@ -850,7 +854,6 @@ public final class MainForm extends javax.swing.JFrame {
         suppliesTable.setModel(supplyTableModel);
         refreshSuppliesTableBtn.setEnabled(true);
 
-        
         //SUPPLIER PURCHASES RECORDS TABLE
         refreshPurchasesTableBtn.setEnabled(false);
         //Create a new model for the table:
@@ -1562,45 +1565,25 @@ public final class MainForm extends javax.swing.JFrame {
         }
 
     }
-    
-    public void deleteEmployee(){
-        employeesList = new ArrayList<>();
 
-        //Get customers from api
-        String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Delete", "SessionID=aa");
+    public void deleteEmployee(int id) {
+        if (id <= 0) {
+            return;
+        }
+
+        String deleteUserJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Delete", "SessionID=aa&UserID=" + id);
         try {
-            System.out.println("Get Users HTTP -> " + employeesJSON);
-            JSONObject jsonObject = new JSONObject(employeesJSON);
+            System.out.println("Delete User HTTP -> " + deleteUserJSON);
+            JSONObject jsonObject = new JSONObject(deleteUserJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
             if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                JSONArray dataArray = jsonObject.getJSONArray("Data");
-                for (int i = 0; i < dataArray.length(); i++) {
-                    JSONObject currentItem = dataArray.getJSONObject(i);
-
-                    int userID = currentItem.getInt("UserID");
-                    String username = currentItem.getString("Username");
-                    String firstname = currentItem.getString("Firstname");
-                    String lastname = currentItem.getString("Lastname");
-                    String password = currentItem.getString("Password");
-
-                    long dateHiredLong = currentItem.getLong("DateHired");
-                    int dateHired = (int) dateHiredLong;
-
-                    int countryID = currentItem.getInt("CountryID");
-                    String city = currentItem.getString("City");
-                    String telephone = currentItem.getString("Telephone");
-                    String address = currentItem.getString("Address");
-                    int userLevelID = currentItem.getInt("UserLevelID");
-
-                    Users employee = new Users(userID, username, password, userLevelID, firstname, lastname, dateHired, city, address, telephone, countryID);
-                    employeesList.remove(employee);
-                }
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + employeesJSON);
+                System.out.println("Fail " + deleteUserJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -3012,7 +2995,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        deletRow.setText("deleteRow");
+        deletRow.setText("Delete employee");
         deletRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deletRowActionPerformed(evt);
@@ -3545,7 +3528,7 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void importEmplBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importEmplBtnActionPerformed
         setVisible(true);
-        addUsersForm = new AddUsersForm();
+        addUsersForm = new AddUsersForm(this);
     }//GEN-LAST:event_importEmplBtnActionPerformed
 
     private void importProductsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importProductsButtonActionPerformed
@@ -3656,13 +3639,15 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshPurchasesTableBtnActionPerformed
 
     private void deletRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletRowActionPerformed
-       
-        
-        employeesTableModel.removeRow(employeesTable.getSelectedRow());
-        deleteEmployee();
-        employeesTab();
-        
-        
+
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete the selected employee?", "Warning", JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            int selectedRow = employeesTable.getSelectedRow();
+            int selectedID = employeesList.get(selectedRow).getUserID();
+            deleteEmployee(selectedID);
+            getEmployees();
+            employeesTab();
+        }
     }//GEN-LAST:event_deletRowActionPerformed
 
     /**

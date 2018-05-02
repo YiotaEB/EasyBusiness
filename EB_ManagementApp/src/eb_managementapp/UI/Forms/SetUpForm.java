@@ -245,7 +245,7 @@ public class SetUpForm extends javax.swing.JFrame {
 
     private void createEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createEmployeesButtonActionPerformed
         this.setVisible(false);
-        addUsersForm = new AddUsersForm ();
+        addUsersForm = new AddUsersForm(this);
     }//GEN-LAST:event_createEmployeesButtonActionPerformed
 
     private void addProductsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductsButtonActionPerformed

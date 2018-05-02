@@ -6,16 +6,19 @@ import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
 import eb_managementapp.UI.Components.JTableUtilities;
+import eb_managementapp.UI.MainForm;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
@@ -29,8 +32,12 @@ public class AddUsersForm extends javax.swing.JFrame {
     private ArrayList<Countries> countriesList;
     private ArrayList<Userlevels> positionsList;
 
-    public AddUsersForm() {
+    private JFrame sender;
+    
+    public AddUsersForm(JFrame sender) {
         initComponents();
+        
+        this.sender = sender;
 
         getCountries();
         getPositions();
@@ -397,6 +404,10 @@ public class AddUsersForm extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.setVisible(false);
+        if (sender instanceof MainForm) {
+            MainForm form = (MainForm) sender;
+            form.getEmployees();
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void viewEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEmployeesButtonActionPerformed
@@ -405,6 +416,12 @@ public class AddUsersForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         this.setVisible(false);
+        if (sender instanceof MainForm) {
+            System.out.println("Attempted update?");
+            MainForm form = (MainForm) sender;
+            form.getEmployees();
+            form.employeesTab();
+        }
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void positionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionComboBoxActionPerformed
@@ -505,7 +522,6 @@ public class AddUsersForm extends javax.swing.JFrame {
                     String lastname = currentItem.getString("Lastname");
                     String password = currentItem.getString("Password");
                     dateHiredLong = currentItem.getLong("DateHired");
-                    int dateHired = (int) dateHiredLong;
 
                     int countryID = currentItem.getInt("CountryID");
                     String city = currentItem.getString("City");
@@ -513,7 +529,7 @@ public class AddUsersForm extends javax.swing.JFrame {
                     String address = currentItem.getString("Address");
                     int userLevelID = currentItem.getInt("UserLevelID");
 
-                    Users user = new Users(userID, username, password, userLevelID, firstname, lastname, dateHired, city, address, telephone, countryID);
+                    Users user = new Users(userID, username, password, userLevelID, firstname, lastname, dateHiredLong, city, address, telephone, countryID);
                     usersList.add(user);
                 }
             } else {
@@ -549,13 +565,16 @@ public class AddUsersForm extends javax.swing.JFrame {
                     break;
                 }
             }
+            
+            Timestamp timestamp = new Timestamp(usersList.get(i).getDateHired());
+            Date date = new Date(timestamp.getTime());
 
             Object[] currentRow = {
                 usersList.get(i).getUsername(),
                 usersList.get(i).getFirstname(),
                 usersList.get(i).getLastname(),
                 position,
-                Users.DATE_FORMAT.format(new Date(usersList.get(i).getDateHired())),
+                Users.DATE_FORMAT.format(date),
                 usersList.get(i).getTelephone(),};
             employeesTableModel.addRow(currentRow);
         }
@@ -675,7 +694,7 @@ public class AddUsersForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddUsersForm().setVisible(true);
+                new AddUsersForm(new JFrame()).setVisible(true);
             }
         });
     }
