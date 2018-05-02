@@ -1,4 +1,4 @@
-package com.easybusiness.eb_androidapp.UI.Fragments.TabFragments;
+package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
 import android.content.SharedPreferences;
@@ -22,12 +22,11 @@ import com.easybusiness.eb_androidapp.Entities.Supplies;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.SuppliesAdapter;
 import com.easybusiness.eb_androidapp.UI.Dialogs;
-import com.easybusiness.eb_androidapp.UI.Fragments.AddSupplyFragment;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import java.util.ArrayList;
 
-public class SuppliesTabFragment extends Fragment {
+public class SuppliesFragment extends Fragment {
 
     public static final String TAG = "ViewSuppliesFragment";
     public static final String TITLE = "View Supplies";
@@ -39,7 +38,7 @@ public class SuppliesTabFragment extends Fragment {
     private ImageButton addSupplyBtn;
     View v;
 
-    public SuppliesTabFragment() {
+    public SuppliesFragment() {
         // Required empty public constructor
     }
 
@@ -48,7 +47,7 @@ public class SuppliesTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_tab_supplies, container, false);
+        v = inflater.inflate(R.layout.fragment_supplies, container, false);
 
         supplyListView = v.findViewById(R.id.suppliesList);
         searchView = v.findViewById(R.id.supplies_searchview);
@@ -61,16 +60,16 @@ public class SuppliesTabFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
                 MainActivity mainActivity = (MainActivity) getActivity();
-                bundle.putString(ViewSupplyTabFragment.SUPPLY_NAME_KEY, mainActivity.SUPPLY_DATA.get(i).getName());
-                bundle.putString(ViewSupplyTabFragment.SUPPLY_PRICE, String.valueOf(mainActivity.SUPPLY_DATA.get(i).getPrice()));
-                bundle.putString(ViewSupplyTabFragment.SUPPLY_QUANTITY, String.valueOf(mainActivity.SUPPLY_DATA.get(i).getQuantity()));
-                bundle.putString(ViewSupplyTabFragment.SUPPLY_SUPPLIER,String.valueOf(mainActivity.SUPPLY_DATA.get(i).getSupplierID()));
+                bundle.putString(ViewSupplyFragment.SUPPLY_NAME_KEY, mainActivity.SUPPLY_DATA.get(i).getName());
+                bundle.putString(ViewSupplyFragment.SUPPLY_PRICE, String.valueOf(mainActivity.SUPPLY_DATA.get(i).getPrice()));
+                bundle.putString(ViewSupplyFragment.SUPPLY_QUANTITY, String.valueOf(mainActivity.SUPPLY_DATA.get(i).getQuantity()));
+                bundle.putString(ViewSupplyFragment.SUPPLY_SUPPLIER,String.valueOf(mainActivity.SUPPLY_DATA.get(i).getSupplierID()));
 
-                Fragment newFragment = new ViewSupplyTabFragment();
+                Fragment newFragment = new ViewSupplyFragment();
                 newFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-                fragmentTransaction.replace(R.id.frame, newFragment, ViewSupplyTabFragment.TAG);
+                fragmentTransaction.replace(R.id.frame, newFragment, ViewSupplyFragment.TAG);
                 fragmentTransaction.addToBackStack(newFragment.getTag());
                 fragmentTransaction.commit();
             }
@@ -81,7 +80,7 @@ public class SuppliesTabFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Supplies", mainActivity.SUPPLY_DATA.get(i).getID(), mainActivity.SUPPLY_DATA.get(i).getName(), new SuppliesTabFragment());
+                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Supplies", mainActivity.SUPPLY_DATA.get(i).getID(), mainActivity.SUPPLY_DATA.get(i).getName(), new SuppliesFragment());
                 dialog.show();
                 return true;
             }

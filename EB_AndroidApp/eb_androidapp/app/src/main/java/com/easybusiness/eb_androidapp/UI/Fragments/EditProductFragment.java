@@ -1,4 +1,4 @@
-package com.easybusiness.eb_androidapp.UI.Fragments.TabFragments;
+package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
 import android.app.AlertDialog;
@@ -16,15 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.Entities.ProductSizes;
 import com.easybusiness.eb_androidapp.Entities.ProductTypes;
-import com.easybusiness.eb_androidapp.Entities.Products;
-import com.easybusiness.eb_androidapp.Entities.Supplies;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
@@ -38,15 +34,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ViewProductTabFragment.PRODUCT_ID_KEY;
-import static com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ViewProductTabFragment.PRODUCT_NAME_KEY;
+import static com.easybusiness.eb_androidapp.UI.Fragments.ViewProductFragment.PRODUCT_ID_KEY;
+import static com.easybusiness.eb_androidapp.UI.Fragments.ViewProductFragment.PRODUCT_NAME_KEY;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EditProductTabFragment extends Fragment {
+public class EditProductFragment extends Fragment {
 
-    public static final String TAG = "EditProductTabFragment";
+    public static final String TAG = "EditProductFragment";
 
     private View v;
     private int productID;
@@ -70,7 +66,7 @@ public class EditProductTabFragment extends Fragment {
     private ProgressBar progressBar;
     private View layout;
 
-    public EditProductTabFragment() {
+    public EditProductFragment() {
         // Required empty public constructor
     }
 
@@ -79,7 +75,7 @@ public class EditProductTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_tab_edit_product, container, false);
+        v = inflater.inflate(R.layout.fragment_edit_product, container, false);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");

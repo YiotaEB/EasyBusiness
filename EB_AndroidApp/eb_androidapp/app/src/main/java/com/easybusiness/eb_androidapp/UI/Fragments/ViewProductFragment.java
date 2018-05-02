@@ -1,7 +1,6 @@
-package com.easybusiness.eb_androidapp.UI.Fragments.TabFragments;
+package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -13,22 +12,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
-import com.easybusiness.eb_androidapp.Entities.ProductSizes;
-import com.easybusiness.eb_androidapp.Entities.ProductTypes;
-import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
-import com.easybusiness.eb_androidapp.UI.Fragments.AddCustomersFragment;
-import com.easybusiness.eb_androidapp.UI.Fragments.SelectProductsFragment;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -36,15 +28,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewProductTabFragment extends Fragment {
+public class ViewProductFragment extends Fragment {
 
-    public static final String TAG = "ViewProductTabFragment";
+    public static final String TAG = "ViewProductFragment";
 
     public static final String PRODUCT_ID_KEY = "product-id";
     public static final String PRODUCT_NAME_KEY = "product-name";
@@ -82,7 +72,7 @@ public class ViewProductTabFragment extends Fragment {
     private Button editButton;
     private Button toPDFButton;
 
-    public ViewProductTabFragment() {
+    public ViewProductFragment() {
         // Required empty public constructor
     }
 
@@ -91,7 +81,7 @@ public class ViewProductTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_tab_view_product, container, false);
+        v = inflater.inflate(R.layout.fragment_view_product, container, false);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
@@ -113,11 +103,11 @@ public class ViewProductTabFragment extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(PRODUCT_ID_KEY, id);
-                Fragment newFragment = new EditProductTabFragment();
+                Fragment newFragment = new EditProductFragment();
                 newFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-                fragmentTransaction.replace(R.id.frame, newFragment, EditProductTabFragment.TAG);
+                fragmentTransaction.replace(R.id.frame, newFragment, EditProductFragment.TAG);
                 fragmentTransaction.addToBackStack(newFragment.getTag());
                 fragmentTransaction.commit();
             }

@@ -4,10 +4,9 @@ package com.easybusiness.eb_androidapp.UI.Adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ProductsTabFragment;
-import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.SuppliesTabFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ProductsFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.SuppliesFragment;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
@@ -22,10 +21,10 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                ProductsTabFragment productsTab = new ProductsTabFragment();
+                ProductsFragment productsTab = new ProductsFragment();
                 return productsTab;
             case 1:
-                SuppliesTabFragment suppliesTab = new SuppliesTabFragment();
+                SuppliesFragment suppliesTab = new SuppliesFragment();
                 return suppliesTab;
             default:
                 return null;

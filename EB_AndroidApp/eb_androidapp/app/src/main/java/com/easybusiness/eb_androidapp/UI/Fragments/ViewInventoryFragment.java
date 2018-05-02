@@ -1,14 +1,7 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,27 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 
-import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
-import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliesAsyncTask;
-import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.R;
-import com.easybusiness.eb_androidapp.UI.Adapters.ProductAdapter;
-import com.easybusiness.eb_androidapp.UI.Adapters.TabPagerAdapter;
-import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.ProductsTabFragment;
-import com.easybusiness.eb_androidapp.UI.Fragments.TabFragments.SuppliesTabFragment;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,11 +65,11 @@ public class ViewInventoryFragment extends Fragment {
         viewProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new ProductsTabFragment();
+                Fragment newFragment = new ProductsFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-                getActivity().setTitle(ProductsTabFragment.TITLE);
-                fragmentTransaction.replace(R.id.frame, newFragment, ProductsTabFragment.TAG);
+                getActivity().setTitle(ProductsFragment.TITLE);
+                fragmentTransaction.replace(R.id.frame, newFragment, ProductsFragment.TAG);
                 fragmentTransaction.addToBackStack(newFragment.getTag());
                 fragmentTransaction.commit();
                 ((MainActivity) getActivity()).setMenuItemChecked(newFragment);
@@ -105,11 +80,11 @@ public class ViewInventoryFragment extends Fragment {
         viewSupplies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new SuppliesTabFragment();
+                Fragment newFragment = new SuppliesFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-                getActivity().setTitle(SuppliesTabFragment.TITLE);
-                fragmentTransaction.replace(R.id.frame, newFragment, SuppliesTabFragment.TAG);
+                getActivity().setTitle(SuppliesFragment.TITLE);
+                fragmentTransaction.replace(R.id.frame, newFragment, SuppliesFragment.TAG);
                 fragmentTransaction.addToBackStack(newFragment.getTag());
                 fragmentTransaction.commit();
                 ((MainActivity) getActivity()).setMenuItemChecked(newFragment);

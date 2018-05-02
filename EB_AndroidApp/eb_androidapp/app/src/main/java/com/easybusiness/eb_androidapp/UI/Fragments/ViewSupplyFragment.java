@@ -1,4 +1,4 @@
-package com.easybusiness.eb_androidapp.UI.Fragments.TabFragments;
+package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import com.easybusiness.eb_androidapp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewSupplyTabFragment extends Fragment {
+public class ViewSupplyFragment extends Fragment {
 
-    public static final String TAG = "ViewSupplyTabFragment";
+    public static final String TAG = "ViewSupplyFragment";
 
     public static final String SUPPLY_NAME_KEY = "supply-name";
     public static final String SUPPLY_PRICE= "supply-price";
@@ -38,7 +38,7 @@ public class ViewSupplyTabFragment extends Fragment {
     private Button editButton;
     private Button toPDFButton;
 
-    public ViewSupplyTabFragment() {
+    public ViewSupplyFragment() {
         // Required empty public constructor
     }
 
@@ -47,7 +47,7 @@ public class ViewSupplyTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_tab_view_supply, container, false);
+        v = inflater.inflate(R.layout.fragment_view_supply, container, false);
 
         priceTextview = v.findViewById(R.id.viewSupply_price_textview);
         quantityTextview = v.findViewById(R.id.viewSupply_quantity_textview);
