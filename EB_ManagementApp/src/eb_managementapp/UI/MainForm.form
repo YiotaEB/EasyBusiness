@@ -549,9 +549,6 @@
                           </Events>
                         </Component>
                         <Component class="javax.swing.JTextField" name="searchProducts">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Search...."/>
-                          </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchProductsActionPerformed"/>
                           </Events>
@@ -706,9 +703,6 @@
                               </Events>
                             </Component>
                             <Component class="javax.swing.JTextField" name="searchSupplies">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="Search...."/>
-                              </Properties>
                               <Events>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchSuppliesActionPerformed"/>
                               </Events>
@@ -1001,7 +995,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="deleteProductionButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="searchProductionDate" min="-2" pref="104" max="-2" attributes="0"/>
+                          <Component id="searchProduction" min="-2" pref="104" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="refreshProductionButton" min="-2" pref="29" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
@@ -1015,7 +1009,7 @@
                               <Group type="102" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="searchProductionDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="searchProduction" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="deleteProductionButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -1050,12 +1044,9 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JTextField" name="searchProductionDate">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Search...."/>
-                  </Properties>
+                <Component class="javax.swing.JTextField" name="searchProduction">
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchProductionDateActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchProductionActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="refreshProductionButton">
@@ -1226,9 +1217,6 @@
                           </SubComponents>
                         </Container>
                         <Component class="javax.swing.JTextField" name="searchSale">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Search...."/>
-                          </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchSaleActionPerformed"/>
                           </Events>
@@ -1858,9 +1846,6 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="searchCustomerTxt">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Search...."/>
-                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchCustomerTxtActionPerformed"/>
                   </Events>
@@ -1998,9 +1983,6 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="searchCustProductsTxt">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Search...."/>
-                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchCustProductsTxtActionPerformed"/>
                       </Events>
@@ -2450,9 +2432,6 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="searchSupplierTxt">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Search...."/>
-                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchSupplierTxtActionPerformed"/>
                   </Events>
@@ -2568,9 +2547,6 @@
                   </Layout>
                   <SubComponents>
                     <Component class="javax.swing.JTextField" name="searchSuppliesTxt">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Search...."/>
-                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchSuppliesTxtActionPerformed"/>
                       </Events>
@@ -2709,9 +2685,6 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="searchPurchasesTxt">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Search...."/>
-                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchPurchasesTxtActionPerformed"/>
                       </Events>

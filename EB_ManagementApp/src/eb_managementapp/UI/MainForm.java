@@ -79,6 +79,15 @@ public final class MainForm extends javax.swing.JFrame {
     private ArrayList<Supplytransactions> supplyTransactionList;
     
     private TableRowSorter<DefaultTableModel> sorter;
+    private TableRowSorter<DefaultTableModel> supplierSorter;
+    private TableRowSorter<DefaultTableModel> supplyTransactionsSorter;
+    private TableRowSorter<DefaultTableModel> supplierSuppliesSorter;
+    private TableRowSorter<DefaultTableModel> customersSorter;
+    private TableRowSorter<DefaultTableModel> customerProductsSorter;
+    private TableRowSorter<DefaultTableModel> salesSorter;
+    private TableRowSorter<DefaultTableModel> productionSorter;
+    private TableRowSorter<DefaultTableModel> productsSorter;
+    private TableRowSorter<DefaultTableModel> suppliesSorter;
 
     private void employeesFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
@@ -89,10 +98,102 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
+    
+     private void suppliersFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchSupplierTxt.getText(), 1);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+     
+     private void supplierSuppliesFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchSuppliesTxt.getText(), 1);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+     
+     private void supplyTransactionFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchPurchasesTxt.getText(), 2);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+     
+     private void customersFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchCustomerTxt.getText(), 1);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+     
+     private void customerProductsFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchCustProductsTxt.getText(), 1);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+     
+     private void salesFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchSale.getText(), 2);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
 
+     private void productionFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchProduction.getText(), 2);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+     
+     private void productsFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchProducts.getText(), 1);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+     
+     private void suppliesFilter(TableRowSorter<DefaultTableModel> sorter) {
+        RowFilter<DefaultTableModel, Object> rf = null;
+        try {
+            rf = RowFilter.regexFilter(searchSupplies.getText(), 1);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
+ 
+     
     public MainForm() {
         initComponents();
-
+        
+        //Employeess Search
         searchTxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -111,6 +212,224 @@ public final class MainForm extends javax.swing.JFrame {
             
             public void apply() {
                 employeesTab();
+                
+            }
+            
+        });
+        
+        //Supplier Search
+        searchSupplierTxt.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                suppliersTab();
+                
+            }
+            
+        });
+        
+        //Supplier Supplies Search
+        searchSuppliesTxt.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                suppliersTab();
+                
+            }
+            
+        });
+        
+         //Supplier Supplies Search
+        searchPurchasesTxt.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                
+                suppliersTab();
+                
+            }
+            
+        });
+        
+         //Customer Search
+        searchCustomerTxt.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                customersTab();
+                
+            }
+            
+        });
+        
+         //Customer Products Search
+        searchCustProductsTxt.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                customersTab();
+                
+            }
+            
+        });
+        
+         //Sales Search
+        searchSale.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                salesTab();
+                
+            }
+            
+        });
+        
+         //Production Search
+        searchProduction.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                productionTab();
+                
+            }
+            
+        });
+        
+         //Products Search
+        searchProducts.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                productsTab();
+                
+            }
+            
+        });
+        
+         //Supplies Search
+        searchSupplies.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                suppliesTab();
+                
             }
             
         });
@@ -693,6 +1012,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             customersTableModel.addRow(currentRow);
         }
+         //FILTERING:
+        customersSorter = new TableRowSorter<DefaultTableModel>(customersTableModel);
+        customersFilter(customersSorter);
+        customerDetailsTable.setRowSorter(customersSorter);
+        
         customerDetailsTable.setModel(customersTableModel);
         refreshCusDetailsBtn.setEnabled(true);
         numOfCustomersLabel.setText(String.valueOf(customersList.size()));
@@ -736,6 +1060,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             customerProductsTableModel.addRow(currentRow);
         }
+         //FILTERING:
+        customerProductsSorter = new TableRowSorter<DefaultTableModel>(customerProductsTableModel);
+        customerProductsFilter(customerProductsSorter);
+        customerProductsTable.setRowSorter(customerProductsSorter);
+        
         customerProductsTable.setModel(customerProductsTableModel);
         refreshCustProductsBtn.setEnabled(true);
     }
@@ -956,6 +1285,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             supplierTableModel.addRow(currentRow);
         }
+        //FILTERING:
+        supplierSorter = new TableRowSorter<DefaultTableModel>(supplierTableModel);
+        suppliersFilter(supplierSorter);
+        supplierDetailsTable.setRowSorter(supplierSorter);
+        
         supplierDetailsTable.setModel(supplierTableModel);
         refreshSuplTableBtn.setEnabled(true);
         noSuppliesLb.setText(String.valueOf(suppliersList.size()));
@@ -996,6 +1330,12 @@ public final class MainForm extends javax.swing.JFrame {
             };
             supplyTableModel.addRow(currentRow);
         }
+        //FILTERING:
+        supplierSuppliesSorter = new TableRowSorter<DefaultTableModel>(supplyTableModel);
+        supplierSuppliesFilter(supplierSuppliesSorter);
+        suppliesTable.setRowSorter(supplierSuppliesSorter);
+        
+        
         suppliesTable.setModel(supplyTableModel);
         refreshSuppliesTableBtn.setEnabled(true);
 
@@ -1050,6 +1390,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             supplyPurchasesTableModel.addRow(currentRow);
         }
+        //FILTERING:
+        supplyTransactionsSorter = new TableRowSorter<DefaultTableModel>(supplyPurchasesTableModel);
+        supplyTransactionFilter(supplyTransactionsSorter);
+        purchHistoryTable.setRowSorter(supplyTransactionsSorter);
+        
         purchHistoryTable.setModel(supplyPurchasesTableModel);
         refreshPurchasesTableBtn.setEnabled(true);
 
@@ -1208,6 +1553,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             suppliesTableModel.addRow(currentRow);
         }
+         //FILTERING:
+        suppliesSorter = new TableRowSorter<DefaultTableModel>(suppliesTableModel);
+        suppliesFilter(suppliesSorter);
+        suppliesDetailsTable.setRowSorter(suppliesSorter);
+        
         suppliesDetailsTable.setModel(suppliesTableModel);
         refreshSuppliesTable.setEnabled(true);
 
@@ -1390,7 +1740,7 @@ public final class MainForm extends javax.swing.JFrame {
             //Put productType Name in the Table
             String productTypeName = "";
             for (int j = 0; j < productTypesList.size(); j++) {
-                if (productTypesList.get(j).getID() == productsList.get(i).getID()) {
+                if (productTypesList.get(j).getID() == productsList.get(i).getProductSizeID()) {
                     productTypeName = productTypesList.get(j).getName();
                 }
             }
@@ -1406,6 +1756,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             productsTableModel.addRow(currentRow);
         }
+        //FILTERING:
+        productsSorter = new TableRowSorter<DefaultTableModel>(productsTableModel);
+        productsFilter(productsSorter);
+        productsDetailsTable.setRowSorter(productsSorter);
+        
         productsDetailsTable.setModel(productsTableModel);
         refreshProductsTable.setEnabled(true);
     }
@@ -1450,13 +1805,13 @@ public final class MainForm extends javax.swing.JFrame {
         refreshProductionButton.setEnabled(false);
 
         //Create a new model for the table:
-        DefaultTableModel productsTableModel = new DefaultTableModel();
+        DefaultTableModel productionTableModel = new DefaultTableModel();
 
         //Add the table columns:
-        productsTableModel.addColumn("No");
-        productsTableModel.addColumn("Production Date");
-        productsTableModel.addColumn("Product Name");
-        productsTableModel.addColumn("Quantity Produced");
+        productionTableModel.addColumn("No");
+        productionTableModel.addColumn("Production Date");
+        productionTableModel.addColumn("Product Name");
+        productionTableModel.addColumn("Quantity Produced");
 
         //Add each item in the list as a row in the table:
         for (int i = 0; i < productionList.size(); i++) {
@@ -1480,9 +1835,14 @@ public final class MainForm extends javax.swing.JFrame {
                 productionList.get(i).getQuantityProduced()
 
             };
-            productsTableModel.addRow(currentRow);
+            productionTableModel.addRow(currentRow);
         }
-        productionDetailsTable.setModel(productsTableModel);
+        //FILTERING:
+        productionSorter = new TableRowSorter<DefaultTableModel>(productionTableModel);
+        productionFilter(productionSorter);
+        productionDetailsTable.setRowSorter(productionSorter);
+        
+        productionDetailsTable.setModel(productionTableModel);
         refreshProductionButton.setEnabled(true);
     }
 
@@ -1612,6 +1972,11 @@ public final class MainForm extends javax.swing.JFrame {
 
             salesTableModel.addRow(currentRow);
         }
+        //FILTERING:
+        salesSorter = new TableRowSorter<DefaultTableModel>(salesTableModel);
+        salesFilter(salesSorter);
+        salesDetailsTable.setRowSorter(salesSorter);
+        
         salesDetailsTable.setModel(salesTableModel);
         refreshSalesButton.setEnabled(true);
     }
@@ -1982,7 +2347,7 @@ public final class MainForm extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         productionScrollPanel = new javax.swing.JScrollPane();
         productionDetailsTable = new javax.swing.JTable();
-        searchProductionDate = new javax.swing.JTextField();
+        searchProduction = new javax.swing.JTextField();
         refreshProductionButton = new javax.swing.JButton();
         deleteProductionButton = new javax.swing.JButton();
         sales = new javax.swing.JPanel();
@@ -2296,7 +2661,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        searchProducts.setText("Search....");
         searchProducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchProductsActionPerformed(evt);
@@ -2388,7 +2752,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        searchSupplies.setText("Search....");
         searchSupplies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchSuppliesActionPerformed(evt);
@@ -2610,10 +2973,9 @@ public final class MainForm extends javax.swing.JFrame {
         ));
         productionScrollPanel.setViewportView(productionDetailsTable);
 
-        searchProductionDate.setText("Search....");
-        searchProductionDate.addActionListener(new java.awt.event.ActionListener() {
+        searchProduction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchProductionDateActionPerformed(evt);
+                searchProductionActionPerformed(evt);
             }
         });
 
@@ -2643,7 +3005,7 @@ public final class MainForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(deleteProductionButton)
                 .addGap(18, 18, 18)
-                .addComponent(searchProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchProduction, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(refreshProductionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
@@ -2655,7 +3017,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchProduction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(deleteProductionButton)))
                     .addComponent(refreshProductionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
                 .addGap(13, 13, 13)
@@ -2701,7 +3063,6 @@ public final class MainForm extends javax.swing.JFrame {
         ));
         saleScrollPanel.setViewportView(salesDetailsTable);
 
-        searchSale.setText("Search....");
         searchSale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchSaleActionPerformed(evt);
@@ -3073,7 +3434,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        searchCustomerTxt.setText("Search....");
         searchCustomerTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchCustomerTxtActionPerformed(evt);
@@ -3157,7 +3517,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         printCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
 
-        searchCustProductsTxt.setText("Search....");
         searchCustProductsTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchCustProductsTxtActionPerformed(evt);
@@ -3454,7 +3813,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        searchSupplierTxt.setText("Search....");
         searchSupplierTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchSupplierTxtActionPerformed(evt);
@@ -3528,7 +3886,6 @@ public final class MainForm extends javax.swing.JFrame {
         suppliesTab.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         suppliesTab.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        searchSuppliesTxt.setText("Search....");
         searchSuppliesTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchSuppliesTxtActionPerformed(evt);
@@ -3620,7 +3977,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         printPurchasesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
 
-        searchPurchasesTxt.setText("Search....");
         searchPurchasesTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchPurchasesTxtActionPerformed(evt);
@@ -3933,9 +4289,9 @@ public final class MainForm extends javax.swing.JFrame {
         addProduction();
     }//GEN-LAST:event_addBottlesQuantityButtonActionPerformed
 
-    private void searchProductionDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProductionDateActionPerformed
+    private void searchProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProductionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_searchProductionDateActionPerformed
+    }//GEN-LAST:event_searchProductionActionPerformed
 
     private void addSaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSaleButtonActionPerformed
         addSales();
@@ -4294,7 +4650,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField searceMonthlySale;
     private javax.swing.JTextField searchCustProductsTxt;
     private javax.swing.JTextField searchCustomerTxt;
-    private javax.swing.JTextField searchProductionDate;
+    private javax.swing.JTextField searchProduction;
     private javax.swing.JTextField searchProducts;
     private javax.swing.JTextField searchPurchasesTxt;
     private javax.swing.JTextField searchSale;
