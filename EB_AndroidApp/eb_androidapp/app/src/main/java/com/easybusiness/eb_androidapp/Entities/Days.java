@@ -31,9 +31,9 @@ public class Days implements Serializable {
 
 	//-------------------- Supporting Finals --------------------
 
-	final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
-	final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
+    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
 	//-------------------- Attributes --------------------

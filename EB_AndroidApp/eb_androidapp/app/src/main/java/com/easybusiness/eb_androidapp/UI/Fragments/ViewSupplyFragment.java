@@ -157,7 +157,7 @@ public class ViewSupplyFragment extends Fragment {
 
             String query;
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("ID", supplier)
+                    .appendQueryParameter("ID", String.valueOf(supplyID))
                     .appendQueryParameter("SessionID", sessionID);
             query = builder.build().getEncodedQuery();
 
