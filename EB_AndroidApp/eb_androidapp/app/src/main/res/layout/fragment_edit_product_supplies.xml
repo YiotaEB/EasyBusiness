@@ -8,57 +8,53 @@
 
     <ProgressBar
         android:id="@+id/edit_productSupplies_progress"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <ScrollView
+    <RelativeLayout
         android:id="@+id/edit_productSupplies_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true">
 
-        <RelativeLayout
-
+        <TextView
+            android:id="@+id/edit_productSupplies_productTextview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="@string/select_product" />
 
-            <TextView
-                android:id="@+id/edit_productSupplies_productTextview"
-                android:text="@string/select_product"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/selectProduct_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/edit_productSupplies_productTextview"
+            android:layout_marginTop="10dp"/>
 
-            <Spinner
-                android:layout_marginTop="10dp"
-                android:id="@+id/selectProduct_Spinner"
-                android:layout_below="@+id/edit_productSupplies_productTextview"
-                android:layout_width="match_parent"
-                android:layout_height="35dp">
-            </Spinner>
+        <ListView
+            android:id="@+id/productSupplies_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:clickable="false"
+            android:layout_marginBottom="115dp">
 
-            <ListView
-                android:layout_marginTop="10dp"
-                android:id="@+id/productSupplies_listview"
-                android:layout_below="@id/selectProduct_Spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        </ListView>
 
-            </ListView>
+    </RelativeLayout>
 
-            <Button
-                android:layout_marginTop="20dp"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-                android:id="@+id/add_productSupplyButton"
-                android:layout_below="@id/productSupplies_listview"
-                android:text="Add Product Supply"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </RelativeLayout>
-
-    </ScrollView>
+    <Button
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:id="@+id/add_productSupplyButton"
+        android:layout_alignParentBottom="true"
+        android:text="Add Product Supply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

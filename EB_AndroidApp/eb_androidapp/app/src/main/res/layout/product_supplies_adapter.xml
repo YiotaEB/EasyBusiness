@@ -17,20 +17,18 @@
         android:text="Quantity"
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/product_supply_quantity"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 
-    <EditText
-        android:background="@color/yellow"
+    <TextView
         android:padding="2dp"
         android:text="test"
+        android:textColor="@color/black"
         android:id="@+id/product_supply_quantity"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:layout_width="50dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 </RelativeLayout>

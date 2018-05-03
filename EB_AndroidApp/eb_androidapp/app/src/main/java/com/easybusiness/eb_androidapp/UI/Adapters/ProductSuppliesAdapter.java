@@ -38,7 +38,7 @@ public class ProductSuppliesAdapter extends ArrayAdapter<ProductSupplies> {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         final View view = layoutInflater.inflate(R.layout.product_supplies_adapter, parent, false);
         final TextView supplyNameTextView = view.findViewById(R.id.product_supply_name);
-        final EditText supplyQuantityEditText = view.findViewById(R.id.product_supply_quantity);
+        final TextView supplyQuantityEditText = view.findViewById(R.id.product_supply_quantity);
 
         //Set TextViews
         String supplyName = "";
