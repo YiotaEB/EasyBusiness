@@ -7,22 +7,12 @@ package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
 import eb_managementapp.UI.Forms.SetUpForm;
-import eb_managementapp.DB.ConnectionCreator;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
-import eb_managementapp.Entities.Users;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
-import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,6 +29,9 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
     public CompanyDetailsForm() {
         initComponents();
+        
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
+        setIconImage(imageIcon.getImage());
         
         getCountries();
 
@@ -72,6 +65,7 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Easy Business - Set Up Compnay ");
+        setResizable(false);
 
         companyDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Company Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
 

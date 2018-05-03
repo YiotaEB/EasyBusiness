@@ -8,6 +8,7 @@ import eb_managementapp.UI.MainForm;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -24,6 +25,9 @@ public class LoginForm extends javax.swing.JFrame {
     //Constructor
     public LoginForm() {
         initComponents();
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
+        setIconImage(imageIcon.getImage());
+        
         this.setTitle(TITLE);
         setVisible(true);
     }

@@ -6,17 +6,9 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
-import eb_managementapp.DB.ConnectionCreator;
-import static eb_managementapp.EB_ManagementApp.addProductsForm;
-import eb_managementapp.Entities.Productsizes;
 import eb_managementapp.Entities.Producttypes;
-import eb_managementapp.Entities.Unittypes;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -32,6 +24,9 @@ public class AddProductTypeForm extends javax.swing.JFrame {
     
     public AddProductTypeForm(JFrame sender) {
         initComponents();
+        
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
+        setIconImage(imageIcon.getImage());
 
         this.sender = sender;
 
@@ -110,12 +105,12 @@ public class AddProductTypeForm extends javax.swing.JFrame {
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addGap(53, 53, 53)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(addButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(58, 58, 58))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -6,31 +6,17 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
-import eb_managementapp.DB.ConnectionCreator;
-import static eb_managementapp.EB_ManagementApp.addProductTypeForm;
-import static eb_managementapp.EB_ManagementApp.addProductsForm;
-import static eb_managementapp.EB_ManagementApp.addSizeForm;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Customers;
 import eb_managementapp.Entities.Products;
 import eb_managementapp.UI.Components.CheckboxGroup;
-import eb_managementapp.UI.Components.JTableUtilities;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.control.CheckBox;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
-import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,6 +31,9 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
     public AddCustomerProductsForm() {
         initComponents();
 
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
+        setIconImage(imageIcon.getImage());
+        
         getCustomers();
         getProducts();
 
@@ -70,9 +59,10 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
         customerLabel = new javax.swing.JLabel();
         customerComboBox = new javax.swing.JComboBox<>();
         sizeLabel = new javax.swing.JLabel();
-        buttonPanel = new javax.swing.JPanel();
         addProductButton = new javax.swing.JButton();
+        buttonPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -91,6 +81,13 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
         sizeLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         sizeLabel.setText("Select Products:");
 
+        addProductButton.setText("Add Product");
+        addProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProductButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout productPanelLayout = new javax.swing.GroupLayout(productPanel);
         productPanel.setLayout(productPanelLayout);
         productPanelLayout.setHorizontalGroup(
@@ -103,6 +100,10 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(customerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
+            .addGroup(productPanelLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(addProductButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         productPanelLayout.setVerticalGroup(
             productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,20 +114,22 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
                     .addComponent(customerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sizeLabel)
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
+                .addComponent(addProductButton)
+                .addContainerGap())
         );
-
-        addProductButton.setText("Add Product");
-        addProductButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProductButtonActionPerformed(evt);
-            }
-        });
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.setText("Next >");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
             }
         });
 
@@ -137,8 +140,8 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addProductButton)
+                .addGap(18, 18, 18)
+                .addComponent(nextButton)
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -147,7 +150,7 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
-                    .addComponent(addProductButton))
+                    .addComponent(nextButton))
                 .addGap(11, 11, 11))
         );
 
@@ -166,8 +169,8 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(productPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(productPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -191,6 +194,11 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
         //TODO Panayiota: Action when selecting an item in TypeComboBox.
 
     }//GEN-LAST:event_customerComboBoxActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        setVisible(false);
+        setUpForm = new SetUpForm();
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     private void addCustomerProducts() {
 
@@ -289,7 +297,7 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
         }
 
         productCheckBoxGroup = new CheckboxGroup(productListString);//String
-        productCheckBoxGroup.setBounds(new Rectangle(new Point(80, 100), productCheckBoxGroup.getPreferredSize()));
+        productCheckBoxGroup.setBounds(new Rectangle(new Point(125, 70), productCheckBoxGroup.getPreferredSize()));
         productPanel.add(productCheckBoxGroup);
     }
 
@@ -379,6 +387,7 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JComboBox<String> customerComboBox;
     private javax.swing.JLabel customerLabel;
+    private javax.swing.JButton nextButton;
     private javax.swing.JPanel productPanel;
     private javax.swing.JLabel sizeLabel;
     // End of variables declaration//GEN-END:variables

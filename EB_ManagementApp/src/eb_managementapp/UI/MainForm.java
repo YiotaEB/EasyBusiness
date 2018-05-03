@@ -31,16 +31,13 @@ import eb_managementapp.UI.Forms.AddSuppliersForm;
 import eb_managementapp.UI.Forms.AddSuppliesForm;
 import eb_managementapp.UI.Forms.CustomersForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
-import java.awt.BasicStroke;
 import org.json.*;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Paint;
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -50,18 +47,17 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public final class MainForm extends javax.swing.JFrame {
 
+    final String TITLE = "Easy Business ";
+    
     private ArrayList<Products> productsList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Customers> customersList;
@@ -192,6 +188,9 @@ public final class MainForm extends javax.swing.JFrame {
      
     public MainForm() {
         initComponents();
+        
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
+        setIconImage(imageIcon.getImage());
         
         //Employeess Search
         searchTxt.getDocument().addDocumentListener(new DocumentListener() {
@@ -601,6 +600,8 @@ public final class MainForm extends javax.swing.JFrame {
         getSuppliers();
         getSupplierSupplies();
         homeTab();
+        
+        setTitle(TITLE);
     }
 
     private void homeTab() {

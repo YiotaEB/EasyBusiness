@@ -6,17 +6,10 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
-import eb_managementapp.DB.ConnectionCreator;
-import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Unittypes;
 import eb_managementapp.Entities.Productsizes;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -37,6 +30,9 @@ public class AddSizeForm extends javax.swing.JFrame {
     this.senderForm = senderForm;
         getUnitTypes();
 
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
+        setIconImage(imageIcon.getImage());
+        
         setTitle(TITLE);
         setVisible(true);
     }
