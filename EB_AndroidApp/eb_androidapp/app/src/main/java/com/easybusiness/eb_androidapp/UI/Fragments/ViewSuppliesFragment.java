@@ -26,7 +26,7 @@ import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import java.util.ArrayList;
 
-public class SuppliesFragment extends Fragment {
+public class ViewSuppliesFragment extends Fragment {
 
     public static final String TAG = "ViewSuppliesFragment";
     public static final String TITLE = "View Supplies";
@@ -38,7 +38,7 @@ public class SuppliesFragment extends Fragment {
     private ImageButton addSupplyBtn;
     View v;
 
-    public SuppliesFragment() {
+    public ViewSuppliesFragment() {
         // Required empty public constructor
     }
 
@@ -47,7 +47,7 @@ public class SuppliesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_supplies, container, false);
+        v = inflater.inflate(R.layout.fragment_view_supplies, container, false);
 
         supplyListView = v.findViewById(R.id.suppliesList);
         searchView = v.findViewById(R.id.supplies_searchview);
@@ -61,6 +61,7 @@ public class SuppliesFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 MainActivity mainActivity = (MainActivity) getActivity();
                 bundle.putString(ViewSupplyFragment.SUPPLY_NAME_KEY, mainActivity.SUPPLY_DATA.get(i).getName());
+                bundle.putInt(ViewSupplyFragment.SUPPLY_ID_KEY, mainActivity.SUPPLY_DATA.get(i).getID());
                 bundle.putString(ViewSupplyFragment.SUPPLY_PRICE, String.valueOf(mainActivity.SUPPLY_DATA.get(i).getPrice()));
                 bundle.putString(ViewSupplyFragment.SUPPLY_QUANTITY, String.valueOf(mainActivity.SUPPLY_DATA.get(i).getQuantity()));
                 bundle.putString(ViewSupplyFragment.SUPPLY_SUPPLIER,String.valueOf(mainActivity.SUPPLY_DATA.get(i).getSupplierID()));
@@ -80,7 +81,7 @@ public class SuppliesFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Supplies", mainActivity.SUPPLY_DATA.get(i).getID(), mainActivity.SUPPLY_DATA.get(i).getName(), new SuppliesFragment());
+                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Supplies", mainActivity.SUPPLY_DATA.get(i).getID(), mainActivity.SUPPLY_DATA.get(i).getName(), new ViewSuppliesFragment());
                 dialog.show();
                 return true;
             }

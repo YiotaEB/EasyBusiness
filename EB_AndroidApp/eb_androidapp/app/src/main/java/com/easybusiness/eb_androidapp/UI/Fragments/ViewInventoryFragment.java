@@ -64,11 +64,11 @@ public class ViewInventoryFragment extends Fragment {
         viewSupplies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new SuppliesFragment();
+                Fragment newFragment = new ViewSuppliesFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-                getActivity().setTitle(SuppliesFragment.TITLE);
-                fragmentTransaction.replace(R.id.frame, newFragment, SuppliesFragment.TAG);
+                getActivity().setTitle(ViewSuppliesFragment.TITLE);
+                fragmentTransaction.replace(R.id.frame, newFragment, ViewSuppliesFragment.TAG);
                 fragmentTransaction.addToBackStack(newFragment.getTag());
                 fragmentTransaction.commit();
                 ((MainActivity) getActivity()).setMenuItemChecked(newFragment);

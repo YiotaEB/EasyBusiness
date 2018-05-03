@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewProductsFragment;
-import com.easybusiness.eb_androidapp.UI.Fragments.SuppliesFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewSuppliesFragment;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
@@ -24,7 +24,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
                 ViewProductsFragment productsTab = new ViewProductsFragment();
                 return productsTab;
             case 1:
-                SuppliesFragment suppliesTab = new SuppliesFragment();
+                ViewSuppliesFragment suppliesTab = new ViewSuppliesFragment();
                 return suppliesTab;
             default:
                 return null;
