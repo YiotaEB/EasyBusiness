@@ -128,5 +128,7 @@
     <string name="select_product_supplies">Select product supplies</string>
     <string name="edit_product_supplies">Edit Product Supplies</string>
     <string name="select_product">Select Product</string>
+    <string name="supply_name">Supply Name</string>
+    <string name="select_supplier">Select supplier</string>
 
 </resources>

@@ -62,7 +62,7 @@ public class ViewProductsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_products, container, false);
+        v = inflater.inflate(R.layout.fragment_view_products, container, false);
 
         progressBar = v.findViewById(R.id.view_products_progress);
         layout = v.findViewById(R.id.view_products_layout);
