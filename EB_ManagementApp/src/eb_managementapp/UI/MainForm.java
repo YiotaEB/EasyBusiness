@@ -31,9 +31,13 @@ import eb_managementapp.UI.Forms.AddSuppliersForm;
 import eb_managementapp.UI.Forms.AddSuppliesForm;
 import eb_managementapp.UI.Forms.CustomersForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
+import java.awt.BasicStroke;
 import org.json.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Paint;
+import java.io.File;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -42,11 +46,14 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.RowFilter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -85,6 +92,28 @@ public final class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
 
+        searchTxt.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                apply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                apply();
+            }
+            
+            public void apply() {
+                employeesTab();
+            }
+            
+        });
+        
         tabPanel.addChangeListener(
                 new ChangeListener() {
             @Override
@@ -174,41 +203,84 @@ public final class MainForm extends javax.swing.JFrame {
 
         customerScrollPanel.setViewportView(customerDetailsTable);
 
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//
+//        dataset.setValue(
+//                80, "Marks", "Value 1");
+//        dataset.setValue(
+//                70, "Marks", "Value 2");
+//        dataset.setValue(
+//                75, "Marks", "Value 3");
+//        JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
+//        CategoryPlot p = chart.getCategoryPlot();
+//
+//        p.setRangeGridlinePaint(Color.black);
+//
+//        //Panel (same window):
+//        ChartPanel chartPanel = new ChartPanel(chart);
+//
+//        statistics.setLayout(
+//                new java.awt.BorderLayout());
+//        statistics.add(chartPanel, BorderLayout.CENTER);
+//
+//        statistics.validate();
+//
+//        //Panel (same window):
+//        ChartPanel chartPanel2 = new ChartPanel(chart);
+//
+//        customersGraphsPanel2.setLayout(
+//                new java.awt.BorderLayout());
+//        customersGraphsPanel2.add(chartPanel2, BorderLayout.CENTER);
+//
+//        customersGraphsPanel2.validate();
 
-        dataset.setValue(
-                80, "Marks", "Value 1");
-        dataset.setValue(
-                70, "Marks", "Value 2");
-        dataset.setValue(
-                75, "Marks", "Value 3");
-        JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
-        CategoryPlot p = chart.getCategoryPlot();
 
-        p.setRangeGridlinePaint(Color.black);
 
-        //Panel (same window):
-        ChartPanel chartPanel = new ChartPanel(chart);
+      DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
+      line_chart_dataset.addValue( 40 , "sales" , "April" );
+      line_chart_dataset.addValue( 50 , "sales" , "May" );
+      line_chart_dataset.addValue( 100 , "sales" , "June" );
+      line_chart_dataset.addValue( 200 , "sales" , "July" );
+      line_chart_dataset.addValue( 150 , "sales" , "August" ); 
+      line_chart_dataset.addValue( 120 , "sales" , "September" );
 
-        statistics.setLayout(
-                new java.awt.BorderLayout());
-        statistics.add(chartPanel, BorderLayout.CENTER);
+      JFreeChart lineChartObject = ChartFactory.createLineChart(
+         "Monthly Sales","Days",
+         "No. Sales",
+         line_chart_dataset,PlotOrientation.VERTICAL,
+         true,true,false);
+     
+      lineChartObject.getPlot().setBackgroundPaint(Color.decode("#DDDDDD"));
+      
+      
+      ChartPanel chartPanel = new ChartPanel( lineChartObject );
+      chartPanel.setPreferredSize( new java.awt.Dimension( 500 , 300 ) );
+      
+      statistics.setLayout(new java.awt.BorderLayout());
+      statistics.add(chartPanel );
+      
+      statistics.validate();
 
-        statistics.validate();
+//      int width = 640;    /* Width of the image */
+//      int height = 480;   /* Height of the image */ 
+//      File lineChart = new File( "LineChart.jpeg" ); 
+//      ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
 
-        //Panel (same window):
-        ChartPanel chartPanel2 = new ChartPanel(chart);
-
-        customersGraphsPanel2.setLayout(
-                new java.awt.BorderLayout());
-        customersGraphsPanel2.add(chartPanel2, BorderLayout.CENTER);
-
-        customersGraphsPanel2.validate();
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        this.setVisible(
-                true);
+        this.setVisible(true);
+        getProductSize();
+        getProducts();
+        getProduction();
+        getCustomers();
+        getSaleProducts();
+        getSales();
+        getSupplies();
+        getSupplyTransactions();
+        getSuppliers();
+        getSupplierSupplies();
+        homeTab();
     }
 
     private void homeTab() {
@@ -237,10 +309,12 @@ public final class MainForm extends javax.swing.JFrame {
                     break;
                 }
             }
-
+            Timestamp timestamp = new Timestamp(productionList.get(i).getProductionDate());
+            Date date = new Date(timestamp.getTime());
+            
             Object[] currentRow = {
                 i + 1,
-                productionList.get(i).getProductionDate(),
+                Users.DATE_FORMAT.format(date),
                 productName,
                 productionList.get(i).getQuantityProduced()
 
@@ -288,10 +362,13 @@ public final class MainForm extends javax.swing.JFrame {
                     customerName = customersList.get(j).getName();
                 }
             }
+            
+            Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
+            Date date = new Date(timestamp.getTime());
 
             Object[] currentRow = {
                 i + 1,
-                salesList.get(i).getSaleTimeDate(),
+                Users.DATE_FORMAT.format(date),
                 customerName,
                 String.valueOf(total)
             };
@@ -339,9 +416,12 @@ public final class MainForm extends javax.swing.JFrame {
                     supplierName = suppliersList.get(j).getName();
                 }
             }
+            Timestamp timestamp = new Timestamp(supplyTransactionList.get(i).getDateMade());
+            Date date = new Date(timestamp.getTime());
+                
             Object[] currentRow = {
                 i + 1,
-                supplyTransactionList.get(i).getDateMade(),
+                Users.DATE_FORMAT.format(date),
                 supplierName,
                 "€" + String.format("%.2g%n", total)
             };
@@ -361,14 +441,21 @@ public final class MainForm extends javax.swing.JFrame {
         int customerID = -1;
         int salesProductID = -1;
         int tax = 0;
-        long salesTimeDate = System.currentTimeMillis();
+        Date dateSale = dateOfSale.getDate();
+        long date = 0;
+        if (dateSale != null) {
+            date = dateSale.getTime();
+        }
+        else {
+             showMessageDialog(null, "Please provide a valid date", "Invalid Date", JOptionPane.PLAIN_MESSAGE);
+        }
 
         customerID = customersList.get(customerComboBox.getSelectedIndex()).getID();
         salesProductID = 0; //Update later
 
         //Add the new sale:
         String addSaleJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "Create",
-                "SessionID=aa&ID=1&CustomerID=" + customerID + "&SaleProductID=" + salesProductID + "&Tax=" + tax + "&SaleTimeDate=" + salesTimeDate
+                "SessionID=aa&ID=1&CustomerID=" + customerID + "&SaleProductID=" + salesProductID + "&Tax=" + tax + "&SaleTimeDate=" + date
         );
 
         System.out.println("Add Sale HTTP -> " + addSaleJSON);
@@ -399,7 +486,7 @@ public final class MainForm extends javax.swing.JFrame {
 
         //Update the latest Sales' SaleProductsID:
         String updateSalesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "Update",
-                "SessionID=aa&ID=" + saleID + "&SaleProductID=" + salesProductID + "&Tax=" + tax + "&SaleTimeDate=" + salesTimeDate
+                "SessionID=aa&ID=" + saleID + "&SaleProductID=" + salesProductID + "&Tax=" + tax + "&SaleTimeDate=" + date
         );
 
         System.out.println("Update Sales HTTP -> " + updateSalesJSON);
@@ -407,7 +494,6 @@ public final class MainForm extends javax.swing.JFrame {
     }
 
     private void addProduction() {
-//        getProducts();
 
         //Get field values:
         String productionQuantity = productionQuantitySpinner.getValue().toString();
@@ -421,13 +507,23 @@ public final class MainForm extends javax.swing.JFrame {
         int productTypeID = productsList.get(currentID).getProductTypeID();
         int productSuppliesID = productsList.get(currentID).getProductSuppliesID();
 
-//        Date productionDate = dateOfProduction.getDate();
-//        int dateProduction = productionDate.getDate(); //TODO Show correct day.
+        Date productionDate = dateOfProduction.getDate();
+        long date = 0;
+        
+        if (productionDate != null) {
+            date = productionDate.getTime();
+            System.out.println(date);
+        }
+        
+        else {
+             showMessageDialog(null, "Please provide a valid date", "Invalid Date", JOptionPane.PLAIN_MESSAGE);
+        }
+
         quantityInStock += Integer.parseInt(bottleQuantitySpinner.getValue().toString());
 
         //Make the call:
         String addProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productionbatches", "Create",
-                "SessionID=aa&ID=1&QuantityProduced=" + productionQuantity + "&ProductID=" + productID + "&ProductionDate=0"
+                "SessionID=aa&ID=1&QuantityProduced=" + productionQuantity + "&ProductID=" + productID + "&ProductionDate=" + date
         );
         System.out.println("Add Production HTTP -> " + addProductionJSON);
 
@@ -454,7 +550,6 @@ public final class MainForm extends javax.swing.JFrame {
                 bottleSizeComboBox.setSelectedIndex(0);
                 bottleQuantitySpinner.setValue(0);
                 productionQuantitySpinner.setValue(0);
-                //todo date
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -625,13 +720,16 @@ public final class MainForm extends javax.swing.JFrame {
                     break;
                 }
             }
+            Timestamp timestamp = new Timestamp(employeesList.get(i).getDateHired());
+            Date date = new Date(timestamp.getTime());
+            
             Object[] currentRow = {
                 i + 1,
                 employeesList.get(i).getUsername(),
                 employeesList.get(i).getFirstname(),
                 employeesList.get(i).getLastname(),
                 position,
-                Users.DATE_FORMAT.format(new Date(employeesList.get(i).getDateHired())),
+                Users.DATE_FORMAT.format(date),
                 employeesList.get(i).getTelephone(),
                 employeesList.get(i).getAddress(),
                 employeesList.get(i).getCity(),
@@ -879,9 +977,15 @@ public final class MainForm extends javax.swing.JFrame {
                     supplierName = suppliersList.get(j).getName();
                 }
             }
+            
+            Timestamp timestamp = new Timestamp(supplyTransactionList.get(i).getDateMade());
+            System.out.println("Timestamp: " +timestamp);
+            Date date = new Date(timestamp.getTime());
+            System.out.println("Date: " +date);
+            
             Object[] currentRow = {
                 i + 1,
-                supplyTransactionList.get(i).getDateMade(),
+                Users.DATE_FORMAT.format(date),
                 supplierName,
                 "€" + String.format("%.2g%n", total)
             };
@@ -895,6 +999,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void getEmployees() {
         employeesList = new ArrayList<>();
 
+         long dateHiredLong = 0;
+        
         //Get customers from api
         String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
         try {
@@ -914,9 +1020,7 @@ public final class MainForm extends javax.swing.JFrame {
                     String firstname = currentItem.getString("Firstname");
                     String lastname = currentItem.getString("Lastname");
                     String password = currentItem.getString("Password");
-
-                    long dateHiredLong = currentItem.getLong("DateHired");
-                    int dateHired = (int) dateHiredLong;
+                    dateHiredLong = currentItem.getLong("DateHired");
 
                     int countryID = currentItem.getInt("CountryID");
                     String city = currentItem.getString("City");
@@ -924,7 +1028,7 @@ public final class MainForm extends javax.swing.JFrame {
                     String address = currentItem.getString("Address");
                     int userLevelID = currentItem.getInt("UserLevelID");
 
-                    Users employees = new Users(userID, username, password, userLevelID, firstname, lastname, dateHired, city, address, telephone, countryID);
+                    Users employees = new Users(userID, username, password, userLevelID, firstname, lastname, dateHiredLong, city, address, telephone, countryID);
                     employeesList.add(employees);
                 }
             } else {
@@ -976,6 +1080,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void getSupplyTransactions() {
         supplyTransactionList = new ArrayList<>();
 
+        long dateMade =0;
+        
         //Get customers from api
         String supplyTransactionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplytransactions", "GetMultiple", "SessionID=aa");
         try {
@@ -993,7 +1099,7 @@ public final class MainForm extends javax.swing.JFrame {
                     int id = currentItem.getInt("ID");
                     int supplierSuppliesID = currentItem.getInt("SupplierSuppliesID");
                     int quantity = currentItem.getInt("Quantity");
-                    int dateMade = currentItem.getInt("DateMade");
+                   dateMade = currentItem.getLong("DateMade");
 
                     Supplytransactions c = new Supplytransactions(id, supplierSuppliesID, dateMade, quantity);
                     supplyTransactionList.add(c);
@@ -1248,6 +1354,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void getProduction() {
         productionList = new ArrayList<>();
 
+         long productionDate = 0;
+        
         //Get customers from api
         String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productionbatches", "GetMultiple", "SessionID=aa");
         try {
@@ -1264,7 +1372,8 @@ public final class MainForm extends javax.swing.JFrame {
                     int id = currentItem.getInt("ID");
                     int quantityProduced = currentItem.getInt("QuantityProduced");
                     int productID = currentItem.getInt("ProductID");
-                    int productionDate = currentItem.getInt("ProductionDate");
+                    productionDate = currentItem.getLong("ProductionDate");
+                    System.out.println(productionDate);
 
                     Productionbatches c = new Productionbatches(id, quantityProduced, productID, productionDate);
                     productionList.add(c);
@@ -1302,9 +1411,12 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             }
 
+            Timestamp timestamp = new Timestamp(productionList.get(i).getProductionDate());
+            Date date = new Date(timestamp.getTime());
+            
             Object[] currentRow = {
                 i + 1,
-                productionList.get(i).getProductionDate(),
+                Users.DATE_FORMAT.format(date),
                 productName,
                 productionList.get(i).getQuantityProduced()
 
@@ -1353,6 +1465,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void getSales() {
         salesList = new ArrayList<>();
 
+        long saleTimeDate = 0;
+        
         //Get customers from api
         String salesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "GetMultiple", "SessionID=aa");
         try {
@@ -1371,7 +1485,7 @@ public final class MainForm extends javax.swing.JFrame {
                     int customerID = currentItem.getInt("CustomerID");
                     int saleProductsID = currentItem.getInt("SaleProductsID");
                     int tax = currentItem.getInt("Tax");
-                    int saleTimeDate = currentItem.getInt("SaleTimeDate");
+                    saleTimeDate = currentItem.getLong("SaleTimeDate");
 
                     Sales c = new Sales(id, customerID, saleProductsID, tax, saleTimeDate);
                     salesList.add(c);
@@ -1426,10 +1540,13 @@ public final class MainForm extends javax.swing.JFrame {
                     customerName = customersList.get(j).getName();
                 }
             }
+            
+            Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
+            Date date = new Date(timestamp.getTime());
 
             Object[] currentRow = {
                 i + 1,
-                salesList.get(i).getSaleTimeDate(),
+                Users.DATE_FORMAT.format(date),
                 customerName,
                 String.valueOf(total)
             };
@@ -1662,6 +1779,8 @@ public final class MainForm extends javax.swing.JFrame {
         addSaleButton = new javax.swing.JButton();
         productNameTextField9 = new javax.swing.JLabel();
         productsComboBox = new javax.swing.JComboBox<>();
+        dateOfSale = new org.jdesktop.swingx.JXDatePicker();
+        salesDateLabel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         weeklySalesScrollPanel = new javax.swing.JScrollPane();
@@ -1909,7 +2028,7 @@ public final class MainForm extends javax.swing.JFrame {
             homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(statistics, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(latestPurchases, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2471,17 +2590,21 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        dateOfSale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateOfSaleActionPerformed(evt);
+            }
+        });
+
+        salesDateLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        salesDateLabel.setText("Sale Date:");
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(productNameTextField6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(customerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -2496,13 +2619,26 @@ public final class MainForm extends javax.swing.JFrame {
                                     .addComponent(productSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(addSaleButton))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(productNameTextField6)
+                            .addComponent(salesDateLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dateOfSale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(customerComboBox, 0, 151, Short.MAX_VALUE))))
                 .addGap(23, 23, 23))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(salesDateLabel)
+                    .addComponent(dateOfSale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(productNameTextField6)
                     .addComponent(customerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -2520,7 +2656,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(addSaleButton)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -3001,13 +3137,13 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(employeeListPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(deletRow)
-                        .addGap(26, 26, 26)
+                        .addGap(18, 18, 18)
                         .addComponent(exportFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(printBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
                         .addComponent(refreshEmployeesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)
                         .addComponent(importEmplBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -3018,16 +3154,19 @@ public final class MainForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeListPanelLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(employeeListPanelLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(printBtn)
+                            .addComponent(exportFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(printBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(exportFilesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(refreshEmployeesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchTxt)
-                        .addComponent(importEmplBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(deletRow))
+                        .addComponent(importEmplBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deletRow, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(18, 18, 18)
                 .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(292, Short.MAX_VALUE))
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
         numOfEmployeesLabel.setName("numOfEmployeesLabel"); // NOI18N
@@ -3613,7 +3752,8 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshSuplTableBtn2ActionPerformed
 
     private void refreshProductionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshProductionButtonActionPerformed
-        // TODO add your handling code here:
+        getProduction();
+        productionTab();
     }//GEN-LAST:event_refreshProductionButtonActionPerformed
 
     private void refreshSalesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSalesButtonActionPerformed
@@ -3637,6 +3777,10 @@ public final class MainForm extends javax.swing.JFrame {
             employeesTab();
         }
     }//GEN-LAST:event_deletRowActionPerformed
+
+    private void dateOfSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateOfSaleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateOfSaleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3703,6 +3847,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTable dailyPurchasesTable;
     private javax.swing.JTable dailySalesTable;
     private org.jdesktop.swingx.JXDatePicker dateOfProduction;
+    private org.jdesktop.swingx.JXDatePicker dateOfSale;
     private javax.swing.JButton deletRow;
     private javax.swing.JPanel dialyProduction;
     private javax.swing.JPanel employeeListPanel;
@@ -3813,6 +3958,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton refreshSuppliesTableBtn;
     private javax.swing.JScrollPane saleScrollPanel;
     private javax.swing.JPanel sales;
+    private javax.swing.JLabel salesDateLabel;
     private javax.swing.JTable salesDetailsTable;
     private javax.swing.JScrollPane salesScrollPanel;
     private javax.swing.JTextField searceMonthlySale;

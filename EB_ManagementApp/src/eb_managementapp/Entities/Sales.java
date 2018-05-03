@@ -42,7 +42,7 @@ public class Sales implements Serializable {
     private int CustomerID;
     private int SaleProductsID;
     private double Tax;
-    private int SaleTimeDate;
+    private long SaleTimeDate;
 
 	//-------------------- Constructor --------------------
 
@@ -51,7 +51,7 @@ public class Sales implements Serializable {
 		int CustomerID, 
 		int SaleProductsID, 
 		double Tax, 
-		int SaleTimeDate
+		long SaleTimeDate
 		) {
         this.ID = ID;
 		this.CustomerID = CustomerID;
@@ -85,7 +85,7 @@ public class Sales implements Serializable {
 	/**
      * @return int
      */
-     public int getSaleTimeDate() { return this.SaleTimeDate; }
+     public long getSaleTimeDate() { return this.SaleTimeDate; }
 
 
 	//-------------------- Setter Methods --------------------
@@ -108,7 +108,7 @@ public class Sales implements Serializable {
 	/**
      * @param value int(13)
      */
-     public void setSaleTimeDate(int value) { this.SaleTimeDate = value; }
+     public void setSaleTimeDate(long value) { this.SaleTimeDate = value; }
 
 
 	//-------------------- JSON Generation Methods --------------------

@@ -1,23 +1,13 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
-import eb_managementapp.DB.ConnectionCreator;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
-import eb_managementapp.UI.Components.JTableUtilities;
 import eb_managementapp.UI.MainForm;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -444,9 +434,9 @@ public class AddUsersForm extends javax.swing.JFrame {
         int countryID = countriesList.get(countryComboBox.getSelectedIndex()).getID();
         int positionID = positionsList.get(positionComboBox.getSelectedIndex()).getUserLevelID();
         Date dateHiredDate = dateOfHirePicker.getDate();
-        int dateHired = 0;
+        long dateHired = 0;
         if (dateHiredDate != null) {
-            dateHiredDate.getDate();
+            dateHired = dateHiredDate.getTime();
         }
         else {
              showMessageDialog(null, "Please provide a valid date", "Invalid Date", JOptionPane.PLAIN_MESSAGE);

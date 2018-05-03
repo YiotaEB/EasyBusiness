@@ -40,7 +40,7 @@ public class Supplytransactions implements Serializable {
 
     private int ID;
     private int SupplierSuppliesID;
-    private int DateMade;
+    private long DateMade;
     private int Quantity;
 
 	//-------------------- Constructor --------------------
@@ -48,7 +48,7 @@ public class Supplytransactions implements Serializable {
     public Supplytransactions(
 		int ID, 
 		int SupplierSuppliesID, 
-		int DateMade, 
+		long DateMade, 
 		int Quantity
 		) {
         this.ID = ID;
@@ -72,7 +72,7 @@ public class Supplytransactions implements Serializable {
 	/**
      * @return int
      */
-     public int getDateMade() { return this.DateMade; }
+     public long getDateMade() { return this.DateMade; }
 
 	/**
      * @return int
@@ -90,7 +90,7 @@ public class Supplytransactions implements Serializable {
 	/**
      * @param value int(13)
      */
-     public void setDateMade(int value) { this.DateMade = value; }
+     public void setDateMade(long value) { this.DateMade = value; }
 
 	/**
      * @param value int(11)

@@ -41,7 +41,7 @@ public class Productionbatches implements Serializable {
     private int ID;
     private int QuantityProduced;
     private int ProductID;
-    private int ProductionDate;
+    private long ProductionDate;
 
 	//-------------------- Constructor --------------------
 
@@ -49,7 +49,7 @@ public class Productionbatches implements Serializable {
 		int ID, 
 		int QuantityProduced, 
 		int ProductID, 
-		int ProductionDate
+		long ProductionDate
 		) {
         this.ID = ID;
 		this.QuantityProduced = QuantityProduced;
@@ -77,7 +77,7 @@ public class Productionbatches implements Serializable {
 	/**
      * @return int
      */
-     public int getProductionDate() { return this.ProductionDate; }
+     public long getProductionDate() { return this.ProductionDate; }
 
 
 	//-------------------- Setter Methods --------------------
@@ -95,7 +95,7 @@ public class Productionbatches implements Serializable {
 	/**
      * @param value int(13)
      */
-     public void setProductionDate(int value) { this.ProductionDate = value; }
+     public void setProductionDate(long value) { this.ProductionDate = value; }
 
 
 	//-------------------- JSON Generation Methods --------------------
