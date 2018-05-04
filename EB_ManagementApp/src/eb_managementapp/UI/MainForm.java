@@ -36,6 +36,7 @@ import eb_managementapp.UI.Forms.CustomersForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
 import org.json.*;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -57,6 +58,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -66,7 +69,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 public final class MainForm extends javax.swing.JFrame {
 
     final String TITLE = "Easy Business ";
-    
+
     private ArrayList<Products> productsList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Customers> customersList;
@@ -82,7 +85,7 @@ public final class MainForm extends javax.swing.JFrame {
     private ArrayList<Sales> salesList;
     private ArrayList<Userlevels> positionsList;
     private ArrayList<Supplytransactions> supplyTransactionList;
-    
+
     private TableRowSorter<DefaultTableModel> sorter;
     private TableRowSorter<DefaultTableModel> supplierSorter;
     private TableRowSorter<DefaultTableModel> supplyTransactionsSorter;
@@ -103,8 +106,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-    
-     private void suppliersFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void suppliersFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchSupplierTxt.getText(), 1);
@@ -113,8 +116,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-     
-     private void supplierSuppliesFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void supplierSuppliesFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchSuppliesTxt.getText(), 1);
@@ -123,8 +126,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-     
-     private void supplyTransactionFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void supplyTransactionFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchPurchasesTxt.getText(), 2);
@@ -133,8 +136,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-     
-     private void customersFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void customersFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchCustomerTxt.getText(), 1);
@@ -143,8 +146,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-     
-     private void customerProductsFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void customerProductsFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchCustProductsTxt.getText(), 1);
@@ -153,8 +156,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-     
-     private void salesFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void salesFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchSale.getText(), 2);
@@ -164,7 +167,7 @@ public final class MainForm extends javax.swing.JFrame {
         sorter.setRowFilter(rf);
     }
 
-     private void productionFilter(TableRowSorter<DefaultTableModel> sorter) {
+    private void productionFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchProduction.getText(), 2);
@@ -173,8 +176,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-     
-     private void productsFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void productsFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchProducts.getText(), 1);
@@ -183,8 +186,8 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
-     
-     private void suppliesFilter(TableRowSorter<DefaultTableModel> sorter) {
+
+    private void suppliesFilter(TableRowSorter<DefaultTableModel> sorter) {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
             rf = RowFilter.regexFilter(searchSupplies.getText(), 1);
@@ -193,14 +196,13 @@ public final class MainForm extends javax.swing.JFrame {
         }
         sorter.setRowFilter(rf);
     }
- 
-     
+
     public MainForm() {
         initComponents();
-        
+
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
-        
+
         //Employeess Search
         searchTxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -217,14 +219,14 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 employeesTab();
-                
+
             }
-            
+
         });
-        
+
         //Supplier Search
         searchSupplierTxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -241,14 +243,14 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 suppliersTab();
-                
+
             }
-            
+
         });
-        
+
         //Supplier Supplies Search
         searchSuppliesTxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -265,15 +267,15 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 suppliersTab();
-                
+
             }
-            
+
         });
-        
-         //Supplier Supplies Search
+
+        //Supplier Supplies Search
         searchPurchasesTxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -289,16 +291,16 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
-                
+
                 suppliersTab();
-                
+
             }
-            
+
         });
-        
-         //Customer Search
+
+        //Customer Search
         searchCustomerTxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -314,15 +316,15 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 customersTab();
-                
+
             }
-            
+
         });
-        
-         //Customer Products Search
+
+        //Customer Products Search
         searchCustProductsTxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -338,15 +340,15 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 customersTab();
-                
+
             }
-            
+
         });
-        
-         //Sales Search
+
+        //Sales Search
         searchSale.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -362,15 +364,15 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 salesTab();
-                
+
             }
-            
+
         });
-        
-         //Production Search
+
+        //Production Search
         searchProduction.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -386,15 +388,15 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 productionTab();
-                
+
             }
-            
+
         });
-        
-         //Products Search
+
+        //Products Search
         searchProducts.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -410,15 +412,15 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 productsTab();
-                
+
             }
-            
+
         });
-        
-         //Supplies Search
+
+        //Supplies Search
         searchSupplies.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -434,14 +436,14 @@ public final class MainForm extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 apply();
             }
-            
+
             public void apply() {
                 suppliesTab();
-                
+
             }
-            
+
         });
-        
+
         tabPanel.addChangeListener(
                 new ChangeListener() {
             @Override
@@ -561,40 +563,34 @@ public final class MainForm extends javax.swing.JFrame {
 //        customersGraphsPanel2.add(chartPanel2, BorderLayout.CENTER);
 //
 //        customersGraphsPanel2.validate();
+        DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
+        line_chart_dataset.addValue(40, "sales", "April");
+        line_chart_dataset.addValue(50, "sales", "May");
+        line_chart_dataset.addValue(100, "sales", "June");
+        line_chart_dataset.addValue(200, "sales", "July");
+        line_chart_dataset.addValue(150, "sales", "August");
+        line_chart_dataset.addValue(120, "sales", "September");
 
+        JFreeChart lineChartObject = ChartFactory.createLineChart(
+                "Monthly Sales", "Days",
+                "No. Sales",
+                line_chart_dataset, PlotOrientation.VERTICAL,
+                true, true, false);
 
+        lineChartObject.getPlot().setBackgroundPaint(Color.decode("#DDDDDD"));
 
-      DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
-      line_chart_dataset.addValue( 40 , "sales" , "April" );
-      line_chart_dataset.addValue( 50 , "sales" , "May" );
-      line_chart_dataset.addValue( 100 , "sales" , "June" );
-      line_chart_dataset.addValue( 200 , "sales" , "July" );
-      line_chart_dataset.addValue( 150 , "sales" , "August" ); 
-      line_chart_dataset.addValue( 120 , "sales" , "September" );
+        ChartPanel chartPanel = new ChartPanel(lineChartObject);
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
 
-      JFreeChart lineChartObject = ChartFactory.createLineChart(
-         "Monthly Sales","Days",
-         "No. Sales",
-         line_chart_dataset,PlotOrientation.VERTICAL,
-         true,true,false);
-     
-      lineChartObject.getPlot().setBackgroundPaint(Color.decode("#DDDDDD"));
-      
-      
-      ChartPanel chartPanel = new ChartPanel( lineChartObject );
-      chartPanel.setPreferredSize( new java.awt.Dimension( 500 , 300 ) );
-      
-      statistics.setLayout(new java.awt.BorderLayout());
-      statistics.add(chartPanel );
-      
-      statistics.validate();
+        statistics.setLayout(new java.awt.BorderLayout());
+        statistics.add(chartPanel);
+
+        statistics.validate();
 
 //      int width = 640;    /* Width of the image */
 //      int height = 480;   /* Height of the image */ 
 //      File lineChart = new File( "LineChart.jpeg" ); 
 //      ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
-
-
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.setVisible(true);
@@ -609,7 +605,7 @@ public final class MainForm extends javax.swing.JFrame {
         getSuppliers();
         getSupplierSupplies();
         homeTab();
-        
+
         setTitle(TITLE);
     }
 
@@ -627,26 +623,29 @@ public final class MainForm extends javax.swing.JFrame {
         productsTableModel.addColumn("Production Date");
         productsTableModel.addColumn("Product Name");
         productsTableModel.addColumn("Quantity Produced");
-        
+
         ArrayList<Productionbatches> lastProduction = new ArrayList();
         lastProduction.addAll(productionList);
-        lastProduction.sort(new Comparator<Productionbatches>(){
+        lastProduction.sort(new Comparator<Productionbatches>() {
             @Override
             public int compare(Productionbatches o1, Productionbatches o2) {
                 return o2.getID() - o1.getID(); //TODO
             }
-            
+
         });
-        
+
         int limit = 0;
-        if (lastProduction.size() < 5) limit = lastProduction.size();
-        else limit = 5;
-        
+        if (lastProduction.size() < 5) {
+            limit = lastProduction.size();
+        } else {
+            limit = 5;
+        }
+
         ArrayList<Productionbatches> lastProductionTop5 = new ArrayList();
         for (int i = 0; i < limit; i++) {
             lastProductionTop5.add(lastProduction.get(i));
         }
-        
+
         //Add each item in the list as a row in the table:
         for (int i = 0; i < lastProductionTop5.size(); i++) {
 
@@ -660,7 +659,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
             Timestamp timestamp = new Timestamp(lastProductionTop5.get(i).getProductionDate());
             Date date = new Date(timestamp.getTime());
-            
+
             Object[] currentRow = {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
@@ -683,26 +682,28 @@ public final class MainForm extends javax.swing.JFrame {
         salesTableModel.addColumn("Date");
         salesTableModel.addColumn("Customer");
         salesTableModel.addColumn("Total Revenue");
-        
+
         ArrayList<Sales> lastSales = new ArrayList();
         lastSales.addAll(salesList);
-        lastSales.sort(new Comparator<Sales>(){
+        lastSales.sort(new Comparator<Sales>() {
             @Override
             public int compare(Sales o1, Sales o2) {
                 return o2.getID() - o1.getID(); //TODO
             }
-            
+
         });
-        
+
         int limitSales = 0;
-        if (lastSales.size() < 5) limitSales = lastSales.size();
-        else limitSales = 5;
-        
+        if (lastSales.size() < 5) {
+            limitSales = lastSales.size();
+        } else {
+            limitSales = 5;
+        }
+
         ArrayList<Sales> lastSalesTop5 = new ArrayList();
         for (int i = 0; i < limitSales; i++) {
             lastSalesTop5.add(lastSales.get(i));
         }
-        
 
         //Add each item in the list as a row in the table:
         for (int i = 0; i < lastSalesTop5.size(); i++) {
@@ -731,7 +732,7 @@ public final class MainForm extends javax.swing.JFrame {
                     customerName = customersList.get(j).getName();
                 }
             }
-            
+
             Timestamp timestamp = new Timestamp(lastSalesTop5.get(i).getSaleTimeDate());
             Date date = new Date(timestamp.getTime());
 
@@ -758,21 +759,24 @@ public final class MainForm extends javax.swing.JFrame {
         supplyPurchasesTableModel.addColumn("Date");
         supplyPurchasesTableModel.addColumn("Supplier");
         supplyPurchasesTableModel.addColumn("Total");
-        
+
         ArrayList<Supplytransactions> lastSupplyTransactions = new ArrayList();
         lastSupplyTransactions.addAll(supplyTransactionList);
-        lastSupplyTransactions.sort(new Comparator<Supplytransactions>(){
+        lastSupplyTransactions.sort(new Comparator<Supplytransactions>() {
             @Override
             public int compare(Supplytransactions o1, Supplytransactions o2) {
                 return o2.getID() - o1.getID(); //TODO
             }
-            
+
         });
-        
+
         int limitSupplyProducction = 0;
-        if (lastSupplyTransactions.size() < 5) limitSupplyProducction = lastSupplyTransactions.size();
-        else limitSales = 5;
-        
+        if (lastSupplyTransactions.size() < 5) {
+            limitSupplyProducction = lastSupplyTransactions.size();
+        } else {
+            limitSales = 5;
+        }
+
         ArrayList<Supplytransactions> lastSupplyProducctionTop5 = new ArrayList();
         for (int i = 0; i < limitSupplyProducction; i++) {
             lastSupplyProducctionTop5.add(lastSupplyTransactions.get(i));
@@ -806,7 +810,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
             Timestamp timestamp = new Timestamp(lastSupplyProducctionTop5.get(i).getDateMade());
             Date date = new Date(timestamp.getTime());
-                
+
             Object[] currentRow = {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
@@ -818,7 +822,7 @@ public final class MainForm extends javax.swing.JFrame {
         dailyPurchasesTable.setModel(supplyPurchasesTableModel);
 
     }
-    
+
     private void addProduction() {
 
         //Get field values:
@@ -835,14 +839,12 @@ public final class MainForm extends javax.swing.JFrame {
 
         Date productionDate = dateOfProduction.getDate();
         long date = 0;
-        
+
         if (productionDate != null) {
             date = productionDate.getTime();
             System.out.println(date);
-        }
-        
-        else {
-             showMessageDialog(null, "Please provide a valid date", "Invalid Date", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            showMessageDialog(null, "Please provide a valid date", "Invalid Date", JOptionPane.PLAIN_MESSAGE);
         }
 
         quantityInStock += Integer.parseInt(bottleQuantitySpinner.getValue().toString());
@@ -958,11 +960,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             customersTableModel.addRow(currentRow);
         }
-         //FILTERING:
+        //FILTERING:
         customersSorter = new TableRowSorter<DefaultTableModel>(customersTableModel);
         customersFilter(customersSorter);
         customerDetailsTable.setRowSorter(customersSorter);
-        
+
         customerDetailsTable.setModel(customersTableModel);
         refreshCusDetailsBtn.setEnabled(true);
         numOfCustomersLabel.setText(String.valueOf(customersList.size()));
@@ -1006,11 +1008,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             customerProductsTableModel.addRow(currentRow);
         }
-         //FILTERING:
+        //FILTERING:
         customerProductsSorter = new TableRowSorter<DefaultTableModel>(customerProductsTableModel);
         customerProductsFilter(customerProductsSorter);
         customerProductsTable.setRowSorter(customerProductsSorter);
-        
+
         customerProductsTable.setModel(customerProductsTableModel);
         refreshCustProductsBtn.setEnabled(true);
     }
@@ -1054,7 +1056,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
             Timestamp timestamp = new Timestamp(employeesList.get(i).getDateHired());
             Date date = new Date(timestamp.getTime());
-            
+
             Object[] currentRow = {
                 i + 1,
                 employeesList.get(i).getUsername(),
@@ -1115,7 +1117,6 @@ public final class MainForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         //Create a new model for the table:
         DefaultTableModel customersProductsTableModel = new DefaultTableModel();
@@ -1230,7 +1231,7 @@ public final class MainForm extends javax.swing.JFrame {
         supplierSorter = new TableRowSorter<DefaultTableModel>(supplierTableModel);
         suppliersFilter(supplierSorter);
         supplierDetailsTable.setRowSorter(supplierSorter);
-        
+
         supplierDetailsTable.setModel(supplierTableModel);
         refreshSuplTableBtn.setEnabled(true);
         noSuppliesLb.setText(String.valueOf(suppliersList.size()));
@@ -1275,8 +1276,7 @@ public final class MainForm extends javax.swing.JFrame {
         supplierSuppliesSorter = new TableRowSorter<DefaultTableModel>(supplyTableModel);
         supplierSuppliesFilter(supplierSuppliesSorter);
         suppliesTable.setRowSorter(supplierSuppliesSorter);
-        
-        
+
         suppliesTable.setModel(supplyTableModel);
         refreshSuppliesTableBtn.setEnabled(true);
 
@@ -1317,12 +1317,12 @@ public final class MainForm extends javax.swing.JFrame {
                     supplierName = suppliersList.get(j).getName();
                 }
             }
-            
+
             Timestamp timestamp = new Timestamp(supplyTransactionList.get(i).getDateMade());
-            System.out.println("Timestamp: " +timestamp);
+            System.out.println("Timestamp: " + timestamp);
             Date date = new Date(timestamp.getTime());
-            System.out.println("Date: " +date);
-            
+            System.out.println("Date: " + date);
+
             Object[] currentRow = {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
@@ -1335,7 +1335,7 @@ public final class MainForm extends javax.swing.JFrame {
         supplyTransactionsSorter = new TableRowSorter<DefaultTableModel>(supplyPurchasesTableModel);
         supplyTransactionFilter(supplyTransactionsSorter);
         purchHistoryTable.setRowSorter(supplyTransactionsSorter);
-        
+
         purchHistoryTable.setModel(supplyPurchasesTableModel);
         refreshPurchasesTableBtn.setEnabled(true);
 
@@ -1344,8 +1344,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void getEmployees() {
         employeesList = new ArrayList<>();
 
-         long dateHiredLong = 0;
-        
+        long dateHiredLong = 0;
+
         //Get customers from api
         String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
         try {
@@ -1425,8 +1425,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void getSupplyTransactions() {
         supplyTransactionList = new ArrayList<>();
 
-        long dateMade =0;
-        
+        long dateMade = 0;
+
         //Get customers from api
         String supplyTransactionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplytransactions", "GetMultiple", "SessionID=aa");
         try {
@@ -1444,7 +1444,7 @@ public final class MainForm extends javax.swing.JFrame {
                     int id = currentItem.getInt("ID");
                     int supplierSuppliesID = currentItem.getInt("SupplierSuppliesID");
                     int quantity = currentItem.getInt("Quantity");
-                   dateMade = currentItem.getLong("DateMade");
+                    dateMade = currentItem.getLong("DateMade");
 
                     Supplytransactions c = new Supplytransactions(id, supplierSuppliesID, dateMade, quantity);
                     supplyTransactionList.add(c);
@@ -1494,11 +1494,11 @@ public final class MainForm extends javax.swing.JFrame {
             };
             suppliesTableModel.addRow(currentRow);
         }
-         //FILTERING:
+        //FILTERING:
         suppliesSorter = new TableRowSorter<DefaultTableModel>(suppliesTableModel);
         suppliesFilter(suppliesSorter);
         suppliesDetailsTable.setRowSorter(suppliesSorter);
-        
+
         suppliesDetailsTable.setModel(suppliesTableModel);
         refreshSuppliesTable.setEnabled(true);
 
@@ -1697,7 +1697,7 @@ public final class MainForm extends javax.swing.JFrame {
         productsSorter = new TableRowSorter<DefaultTableModel>(productsTableModel);
         productsFilter(productsSorter);
         productsDetailsTable.setRowSorter(productsSorter);
-        
+
         productsDetailsTable.setModel(productsTableModel);
         refreshProductsTable.setEnabled(true);
     }
@@ -1705,8 +1705,8 @@ public final class MainForm extends javax.swing.JFrame {
     public void getProduction() {
         productionList = new ArrayList<>();
 
-         long productionDate = 0;
-        
+        long productionDate = 0;
+
         //Get customers from api
         String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productionbatches", "GetMultiple", "SessionID=aa");
         try {
@@ -1764,7 +1764,7 @@ public final class MainForm extends javax.swing.JFrame {
 
             Timestamp timestamp = new Timestamp(productionList.get(i).getProductionDate());
             Date date = new Date(timestamp.getTime());
-            
+
             Object[] currentRow = {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
@@ -1778,7 +1778,7 @@ public final class MainForm extends javax.swing.JFrame {
         productionSorter = new TableRowSorter<DefaultTableModel>(productionTableModel);
         productionFilter(productionSorter);
         productionDetailsTable.setRowSorter(productionSorter);
-        
+
         productionDetailsTable.setModel(productionTableModel);
         refreshProductionButton.setEnabled(true);
     }
@@ -1822,7 +1822,7 @@ public final class MainForm extends javax.swing.JFrame {
         salesList = new ArrayList<>();
 
         long saleTimeDate = 0;
-        
+
         //Get customers from api
         String salesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "GetMultiple", "SessionID=aa");
         try {
@@ -1896,7 +1896,7 @@ public final class MainForm extends javax.swing.JFrame {
                     customerName = customersList.get(j).getName();
                 }
             }
-            
+
             Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
             Date date = new Date(timestamp.getTime());
 
@@ -1913,7 +1913,7 @@ public final class MainForm extends javax.swing.JFrame {
         salesSorter = new TableRowSorter<DefaultTableModel>(salesTableModel);
         salesFilter(salesSorter);
         salesDetailsTable.setRowSorter(salesSorter);
-        
+
         salesDetailsTable.setModel(salesTableModel);
         refreshSalesButton.setEnabled(true);
     }
@@ -2055,7 +2055,7 @@ public final class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteSupplier(int id) {
         if (id <= 0) {
             return;
@@ -2103,7 +2103,7 @@ public final class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteSupplies(int id) {
         if (id <= 0) {
             return;
@@ -2127,7 +2127,7 @@ public final class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteProducts(int id) {
         if (id <= 0) {
             return;
@@ -2151,7 +2151,7 @@ public final class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteCustomers(int id) {
         if (id <= 0) {
             return;
@@ -2175,7 +2175,7 @@ public final class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteCustomerProducts(int id) {
         if (id <= 0) {
             return;
@@ -2199,7 +2199,7 @@ public final class MainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteProduction(int id) {
         if (id <= 0) {
             return;
@@ -2224,7 +2224,6 @@ public final class MainForm extends javax.swing.JFrame {
         }
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -2256,6 +2255,7 @@ public final class MainForm extends javax.swing.JFrame {
         productsScrollPanel = new javax.swing.JScrollPane();
         productsDetailsTable = new javax.swing.JTable();
         deleteProductsButton = new javax.swing.JButton();
+        productsSaveButton = new javax.swing.JButton();
         suppliesInvTabs = new javax.swing.JPanel();
         suppliesPanel = new javax.swing.JPanel();
         suppliesDetailsPanel = new javax.swing.JPanel();
@@ -2265,6 +2265,7 @@ public final class MainForm extends javax.swing.JFrame {
         suppliesScrollPanel = new javax.swing.JScrollPane();
         suppliesDetailsTable = new javax.swing.JTable();
         deleteSuppliesButton = new javax.swing.JButton();
+        suppliesSaveButton = new javax.swing.JButton();
         production = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         productNameTextField = new javax.swing.JLabel();
@@ -2292,23 +2293,13 @@ public final class MainForm extends javax.swing.JFrame {
         salesDetailsTable = new javax.swing.JTable();
         searchSale = new javax.swing.JTextField();
         refreshSalesButton = new javax.swing.JButton();
+        printCusDetailsBtn1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jPanel7 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
-        weeklySalesScrollPanel = new javax.swing.JScrollPane();
-        weeklySalesDetailsTable = new javax.swing.JTable();
-        searchWeeklySale = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
-        monthlySalesScrollPanel = new javax.swing.JScrollPane();
-        monthlySalesDetailsTable = new javax.swing.JTable();
-        searceMonthlySale = new javax.swing.JTextField();
         customers = new javax.swing.JPanel();
         noCustomerLb = new javax.swing.JLabel();
         customerDetailsPanel = new javax.swing.JPanel();
-        expCusDetailsBtn = new javax.swing.JButton();
         printCusDetailsBtn = new javax.swing.JButton();
         importCustomerBtn = new javax.swing.JButton();
         searchCustomerTxt = new javax.swing.JTextField();
@@ -2316,15 +2307,16 @@ public final class MainForm extends javax.swing.JFrame {
         customerScrollPanel = new javax.swing.JScrollPane();
         customerDetailsTable = new javax.swing.JTable();
         deleteCustomerButton = new javax.swing.JButton();
+        customersSaveButton = new javax.swing.JButton();
         customerTabPanel = new javax.swing.JTabbedPane();
         custProductsPanel = new javax.swing.JPanel();
-        exportCustProductsBtn = new javax.swing.JButton();
         printCustProductsBtn = new javax.swing.JButton();
         searchCustProductsTxt = new javax.swing.JTextField();
         refreshCustProductsBtn = new javax.swing.JButton();
         custProScrollPanel = new javax.swing.JScrollPane();
         customerProductsTable = new javax.swing.JTable();
         deleteCustomerProductsButton = new javax.swing.JButton();
+        customerProdcuctsSaveButton = new javax.swing.JButton();
         customersGraphsPanel = new javax.swing.JPanel();
         customersGraphsPanel2 = new javax.swing.JPanel();
         numOfCustomersLabel = new javax.swing.JLabel();
@@ -2334,17 +2326,15 @@ public final class MainForm extends javax.swing.JFrame {
         employeeScrollPanel = new javax.swing.JScrollPane();
         employeesTable = new javax.swing.JTable();
         searchTxt = new javax.swing.JTextField();
-        exportFilesBtn = new javax.swing.JButton();
         printBtn = new javax.swing.JButton();
         refreshEmployeesBtn = new javax.swing.JButton();
         importEmplBtn = new javax.swing.JButton();
         deletRow = new javax.swing.JButton();
-        saveButton = new javax.swing.JButton();
+        employeesSaveButton = new javax.swing.JButton();
         numOfEmployeesLabel = new javax.swing.JLabel();
         suppliers = new javax.swing.JPanel();
         noSuppliesLb = new javax.swing.JLabel();
         suppliersDetailsPanel1 = new javax.swing.JPanel();
-        expSupDetailsBtn1 = new javax.swing.JButton();
         printSupDetailsBtn1 = new javax.swing.JButton();
         importSupplierBtn = new javax.swing.JButton();
         searchSupplierTxt = new javax.swing.JTextField();
@@ -2352,15 +2342,16 @@ public final class MainForm extends javax.swing.JFrame {
         supplierScrollPanel = new javax.swing.JScrollPane();
         supplierDetailsTable = new javax.swing.JTable();
         deleteSupplierButton = new javax.swing.JButton();
+        suppliersSaveButton = new javax.swing.JButton();
         suppliesTab = new javax.swing.JTabbedPane();
         suppliesTabPanel = new javax.swing.JPanel();
         searchSuppliesTxt = new javax.swing.JTextField();
-        exportSuppliesFilesBtn = new javax.swing.JButton();
         printSuppliesBtn = new javax.swing.JButton();
         refreshSuppliesTableBtn = new javax.swing.JButton();
         suppliesTabPane = new javax.swing.JScrollPane();
         suppliesTable = new javax.swing.JTable();
         deleteSupplyButton = new javax.swing.JButton();
+        supplierSuppliessSaveButton = new javax.swing.JButton();
         purchasesHistoryPanel = new javax.swing.JPanel();
         exportPurchFilesBtn = new javax.swing.JButton();
         printPurchasesBtn = new javax.swing.JButton();
@@ -2581,21 +2572,34 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        productsSaveButton.setText("Save");
+        productsSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productsSaveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout productsDetailsPanelLayout = new javax.swing.GroupLayout(productsDetailsPanel);
         productsDetailsPanel.setLayout(productsDetailsPanelLayout);
         productsDetailsPanelLayout.setHorizontalGroup(
             productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productsDetailsPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(deleteProductsButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(refreshProductsTable, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(importProductsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
-            .addComponent(productsScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1057, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(productsDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(productsScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(productsDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(deleteProductsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(productsSaveButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(refreshProductsTable, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(importProductsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))))
         );
         productsDetailsPanelLayout.setVerticalGroup(
             productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2605,11 +2609,12 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(productsDetailsPanelLayout.createSequentialGroup()
                         .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteProductsButton))
+                            .addComponent(deleteProductsButton)
+                            .addComponent(productsSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(refreshProductsTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(importProductsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(34, 34, 34)
+                .addGap(25, 25, 25)
                 .addComponent(productsScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(345, 345, 345))
         );
@@ -2627,7 +2632,7 @@ public final class MainForm extends javax.swing.JFrame {
             productsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productsTabLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(productsDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 945, Short.MAX_VALUE)
+                .addComponent(productsDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(74, 74, 74))
         );
 
@@ -2676,35 +2681,48 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        suppliesSaveButton.setText("Save");
+        suppliesSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suppliesSaveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout suppliesDetailsPanelLayout = new javax.swing.GroupLayout(suppliesDetailsPanel);
         suppliesDetailsPanel.setLayout(suppliesDetailsPanelLayout);
         suppliesDetailsPanelLayout.setHorizontalGroup(
             suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(suppliesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1057, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(deleteSuppliesButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchSupplies, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
-                .addComponent(refreshSuppliesTable, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(importSuppliesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3))
+            .addGroup(suppliesDetailsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(suppliesDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(suppliesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(suppliesDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(deleteSuppliesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(suppliesSaveButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchSupplies, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(refreshSuppliesTable, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(importSuppliesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13))))
         );
         suppliesDetailsPanelLayout.setVerticalGroup(
             suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(suppliesDetailsPanelLayout.createSequentialGroup()
                 .addGroup(suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(refreshSuppliesTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchSupplies)
-                            .addComponent(deleteSuppliesButton)))
-                    .addComponent(importSuppliesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(refreshSuppliesTable)
+                    .addComponent(importSuppliesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deleteSuppliesButton)
+                        .addComponent(searchSupplies, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(suppliesSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(suppliesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(221, Short.MAX_VALUE))
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout suppliesPanelLayout = new javax.swing.GroupLayout(suppliesPanel);
@@ -2892,16 +2910,17 @@ public final class MainForm extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(productionScrollPanel)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(deleteProductionButton)
-                .addGap(18, 18, 18)
-                .addComponent(searchProduction, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(refreshProductionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(productionScrollPanel)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addComponent(deleteProductionButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchProduction, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(refreshProductionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2969,13 +2988,17 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        printCusDetailsBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(printCusDetailsBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(refreshSalesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -2988,9 +3011,11 @@ public final class MainForm extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(refreshSalesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchSale))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(refreshSalesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchSale))
+                    .addComponent(printCusDetailsBtn1))
                 .addGap(0, 237, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -3047,140 +3072,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Daily Sales", jPanel2);
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Items Weekly Sales"));
-
-        weeklySalesDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        weeklySalesScrollPanel.setViewportView(weeklySalesDetailsTable);
-
-        searchWeeklySale.setText("Search....");
-        searchWeeklySale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchWeeklySaleActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(943, Short.MAX_VALUE)
-                .addComponent(searchWeeklySale, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel11Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(weeklySalesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
-                    .addContainerGap()))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addComponent(searchWeeklySale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 254, Short.MAX_VALUE))
-            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                    .addContainerGap(44, Short.MAX_VALUE)
-                    .addComponent(weeklySalesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(732, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Weekly Sales", jPanel4);
-
-        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder("Items Monthly Sales"));
-
-        monthlySalesDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        monthlySalesScrollPanel.setViewportView(monthlySalesDetailsTable);
-
-        searceMonthlySale.setText("Search....");
-        searceMonthlySale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searceMonthlySaleActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addContainerGap(943, Short.MAX_VALUE)
-                .addComponent(searceMonthlySale, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel12Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(monthlySalesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
-                    .addContainerGap()))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addComponent(searceMonthlySale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 254, Short.MAX_VALUE))
-            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                    .addContainerGap(44, Short.MAX_VALUE)
-                    .addComponent(monthlySalesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(732, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Monthly Sales", jPanel3);
-
         javax.swing.GroupLayout salesLayout = new javax.swing.GroupLayout(sales);
         sales.setLayout(salesLayout);
         salesLayout.setHorizontalGroup(
@@ -3197,14 +3088,6 @@ public final class MainForm extends javax.swing.JFrame {
         noCustomerLb.setText("No. Customers: ");
 
         customerDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customer Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
-
-        expCusDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
-        expCusDetailsBtn.setPreferredSize(new java.awt.Dimension(49, 25));
-        expCusDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                expCusDetailsBtnActionPerformed(evt);
-            }
-        });
 
         printCusDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
 
@@ -3248,53 +3131,55 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        customersSaveButton.setText("Save");
+        customersSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customersSaveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout customerDetailsPanelLayout = new javax.swing.GroupLayout(customerDetailsPanel);
         customerDetailsPanel.setLayout(customerDetailsPanelLayout);
         customerDetailsPanelLayout.setHorizontalGroup(
             customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerDetailsPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(deleteCustomerButton)
-                .addGap(18, 18, 18)
-                .addComponent(expCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(printCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchCustomerTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(refreshCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(importCustomerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(customerDetailsPanelLayout.createSequentialGroup()
-                .addComponent(customerScrollPanel)
+                .addGroup(customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customerDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(deleteCustomerButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(customersSaveButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(printCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchCustomerTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshCusDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(importCustomerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(customerScrollPanel))
                 .addContainerGap())
         );
         customerDetailsPanelLayout.setVerticalGroup(
             customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(customerDetailsPanelLayout.createSequentialGroup()
-                .addGroup(customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(printCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(expCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(refreshCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchCustomerTxt)
-                    .addComponent(importCustomerBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(deleteCustomerButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap()
+                .addGroup(customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deleteCustomerButton)
+                        .addComponent(customersSaveButton))
+                    .addGroup(customerDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(printCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshCusDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchCustomerTxt)
+                        .addComponent(importCustomerBtn, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(18, 18, 18)
-                .addComponent(customerScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                .addComponent(customerScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         customerTabPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         customerTabPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         customerTabPanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        exportCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
-        exportCustProductsBtn.setPreferredSize(new java.awt.Dimension(49, 25));
-        exportCustProductsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportCustProductsBtnActionPerformed(evt);
-            }
-        });
 
         printCustProductsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
 
@@ -3324,12 +3209,14 @@ public final class MainForm extends javax.swing.JFrame {
         ));
         custProScrollPanel.setViewportView(customerProductsTable);
 
-        deleteCustomerProductsButton.setText("Delete Customer");
+        deleteCustomerProductsButton.setText("Delete Product");
         deleteCustomerProductsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteCustomerProductsButtonActionPerformed(evt);
             }
         });
+
+        customerProdcuctsSaveButton.setText("Save");
 
         javax.swing.GroupLayout custProductsPanelLayout = new javax.swing.GroupLayout(custProductsPanel);
         custProductsPanel.setLayout(custProductsPanelLayout);
@@ -3340,14 +3227,13 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGroup(custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(custProScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, custProductsPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(deleteCustomerProductsButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(exportCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(customerProdcuctsSaveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(printCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchCustProductsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchCustProductsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -3359,10 +3245,11 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGroup(custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(printCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(exportCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(refreshCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(searchCustProductsTxt))
-                    .addComponent(deleteCustomerProductsButton))
+                    .addGroup(custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deleteCustomerProductsButton)
+                        .addComponent(customerProdcuctsSaveButton)))
                 .addGap(18, 18, 18)
                 .addComponent(custProScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(42, Short.MAX_VALUE))
@@ -3468,14 +3355,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        exportFilesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
-        exportFilesBtn.setPreferredSize(new java.awt.Dimension(49, 25));
-        exportFilesBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportFilesBtnActionPerformed(evt);
-            }
-        });
-
         printBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
         printBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3504,10 +3383,10 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        saveButton.setText("Save");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
+        employeesSaveButton.setText("Save");
+        employeesSaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
+                employeesSaveButtonActionPerformed(evt);
             }
         });
 
@@ -3522,9 +3401,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(employeeListPanelLayout.createSequentialGroup()
                         .addComponent(deletRow)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(saveButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(exportFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(employeesSaveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(printBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -3542,12 +3419,12 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(printBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exportFilesBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchTxt, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(refreshEmployeesBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(importEmplBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(deletRow, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(saveButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deletRow)
+                        .addComponent(employeesSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(302, Short.MAX_VALUE))
@@ -3587,14 +3464,6 @@ public final class MainForm extends javax.swing.JFrame {
         noSuppliesLb.setText("No. Suppliers: ");
 
         suppliersDetailsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplier Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
-
-        expSupDetailsBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
-        expSupDetailsBtn1.setPreferredSize(new java.awt.Dimension(49, 25));
-        expSupDetailsBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                expSupDetailsBtn1ActionPerformed(evt);
-            }
-        });
 
         printSupDetailsBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
 
@@ -3638,15 +3507,21 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        suppliersSaveButton.setText("Save");
+        suppliersSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suppliersSaveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout suppliersDetailsPanel1Layout = new javax.swing.GroupLayout(suppliersDetailsPanel1);
         suppliersDetailsPanel1.setLayout(suppliersDetailsPanel1Layout);
         suppliersDetailsPanel1Layout.setHorizontalGroup(
             suppliersDetailsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliersDetailsPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(suppliersDetailsPanel1Layout.createSequentialGroup()
                 .addComponent(deleteSupplierButton)
-                .addGap(27, 27, 27)
-                .addComponent(expSupDetailsBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(suppliersSaveButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(printSupDetailsBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -3664,11 +3539,12 @@ public final class MainForm extends javax.swing.JFrame {
             .addGroup(suppliersDetailsPanel1Layout.createSequentialGroup()
                 .addGroup(suppliersDetailsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(printSupDetailsBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(expSupDetailsBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(refreshSuplTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchSupplierTxt)
                     .addComponent(importSupplierBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(deleteSupplierButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliersDetailsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deleteSupplierButton)
+                        .addComponent(suppliersSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(supplierScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                 .addContainerGap())
@@ -3681,14 +3557,6 @@ public final class MainForm extends javax.swing.JFrame {
         searchSuppliesTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchSuppliesTxtActionPerformed(evt);
-            }
-        });
-
-        exportSuppliesFilesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
-        exportSuppliesFilesBtn.setPreferredSize(new java.awt.Dimension(49, 25));
-        exportSuppliesFilesBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportSuppliesFilesBtnActionPerformed(evt);
             }
         });
 
@@ -3721,6 +3589,13 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        supplierSuppliessSaveButton.setText("Save");
+        supplierSuppliessSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supplierSuppliessSaveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout suppliesTabPanelLayout = new javax.swing.GroupLayout(suppliesTabPanel);
         suppliesTabPanel.setLayout(suppliesTabPanelLayout);
         suppliesTabPanelLayout.setHorizontalGroup(
@@ -3730,10 +3605,9 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGroup(suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(suppliesTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesTabPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(deleteSupplyButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(exportSuppliesFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(supplierSuppliessSaveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(printSuppliesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -3748,10 +3622,11 @@ public final class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(printSuppliesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exportSuppliesFilesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(refreshSuppliesTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchSuppliesTxt)
-                    .addComponent(deleteSupplyButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deleteSupplyButton)
+                        .addComponent(supplierSuppliessSaveButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(suppliesTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addContainerGap())
@@ -3984,29 +3859,13 @@ public final class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchTxtActionPerformed
 
-    private void exportFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFilesBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_exportFilesBtnActionPerformed
-
-    private void expCusDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expCusDetailsBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_expCusDetailsBtnActionPerformed
-
     private void searchCustomerTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCustomerTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchCustomerTxtActionPerformed
 
-    private void exportCustProductsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportCustProductsBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_exportCustProductsBtnActionPerformed
-
     private void searchCustProductsTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCustProductsTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchCustProductsTxtActionPerformed
-
-    private void expSupDetailsBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expSupDetailsBtn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_expSupDetailsBtn1ActionPerformed
 
     private void searchSupplierTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSupplierTxtActionPerformed
         // TODO add your handling code here:
@@ -4015,10 +3874,6 @@ public final class MainForm extends javax.swing.JFrame {
     private void searchSuppliesTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSuppliesTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchSuppliesTxtActionPerformed
-
-    private void exportSuppliesFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportSuppliesFilesBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_exportSuppliesFilesBtnActionPerformed
 
     private void exportPurchFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportPurchFilesBtnActionPerformed
         // TODO add your handling code here:
@@ -4073,18 +3928,6 @@ public final class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchProductionActionPerformed
 
-    private void searchSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSaleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchSaleActionPerformed
-
-    private void searchWeeklySaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWeeklySaleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchWeeklySaleActionPerformed
-
-    private void searceMonthlySaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searceMonthlySaleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searceMonthlySaleActionPerformed
-
     private void refreshEmployeesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshEmployeesBtnActionPerformed
         getEmployees();
         employeesTab();
@@ -4125,11 +3968,6 @@ public final class MainForm extends javax.swing.JFrame {
         productionTab();
     }//GEN-LAST:event_refreshProductionButtonActionPerformed
 
-    private void refreshSalesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSalesButtonActionPerformed
-        getSaleProducts();
-        salesTab();
-    }//GEN-LAST:event_refreshSalesButtonActionPerformed
-
     private void refreshPurchasesTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshPurchasesTableBtnActionPerformed
         getSupplyTransactions();
         suppliersTab();
@@ -4159,7 +3997,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteSupplierButtonActionPerformed
 
     private void deleteSupplyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSupplyButtonActionPerformed
-        
+
         int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete the selected supply?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             int selectedRow = suppliesTable.getSelectedRow();
@@ -4173,7 +4011,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteSupplyButtonActionPerformed
 
     private void deleteProductionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteProductionButtonActionPerformed
-       int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete the selected production batch?", "Warning", JOptionPane.YES_NO_OPTION);
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete the selected production batch?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             int selectedRow = productionDetailsTable.getSelectedRow();
             int selectedID = productionList.get(selectedRow).getID();
@@ -4229,13 +4067,13 @@ public final class MainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteSuppliesButtonActionPerformed
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+    private void employeesSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeesSaveButtonActionPerformed
         int currentRow = employeesTable.getSelectedRow();
-        if(currentRow < 0){
+        if (currentRow < 0) {
             showMessageDialog(null, "No employee selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        
+
         //Map table columns to fields:
         int id = (int) employeesTable.getValueAt(currentRow, 0);
         String username = (String) employeesTable.getValueAt(currentRow, 1);
@@ -4247,11 +4085,11 @@ public final class MainForm extends javax.swing.JFrame {
         String address = (String) employeesTable.getValueAt(currentRow, 7);
         String city = (String) employeesTable.getValueAt(currentRow, 8);
         String country = (String) employeesTable.getValueAt(currentRow, 9);
-        
+
         int positionID = 0;
         long dateOfHire = 0;
         int countryID = 0;
-        
+
         //Get position ID
         for (int i = 0; i < positionsList.size(); i++) {
             if (positionsList.get(i).getUserLevelName().equals(position)) {
@@ -4263,18 +4101,17 @@ public final class MainForm extends javax.swing.JFrame {
             showMessageDialog(null, "Invalid position selected", "Warning", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        
+
         //Get date of hire
         try {
             Date date = Users.DATE_FORMAT.parse(dateHired);
             Timestamp timestamp = new Timestamp(date.getTime());
             dateOfHire = timestamp.getTime();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             showMessageDialog(null, "Invalid date/time", "Warning", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        
+
         //Get country ID
         for (int i = 0; i < countriesList.size(); i++) {
             if (countriesList.get(i).getName().equals(country)) {
@@ -4286,8 +4123,7 @@ public final class MainForm extends javax.swing.JFrame {
             showMessageDialog(null, "Invalid country selected", "Warning", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-     
-        
+
         Users u = new Users(
                 employeesList.get(currentRow).getUserID(),
                 username,
@@ -4298,16 +4134,35 @@ public final class MainForm extends javax.swing.JFrame {
                 dateOfHire,
                 city,
                 address,
-                telephone,                
+                telephone,
                 countryID
         );
-        
+
         editEmployees(u);
-        
-    }//GEN-LAST:event_saveButtonActionPerformed
+
+    }//GEN-LAST:event_employeesSaveButtonActionPerformed
 
     private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
-       
+
+        int currentRow = employeesTable.getSelectedRow();
+            if (currentRow < 0) {
+                showMessageDialog(null, "No employee selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+
+            //Map table columns to fields:
+            int id = (int) employeesTable.getValueAt(currentRow, 0);
+            String username = (String) employeesTable.getValueAt(currentRow, 1);
+            String firstname = (String) employeesTable.getValueAt(currentRow, 2);
+            String lastname = (String) employeesTable.getValueAt(currentRow, 3);
+            String position = (String) employeesTable.getValueAt(currentRow, 4);
+            String dateHired = (String) employeesTable.getValueAt(currentRow, 5);
+            String telephone = (String) employeesTable.getValueAt(currentRow, 6);
+            String address = (String) employeesTable.getValueAt(currentRow, 7);
+            String city = (String) employeesTable.getValueAt(currentRow, 8);
+            String country = (String) employeesTable.getValueAt(currentRow, 9);
+        
+        
         PDDocument document;
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
@@ -4316,23 +4171,104 @@ public final class MainForm extends javax.swing.JFrame {
         File file = new File(combinedPath);
         try {
             document = PDDocument.load(file);
-            
-            //TODO Add items into PDF...
-            
-            
-            
-            document.save("doc.pdf");
+
+            PDPage page = PDFBoxUtils.getPage(document, 0);
+
+            PDFBoxUtils.addText(document, page, firstname, Color.black, PDType1Font.COURIER, 14, 220, 570);
+            PDFBoxUtils.addText(document, page, lastname, Color.black, PDType1Font.COURIER, 14, 220, 545);
+            PDFBoxUtils.addText(document, page, position, Color.black, PDType1Font.COURIER, 14, 220, 520);
+            PDFBoxUtils.addText(document, page, telephone, Color.black, PDType1Font.COURIER, 14, 220, 495);
+            PDFBoxUtils.addText(document, page, address, Color.black, PDType1Font.COURIER, 14, 220, 473);
+            PDFBoxUtils.addText(document, page, city, Color.black, PDType1Font.COURIER, 14, 220, 450);
+            PDFBoxUtils.addText(document, page, country, Color.black, PDType1Font.COURIER, 14, 220, 425);
+            PDFBoxUtils.addText(document, page, dateHired, Color.black, PDType1Font.COURIER, 14, 220, 405);
+
+            String fileName = "employeesDetails.pdf";
+            String exportedFileName = currentFolder + "../../../" + fileName;
+            document.save(exportedFileName);
             document.close();
+            File exportedFile = new File(exportedFileName);
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(exportedFile);
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
-        
+
+
     }//GEN-LAST:event_printBtnActionPerformed
+
+    private void suppliersSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppliersSaveButtonActionPerformed
+        int currentRow = supplierDetailsTable.getSelectedRow();
+        if (currentRow < 0) {
+            showMessageDialog(null, "No supplier selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Map table columns to fields:
+        int id = (int) supplierDetailsTable.getValueAt(currentRow, 0);
+        String name = (String) supplierDetailsTable.getValueAt(currentRow, 1);
+        String telephone = (String) supplierDetailsTable.getValueAt(currentRow, 2);
+        String address = (String) supplierDetailsTable.getValueAt(currentRow, 3);
+        String city = (String) supplierDetailsTable.getValueAt(currentRow, 4);
+        String country = (String) supplierDetailsTable.getValueAt(currentRow, 5);
+
+        int countryID = 0;
+
+        //Get country ID
+        for (int i = 0; i < countriesList.size(); i++) {
+            if (countriesList.get(i).getName().equals(country)) {
+                countryID = countriesList.get(i).getID();
+                break;
+            }
+        }
+        if (countryID == 0) {
+            showMessageDialog(null, "Invalid country selected", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        Suppliers s = new Suppliers(
+                suppliersList.get(currentRow).getID(),
+                name,
+                countryID,
+                address,
+                city,
+                telephone
+                
+        );
+
+        editSuppliers(s);
+    }//GEN-LAST:event_suppliersSaveButtonActionPerformed
+
+    private void supplierSuppliessSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierSuppliessSaveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierSuppliessSaveButtonActionPerformed
+
+    private void customersSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customersSaveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customersSaveButtonActionPerformed
+
+    private void refreshSalesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSalesButtonActionPerformed
+        getSaleProducts();
+        salesTab();
+    }//GEN-LAST:event_refreshSalesButtonActionPerformed
+
+    private void searchSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSaleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchSaleActionPerformed
+
+    private void productsSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsSaveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_productsSaveButtonActionPerformed
+
+    private void suppliesSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppliesSaveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_suppliesSaveButtonActionPerformed
 
     private void editEmployees(Users u) {
         //Get field values:
-        
+
         //Check if the firstname is valid
         if (u.getFirstname().trim().isEmpty()) {
             showMessageDialog(null, "Please provide a valid firstname", "Invalid Firstname", JOptionPane.PLAIN_MESSAGE);
@@ -4344,7 +4280,7 @@ public final class MainForm extends javax.swing.JFrame {
             showMessageDialog(null, "Please provide a valid lastname", "Invalid lastname", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        
+
         //Check if the username is valid
         if (u.getUsername().trim().isEmpty()) {
             showMessageDialog(null, "Please provide a valid username", "Invalid username", JOptionPane.PLAIN_MESSAGE);
@@ -4353,9 +4289,9 @@ public final class MainForm extends javax.swing.JFrame {
 
         //Make the call:
         String editUserJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Update",
-                "SessionID=aa&UserID="+u.getUserID()+"&Firstname=" + u.getFirstname() + "&Lastname=" 
-                + u.getLastname() + "&Username=" + u.getUsername() + "&City=" + u.getCity() +
-                "&Address=" + u.getAddress() + "&Telephone=" + u.getTelephone() + "&CountryID=" + u.getCountryID()
+                "SessionID=aa&UserID=" + u.getUserID() + "&Firstname=" + u.getFirstname() + "&Lastname="
+                + u.getLastname() + "&Username=" + u.getUsername() + "&City=" + u.getCity()
+                + "&Address=" + u.getAddress() + "&Telephone=" + u.getTelephone() + "&CountryID=" + u.getCountryID()
                 + "&UserLevelID=" + u.getUserLevelID() + "&Password=" + u.getPassword() + "&DateHired=" + u.getDateHired()
         );
         try {
@@ -4364,12 +4300,10 @@ public final class MainForm extends javax.swing.JFrame {
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
-            
-
             if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
                 System.out.println("Fail " + editUserJSON);
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                showMessageDialog(null, "Employee " + u.getFirstname() + " saved." , title, JOptionPane.PLAIN_MESSAGE);
+                showMessageDialog(null, "Employee " + u.getFirstname() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -4380,6 +4314,41 @@ public final class MainForm extends javax.swing.JFrame {
         employeesTab();
     }
     
+     private void editSuppliers(Suppliers s) {
+        //Get field values:
+
+        //Check if the name is valid
+        if (s.getName().trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid name", "Invalid Name", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Make the call:
+        String editSupplierJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "Update",
+                "SessionID=aa&ID=" + s.getID() + "&Name=" + s.getName() + "&CountryID=" + s.getCountryID()+ 
+                        "&Address=" + s.getAddress() + "&City=" + s.getCity() + "&Telephone=" + s.getTelephone() 
+                
+        );
+        try {
+            JSONObject jsonObject = new JSONObject(editSupplierJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + editSupplierJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                showMessageDialog(null, "Supplier " + s.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Update table:
+        getSuppliers();
+        suppliersTab();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -4432,12 +4401,14 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel custProductsPanel;
     private javax.swing.JPanel customerDetailsPanel;
     private javax.swing.JTable customerDetailsTable;
+    private javax.swing.JButton customerProdcuctsSaveButton;
     private javax.swing.JTable customerProductsTable;
     private javax.swing.JScrollPane customerScrollPanel;
     private javax.swing.JTabbedPane customerTabPanel;
     private javax.swing.JPanel customers;
     private javax.swing.JPanel customersGraphsPanel;
     private javax.swing.JPanel customersGraphsPanel2;
+    private javax.swing.JButton customersSaveButton;
     private javax.swing.JTable dailyProductionTable;
     private javax.swing.JTable dailyPurchasesTable;
     private javax.swing.JTable dailySalesTable;
@@ -4454,13 +4425,9 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel employeeListPanel;
     private javax.swing.JScrollPane employeeScrollPanel;
     private javax.swing.JPanel employees;
+    private javax.swing.JButton employeesSaveButton;
     private javax.swing.JTable employeesTable;
-    private javax.swing.JButton expCusDetailsBtn;
-    private javax.swing.JButton expSupDetailsBtn1;
-    private javax.swing.JButton exportCustProductsBtn;
-    private javax.swing.JButton exportFilesBtn;
     private javax.swing.JButton exportPurchFilesBtn;
-    private javax.swing.JButton exportSuppliesFilesBtn;
     private javax.swing.JMenu file;
     private javax.swing.JMenu help;
     private javax.swing.JMenu helpContentMenu;
@@ -4487,11 +4454,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -4501,8 +4464,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel latestPurchases;
     private javax.swing.JPanel latestSales;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JTable monthlySalesDetailsTable;
-    private javax.swing.JScrollPane monthlySalesScrollPanel;
     private javax.swing.JLabel noCustomerLb;
     private javax.swing.JLabel noEmployeesLb;
     private javax.swing.JLabel noSuppliesLb;
@@ -4511,6 +4472,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu options;
     private javax.swing.JButton printBtn;
     private javax.swing.JButton printCusDetailsBtn;
+    private javax.swing.JButton printCusDetailsBtn1;
     private javax.swing.JButton printCustProductsBtn;
     private javax.swing.JButton printPurchasesBtn;
     private javax.swing.JButton printSupDetailsBtn1;
@@ -4527,6 +4489,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane productionScrollPanel;
     private javax.swing.JPanel productsDetailsPanel;
     private javax.swing.JTable productsDetailsTable;
+    private javax.swing.JButton productsSaveButton;
     private javax.swing.JScrollPane productsScrollPanel;
     private javax.swing.JPanel productsTab;
     private javax.swing.JScrollPane purchHistoryScrollPanel;
@@ -4547,8 +4510,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel sales;
     private javax.swing.JTable salesDetailsTable;
     private javax.swing.JScrollPane salesScrollPanel;
-    private javax.swing.JButton saveButton;
-    private javax.swing.JTextField searceMonthlySale;
     private javax.swing.JTextField searchCustProductsTxt;
     private javax.swing.JTextField searchCustomerTxt;
     private javax.swing.JTextField searchProduction;
@@ -4559,18 +4520,20 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField searchSupplies;
     private javax.swing.JTextField searchSuppliesTxt;
     private javax.swing.JTextField searchTxt;
-    private javax.swing.JTextField searchWeeklySale;
     private javax.swing.JPanel statistics;
     private javax.swing.JTable supplierDetailsTable;
     private javax.swing.JPanel supplierGraphPanel;
     private javax.swing.JScrollPane supplierScrollPanel;
+    private javax.swing.JButton supplierSuppliessSaveButton;
     private javax.swing.JPanel suppliers;
     private javax.swing.JPanel suppliersDetailsPanel1;
+    private javax.swing.JButton suppliersSaveButton;
     private javax.swing.JPanel suppliesDetailsPanel;
     private javax.swing.JTable suppliesDetailsTable;
     private javax.swing.JPanel suppliesGraphPanel;
     private javax.swing.JPanel suppliesInvTabs;
     private javax.swing.JPanel suppliesPanel;
+    private javax.swing.JButton suppliesSaveButton;
     private javax.swing.JScrollPane suppliesScrollPanel;
     private javax.swing.JTabbedPane suppliesTab;
     private javax.swing.JScrollPane suppliesTabPane;
@@ -4579,7 +4542,5 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JMenu tools;
     private javax.swing.JMenu view;
-    private javax.swing.JTable weeklySalesDetailsTable;
-    private javax.swing.JScrollPane weeklySalesScrollPanel;
     // End of variables declaration//GEN-END:variables
 }
