@@ -131,5 +131,7 @@
     <string name="supply_name">Supply Name</string>
     <string name="select_supplier">Select supplier</string>
     <string name="total">Total</string>
+    <string name="select_customer">Select customer</string>
+    <string name="add_sale">Add Sale</string>
 
 </resources>

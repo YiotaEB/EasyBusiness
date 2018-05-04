@@ -51,7 +51,6 @@ public class ViewSaleFragment extends Fragment {
 
     private TextView totalTextView;
     private ListView productsListView;
-    private Button deleteButton;
     private Button toPDFButton;
 
     private ProgressBar progressBar;
@@ -83,16 +82,7 @@ public class ViewSaleFragment extends Fragment {
 
         productsListView = v.findViewById(R.id.sale_products_listview);
         totalTextView = v.findViewById(R.id.sale_total_price);
-        deleteButton = v.findViewById(R.id.viewSale_delete);
         toPDFButton = v.findViewById(R.id.viewSale_toPDF);
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO Call Delete API
-                Toast.makeText(getActivity(), "TODO", Toast.LENGTH_LONG).show();
-            }
-        });
 
         toPDFButton.setOnClickListener(new View.OnClickListener() {
             @Override

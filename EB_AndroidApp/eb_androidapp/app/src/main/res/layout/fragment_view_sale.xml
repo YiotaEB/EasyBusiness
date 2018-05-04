@@ -72,16 +72,6 @@
             >
 
             <Button
-                android:id="@+id/viewSale_delete"
-                android:text="@string/delete"
-                android:background="@color/red"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <Button
                 android:id="@+id/viewSale_toPDF"
                 android:text="@string/to_pdf"
                 android:background="@color/colorPrimaryDark"
