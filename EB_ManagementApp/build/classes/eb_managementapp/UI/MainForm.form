@@ -488,13 +488,10 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="searchProducts" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="deleteProductsButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="productsSaveButton" alignment="3" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="searchProducts" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="deleteProductsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="productsSaveButton" alignment="3" max="32767" attributes="0"/>
                                       </Group>
                                       <Component id="refreshProductsTable" alignment="0" max="32767" attributes="0"/>
                                       <Component id="importProductsButton" alignment="0" pref="0" max="32767" attributes="0"/>
@@ -1152,7 +1149,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="printCusDetailsBtn1" min="-2" pref="26" max="-2" attributes="0"/>
+                                  <Component id="printSalesDetailsBtn" min="-2" pref="26" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="searchSale" min="-2" pref="133" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -1176,7 +1173,7 @@
                                           <Component id="refreshSalesButton" max="32767" attributes="0"/>
                                           <Component id="searchSale" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="printCusDetailsBtn1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="printSalesDetailsBtn" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="237" max="32767" attributes="0"/>
                               </Group>
@@ -1227,12 +1224,15 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshSalesButtonActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="printCusDetailsBtn1">
+                        <Component class="javax.swing.JButton" name="printSalesDetailsBtn">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                               <Image iconType="3" name="/eb_managementapp/UI/Images/printer_hardware.png"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printSalesDetailsBtnActionPerformed"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -1423,6 +1423,9 @@
                       <Image iconType="3" name="/eb_managementapp/UI/Images/printer_hardware.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printCusDetailsBtnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="importCustomerBtn">
                   <Properties>
@@ -1752,7 +1755,7 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="printBtn" alignment="1" max="32767" attributes="0"/>
                               <Component id="searchTxt" alignment="1" max="32767" attributes="0"/>
@@ -1763,9 +1766,9 @@
                                   <Component id="employeesSaveButton" alignment="3" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           <Component id="employeeScrollPanel" min="-2" pref="637" max="-2" attributes="0"/>
-                          <EmptySpace pref="302" max="32767" attributes="0"/>
+                          <EmptySpace pref="298" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1981,6 +1984,9 @@
                       <Image iconType="3" name="/eb_managementapp/UI/Images/printer_hardware.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printSupDetailsBtn1ActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="importSupplierBtn">
                   <Properties>

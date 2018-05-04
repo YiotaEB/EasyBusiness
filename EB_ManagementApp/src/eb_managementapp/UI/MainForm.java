@@ -43,8 +43,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -85,6 +83,7 @@ public final class MainForm extends javax.swing.JFrame {
     private ArrayList<Sales> salesList;
     private ArrayList<Userlevels> positionsList;
     private ArrayList<Supplytransactions> supplyTransactionList;
+    //private ArrayList<Companyinformation> companyInfoList;
 
     private TableRowSorter<DefaultTableModel> sorter;
     private TableRowSorter<DefaultTableModel> supplierSorter;
@@ -1859,6 +1858,44 @@ public final class MainForm extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
+//    public void getCompanyInformation() {
+//        salesList = new ArrayList<>();
+//
+//        long saleTimeDate = 0;
+//
+//        //Get customers from api
+//        String salesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "GetMultiple", "SessionID=aa");
+//        try {
+//            System.out.println("Get Sales HTTP -> " + salesJSON);
+//            JSONObject jsonObject = new JSONObject(salesJSON);
+//            final String status = jsonObject.getString("Status");
+//            final String title = jsonObject.getString("Title");
+//            final String message = jsonObject.getString("Message");
+//
+//            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+//                JSONArray dataArray = jsonObject.getJSONArray("Data");
+//                for (int i = 0; i < dataArray.length(); i++) {
+//                    JSONObject currentItem = dataArray.getJSONObject(i);
+//
+//                    int id = currentItem.getInt("ID");
+//                    int customerID = currentItem.getInt("CustomerID");
+//                    int saleProductsID = currentItem.getInt("SaleProductsID");
+//                    int tax = currentItem.getInt("Tax");
+//                    saleTimeDate = currentItem.getLong("SaleTimeDate");
+//
+//                    Sales c = new Sales(id, customerID, saleProductsID, tax, saleTimeDate);
+//                    salesList.add(c);
+//                }
+//            } else {
+//                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+//                System.out.println("Fail " + salesJSON);
+//            }
+//        } catch (JSONException e) {
+//            System.out.println(e);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 
     private void salesTab() {
         refreshSalesButton.setEnabled(false);
@@ -2296,7 +2333,7 @@ public final class MainForm extends javax.swing.JFrame {
         salesDetailsTable = new javax.swing.JTable();
         searchSale = new javax.swing.JTextField();
         refreshSalesButton = new javax.swing.JButton();
-        printCusDetailsBtn1 = new javax.swing.JButton();
+        printSalesDetailsBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jPanel7 = new javax.swing.JPanel();
@@ -2607,12 +2644,10 @@ public final class MainForm extends javax.swing.JFrame {
             .addGroup(productsDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(productsDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteProductsButton)
-                            .addComponent(productsSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(deleteProductsButton)
+                        .addComponent(productsSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(refreshProductsTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(importProductsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(25, 25, 25)
@@ -2989,7 +3024,12 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        printCusDetailsBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+        printSalesDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+        printSalesDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printSalesDetailsBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -2997,7 +3037,7 @@ public final class MainForm extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(printCusDetailsBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(printSalesDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -3016,7 +3056,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(refreshSalesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(searchSale))
-                    .addComponent(printCusDetailsBtn1))
+                    .addComponent(printSalesDetailsBtn))
                 .addGap(0, 237, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -3091,6 +3131,11 @@ public final class MainForm extends javax.swing.JFrame {
         customerDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customer Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
         printCusDetailsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+        printCusDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printCusDetailsBtnActionPerformed(evt);
+            }
+        });
 
         importCustomerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
         importCustomerBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -3411,7 +3456,7 @@ public final class MainForm extends javax.swing.JFrame {
         employeeListPanelLayout.setVerticalGroup(
             employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeListPanelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(22, 22, 22)
                 .addGroup(employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(printBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchTxt, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -3420,9 +3465,9 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(deletRow)
                         .addComponent(employeesSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(298, Short.MAX_VALUE))
         );
 
         numOfEmployeesLabel.setName("numOfEmployeesLabel"); // NOI18N
@@ -3461,6 +3506,11 @@ public final class MainForm extends javax.swing.JFrame {
         suppliersDetailsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplier Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
         printSupDetailsBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+        printSupDetailsBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printSupDetailsBtn1ActionPerformed(evt);
+            }
+        });
 
         importSupplierBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
         importSupplierBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -4127,7 +4177,6 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_employeesSaveButtonActionPerformed
 
     private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
-
         int currentRow = employeesTable.getSelectedRow();
             if (currentRow < 0) {
                 showMessageDialog(null, "No employee selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
@@ -4179,8 +4228,6 @@ public final class MainForm extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
     }//GEN-LAST:event_printBtnActionPerformed
 
     private void suppliersSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppliersSaveButtonActionPerformed
@@ -4370,6 +4417,176 @@ public final class MainForm extends javax.swing.JFrame {
 
         editSupplies(s);
     }//GEN-LAST:event_suppliesSaveButtonActionPerformed
+
+    private void printCusDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printCusDetailsBtnActionPerformed
+        int currentRow = customerDetailsTable.getSelectedRow();
+        if (currentRow < 0) {
+            showMessageDialog(null, "No customer selected to save. Please select a customer", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Map table columns to fields:
+        int id = (int) customerDetailsTable.getValueAt(currentRow, 0);
+        String name = (String) customerDetailsTable.getValueAt(currentRow, 1);
+        String telephone = (String) customerDetailsTable.getValueAt(currentRow, 2);
+        String address = (String) customerDetailsTable.getValueAt(currentRow, 3);
+        String city = (String) customerDetailsTable.getValueAt(currentRow, 4);
+        String country = (String) customerDetailsTable.getValueAt(currentRow, 5);
+        
+        
+        PDDocument document;
+        URL url = getClass().getResource("");
+        String currentFolder = url.getPath();
+        String combinedPath = currentFolder + "Documents/customer.pdf";
+        System.out.println(combinedPath);
+        File file = new File(combinedPath);
+        try {
+            document = PDDocument.load(file);
+
+            PDPage page = PDFBoxUtils.getPage(document, 0);
+
+            PDFBoxUtils.addText(document, page, name, Color.black, PDType1Font.COURIER, 14, 220, 570);
+            PDFBoxUtils.addText(document, page, telephone, Color.black, PDType1Font.COURIER, 14, 220, 545);
+            PDFBoxUtils.addText(document, page, address, Color.black, PDType1Font.COURIER, 14, 220, 520);
+            PDFBoxUtils.addText(document, page, city, Color.black, PDType1Font.COURIER, 14, 220, 495);
+            PDFBoxUtils.addText(document, page, country, Color.black, PDType1Font.COURIER, 14, 220, 473);
+
+            String fileName = "customersDetails.pdf";
+            String exportedFileName = currentFolder + "../../../" + fileName;
+            document.save(exportedFileName);
+            document.close();
+            File exportedFile = new File(exportedFileName);
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(exportedFile);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_printCusDetailsBtnActionPerformed
+
+    private void printSupDetailsBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printSupDetailsBtn1ActionPerformed
+        
+        int currentRow = supplierDetailsTable.getSelectedRow();
+        if (currentRow < 0) {
+            showMessageDialog(null, "No supplier selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Map table columns to fields:
+        int id = (int) supplierDetailsTable.getValueAt(currentRow, 0);
+        String name = (String) supplierDetailsTable.getValueAt(currentRow, 1);
+        String telephone = (String) supplierDetailsTable.getValueAt(currentRow, 2);
+        String address = (String) supplierDetailsTable.getValueAt(currentRow, 3);
+        String city = (String) supplierDetailsTable.getValueAt(currentRow, 4);
+        String country = (String) supplierDetailsTable.getValueAt(currentRow, 5);
+        
+        PDDocument document;
+        URL url = getClass().getResource("");
+        String currentFolder = url.getPath();
+        String combinedPath = currentFolder + "Documents/suppliers.pdf";
+        System.out.println(combinedPath);
+        File file = new File(combinedPath);
+        try {
+            document = PDDocument.load(file);
+
+            PDPage page = PDFBoxUtils.getPage(document, 0);
+
+            PDFBoxUtils.addText(document, page, name, Color.black, PDType1Font.COURIER, 14, 220, 570);
+            PDFBoxUtils.addText(document, page, telephone, Color.black, PDType1Font.COURIER, 14, 220, 545);
+            PDFBoxUtils.addText(document, page, address, Color.black, PDType1Font.COURIER, 14, 220, 520);
+            PDFBoxUtils.addText(document, page, city, Color.black, PDType1Font.COURIER, 14, 220, 495);
+            PDFBoxUtils.addText(document, page, country, Color.black, PDType1Font.COURIER, 14, 220, 473);
+
+            String fileName = "suppliersDetails.pdf";
+            String exportedFileName = currentFolder + "../../../" + fileName;
+            document.save(exportedFileName);
+            document.close();
+            File exportedFile = new File(exportedFileName);
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(exportedFile);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_printSupDetailsBtn1ActionPerformed
+
+    private void printSalesDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printSalesDetailsBtnActionPerformed
+       //salesDetailsTable.getModel();
+//        if (currentRow < 0) {
+//            showMessageDialog(null, "No supplier selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
+//            return;
+//        }
+
+        //Map table columns to fields:
+//        int id = (int) salesDetailsTable.getValueAt(currentRow, 0);
+//        String dateMade = (String) salesDetailsTable.getValueAt(currentRow, 1);
+        //String customerName = (String) salesDetailsTable.getValueAt(currentRow, 2);
+
+//        customersTab();
+        
+        
+        PDDocument document;
+        URL url = getClass().getResource("");
+        String currentFolder = url.getPath();
+        String combinedPath = currentFolder + "Documents/sales.pdf";
+        System.out.println(combinedPath);
+        File file = new File(combinedPath);
+        try {
+            document = PDDocument.load(file);
+
+            PDPage page = PDFBoxUtils.getPage(document, 0);
+            
+            //Company Details
+            PDFBoxUtils.addText(document, page, "Company name" , Color.black, PDType1Font.COURIER, 11, 75, 645);
+            PDFBoxUtils.addText(document, page, "Telephne" , Color.black, PDType1Font.COURIER, 11, 75, 632);
+            PDFBoxUtils.addText(document, page, "Address", Color.black, PDType1Font.COURIER, 11, 75, 620);
+            PDFBoxUtils.addText(document, page, "City", Color.black, PDType1Font.COURIER, 11, 75, 609);
+            PDFBoxUtils.addText(document, page, "Country", Color.black, PDType1Font.COURIER, 11, 75, 599);
+
+            int height = 512; 
+            int numHeight = 512;
+            for(int i = 0; i<salesList.size(); i++){
+               
+                //Put customerName in the Table
+            String customerName = "";
+            for (int j = 0; j < customersList.size(); j++) {
+                if (customersList.get(j).getID() == salesList.get(i).getID()) {
+                    customerName = customersList.get(j).getName();
+                }
+            }
+            
+            Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
+            Date date = new Date(timestamp.getTime());
+
+          int num = 0;
+          num =i+1;
+          String number = String.valueOf(num);
+               
+//               int number = -782;
+//String numberAsString = String.valueOf(number); 
+            PDFBoxUtils.addText(document, page, number , Color.black, PDType1Font.COURIER, 13, 75, numHeight);
+            PDFBoxUtils.addText(document, page, Users.DATE_FORMAT.format(date), Color.black, PDType1Font.COURIER, 10, 132, numHeight);
+            PDFBoxUtils.addText(document, page, customerName, Color.black, PDType1Font.COURIER, 13, 200, height);
+            //PDFBoxUtils.addText(document, page, "Total", Color.black, PDType1Font.COURIER, 13, 450, 512);
+            height = height -8;
+            numHeight -=17;
+            }
+
+            String fileName = "customersSales.pdf";
+            String exportedFileName = currentFolder + "../../../" + fileName;
+            document.save(exportedFileName);
+            document.close();
+            File exportedFile = new File(exportedFileName);
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(exportedFile);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_printSalesDetailsBtnActionPerformed
 
     private void editEmployees(Users u) {
         //Get field values:
@@ -4686,9 +4903,9 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu options;
     private javax.swing.JButton printBtn;
     private javax.swing.JButton printCusDetailsBtn;
-    private javax.swing.JButton printCusDetailsBtn1;
     private javax.swing.JButton printCustProductsBtn;
     private javax.swing.JButton printPurchasesBtn;
+    private javax.swing.JButton printSalesDetailsBtn;
     private javax.swing.JButton printSupDetailsBtn1;
     private javax.swing.JButton printSuppliesBtn;
     private javax.swing.JComboBox<String> productComboBox;
