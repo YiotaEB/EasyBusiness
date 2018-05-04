@@ -130,5 +130,6 @@
     <string name="select_product">Select Product</string>
     <string name="supply_name">Supply Name</string>
     <string name="select_supplier">Select supplier</string>
+    <string name="total">Total</string>
 
 </resources>

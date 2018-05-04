@@ -4,34 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewSalesFragment">
 
-    <TextView
-        android:id="@+id/sales_list_text"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:text="Sales" />
-
-    <Button
+    <ProgressBar
+        android:id="@+id/view_sales_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sales_list_text"
-        android:id="@+id/addSaleButton"
-        android:text="Add Sale"
-        android:layout_centerHorizontal="true"/>
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
+
+    <RelativeLayout
+        android:id="@+id/view_sales_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layout_top_sales"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+
+            <SearchView
+                android:id="@+id/sales_search_view"
+                android:background="@color/lightGray"
+                android:layout_width="0dp"
+                android:layout_weight="9"
+                android:layout_height="match_parent">
+
+            </SearchView>
+
+            <Button
+                android:layout_width="34dp"
+                android:layout_height="match_parent"
+                android:id="@+id/refresh_sales"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/ic_refresh_black_24dp" />
+
+            <Button
+                android:id="@+id/print_sales_list_btn"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/ic_local_printshop_black_24dp" />
 
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/daily_sales_list_view"
-        android:layout_below="@id/addSaleButton">
+            <ImageButton
+                android:id="@+id/addSaleButton"
+                android:src="@drawable/ic_add_box_black_48dp"
+                android:tint="@color/darkGreen"
+                android:background="?android:selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_height="match_parent" />
 
-    </ListView>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/salesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_top_sales"
+            android:layout_marginTop="10dp"
+
+            />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

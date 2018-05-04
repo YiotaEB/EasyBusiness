@@ -1,13 +1,16 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +20,21 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.easybusiness.eb_androidapp.AsyncTask.GetSuppliesAsyncTask;
+import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.Entities.Supplies;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.SuppliesAdapter;
 import com.easybusiness.eb_androidapp.UI.Dialogs;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ViewSuppliesFragment extends Fragment {
@@ -99,7 +110,10 @@ public class ViewSuppliesFragment extends Fragment {
         });
 
 
-
+        //Make list view searchable:
+        supplyListView.setTextFilterEnabled(true);
+        //Searchview properties:
+        setupSearchView();
 
         return v;
     }
@@ -109,36 +123,6 @@ public class ViewSuppliesFragment extends Fragment {
         super.onResume();
 
         getActivity().setTitle(TITLE);
-
-        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                supplyListView.setAdapter(allSuppliesAdapter);
-
-                final SuppliesAdapter adapter = (SuppliesAdapter) supplyListView.getAdapter();
-                ArrayList<Supplies> searchedSupplies= new ArrayList<>();
-                System.out.println("ADAPTER SIZE: " + adapter.getCount());
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    Supplies supplies= adapter.getItem(i);
-                    if (supplies.getName() != null) {
-                        if (supplies.getName().toLowerCase().contains(newText.toLowerCase())) {
-                            searchedSupplies.add(supplies);
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-                final SuppliesAdapter newAdapter = new SuppliesAdapter(getActivity(), searchedSupplies);
-                supplyListView.setAdapter(newAdapter);
-
-                return true;
-            }
-        });
 
         addSupplyBtn =v.findViewById(R.id.addSupply);
         addSupplyBtn.setOnClickListener(new View.OnClickListener() {
@@ -164,4 +148,132 @@ public class ViewSuppliesFragment extends Fragment {
         new GetSuppliesAsyncTask(query, getActivity(), v).execute();
 
     }
+
+    private void setupSearchView() {
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)) {
+                    supplyListView.clearTextFilter();
+                } else {
+                    supplyListView.setFilterText(s);
+                }
+                return true;
+            }
+        });
+        searchView.setQueryHint("Search...");
+    }
+
+    public class GetSuppliesAsyncTask extends AsyncTask<Void,Void,Void> {
+
+        private String query;
+        private String responseData;
+        private Activity activity;
+        private View view;
+        ArrayList<Supplies> supplies = null;
+
+        public GetSuppliesAsyncTask(String query, Activity activity, View view) {
+            this.query = query;
+            this.activity = activity;
+            this.view = view;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            if (query == null) query = "";
+
+            try {
+                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Supplies", "GetMultiple"));
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                byte[] outputBytes = query.getBytes("UTF-8");
+                urlConnection.setRequestMethod("POST");
+                urlConnection.connect();
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(outputBytes);
+                os.close();
+                int statusCode = urlConnection.getResponseCode();
+                urlConnection.disconnect();
+
+                //OK
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    responseData = AsyncTasks.convertStreamToString(inputStream);
+
+                    JSONObject outterObject = new JSONObject(responseData);
+                    final String status = outterObject.getString("Status");
+                    final String title = outterObject.getString("Title");
+                    final String message = outterObject.getString("Message");
+
+                    if (status.equals(AsyncTasks.RESPONSE_OK)) {
+                        supplies = new ArrayList<>();
+                        JSONArray dataArray = outterObject.getJSONArray("Data");
+                        for (int i = 0; i < dataArray.length(); i++) {
+                            JSONObject jsonObject = dataArray.getJSONObject(i);
+                            int id = jsonObject.getInt("ID");
+                            String name = jsonObject.getString("Name");
+                            int supplierID = jsonObject.getInt("SupplierID");
+                            double price = jsonObject.getDouble("Price");
+                            int quantity = jsonObject.getInt("Quantity");
+                            Supplies p = new Supplies(id, name, supplierID, quantity, (float) price);
+                            supplies.add(p);
+                        }
+
+                        MainActivity mainActivity = (MainActivity) activity;
+                        mainActivity.SUPPLY_DATA = supplies;
+
+                        final ListView suppliesListview = activity.findViewById(R.id.suppliesList);
+                        String [] items = new String[supplies.size()];
+                        for (int i = 0; i < items.length; i++)
+                            items[i] = supplies.get(i).getName();
+                        final SuppliesAdapter suppliesAdapter = new SuppliesAdapter(activity, supplies);
+
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                suppliesListview.setAdapter(suppliesAdapter);
+                            }
+                        });
+
+
+                    }
+                    else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final android.app.AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+
+                }
+                //CONNECTION ERROR
+                else {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final android.app.AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
+                            alertDialog.show();
+                        }
+                    });
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+    }
+
 }

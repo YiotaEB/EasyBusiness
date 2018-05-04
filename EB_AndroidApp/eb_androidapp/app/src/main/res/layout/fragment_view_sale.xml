@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewSaleFragment">
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/view_sale_progress"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/view_sale_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/sale_products_listview"
+            android:layout_width="match_parent"
+            android:layout_weight="8"
+            android:layout_height="0dp">
+
+        </ListView>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:background="@color/darkGray"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkGray"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/total"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/sale_total_price"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/yellow"
+                android:textAlignment="center"
+                android:text="$###"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/viewProduct_layoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+            <Button
+                android:id="@+id/viewSale_delete"
+                android:text="@string/delete"
+                android:background="@color/red"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/viewSale_toPDF"
+                android:text="@string/to_pdf"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

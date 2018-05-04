@@ -8,25 +8,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
-import com.easybusiness.eb_androidapp.Entities.Customers;
 import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.Entities.SaleProducts;
 import com.easybusiness.eb_androidapp.Entities.Sales;
 import com.easybusiness.eb_androidapp.R;
-import com.easybusiness.eb_androidapp.UI.Adapters.SalesAdapter;
+import com.easybusiness.eb_androidapp.UI.Adapters.SaleProductsAdapter;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
 
 import org.json.JSONArray;
@@ -42,31 +38,33 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewSalesFragment extends Fragment {
+public class ViewSaleFragment extends Fragment {
 
-    public static final String TAG = "ViewSalesFragment";
-    public static final String TITLE = "Sales";
+    public static final String TAG = "ViewSaleFragment";
 
-    View v;
+    public static final String SALE_ID_KEY = "sale-id";
 
-    private ProgressBar progressBar;
-    private View layout;
-
-    private SearchView searchView;
-    private ListView salesListView;
-    private ImageButton addSaleBtn;
-    private Button refreshBtn;
-    private Button printBtn;
+    private View v;
 
     private SharedPreferences sharedPreferences;
     private String sessionID;
 
-    private ArrayList<Sales> salesList;
-    private ArrayList<SaleProducts> saleProductsList;
-    private ArrayList<Products> productsList;
-    private ArrayList<Customers> customersList;
+    private TextView totalTextView;
+    private ListView productsListView;
+    private Button deleteButton;
+    private Button toPDFButton;
 
-    public ViewSalesFragment() {
+    private ProgressBar progressBar;
+    private View layout;
+
+    int saleID = 0;
+    int saleProductsID = 0;
+    int customerID = 0;
+    ArrayList<SaleProducts> saleProductsList;
+    ArrayList<Products> productsList;
+    Sales sale;
+
+    public ViewSaleFragment() {
         // Required empty public constructor
     }
 
@@ -75,35 +73,31 @@ public class ViewSalesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_view_sales, container, false);
+        v = inflater.inflate(R.layout.fragment_view_sale, container, false);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
 
-        progressBar = v.findViewById(R.id.view_sales_progress);
-        layout = v.findViewById(R.id.view_sales_layout);
-        searchView = v.findViewById(R.id.sales_search_view);
-        salesListView = v.findViewById(R.id.salesList);
-        addSaleBtn = v.findViewById(R.id.addSaleButton);
-        refreshBtn = v.findViewById(R.id.refresh_sales);
-        printBtn = v.findViewById(R.id.print_sales_list_btn);
+        progressBar = v.findViewById(R.id.view_sale_progress);
+        layout = v.findViewById(R.id.view_sale_layout);
 
-        salesListView.setTextFilterEnabled(true);
-        setupSearchView();
+        productsListView = v.findViewById(R.id.sale_products_listview);
+        totalTextView = v.findViewById(R.id.sale_total_price);
+        deleteButton = v.findViewById(R.id.viewSale_delete);
+        toPDFButton = v.findViewById(R.id.viewSale_toPDF);
 
-        salesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(ViewSaleFragment.SALE_ID_KEY, salesList.get(i).getID());
+            public void onClick(View view) {
+                //TODO Call Delete API
+                Toast.makeText(getActivity(), "TODO", Toast.LENGTH_LONG).show();
+            }
+        });
 
-                Fragment newFragment = new ViewSaleFragment();
-                newFragment.setArguments(bundle);
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
-                fragmentTransaction.replace(R.id.frame, newFragment, ViewSaleFragment.TAG);
-                fragmentTransaction.addToBackStack(newFragment.getTag());
-                fragmentTransaction.commit();
+        toPDFButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "TODO", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -113,162 +107,43 @@ public class ViewSalesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(TITLE);
 
-        new GetCustomersAsyncTask().execute();
-    }
-
-    private void setupSearchView() {
-        searchView.setIconifiedByDefault(true);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if (TextUtils.isEmpty(s)) {
-                    salesListView.clearTextFilter();
-                } else {
-                    salesListView.setFilterText(s);
-                }
-                return true;
-            }
-        });
-        searchView.setQueryHint("Search by customer");
-    }
-
-    public class GetSalesAsyncTask extends AsyncTask<Void,Void,Void> {
-
-        private String query;
-        private String responseData;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            salesList = new ArrayList<>();
-
-            Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("Limit", "0")
-                    .appendQueryParameter("SessionID", sessionID);
-
-            query = builder.build().getEncodedQuery();
-
-            if (query == null) query = "";
-
-            try {
-                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Sales", "GetMultiple"));
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setDoOutput(true);
-                byte[] outputBytes = query.getBytes("UTF-8");
-                urlConnection.setRequestMethod("POST");
-                urlConnection.connect();
-                OutputStream os = urlConnection.getOutputStream();
-                os.write(outputBytes);
-                os.close();
-                int statusCode = urlConnection.getResponseCode();
-                urlConnection.disconnect();
-
-                //OK
-                if (statusCode == HttpURLConnection.HTTP_OK) {
-                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                    responseData = AsyncTasks.convertStreamToString(inputStream);
-
-                    JSONObject outterObject = new JSONObject(responseData);
-                    final String status = outterObject.getString("Status");
-                    final String title = outterObject.getString("Title");
-                    final String message = outterObject.getString("Message");
-
-                    if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                        salesList = new ArrayList<>();
-                        JSONArray dataArray = outterObject.getJSONArray("Data");
-                        for (int i = 0; i < dataArray.length(); i++) {
-                            JSONObject jsonObject = dataArray.getJSONObject(i);
-
-                            int id = jsonObject.getInt("ID");
-                            int customerID = jsonObject.getInt("CustomerID");
-                            int saleProductsID = jsonObject.getInt("SaleProductsID");
-                            double tax = jsonObject.getDouble("Tax");
-                            long saleTimeDate = jsonObject.getLong("SaleTimeDate");
-
-                            Sales p = new Sales(id, customerID, saleProductsID, tax, saleTimeDate);
-                            salesList.add(p);
-                        }
-
-
-                        final SalesAdapter salesAdapter = new SalesAdapter(getActivity(), salesList, customersList, saleProductsList, productsList);
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                salesListView.setAdapter(salesAdapter);
-                            }
-                        });
-
-
-                    }
-                    else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
-                        final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                alertDialog.show();
-                            }
-                        });
-                    }
-
-
-                }
-                //CONNECTION ERROR
-                else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
-                            alertDialog.show();
-                        }
-                    });
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            saleID = bundle.getInt(SALE_ID_KEY, 0);
         }
 
+        new GetSaleAsyncTask().execute();
+
     }
 
-    public class GetCustomersAsyncTask extends AsyncTask<Void,Void,Void> {
+    private class GetSaleAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private String query;
         private String responseData;
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(Void... voids) {
 
-            customersList = new ArrayList<>();
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    progressBar.setVisibility(View.VISIBLE);
                     layout.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
                 }
             });
 
-            customersList = new ArrayList<>();
 
+            String query;
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("Limit", "0")
+                    .appendQueryParameter("ID", String.valueOf(saleID))
                     .appendQueryParameter("SessionID", sessionID);
-
             query = builder.build().getEncodedQuery();
 
-            if (query == null) query = "";
+            System.out.println("GET SALE QUERY -->" + query);
 
             try {
-                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Customers", "GetMultiple"));
+                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Sales", "GetByID"));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 byte[] outputBytes = query.getBytes("UTF-8");
@@ -286,62 +161,145 @@ public class ViewSalesFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
+                    System.out.println(responseData);
+
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
                     final String message = outterObject.getString("Message");
 
                     if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                        salesList = new ArrayList<>();
-                        JSONArray dataArray = outterObject.getJSONArray("Data");
-                        for (int i = 0; i < dataArray.length(); i++) {
-                            JSONObject jsonObject = dataArray.getJSONObject(i);
+                        final JSONObject jsonObject = outterObject.getJSONObject("Data");
 
-                            int id = jsonObject.getInt("ID");
-                            String name = jsonObject.getString("Name");
-                            int countryID = jsonObject.getInt("CountryID");
-                            String city = jsonObject.getString("City");
-                            String address = jsonObject.getString("Address");
-                            String telephone = jsonObject.getString("Telephone");
-                            int customerProductsID = jsonObject.getInt("CustomerProductsID");
+                        int id = jsonObject.getInt("ID");
+                        customerID = jsonObject.getInt("CustomerID");
+                        saleProductsID = jsonObject.getInt("SaleProductsID");
+                        double tax = jsonObject.getDouble("Tax");
+                        long timedate = jsonObject.getLong("SaleTimeDate");
 
-                            Customers p = new Customers(id, name, countryID, city, address, telephone, customerProductsID);
-                            customersList.add(p);
-                        }
+                        sale = new Sales(id, customerID, saleProductsID, tax, timedate);
 
-                    }
-                    else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
-                        final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
+                    } else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
                                 alertDialog.show();
                             }
                         });
                     }
 
+                    //CONNECTION ERROR
+                    else {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
+                                alertDialog.show();
+                            }
+                        });
+                    }
 
-                }
-                //CONNECTION ERROR
-                else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
-                            alertDialog.show();
-                        }
-                    });
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return null;
+
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            new GetProductsAsyncTask().execute();
+            new GetCustomerAsyncTask().execute();
+            new GetSalesProductsAsyncTask().execute();
         }
+    }
+
+    private class GetCustomerAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private String responseData;
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+
+            String query;
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("ID", String.valueOf(customerID))
+                    .appendQueryParameter("SessionID", sessionID);
+            query = builder.build().getEncodedQuery();
+
+            System.out.println("GET CUSTOMER QUERY -->" + query);
+
+            try {
+                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Customers", "GetByID"));
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                byte[] outputBytes = query.getBytes("UTF-8");
+                urlConnection.setRequestMethod("POST");
+                urlConnection.connect();
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(outputBytes);
+                os.close();
+                int statusCode = urlConnection.getResponseCode();
+                urlConnection.disconnect();
+
+                //OK
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    responseData = AsyncTasks.convertStreamToString(inputStream);
+
+                    JSONObject outterObject = new JSONObject(responseData);
+                    System.out.println(responseData);
+
+                    final String status = outterObject.getString("Status");
+                    final String title = outterObject.getString("Title");
+                    final String message = outterObject.getString("Message");
+
+                    if (status.equals(AsyncTasks.RESPONSE_OK)) {
+                        final JSONObject jsonObject = outterObject.getJSONObject("Data");
+
+                        final String customerName = jsonObject.getString("Name");
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getActivity().setTitle("Sold to " + customerName);
+                            }
+                        });
+
+                    } else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+                    //CONNECTION ERROR
+                    else {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+
+        }
+
     }
 
     public class GetSalesProductsAsyncTask extends AsyncTask<Void,Void,Void> {
@@ -431,7 +389,7 @@ public class ViewSalesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            new GetSalesAsyncTask().execute();
+            new GetProductsAsyncTask().execute();
         }
     }
 
@@ -477,7 +435,6 @@ public class ViewSalesFragment extends Fragment {
                     final String message = outterObject.getString("Message");
 
                     if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                        salesList = new ArrayList<>();
                         JSONArray dataArray = outterObject.getJSONArray("Data");
                         for (int i = 0; i < dataArray.length(); i++) {
                             JSONObject jsonObject = dataArray.getJSONObject(i);
@@ -533,7 +490,40 @@ public class ViewSalesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            new GetSalesProductsAsyncTask().execute();
+            final SaleProductsAdapter adapter = new SaleProductsAdapter(getActivity(), sale, saleProductsList, productsList);
+
+            float total = 0;
+            for (int i = 0; i < saleProductsList.size(); i++) {
+                double currentItemTotal = 0;
+                if (saleProductsList.get(i).getSaleID() == sale.getID()) {
+                    int quantity = saleProductsList.get(i).getQuantitySold();
+                    double price = 0;
+                    //Find product:
+                    int productID = saleProductsList.get(i).getProductID();
+                    for (int j = 0; j < productsList.size(); j++) {
+                        if (productsList.get(j).getID() == productID) {
+                            price = productsList.get(j).getPrice();
+                            break;
+                        }
+                    }
+                    currentItemTotal = quantity * price;
+                }
+                total += currentItemTotal;
+            }
+            final String totalString = "€" + String.format("%.2f", total);
+
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    productsListView.setAdapter(adapter);
+                    totalTextView.setText(totalString);
+                }
+            });
+
+
+
+
         }
     }
 
