@@ -1999,6 +1999,9 @@
                       <Image iconType="3" name="/eb_managementapp/UI/Images/printer_hardware.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printBtnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="refreshEmployeesBtn">
                   <Properties>

@@ -6,6 +6,8 @@
 package eb_managementapp.UI;
 
 import Utilities.HTTPConnection;
+import com.panickapps.pdfboxutils.PDFBoxUtils;
+import java.io.File;
 import static eb_managementapp.EB_ManagementApp.addUsersForm;
 import static eb_managementapp.EB_ManagementApp.customersForm;
 import static eb_managementapp.EB_ManagementApp.addSuppliersForm;
@@ -34,10 +36,14 @@ import eb_managementapp.UI.Forms.CustomersForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
 import org.json.*;
 import java.awt.Color;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -50,6 +56,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -3470,6 +3477,11 @@ public final class MainForm extends javax.swing.JFrame {
         });
 
         printBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/printer_hardware.png"))); // NOI18N
+        printBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printBtnActionPerformed(evt);
+            }
+        });
 
         refreshEmployeesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
         refreshEmployeesBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -4293,6 +4305,30 @@ public final class MainForm extends javax.swing.JFrame {
         editEmployees(u);
         
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
+       
+        PDDocument document;
+        URL url = getClass().getResource("");
+        String currentFolder = url.getPath();
+        String combinedPath = currentFolder + "Documents/employees.pdf";
+        System.out.println(combinedPath);
+        File file = new File(combinedPath);
+        try {
+            document = PDDocument.load(file);
+            
+            //TODO Add items into PDF...
+            
+            
+            
+            document.save("doc.pdf");
+            document.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        
+    }//GEN-LAST:event_printBtnActionPerformed
 
     private void editEmployees(Users u) {
         //Get field values:
