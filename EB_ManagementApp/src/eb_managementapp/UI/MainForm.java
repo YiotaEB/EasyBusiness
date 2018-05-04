@@ -1651,6 +1651,9 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void productsTab() {
         refreshProductsTable.setEnabled(false);
+        
+//        getProductSize();
+//        getProductType();
 
         //Create a new model for the table:
         DefaultTableModel productsTableModel = new DefaultTableModel();
@@ -1669,7 +1672,7 @@ public final class MainForm extends javax.swing.JFrame {
             //Put productSizes Name in the Table
             String productSizeName = "";
             for (int j = 0; j < productSizesList.size(); j++) {
-                if (productSizesList.get(j).getID() == productsList.get(i).getID()) {
+                if (productSizesList.get(j).getID() == productsList.get(i).getProductSizeID()) {
                     productSizeName = productSizesList.get(j).getName();
                 }
             }
@@ -1677,7 +1680,7 @@ public final class MainForm extends javax.swing.JFrame {
             //Put productType Name in the Table
             String productTypeName = "";
             for (int j = 0; j < productTypesList.size(); j++) {
-                if (productTypesList.get(j).getID() == productsList.get(i).getProductSizeID()) {
+                if (productTypesList.get(j).getID() == productsList.get(i).getProductTypeID()) {
                     productTypeName = productTypesList.get(j).getName();
                 }
             }
@@ -2316,7 +2319,6 @@ public final class MainForm extends javax.swing.JFrame {
         custProScrollPanel = new javax.swing.JScrollPane();
         customerProductsTable = new javax.swing.JTable();
         deleteCustomerProductsButton = new javax.swing.JButton();
-        customerProdcuctsSaveButton = new javax.swing.JButton();
         customersGraphsPanel = new javax.swing.JPanel();
         customersGraphsPanel2 = new javax.swing.JPanel();
         numOfCustomersLabel = new javax.swing.JLabel();
@@ -2351,7 +2353,6 @@ public final class MainForm extends javax.swing.JFrame {
         suppliesTabPane = new javax.swing.JScrollPane();
         suppliesTable = new javax.swing.JTable();
         deleteSupplyButton = new javax.swing.JButton();
-        supplierSuppliessSaveButton = new javax.swing.JButton();
         purchasesHistoryPanel = new javax.swing.JPanel();
         exportPurchFilesBtn = new javax.swing.JButton();
         printPurchasesBtn = new javax.swing.JButton();
@@ -3216,8 +3217,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        customerProdcuctsSaveButton.setText("Save");
-
         javax.swing.GroupLayout custProductsPanelLayout = new javax.swing.GroupLayout(custProductsPanel);
         custProductsPanel.setLayout(custProductsPanelLayout);
         custProductsPanelLayout.setHorizontalGroup(
@@ -3229,8 +3228,6 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, custProductsPanelLayout.createSequentialGroup()
                         .addComponent(deleteCustomerProductsButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(customerProdcuctsSaveButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(printCustProductsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(searchCustProductsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3247,15 +3244,13 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(printCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(refreshCustProductsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(searchCustProductsTxt))
-                    .addGroup(custProductsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(deleteCustomerProductsButton)
-                        .addComponent(customerProdcuctsSaveButton)))
+                    .addComponent(deleteCustomerProductsButton))
                 .addGap(18, 18, 18)
                 .addComponent(custProScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
-        customerTabPanel.addTab("Customer Prooducts", custProductsPanel);
+        customerTabPanel.addTab("Customer Products", custProductsPanel);
 
         customersGraphsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customers Sales %", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
@@ -3589,13 +3584,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
-        supplierSuppliessSaveButton.setText("Save");
-        supplierSuppliessSaveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                supplierSuppliessSaveButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout suppliesTabPanelLayout = new javax.swing.GroupLayout(suppliesTabPanel);
         suppliesTabPanel.setLayout(suppliesTabPanelLayout);
         suppliesTabPanelLayout.setHorizontalGroup(
@@ -3607,8 +3595,6 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesTabPanelLayout.createSequentialGroup()
                         .addComponent(deleteSupplyButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(supplierSuppliessSaveButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(printSuppliesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchSuppliesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3624,9 +3610,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(printSuppliesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(refreshSuppliesTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchSuppliesTxt)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(deleteSupplyButton)
-                        .addComponent(supplierSuppliessSaveButton)))
+                    .addComponent(deleteSupplyButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(suppliesTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addContainerGap())
@@ -4241,12 +4225,47 @@ public final class MainForm extends javax.swing.JFrame {
         editSuppliers(s);
     }//GEN-LAST:event_suppliersSaveButtonActionPerformed
 
-    private void supplierSuppliessSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierSuppliessSaveButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_supplierSuppliessSaveButtonActionPerformed
-
     private void customersSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customersSaveButtonActionPerformed
-        // TODO add your handling code here:
+        int currentRow = customerDetailsTable.getSelectedRow();
+        if (currentRow < 0) {
+            showMessageDialog(null, "No customer selected to save. Please select a customer", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Map table columns to fields:
+        int id = (int) customerDetailsTable.getValueAt(currentRow, 0);
+        String name = (String) customerDetailsTable.getValueAt(currentRow, 1);
+        String telephone = (String) customerDetailsTable.getValueAt(currentRow, 2);
+        String address = (String) customerDetailsTable.getValueAt(currentRow, 3);
+        String city = (String) customerDetailsTable.getValueAt(currentRow, 4);
+        String country = (String) customerDetailsTable.getValueAt(currentRow, 5);
+
+        int countryID = 0;
+
+        //Get country ID
+        for (int i = 0; i < countriesList.size(); i++) {
+            if (countriesList.get(i).getName().equals(country)) {
+                countryID = countriesList.get(i).getID();
+                break;
+            }
+        }
+        if (countryID == 0) {
+            showMessageDialog(null, "Invalid country selected", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        Customers c = new Customers(
+                customersList.get(currentRow).getID(),
+                name,
+                countryID,
+                city,
+                address,
+                telephone,
+                customersList.get(currentRow).getCustomerProductsID()
+                
+        );
+
+        editCustomers(c);
     }//GEN-LAST:event_customersSaveButtonActionPerformed
 
     private void refreshSalesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSalesButtonActionPerformed
@@ -4259,11 +4278,97 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_searchSaleActionPerformed
 
     private void productsSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsSaveButtonActionPerformed
-        // TODO add your handling code here:
+        int currentRow = productsDetailsTable.getSelectedRow();
+        if (currentRow < 0) {
+            showMessageDialog(null, "No supplier selected to save. Please select a product.", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Map table columns to fields:
+        int id = (int) productsDetailsTable.getValueAt(currentRow, 0);
+        String name = (String) productsDetailsTable.getValueAt(currentRow, 1);
+        String size = (String) productsDetailsTable.getValueAt(currentRow, 2);
+        int quantity = (int) productsDetailsTable.getValueAt(currentRow, 3);
+        double price = (double) productsDetailsTable.getValueAt(currentRow, 4);
+        String type = (String) productsDetailsTable.getValueAt(currentRow, 5);
+
+        int typeID = 0;
+        int sizeID = 0;
+
+        //Get productType ID
+        for (int i = 0; i < productTypesList.size(); i++) {
+            if (productTypesList.get(i).getName().equals(type)) {
+                typeID = productTypesList.get(i).getID();
+                break;
+            }
+        }
+        
+        //Get productSize ID
+        for (int i = 0; i < productSizesList.size(); i++) {
+            if (productSizesList.get(i).getName().equals(size)) {
+                sizeID = productSizesList.get(i).getID();
+                break;
+            }
+        }
+        if (typeID == 0) {
+            showMessageDialog(null, "Invalid product type selected", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
+        if (sizeID == 0) {
+            showMessageDialog(null, "Invalid product size selected", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        Products p = new Products(
+                productsList.get(currentRow).getID(),
+                name,
+                price,
+                quantity,
+                sizeID,
+                typeID,
+                productsList.get(currentRow).getProductSuppliesID()
+                
+        );
+
+        editProducts(p);
     }//GEN-LAST:event_productsSaveButtonActionPerformed
 
     private void suppliesSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppliesSaveButtonActionPerformed
-        // TODO add your handling code here:
+         int currentRow = suppliesDetailsTable.getSelectedRow();
+        if (currentRow < 0) {
+            showMessageDialog(null, "No supplier selected to save. Please select a product.", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Map table columns to fields:
+        int id = (int) suppliesDetailsTable.getValueAt(currentRow, 0);
+        String name = (String) suppliesDetailsTable.getValueAt(currentRow, 1);
+        String supplier = (String) suppliesDetailsTable.getValueAt(currentRow, 2);
+        int quantity = (int) suppliesDetailsTable.getValueAt(currentRow, 3);
+        float price = (float) suppliesDetailsTable.getValueAt(currentRow, 4);
+
+        int supplierID = 0;
+
+       //Get supplier ID
+        for (int i = 0; i < suppliersList.size(); i++) {
+            if (suppliersList.get(i).getName().equals(supplier)) {
+                supplierID = suppliersList.get(i).getID();
+                break;
+            }
+        }
+       
+
+        Supplies s = new Supplies(
+                suppliesList.get(currentRow).getID(),
+                name,
+                supplierID,
+                quantity,
+                price
+                                
+        );
+
+        editSupplies(s);
     }//GEN-LAST:event_suppliesSaveButtonActionPerformed
 
     private void editEmployees(Users u) {
@@ -4348,6 +4453,116 @@ public final class MainForm extends javax.swing.JFrame {
         getSuppliers();
         suppliersTab();
     }
+    
+     private void editCustomers(Customers c) {
+        //Get field values:
+
+        //Check if the name is valid
+        if (c.getName().trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid customer name", "Invalid Customer Name", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Make the call:
+        String editCustomersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "Update",
+                "SessionID=aa&ID=" + c.getID() + "&Name=" + c.getName() + "&CountryID=" + c.getCountryID()+ 
+                      "&City=" + c.getCity() +   "&Address=" + c.getAddress() + "&Telephone=" + c.getTelephone() + "&CustomerProductsID=" + c.getCustomerProductsID()
+                
+        );
+        System.out.println("customersjson " + editCustomersJSON);
+        
+        try {
+            JSONObject jsonObject = new JSONObject(editCustomersJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + editCustomersJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                showMessageDialog(null, "Customers " + c.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Update table:
+        getCustomers();
+        customersTab();
+    }
+     
+     private void editProducts(Products p) {
+        //Get field values:
+
+        
+        //Check if the name is valid
+        if (p.getName().trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid product", "Invalid Product", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Make the call:
+        String editProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Update",
+                "SessionID=aa&ID=" + p.getID() + "&Name=" + p.getName() + "&Price=" + p.getPrice()+ 
+                      "&QuantityInStock=" + p.getQuantityInStock()+   "&ProductSizeID=" + p.getProductSizeID()+
+                       "&ProductTypeID=" + p.getProductTypeID()+ "&ProductSuppliesID=" + p.getProductSuppliesID()
+                
+        );
+        try {
+            JSONObject jsonObject = new JSONObject(editProductsJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + editProductsJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                showMessageDialog(null, "Products " + p.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Update table:
+        getProducts();
+        productsTab();
+    }
+     
+     private void editSupplies(Supplies s) {
+        //Get field values:
+
+        
+        //Check if the name is valid
+        if (s.getName().trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid supply", "Invalid Supply", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
+        //Make the call:
+        String editSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "Update",
+                "SessionID=aa&ID=" + s.getID() + "&Name=" + s.getName() + "&SupplierID=" + s.getSupplierID()+ 
+                      "&Quantity=" + s.getQuantity()+   "&Price=" + s.getPrice()
+                
+        );
+        try {
+            JSONObject jsonObject = new JSONObject(editSuppliesJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
+                System.out.println("Fail " + editSuppliesJSON);
+            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                showMessageDialog(null, "Supplies " + s.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Update table:
+        getSupplies();
+        suppliesTab();
+    }
 
     /**
      * @param args the command line arguments
@@ -4401,7 +4616,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel custProductsPanel;
     private javax.swing.JPanel customerDetailsPanel;
     private javax.swing.JTable customerDetailsTable;
-    private javax.swing.JButton customerProdcuctsSaveButton;
     private javax.swing.JTable customerProductsTable;
     private javax.swing.JScrollPane customerScrollPanel;
     private javax.swing.JTabbedPane customerTabPanel;
@@ -4524,7 +4738,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTable supplierDetailsTable;
     private javax.swing.JPanel supplierGraphPanel;
     private javax.swing.JScrollPane supplierScrollPanel;
-    private javax.swing.JButton supplierSuppliessSaveButton;
     private javax.swing.JPanel suppliers;
     private javax.swing.JPanel suppliersDetailsPanel1;
     private javax.swing.JButton suppliersSaveButton;

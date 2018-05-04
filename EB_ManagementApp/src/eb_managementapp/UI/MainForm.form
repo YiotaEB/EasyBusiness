@@ -1508,8 +1508,8 @@
                 <Container class="javax.swing.JPanel" name="custProductsPanel">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Customer Prooducts">
-                        <Property name="tabTitle" type="java.lang.String" value="Customer Prooducts"/>
+                      <JTabbedPaneConstraints tabName="Customer Products">
+                        <Property name="tabTitle" type="java.lang.String" value="Customer Products"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
@@ -1524,8 +1524,6 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="deleteCustomerProductsButton" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="customerProdcuctsSaveButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="printCustProductsBtn" min="-2" pref="28" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="searchCustProductsTxt" min="-2" pref="133" max="-2" attributes="0"/>
@@ -1547,10 +1545,7 @@
                                       <Component id="refreshCustProductsBtn" alignment="0" max="32767" attributes="0"/>
                                       <Component id="searchCustProductsTxt" alignment="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="deleteCustomerProductsButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="customerProdcuctsSaveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="deleteCustomerProductsButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="custProScrollPanel" min="-2" pref="134" max="-2" attributes="0"/>
@@ -1610,11 +1605,6 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteCustomerProductsButtonActionPerformed"/>
                       </Events>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="customerProdcuctsSaveButton">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Save"/>
-                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -2092,8 +2082,6 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="deleteSupplyButton" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="supplierSuppliessSaveButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="printSuppliesBtn" min="-2" pref="28" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="searchSuppliesTxt" min="-2" pref="104" max="-2" attributes="0"/>
@@ -2113,10 +2101,7 @@
                                   <Component id="printSuppliesBtn" alignment="0" max="32767" attributes="0"/>
                                   <Component id="refreshSuppliesTableBtn" alignment="0" max="32767" attributes="0"/>
                                   <Component id="searchSuppliesTxt" alignment="0" max="32767" attributes="0"/>
-                                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                      <Component id="deleteSupplyButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="supplierSuppliessSaveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="deleteSupplyButton" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="suppliesTabPane" pref="191" max="32767" attributes="0"/>
@@ -2175,14 +2160,6 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteSupplyButtonActionPerformed"/>
-                      </Events>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="supplierSuppliessSaveButton">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Save"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="supplierSuppliessSaveButtonActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>
