@@ -1650,10 +1650,9 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void productsTab() {
         refreshProductsTable.setEnabled(false);
-        
+
 //        getProductSize();
 //        getProductType();
-
         //Create a new model for the table:
         DefaultTableModel productsTableModel = new DefaultTableModel();
 
@@ -1915,12 +1914,12 @@ public final class MainForm extends javax.swing.JFrame {
             double total = 0.0;
             for (int j = 0; j < saleProductsList.size(); j++) {
                 int sold = saleProductsList.get(j).getQuantitySold();
-                System.out.println("Sold:" + sold);
+                //System.out.println("Sold:" + sold);
                 double price = 0.0;
                 for (int k = 0; k < productsList.size(); k++) {
                     if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
                         price = productsList.get(k).getPrice();
-                        System.out.println("Price:" + price);
+                        //System.out.println("Price:" + price);
                         break;
                     }
 
@@ -1932,10 +1931,12 @@ public final class MainForm extends javax.swing.JFrame {
             //Put customerName in the Table
             String customerName = "";
             for (int j = 0; j < customersList.size(); j++) {
-                if (customersList.get(j).getID() == salesList.get(i).getID()) {
+                if (customersList.get(j).getID() == salesList.get(i).getCustomerID()) {
                     customerName = customersList.get(j).getName();
                 }
             }
+
+            System.out.println("Customer:" + customerName);
 
             Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
             Date date = new Date(timestamp.getTime());
@@ -4178,24 +4179,23 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
         int currentRow = employeesTable.getSelectedRow();
-            if (currentRow < 0) {
-                showMessageDialog(null, "No employee selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
-                return;
-            }
+        if (currentRow < 0) {
+            showMessageDialog(null, "No employee selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
 
-            //Map table columns to fields:
-            int id = (int) employeesTable.getValueAt(currentRow, 0);
-            String username = (String) employeesTable.getValueAt(currentRow, 1);
-            String firstname = (String) employeesTable.getValueAt(currentRow, 2);
-            String lastname = (String) employeesTable.getValueAt(currentRow, 3);
-            String position = (String) employeesTable.getValueAt(currentRow, 4);
-            String dateHired = (String) employeesTable.getValueAt(currentRow, 5);
-            String telephone = (String) employeesTable.getValueAt(currentRow, 6);
-            String address = (String) employeesTable.getValueAt(currentRow, 7);
-            String city = (String) employeesTable.getValueAt(currentRow, 8);
-            String country = (String) employeesTable.getValueAt(currentRow, 9);
-        
-        
+        //Map table columns to fields:
+        int id = (int) employeesTable.getValueAt(currentRow, 0);
+        String username = (String) employeesTable.getValueAt(currentRow, 1);
+        String firstname = (String) employeesTable.getValueAt(currentRow, 2);
+        String lastname = (String) employeesTable.getValueAt(currentRow, 3);
+        String position = (String) employeesTable.getValueAt(currentRow, 4);
+        String dateHired = (String) employeesTable.getValueAt(currentRow, 5);
+        String telephone = (String) employeesTable.getValueAt(currentRow, 6);
+        String address = (String) employeesTable.getValueAt(currentRow, 7);
+        String city = (String) employeesTable.getValueAt(currentRow, 8);
+        String country = (String) employeesTable.getValueAt(currentRow, 9);
+
         PDDocument document;
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
@@ -4266,7 +4266,6 @@ public final class MainForm extends javax.swing.JFrame {
                 address,
                 city,
                 telephone
-                
         );
 
         editSuppliers(s);
@@ -4309,7 +4308,6 @@ public final class MainForm extends javax.swing.JFrame {
                 address,
                 telephone,
                 customersList.get(currentRow).getCustomerProductsID()
-                
         );
 
         editCustomers(c);
@@ -4349,7 +4347,7 @@ public final class MainForm extends javax.swing.JFrame {
                 break;
             }
         }
-        
+
         //Get productSize ID
         for (int i = 0; i < productSizesList.size(); i++) {
             if (productSizesList.get(i).getName().equals(size)) {
@@ -4361,7 +4359,7 @@ public final class MainForm extends javax.swing.JFrame {
             showMessageDialog(null, "Invalid product type selected", "Warning", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        
+
         if (sizeID == 0) {
             showMessageDialog(null, "Invalid product size selected", "Warning", JOptionPane.PLAIN_MESSAGE);
             return;
@@ -4375,14 +4373,13 @@ public final class MainForm extends javax.swing.JFrame {
                 sizeID,
                 typeID,
                 productsList.get(currentRow).getProductSuppliesID()
-                
         );
 
         editProducts(p);
     }//GEN-LAST:event_productsSaveButtonActionPerformed
 
     private void suppliesSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppliesSaveButtonActionPerformed
-         int currentRow = suppliesDetailsTable.getSelectedRow();
+        int currentRow = suppliesDetailsTable.getSelectedRow();
         if (currentRow < 0) {
             showMessageDialog(null, "No supplier selected to save. Please select a product.", "Warning", JOptionPane.PLAIN_MESSAGE);
             return;
@@ -4397,14 +4394,13 @@ public final class MainForm extends javax.swing.JFrame {
 
         int supplierID = 0;
 
-       //Get supplier ID
+        //Get supplier ID
         for (int i = 0; i < suppliersList.size(); i++) {
             if (suppliersList.get(i).getName().equals(supplier)) {
                 supplierID = suppliersList.get(i).getID();
                 break;
             }
         }
-       
 
         Supplies s = new Supplies(
                 suppliesList.get(currentRow).getID(),
@@ -4412,7 +4408,6 @@ public final class MainForm extends javax.swing.JFrame {
                 supplierID,
                 quantity,
                 price
-                                
         );
 
         editSupplies(s);
@@ -4432,8 +4427,7 @@ public final class MainForm extends javax.swing.JFrame {
         String address = (String) customerDetailsTable.getValueAt(currentRow, 3);
         String city = (String) customerDetailsTable.getValueAt(currentRow, 4);
         String country = (String) customerDetailsTable.getValueAt(currentRow, 5);
-        
-        
+
         PDDocument document;
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
@@ -4466,7 +4460,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_printCusDetailsBtnActionPerformed
 
     private void printSupDetailsBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printSupDetailsBtn1ActionPerformed
-        
+
         int currentRow = supplierDetailsTable.getSelectedRow();
         if (currentRow < 0) {
             showMessageDialog(null, "No supplier selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
@@ -4480,7 +4474,7 @@ public final class MainForm extends javax.swing.JFrame {
         String address = (String) supplierDetailsTable.getValueAt(currentRow, 3);
         String city = (String) supplierDetailsTable.getValueAt(currentRow, 4);
         String country = (String) supplierDetailsTable.getValueAt(currentRow, 5);
-        
+
         PDDocument document;
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
@@ -4513,20 +4507,6 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_printSupDetailsBtn1ActionPerformed
 
     private void printSalesDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printSalesDetailsBtnActionPerformed
-       //salesDetailsTable.getModel();
-//        if (currentRow < 0) {
-//            showMessageDialog(null, "No supplier selected to save. Please select an employee.", "Warning", JOptionPane.PLAIN_MESSAGE);
-//            return;
-//        }
-
-        //Map table columns to fields:
-//        int id = (int) salesDetailsTable.getValueAt(currentRow, 0);
-//        String dateMade = (String) salesDetailsTable.getValueAt(currentRow, 1);
-        //String customerName = (String) salesDetailsTable.getValueAt(currentRow, 2);
-
-//        customersTab();
-        
-        
         PDDocument document;
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
@@ -4537,44 +4517,61 @@ public final class MainForm extends javax.swing.JFrame {
             document = PDDocument.load(file);
 
             PDPage page = PDFBoxUtils.getPage(document, 0);
-            
+
             //Company Details
-            PDFBoxUtils.addText(document, page, "Company name" , Color.black, PDType1Font.COURIER, 11, 75, 645);
-            PDFBoxUtils.addText(document, page, "Telephne" , Color.black, PDType1Font.COURIER, 11, 75, 632);
+            PDFBoxUtils.addText(document, page, "Company name", Color.black, PDType1Font.COURIER, 11, 75, 645);
+            PDFBoxUtils.addText(document, page, "Telephne", Color.black, PDType1Font.COURIER, 11, 75, 632);
             PDFBoxUtils.addText(document, page, "Address", Color.black, PDType1Font.COURIER, 11, 75, 620);
             PDFBoxUtils.addText(document, page, "City", Color.black, PDType1Font.COURIER, 11, 75, 609);
             PDFBoxUtils.addText(document, page, "Country", Color.black, PDType1Font.COURIER, 11, 75, 599);
 
-            int height = 512; 
+            int height = 512;
             int numHeight = 512;
-            for(int i = 0; i<salesList.size(); i++){
-               
+            for (int i = 0; i < salesList.size(); i++) {
+
                 //Put customerName in the Table
-            String customerName = "";
-            for (int j = 0; j < customersList.size(); j++) {
-                if (customersList.get(j).getID() == salesList.get(i).getID()) {
-                    customerName = customersList.get(j).getName();
+                String customerName = "";
+                for (int j = 0; j < customersList.size(); j++) {
+                    if (customersList.get(j).getID() == salesList.get(i).getCustomerID()) {
+                        customerName = customersList.get(j).getName();
+                    }
                 }
-            }
-            
-            Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
-            Date date = new Date(timestamp.getTime());
+                //Date
+                Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
+                Date date = new Date(timestamp.getTime());
 
-          int num = 0;
-          num =i+1;
-          String number = String.valueOf(num);
-               
-//               int number = -782;
-//String numberAsString = String.valueOf(number); 
-            PDFBoxUtils.addText(document, page, number , Color.black, PDType1Font.COURIER, 13, 75, numHeight);
-            PDFBoxUtils.addText(document, page, Users.DATE_FORMAT.format(date), Color.black, PDType1Font.COURIER, 10, 132, numHeight);
-            PDFBoxUtils.addText(document, page, customerName, Color.black, PDType1Font.COURIER, 13, 200, height);
-            //PDFBoxUtils.addText(document, page, "Total", Color.black, PDType1Font.COURIER, 13, 450, 512);
-            height = height -8;
-            numHeight -=17;
+                //Row Number
+                int num = 0;
+                num = i + 1;
+                String number = String.valueOf(num);
+
+                //Total
+                double total = 0.0;
+                for (int j = 0; j < saleProductsList.size(); j++) {
+                    int sold = saleProductsList.get(j).getQuantitySold();
+                    //System.out.println("Sold:" + sold);
+                    double price = 0.0;
+                    for (int k = 0; k < productsList.size(); k++) {
+                        if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
+                            price = productsList.get(k).getPrice();
+                            //System.out.println("Price:" + price);
+                            break;
+                        }
+
+                    }
+                    total += (price * sold);
+                }
+                String totalNum = String.valueOf(total);
+
+                PDFBoxUtils.addText(document, page, number, Color.black, PDType1Font.COURIER, 13, 75, numHeight);
+                PDFBoxUtils.addText(document, page, Users.DATE_FORMAT.format(date), Color.black, PDType1Font.COURIER, 10, 132, numHeight);
+                PDFBoxUtils.addText(document, page, customerName, Color.black, PDType1Font.COURIER, 13, 200, numHeight);
+                PDFBoxUtils.addText(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 450, numHeight);
+                height = height - 8;
+                numHeight -= 17;
             }
 
-            String fileName = "customersSales.pdf";
+            String fileName = "customerSales.pdf";
             String exportedFileName = currentFolder + "../../../" + fileName;
             document.save(exportedFileName);
             document.close();
@@ -4635,8 +4632,8 @@ public final class MainForm extends javax.swing.JFrame {
         getEmployees();
         employeesTab();
     }
-    
-     private void editSuppliers(Suppliers s) {
+
+    private void editSuppliers(Suppliers s) {
         //Get field values:
 
         //Check if the name is valid
@@ -4647,9 +4644,8 @@ public final class MainForm extends javax.swing.JFrame {
 
         //Make the call:
         String editSupplierJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "Update",
-                "SessionID=aa&ID=" + s.getID() + "&Name=" + s.getName() + "&CountryID=" + s.getCountryID()+ 
-                        "&Address=" + s.getAddress() + "&City=" + s.getCity() + "&Telephone=" + s.getTelephone() 
-                
+                "SessionID=aa&ID=" + s.getID() + "&Name=" + s.getName() + "&CountryID=" + s.getCountryID()
+                + "&Address=" + s.getAddress() + "&City=" + s.getCity() + "&Telephone=" + s.getTelephone()
         );
         try {
             JSONObject jsonObject = new JSONObject(editSupplierJSON);
@@ -4670,8 +4666,8 @@ public final class MainForm extends javax.swing.JFrame {
         getSuppliers();
         suppliersTab();
     }
-    
-     private void editCustomers(Customers c) {
+
+    private void editCustomers(Customers c) {
         //Get field values:
 
         //Check if the name is valid
@@ -4682,12 +4678,11 @@ public final class MainForm extends javax.swing.JFrame {
 
         //Make the call:
         String editCustomersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "Update",
-                "SessionID=aa&ID=" + c.getID() + "&Name=" + c.getName() + "&CountryID=" + c.getCountryID()+ 
-                      "&City=" + c.getCity() +   "&Address=" + c.getAddress() + "&Telephone=" + c.getTelephone() + "&CustomerProductsID=" + c.getCustomerProductsID()
-                
+                "SessionID=aa&ID=" + c.getID() + "&Name=" + c.getName() + "&CountryID=" + c.getCountryID()
+                + "&City=" + c.getCity() + "&Address=" + c.getAddress() + "&Telephone=" + c.getTelephone() + "&CustomerProductsID=" + c.getCustomerProductsID()
         );
         System.out.println("customersjson " + editCustomersJSON);
-        
+
         try {
             JSONObject jsonObject = new JSONObject(editCustomersJSON);
             final String status = jsonObject.getString("Status");
@@ -4707,11 +4702,10 @@ public final class MainForm extends javax.swing.JFrame {
         getCustomers();
         customersTab();
     }
-     
-     private void editProducts(Products p) {
+
+    private void editProducts(Products p) {
         //Get field values:
 
-        
         //Check if the name is valid
         if (p.getName().trim().isEmpty()) {
             showMessageDialog(null, "Please provide a valid product", "Invalid Product", JOptionPane.PLAIN_MESSAGE);
@@ -4720,10 +4714,9 @@ public final class MainForm extends javax.swing.JFrame {
 
         //Make the call:
         String editProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Update",
-                "SessionID=aa&ID=" + p.getID() + "&Name=" + p.getName() + "&Price=" + p.getPrice()+ 
-                      "&QuantityInStock=" + p.getQuantityInStock()+   "&ProductSizeID=" + p.getProductSizeID()+
-                       "&ProductTypeID=" + p.getProductTypeID()+ "&ProductSuppliesID=" + p.getProductSuppliesID()
-                
+                "SessionID=aa&ID=" + p.getID() + "&Name=" + p.getName() + "&Price=" + p.getPrice()
+                + "&QuantityInStock=" + p.getQuantityInStock() + "&ProductSizeID=" + p.getProductSizeID()
+                + "&ProductTypeID=" + p.getProductTypeID() + "&ProductSuppliesID=" + p.getProductSuppliesID()
         );
         try {
             JSONObject jsonObject = new JSONObject(editProductsJSON);
@@ -4744,11 +4737,10 @@ public final class MainForm extends javax.swing.JFrame {
         getProducts();
         productsTab();
     }
-     
-     private void editSupplies(Supplies s) {
+
+    private void editSupplies(Supplies s) {
         //Get field values:
 
-        
         //Check if the name is valid
         if (s.getName().trim().isEmpty()) {
             showMessageDialog(null, "Please provide a valid supply", "Invalid Supply", JOptionPane.PLAIN_MESSAGE);
@@ -4757,9 +4749,8 @@ public final class MainForm extends javax.swing.JFrame {
 
         //Make the call:
         String editSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "Update",
-                "SessionID=aa&ID=" + s.getID() + "&Name=" + s.getName() + "&SupplierID=" + s.getSupplierID()+ 
-                      "&Quantity=" + s.getQuantity()+   "&Price=" + s.getPrice()
-                
+                "SessionID=aa&ID=" + s.getID() + "&Name=" + s.getName() + "&SupplierID=" + s.getSupplierID()
+                + "&Quantity=" + s.getQuantity() + "&Price=" + s.getPrice()
         );
         try {
             JSONObject jsonObject = new JSONObject(editSuppliesJSON);
