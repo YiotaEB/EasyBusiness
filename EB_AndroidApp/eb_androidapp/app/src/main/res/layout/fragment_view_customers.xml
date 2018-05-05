@@ -4,57 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.ViewCustomersFragment">
 
-    <TextView
-        android:id="@+id/customer_fragment_title"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+    <ProgressBar
+        android:id="@+id/view_customers_progress"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:text="@string/customer_list_text"/>
-
-    <Button
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:id="@+id/refresh_customers"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="11dp"
-        android:layout_toLeftOf="@id/print_customer_list_Btn"
-        android:background="@drawable/ic_refresh_black_24dp" />
-
-    <Button
-        android:id="@+id/print_customer_list_Btn"
-        android:layout_width="43dp"
-        android:layout_height="43dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/add_customer_btn"
-        android:background="@drawable/ic_local_printshop_black_24dp" />
-
-    <Button
-        android:id="@+id/add_customer_btn"
-        android:layout_width="43dp"
-        android:layout_height="43dp"
-        android:background="@android:drawable/ic_input_add"
-        android:layout_alignParentRight="true"/>
-
-    <SearchView
-        android:id="@+id/customer_search_view"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:layout_below="@id/add_customer_btn"/>
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
 
-    <ListView
-        android:id="@+id/customer_List_view"
+    <RelativeLayout
+        android:id="@+id/view_customers_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/randomItems"
-        android:layout_below="@id/customer_search_view"/>
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/layout_top_customers"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+
+            <SearchView
+                android:id="@+id/customer_search_view"
+                android:background="@color/lightGray"
+                android:layout_width="0dp"
+                android:layout_weight="9"
+                android:layout_height="match_parent">
+
+            </SearchView>
+
+            <Button
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:id="@+id/refresh_customers"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/ic_refresh_black_24dp" />
+
+            <Button
+                android:id="@+id/print_customer_list_btn"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/ic_local_printshop_black_24dp" />
+
+
+            <ImageButton
+                android:id="@+id/add_customer_btn"
+                android:src="@drawable/ic_add_box_black_48dp"
+                android:tint="@color/darkGreen"
+                android:background="?android:selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/custoemr_List_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_top_customers"
+            android:layout_marginTop="10dp"
+
+            />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

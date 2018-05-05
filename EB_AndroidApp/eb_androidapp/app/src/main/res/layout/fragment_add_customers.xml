@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
+    android:padding="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AddCustomersFragment">
 
 
@@ -19,7 +19,6 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/customer_fragment_title"
                 android:id="@+id/customer_name_input"
                 >
 
@@ -27,6 +26,7 @@
                     android:id="@+id/customer_name_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    style="@style/Base.TextAppearance.AppCompat"
                     android:inputType="textPersonName"
                     android:hint="@string/name" />
 
@@ -40,6 +40,7 @@
 
                 <EditText
                     android:id="@+id/customer_telephone_edittext"
+                    style="@style/Base.TextAppearance.AppCompat"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
@@ -55,6 +56,7 @@
 
                 <EditText
                     android:id="@+id/customer_address_edittext"
+                    style="@style/Base.TextAppearance.AppCompat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/Address" />
@@ -69,19 +71,27 @@
 
                 <EditText
                     android:id="@+id/customer_city_edittext"
+                    style="@style/Base.TextAppearance.AppCompat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/City" />
 
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:id="@+id/selectCountryTextView"
+                android:layout_below="@id/customer_city_input"
+                android:text="@string/Select_Country"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <Spinner
                 android:id="@+id/customer_country_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/customer_city_input"
-                android:layout_marginTop="20dp"
+                android:layout_below="@+id/selectCountryTextView"
                 android:text="@string/Select_Country" />
 
             <TextView
@@ -91,7 +101,6 @@
                 android:layout_below="@id/customer_country_spinner"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:textSize="17sp"
                 android:text="@string/Products" />
 
             <Button
