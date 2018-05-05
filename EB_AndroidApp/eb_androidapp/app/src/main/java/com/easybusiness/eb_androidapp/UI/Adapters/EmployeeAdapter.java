@@ -6,16 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 
+import com.easybusiness.eb_androidapp.Entities.Customers;
 import com.easybusiness.eb_androidapp.Entities.Users;
 import com.easybusiness.eb_androidapp.R;
 
 import java.util.ArrayList;
 
 public class EmployeeAdapter extends ArrayAdapter<Users> {
-    final ArrayList<Users> employeeList;
-
+    private ArrayList<Users> employeeList;
+    private ArrayList<Users> orig;
 
     public EmployeeAdapter(final Context context, ArrayList<Users> employeeList) {
         super(context, R.layout.employee_adapter);
@@ -51,6 +53,42 @@ public class EmployeeAdapter extends ArrayAdapter<Users> {
         employeeAdapterTelephone.setText(String.valueOf(employeeList.get(position).getTelephone()));
 
         return view;
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final ArrayList<Users> results = new ArrayList<Users>();
+                if (orig == null)
+                    orig = employeeList;
+                if (constraint != null) {
+                    if (orig != null && orig.size() > 0) {
+                        for (final Users g : orig) {
+                            if (g.getFirstname().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                            else if (g.getLastname().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                            else if (g.getUsername().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+
+                        }
+                    }
+                    oReturn.values = results;
+                }
+                return oReturn;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+                employeeList = (ArrayList<Users>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

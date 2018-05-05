@@ -8,12 +8,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -38,7 +40,7 @@ public class ViewEmployeesFragment extends Fragment {
 
     private SearchView searchView;
     public ListView employeesListView;
-    private Button addEmployeeBtn;
+    private ImageButton addEmployeeBtn;
     private Button refreshButton;
     public static EmployeeAdapter allEmployeesAdapter;
     private View v;
@@ -101,6 +103,9 @@ public class ViewEmployeesFragment extends Fragment {
             }
         });
 
+        employeesListView.setTextFilterEnabled(true);
+        setupSearchView();
+
         return v;
     }
 
@@ -108,39 +113,6 @@ public class ViewEmployeesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getActivity().setTitle(TITLE);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                employeesListView.setAdapter(allEmployeesAdapter);
-
-                final EmployeeAdapter adapter = (EmployeeAdapter) employeesListView.getAdapter();
-                ArrayList<Users> searchedUsers = new ArrayList<>();
-                System.out.println("ADAPTER SIZE: " + adapter.getCount());
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    Users user = adapter.getItem(i);
-                    if (user.getFirstname() != null && user.getLastname() != null && user.getUsername() != null) {
-                        if (user.getFirstname().toLowerCase().contains(newText.toLowerCase())) {
-                            searchedUsers.add(user);
-                        } else if (user.getLastname().toLowerCase().contains(newText.toLowerCase())) {
-                            searchedUsers.add(user);
-                        } else if (user.getUsername().toLowerCase().contains(newText.toLowerCase())) {
-                            searchedUsers.add(user);
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-                final EmployeeAdapter newAdapter = new EmployeeAdapter(getActivity(), searchedUsers);
-                employeesListView.setAdapter(newAdapter);
-                return true;
-            }
-        });
 
         addEmployeeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,5 +136,26 @@ public class ViewEmployeesFragment extends Fragment {
 
         new GetEmployeesAsyncTask(query, getActivity(), v).execute();
 
+    }
+
+    private void setupSearchView() {
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)) {
+                    employeesListView.clearTextFilter();
+                } else {
+                    employeesListView.setFilterText(s);
+                }
+                return true;
+            }
+        });
+        searchView.setQueryHint("Search...");
     }
 }
