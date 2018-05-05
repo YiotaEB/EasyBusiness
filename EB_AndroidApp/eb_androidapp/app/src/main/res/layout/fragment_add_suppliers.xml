@@ -4,20 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:layout_margin="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AddSuppliersFragment">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/supplier_name_layout"
+        android:hint="@string/name"
         >
 
         <EditText
             android:id="@+id/supplier_name_edittext"
+            style="@style/Base.TextAppearance.AppCompat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/name"/>
+            />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -26,13 +28,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/supplier_name_layout"
         android:id="@+id/supplier_telephone_layout"
+        android:hint="@string/Telephone"
         >
 
         <EditText
             android:id="@+id/supplier_telephone_edittext"
+            style="@style/Base.TextAppearance.AppCompat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Telephone"/>
+            />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -41,13 +45,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/supplier_telephone_layout"
         android:id="@+id/supplier_address_layout"
+        android:hint="@string/Address"
         >
 
         <EditText
             android:id="@+id/supplier_address_edittext"
+            style="@style/Base.TextAppearance.AppCompat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Address"/>
+            />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -56,13 +62,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/supplier_address_layout"
         android:id="@+id/supplier_city_layout"
+        android:hint="@string/City"
         >
 
         <EditText
             android:id="@+id/supplier_city_edittext"
+            style="@style/Base.TextAppearance.AppCompat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/City"/>
+            />
 
     </android.support.design.widget.TextInputLayout>
 

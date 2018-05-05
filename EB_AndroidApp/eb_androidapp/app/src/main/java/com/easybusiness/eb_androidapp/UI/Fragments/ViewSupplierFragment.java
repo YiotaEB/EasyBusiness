@@ -17,8 +17,9 @@ import com.easybusiness.eb_androidapp.R;
  */
 public class ViewSupplierFragment extends Fragment {
 
-    public static final String TAG = "ViewsSupplierFragment";
+    public static final String TAG = "ViewSupplierFragment";
 
+    public static final String SUPPLIER_ID_KEY = "supplier-id";
     public static final String SUPPLIER_NAME_KEY = "supplier-name";
     public static final String SUPPLIER_CITY = "supplier-city";
     public static final String SUPPLIER_ADDRESS = "supplier-address";

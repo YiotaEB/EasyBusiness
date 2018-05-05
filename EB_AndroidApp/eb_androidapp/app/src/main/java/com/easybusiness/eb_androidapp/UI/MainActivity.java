@@ -1,8 +1,6 @@
 package com.easybusiness.eb_androidapp.UI;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -39,7 +37,7 @@ import com.easybusiness.eb_androidapp.UI.Fragments.ViewCustomersFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewDeliveryRoutesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewInventoryFragment;
-import com.easybusiness.eb_androidapp.UI.Fragments.ViewProductionFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewProductionsFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewRoutesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSalesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewSuppliersFragment;
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     public static  ViewDeliveryRoutesFragment viewDeliveryRoutesFragment = null;
     public static  ViewEmployeesFragment viewEmployeesFragment = null;
     public static  ViewInventoryFragment viewInventoryFragment = null;
-    public static  ViewProductionFragment viewProductionFragment = null;
+    public static ViewProductionsFragment viewProductionFragment = null;
     public static  ViewRoutesFragment viewRoutesFragment = null;
     public static  ViewSalesFragment viewSalesFragment = null;
     public static  ViewSuppliersFragment viewSuppliersFragment = null;
@@ -245,14 +243,14 @@ public class MainActivity extends AppCompatActivity
 
             //PRODUCTION:
             case R.id.admin_nav_production:
-                setTitle(ViewProductionFragment.TITLE);
+                setTitle(ViewProductionsFragment.TITLE);
                 if (viewProductionFragment == null) {
-                    newFragment = new ViewProductionFragment();
+                    newFragment = new ViewProductionsFragment();
                 }
                 else {
                     newFragment = viewProductionFragment;
                 }
-                fragmentTransaction.replace(R.id.frame, newFragment, ViewProductionFragment.TAG);
+                fragmentTransaction.replace(R.id.frame, newFragment, ViewProductionsFragment.TAG);
                 break;
 
             //SUPPLIERS:

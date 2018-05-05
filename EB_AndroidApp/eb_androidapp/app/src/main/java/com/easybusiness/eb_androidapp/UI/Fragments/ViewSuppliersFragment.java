@@ -2,6 +2,7 @@ package com.easybusiness.eb_androidapp.UI.Fragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,13 +10,17 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.Entities.Suppliers;
@@ -42,43 +47,52 @@ public class ViewSuppliersFragment extends Fragment {
     public static final String TAG = "ViewSuppliersFragment";
     public static final String TITLE = "Suppliers";
 
+    private SharedPreferences sharedPreferences;
+    private String sessionID;
 
+    private ArrayList<Suppliers> suppliersList;
+
+    private ProgressBar progressBar;
+    private View layout;
     private SearchView searchView;
     private ListView suppliersListView;
-    private Button addSupplierBtn;
+    private ImageButton addSupplierBtn;
     private Button refreshButton;
-    public static SupplierAdapter allSuppliersAdapter;
+    private Button printButton;
     private View v;
 
 
-    public ViewSuppliersFragment() {
-        // Required empty public constructor
-        System.out.println("Constructed");
-    }
+    public ViewSuppliersFragment() { }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_view_suppliers, container, false);
-        suppliersListView = v.findViewById(R.id.supplier_List_View);
-        searchView = v.findViewById(R.id.supplier_search_view);
-        addSupplierBtn = v.findViewById(R.id.add_supplier_btn);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "");
+
+        progressBar = v.findViewById(R.id.view_suppliers_progress);
+        layout = v.findViewById(R.id.view_suppliers_layout);
+        suppliersListView = v.findViewById(R.id.suppliersList);
+        searchView = v.findViewById(R.id.suppliers_search_view);
+        addSupplierBtn = v.findViewById(R.id.addSuppliersButton);
         refreshButton = v.findViewById(R.id.refresh_suppliers);
+        printButton = v.findViewById(R.id.print_suppliers_list_btn);
 
         //VIEW (Short click)
         suppliersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
-                MainActivity mainActivity = (MainActivity) getActivity();
-                bundle.putString(ViewSupplierFragment.SUPPLIER_NAME_KEY, mainActivity.SUPPLIER_DATA.get(i).getName());
-                bundle.putString(ViewSupplierFragment.SUPPLIER_CITY, mainActivity.SUPPLIER_DATA.get(i).getCity());
-                bundle.putString(ViewSupplierFragment.SUPPLIER_ADDRESS, mainActivity.SUPPLIER_DATA.get(i).getAddress());
-                bundle.putString(ViewSupplierFragment.SUPPLIER_TELEPHONE, mainActivity.SUPPLIER_DATA.get(i).getTelephone());
-                //TODO
-                bundle.putString(ViewSupplierFragment.SUPPLIER_COUNTRY, String.valueOf(mainActivity.SUPPLIER_DATA.get(i).getCountryID()));
-                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY");
+                bundle.putInt(ViewSupplierFragment.SUPPLIER_ID_KEY, suppliersList.get(i).getID());
+                bundle.putString(ViewSupplierFragment.SUPPLIER_NAME_KEY, suppliersList.get(i).getName());
+                bundle.putString(ViewSupplierFragment.SUPPLIER_CITY, suppliersList.get(i).getCity()); //TODO REMOVE
+                bundle.putString(ViewSupplierFragment.SUPPLIER_ADDRESS, suppliersList.get(i).getAddress()); //TODO REMOVE
+                bundle.putString(ViewSupplierFragment.SUPPLIER_TELEPHONE, suppliersList.get(i).getTelephone()); //TODO REMOVE
+                bundle.putString(ViewSupplierFragment.SUPPLIER_COUNTRY, String.valueOf(suppliersList.get(i).getCountryID())); //TODO REMOVE
+                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY"); //TODO REMOVE
 
                 Fragment newFragment = new ViewSupplierFragment();
                 newFragment.setArguments(bundle);
@@ -94,8 +108,7 @@ public class ViewSuppliersFragment extends Fragment {
         suppliersListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Suppliers", mainActivity.SUPPLIER_DATA.get(i).getID(), mainActivity.SUPPLIER_DATA.get(i).getName(), new ViewSuppliersFragment());
+                AlertDialog dialog = Dialogs.createDeleteDialog(getActivity(), view, "Suppliers", suppliersList.get(i).getID(), suppliersList.get(i).getName(), new ViewSuppliersFragment());
                 dialog.show();
                 return true;
             }
@@ -104,56 +117,10 @@ public class ViewSuppliersFragment extends Fragment {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
-                Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
-                String query = builder.build().getEncodedQuery();
-                new GetSuppliersAsyncTask(query, getActivity(), v).execute();
+                new GetSuppliersAsyncTask().execute();
             }
         });
 
-
-
-
-        return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().setTitle(TITLE);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                suppliersListView.setAdapter(allSuppliersAdapter);
-
-                final SupplierAdapter adapter = (SupplierAdapter) suppliersListView.getAdapter();
-                ArrayList<Suppliers> searchedSuppliers = new ArrayList<>();
-                System.out.println("ADAPTER SIZE: " + adapter.getCount());
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    Suppliers suppliers= adapter.getItem(i);
-                    if (suppliers.getName() != null) {
-                        if (suppliers.getName().toLowerCase().contains(newText.toLowerCase())) {
-                            searchedSuppliers.add(suppliers);
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-                final SupplierAdapter newAdapter = new SupplierAdapter(getActivity(), searchedSuppliers);
-                suppliersListView.setAdapter(newAdapter);
-                return true;
-            }
-        });
-
-
-        addSupplierBtn = v.findViewById(R.id.add_supplier_btn);
         addSupplierBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,13 +135,39 @@ public class ViewSuppliersFragment extends Fragment {
             }
         });
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sessionID = sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, "None");
+        suppliersListView.setTextFilterEnabled(true);
+        setupSearchView();
 
-        Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
-        String query = builder.build().getEncodedQuery();
+        return v;
+    }
 
-        new GetSuppliersAsyncTask(query, getActivity(), v).execute();
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(TITLE);
+
+        new GetSuppliersAsyncTask().execute();
+    }
+
+    private void setupSearchView() {
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)) {
+                    suppliersListView.clearTextFilter();
+                } else {
+                    suppliersListView.setFilterText(s);
+                }
+                return true;
+            }
+        });
+        searchView.setQueryHint("Search...");
     }
 
 
@@ -182,14 +175,10 @@ public class ViewSuppliersFragment extends Fragment {
 
         private String query;
         private String responseData;
-        private Activity activity;
-        private View view;
-        ArrayList<Suppliers> suppliers= null;
 
-        public GetSuppliersAsyncTask(String query, Activity activity, View view) {
-            this.query = query;
-            this.activity = activity;
-            this.view = view;
+        public GetSuppliersAsyncTask() {
+            Uri.Builder builder = new Uri.Builder().appendQueryParameter("SessionID", sessionID);
+            query = builder.build().getEncodedQuery();
         }
 
         @Override
@@ -198,7 +187,7 @@ public class ViewSuppliersFragment extends Fragment {
             if (query == null) query = "";
 
             try {
-                URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Suppliers", "GetMultiple"));
+                URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Suppliers", "GetMultiple"));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 byte[] outputBytes = query.getBytes("UTF-8");
@@ -221,39 +210,33 @@ public class ViewSuppliersFragment extends Fragment {
                     final String message = outterObject.getString("Message");
 
                     if (status.equals(AsyncTasks.RESPONSE_OK)) {
-                        suppliers = new ArrayList<>();
+                        suppliersList = new ArrayList<>();
                         JSONArray dataArray = outterObject.getJSONArray("Data");
                         for (int i = 0; i < dataArray.length(); i++) {
                             JSONObject jsonObject = dataArray.getJSONObject(i);
                             String name = jsonObject.getString("Name");
                             String telephone = jsonObject.getString("Telephone");
                             Suppliers p = new Suppliers(0, name, 0, " ", telephone, "");
-                            suppliers.add(p);
+                            suppliersList.add(p);
+
+                            final SupplierAdapter supplierAdapter = new SupplierAdapter(getActivity(), suppliersList);
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    suppliersListView.setAdapter(supplierAdapter);
+                                }
+                            });
+
                         }
-
-                        MainActivity mainActivity = (MainActivity) activity;
-                        mainActivity.SUPPLIER_DATA = suppliers;
-
-                        final ListView supplierListview = activity.findViewById(R.id.supplier_List_View);
-                        String [] items = new String[suppliers.size()];
-                        for (int i = 0; i < items.length; i++)
-                            items[i] = suppliers.get(i).getName();
-                        final SupplierAdapter supplierAdapter = new SupplierAdapter(activity, suppliers);
-
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                supplierListview.setAdapter(supplierAdapter);
-                            }
-                        });
 
 
                     }
                     else if (status.equals(AsyncTasks.RESPONSE_ERROR)) {
-                        activity.runOnUiThread(new Runnable() {
+                        getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                final android.app.AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(activity, title, message);
+                                final android.app.AlertDialog alertDialog = AsyncTasks.createGeneralErrorDialog(getActivity(), title, message);
                                 alertDialog.show();
                             }
                         });
@@ -263,10 +246,10 @@ public class ViewSuppliersFragment extends Fragment {
                 }
                 //CONNECTION ERROR
                 else {
-                    activity.runOnUiThread(new Runnable() {
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final android.app.AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
+                            final android.app.AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(getActivity());
                             alertDialog.show();
                         }
                     });
