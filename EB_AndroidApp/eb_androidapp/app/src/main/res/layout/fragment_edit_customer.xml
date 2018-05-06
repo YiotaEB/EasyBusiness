@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context="com.easybusiness.eb_androidapp.UI.Fragments.EditCustomerFragment">
+
+    <ProgressBar
+        android:id="@+id/edit_customer_progress"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+        <RelativeLayout
+            android:id="@+id/edit_customer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Name-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_customer_name_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_customer_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:singleLine="true"
+                    android:hint="@string/name"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Address-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_customer_address_layout"
+                android:layout_below="@+id/edit_customer_name_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_customer_address_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Address"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--City-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_customer_city_layout"
+                android:layout_below="@+id/edit_customer_address_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_customer_city_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/City"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Telephone-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_customer_telephone_layout"
+                android:layout_below="@+id/edit_customer_city_layout"
+                >
+
+                <EditText
+                    android:id="@+id/edit_customer_telephone_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:hint="@string/Telephone"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Country-->
+            <TextView
+                android:id="@+id/edit_customer_countrytextview"
+                android:text="@string/Select_Country"
+                android:layout_below="@id/edit_customer_telephone_layout"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/edit_customer_country_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@id/edit_customer_countrytextview"
+                android:text="@string/Select_Country" />
+
+            <Button
+                android:id="@+id/edit_customer_btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="25dp"
+                android:text="@string/save" />
+
+        </RelativeLayout>
+
+</RelativeLayout>

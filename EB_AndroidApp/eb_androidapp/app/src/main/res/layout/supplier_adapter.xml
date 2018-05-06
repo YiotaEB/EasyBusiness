@@ -31,20 +31,8 @@
         android:textColor="@color/black"
         android:text="9965656"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@id/supplier_phonecall"
-        android:layout_marginRight="10dp"/>
-
-    <ImageButton
-        android:layout_centerVertical="true"
-        android:id="@+id/supplier_phonecall"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_phone_black_36dp"
-        android:background="@color/transparent"
-        android:tint="@color/darkGreen"
         android:layout_alignParentEnd="true"
-
-        />
+        android:layout_marginRight="10dp"/>
 
 
 

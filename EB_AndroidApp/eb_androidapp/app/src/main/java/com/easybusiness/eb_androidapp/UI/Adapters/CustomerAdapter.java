@@ -5,15 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import com.easybusiness.eb_androidapp.Entities.Customers;
+import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.R;
 
 import java.util.ArrayList;
 
 public class CustomerAdapter extends ArrayAdapter<Customers> {
-    final ArrayList<Customers>  customersList;
+    private ArrayList<Customers>  customersList;
+    private ArrayList<Customers> orig;
 
 
     public CustomerAdapter(final Context context, ArrayList<Customers> customersList) {
@@ -41,6 +44,37 @@ public class CustomerAdapter extends ArrayAdapter<Customers> {
         customerAdapterTelephone.setText(String.valueOf(customersList.get(position).getTelephone()));
 
         return view;
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final ArrayList<Customers> results = new ArrayList<Customers>();
+                if (orig == null)
+                    orig = customersList;
+                if (constraint != null) {
+                    if (orig != null && orig.size() > 0) {
+                        for (final Customers g : orig) {
+                            if (g.getName().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    oReturn.values = results;
+                }
+                return oReturn;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+                customersList = (ArrayList<Customers>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

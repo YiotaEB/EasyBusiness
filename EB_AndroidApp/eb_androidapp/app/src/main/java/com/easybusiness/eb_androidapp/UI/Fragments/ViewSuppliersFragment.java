@@ -88,11 +88,6 @@ public class ViewSuppliersFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt(ViewSupplierFragment.SUPPLIER_ID_KEY, suppliersList.get(i).getID());
                 bundle.putString(ViewSupplierFragment.SUPPLIER_NAME_KEY, suppliersList.get(i).getName());
-                bundle.putString(ViewSupplierFragment.SUPPLIER_CITY, suppliersList.get(i).getCity()); //TODO REMOVE
-                bundle.putString(ViewSupplierFragment.SUPPLIER_ADDRESS, suppliersList.get(i).getAddress()); //TODO REMOVE
-                bundle.putString(ViewSupplierFragment.SUPPLIER_TELEPHONE, suppliersList.get(i).getTelephone()); //TODO REMOVE
-                bundle.putString(ViewSupplierFragment.SUPPLIER_COUNTRY, String.valueOf(suppliersList.get(i).getCountryID())); //TODO REMOVE
-                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY"); //TODO REMOVE
 
                 Fragment newFragment = new ViewSupplierFragment();
                 newFragment.setArguments(bundle);
@@ -214,9 +209,13 @@ public class ViewSuppliersFragment extends Fragment {
                         JSONArray dataArray = outterObject.getJSONArray("Data");
                         for (int i = 0; i < dataArray.length(); i++) {
                             JSONObject jsonObject = dataArray.getJSONObject(i);
+                            int id = jsonObject.getInt("ID");
                             String name = jsonObject.getString("Name");
                             String telephone = jsonObject.getString("Telephone");
-                            Suppliers p = new Suppliers(0, name, 0, " ", telephone, "");
+                            int countryID = jsonObject.getInt("CountryID");
+                            String address = jsonObject.getString("Address");
+                            String city = jsonObject.getString("City");
+                            Suppliers p = new Suppliers(id, name, countryID, address, telephone, city);
                             suppliersList.add(p);
 
                             final SupplierAdapter supplierAdapter = new SupplierAdapter(getActivity(), suppliersList);

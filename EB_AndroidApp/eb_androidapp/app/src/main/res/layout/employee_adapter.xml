@@ -40,21 +40,10 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:text="250"
-        android:layout_toStartOf="@id/employee_phonecall"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="10dp"/>
 
-    <ImageButton
-        android:layout_centerVertical="true"
-        android:id="@+id/employee_phonecall"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_phone_black_36dp"
-        android:background="@color/transparent"
-        android:tint="@color/darkGreen"
-        android:layout_alignParentEnd="true"
-
-        />
 
 
 
