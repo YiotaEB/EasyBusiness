@@ -1,30 +1,57 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
     tools:context="com.easybusiness.eb_androidapp.UI.Fragments.AdminHomeFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:id="@+id/admin_home_progress"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        />
 
-        <TextView
-            android:id="@+id/welcome"
+    <android.support.v7.widget.CardView
+        android:id="@+id/company_info_cardview"
+        app:cardCornerRadius="5dp"
+        app:cardBackgroundColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="23dp"
-            android:text="Blank Fragment" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            android:text="PLIZ, DESIGN ME!"
-            android:textSize="40dp"
-            />
+            <TextView
+                android:id="@+id/companyName"
+                android:text="COMPANY NAME"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
 
-</FrameLayout>
+            <com.jjoe64.graphview.GraphView
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/companyName"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:id="@+id/latest_sales_graph" />
+
+
+        </RelativeLayout>
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>
