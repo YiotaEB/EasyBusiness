@@ -141,10 +141,11 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                 }
                 //Unknown error
                 else {
-                    final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
+
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
                             alertDialog.show();
                         }
                     });
@@ -154,10 +155,10 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
             }
             //Connection error
             else {
-                final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        final AlertDialog alertDialog = AsyncTasks.createConnectionErrorDialog(activity);
                         alertDialog.show();
                     }
                 });

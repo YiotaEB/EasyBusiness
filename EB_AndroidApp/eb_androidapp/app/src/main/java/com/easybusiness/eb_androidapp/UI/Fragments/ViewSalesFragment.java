@@ -1,14 +1,21 @@
 package com.easybusiness.eb_androidapp.UI.Fragments;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,21 +26,29 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.Entities.Customers;
 import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.Entities.SaleProducts;
 import com.easybusiness.eb_androidapp.Entities.Sales;
-import com.easybusiness.eb_androidapp.Other.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.SalesAdapter;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
+import com.tom_roush.pdfbox.pdmodel.PDDocument;
+import com.tom_roush.pdfbox.pdmodel.PDPage;
+import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
+import com.tom_roush.pdfbox.pdmodel.font.PDFont;
+import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
+import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -67,6 +82,12 @@ public class ViewSalesFragment extends Fragment {
     private ArrayList<Products> productsList;
     private ArrayList<Customers> customersList;
 
+    public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_WRITE = 1;
+    public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_READ = 2;
+    private PDDocument document;
+    private String path;
+    File root;
+
     public ViewSalesFragment() {
         // Required empty public constructor
     }
@@ -91,6 +112,75 @@ public class ViewSalesFragment extends Fragment {
 
         salesListView.setTextFilterEnabled(true);
         setupSearchView();
+
+        printBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AssetManager assetManager;
+
+                PDFBoxResourceLoader.init(getActivity().getApplicationContext());
+                root = android.os.Environment.getDataDirectory();
+                assetManager = getActivity().getAssets();
+
+                document = new PDDocument();
+                PDPage page = new PDPage();
+                document.addPage(page);
+                PDFont font = PDType1Font.COURIER;
+                PDPageContentStream contentStream;
+
+                try {
+
+                    contentStream = new PDPageContentStream(document, page);
+
+                    contentStream.beginText();
+                    contentStream.setNonStrokingColor(15, 38, 192);
+                    contentStream.setFont(font, 12);
+                    contentStream.newLineAtOffset(100, 700);
+                    contentStream.showText("Hello World");
+                    contentStream.endText();
+
+                    contentStream.close();
+                    PackageManager m = getActivity().getPackageManager();
+                    String s = getActivity().getPackageName();
+                    PackageInfo p = m.getPackageInfo(s, 0);
+                    s = p.applicationInfo.dataDir;
+
+                    path = s + "/files/Created.pdf";
+                    System.out.println(path);
+
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                            System.out.println("PERMISSION - WRITE");
+                        } else {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_EXTERNAL_WRITE);
+                        }
+                    }
+
+
+
+                    try {
+                        document.save(path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(path),"application/pdf");
+                    startActivity(intent);
+
+                    document.close();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+            }
+        });
 
         salesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -121,6 +211,47 @@ public class ViewSalesFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_EXTERNAL_WRITE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    System.out.println("GRANT PERMISSION - WRITE: OK");
+                    try {
+                        document.save(path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            System.out.println("PERMISSION - READ");
+                        } else {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_EXTERNAL_READ);
+                        }
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), "You need to allow storage permissions", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_EXTERNAL_READ: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    System.out.println("GRANT PERMISSION - READ: OK");
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(path + "Created.pdf"),"application/pdf");
+                    startActivity(intent);
+
+                } else {
+                    Toast.makeText(getActivity(), "You need to allow storage permissions", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
     }
 
     @Override
