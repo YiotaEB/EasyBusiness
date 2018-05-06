@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.easybusiness.eb_androidapp.Model.AppMode;
+import com.easybusiness.eb_androidapp.Other.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.LoginActivity;
 import com.easybusiness.eb_androidapp.UI.MainActivity;
@@ -87,12 +87,14 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                     final String lastName = outterObject.getString("Lastname");
                     String sessionID = outterObject.getString("SessionID");
                     int userLevelID = outterObject.getInt("UserLevelID");
+                    int userID = outterObject.getInt("UserID");
 
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_SESSIONID, sessionID).apply();
+                    PreferenceManager.getDefaultSharedPreferences(activity).edit().putInt(MainActivity.PREFERENCE_USERID, userID).apply();
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_FIRSTNAME, firstName).apply();
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_LASTNAME, lastName).apply();
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_USERNAME, username).apply();
-                    PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_PASSWORD_HASH, Hash.MD5(password)).apply();
+                    PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PASSWORD, Hash.MD5(password)).apply();
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(MainActivity.PREFERENCE_USERLEVELID, String.valueOf(userLevelID)).apply();
 
 

@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
         view = findViewById(R.id.splash_activity);
 
         String username = PreferenceManager.getDefaultSharedPreferences(this).getString(MainActivity.PREFERENCE_USERNAME, null);
-        String password = PreferenceManager.getDefaultSharedPreferences(this).getString(MainActivity.PREFERENCE_PASSWORD_HASH, null);
+        String password = PreferenceManager.getDefaultSharedPreferences(this).getString(MainActivity.PASSWORD, null);
 
         if (username == null || password == null) {
             new Handler().postDelayed(new Runnable(){

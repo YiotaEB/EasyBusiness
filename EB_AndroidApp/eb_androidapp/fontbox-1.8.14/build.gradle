@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('fontbox-1.8.14.jar'))

@@ -25,6 +25,7 @@ import com.easybusiness.eb_androidapp.Entities.Customers;
 import com.easybusiness.eb_androidapp.Entities.Products;
 import com.easybusiness.eb_androidapp.Entities.SaleProducts;
 import com.easybusiness.eb_androidapp.Entities.Sales;
+import com.easybusiness.eb_androidapp.Other.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.SalesAdapter;
 import com.easybusiness.eb_androidapp.UI.MainActivity;

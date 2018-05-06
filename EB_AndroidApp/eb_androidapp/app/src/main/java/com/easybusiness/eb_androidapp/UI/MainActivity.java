@@ -27,14 +27,16 @@ import com.easybusiness.eb_androidapp.Entities.Suppliers;
 import com.easybusiness.eb_androidapp.Entities.Supplies;
 import com.easybusiness.eb_androidapp.Entities.UserLevels;
 import com.easybusiness.eb_androidapp.Entities.Users;
-import com.easybusiness.eb_androidapp.Model.AppMode;
+import com.easybusiness.eb_androidapp.Other.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddCustomersFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddEmployeesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddSuppliersFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.AdminHomeFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ChangeInfoFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewCustomersFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewDeliveryRoutesFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeeFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewInventoryFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewProductionsFragment;
@@ -50,11 +52,12 @@ public class MainActivity extends AppCompatActivity
 
     public static final String APP_MODE_STRING = "APP_MODE";
     public static final String PREFERENCE_USERNAME = "preference-username";
-    public static final String PREFERENCE_PASSWORD_HASH = "preference-password-hash";
+    public static final String PASSWORD = "preference-password-hash";
     public static final String PREFERENCE_FIRSTNAME = "preference-firstname";
     public static final String PREFERENCE_LASTNAME = "preference-lastname";
     public static final String PREFERENCE_SESSIONID = "preference-sessionID";
     public static final String PREFERENCE_USERLEVELID = "preference-userelevelID";
+    public static final String PREFERENCE_USERID = "preference-userID";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity
                 navigationView = findViewById(R.id.nav_view_admin);
                 break;
             default:
-                throw new RuntimeException("Invalid application mode selected");
+                throw new RuntimeException("Invalid mode selected");
         }
 
         toolbar = findViewById(R.id.toolbar);
@@ -133,6 +136,13 @@ public class MainActivity extends AppCompatActivity
         userLevelTextView = navHeader.findViewById(R.id.drawer_userlevel);
 
 
+        updateTextviews(currentUserFirstname, currentUserLastname, currentUserLevelID);
+
+        showDefaultFragment();
+
+    }
+
+    public void updateTextviews(String currentUserFirstname, String currentUserLastname, String currentUserLevelID) {
         String nameString = currentUserFirstname + " " + currentUserLastname;
         nameTextView.setText(nameString);
         userLevelTextView.setText(currentUserLevelID);
@@ -141,9 +151,6 @@ public class MainActivity extends AppCompatActivity
         new GetUserLevelsAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
         //Get Countries
         new GetCountriesAsyncTask("SessionID=" + PreferenceManager.getDefaultSharedPreferences(this).getString(PREFERENCE_SESSIONID, ""), this, navigationView).execute();
-
-
-        showDefaultFragment();
 
     }
 
@@ -174,15 +181,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         switch (id) {
 
-            case R.id.action_settings:
+            case R.id.action_settings_account:
+                Bundle bundle = new Bundle();
+                bundle.putInt(ViewEmployeeFragment.EMPLOYEE_KEY, sharedPreferences.getInt(MainActivity.PREFERENCE_USERID, 0));
+
+                Fragment newFragment = new ChangeInfoFragment();
+                newFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_left_to_right, R.anim.slide_right_to_left, R.anim.slide_left_to_right, R.anim.slide_right_to_left);
+                fragmentTransaction.replace(R.id.frame, newFragment, ChangeInfoFragment.TAG);
+                fragmentTransaction.addToBackStack(newFragment.getTag());
+                fragmentTransaction.commit();
                 return true;
 
             //logs the user out from the system
             case R.id.action_logout:
-                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 String sessionId = sharedPreferences.getString(PREFERENCE_SESSIONID, "0");
                 final LogoutAsyncTask logoutAsyncTask = new LogoutAsyncTask(this,findViewById(R.id.content_main),sessionId );
                 logoutAsyncTask.execute();
@@ -289,6 +306,33 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.frame, newFragment, ViewEmployeesFragment.TAG);
                 break;
 
+
+            case R.id.users_nav_home:
+                //TODO
+                break;
+
+            case R.id.users_nav_sales:
+                setTitle(ViewSalesFragment.TITLE);
+                if (viewSalesFragment == null) {
+                    newFragment = new ViewSalesFragment();
+                }
+                else {
+                    newFragment = viewSalesFragment;
+                }
+                fragmentTransaction.replace(R.id.frame, newFragment, ViewSalesFragment.TAG);
+                break;
+
+            case R.id.users_nav_customers:
+                setTitle(ViewCustomersFragment.TITLE);
+                if (viewCustomersFragment == null) {
+                    newFragment = new ViewCustomersFragment();
+                }
+                else {
+                    newFragment = viewCustomersFragment;
+                }
+                fragmentTransaction.replace(R.id.frame, newFragment, ViewCustomersFragment.TAG);
+                break;
+
         }
 
         if (newFragment != null && newFragment.getClass() != currentFragment.getClass()) {
@@ -343,5 +387,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-YYYY");
+
+    public AppMode getAppMode() {
+        return appMode;
+    }
 
 }

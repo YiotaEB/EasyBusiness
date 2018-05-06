@@ -23,6 +23,7 @@ import android.widget.SearchView;
 
 import com.easybusiness.eb_androidapp.AsyncTask.AsyncTasks;
 import com.easybusiness.eb_androidapp.Entities.Customers;
+import com.easybusiness.eb_androidapp.Other.AppMode;
 import com.easybusiness.eb_androidapp.R;
 import com.easybusiness.eb_androidapp.UI.Adapters.CustomerAdapter;
 import com.easybusiness.eb_androidapp.UI.Dialogs;
@@ -81,6 +82,11 @@ public class ViewCustomersFragment extends Fragment {
         searchView = v.findViewById(R.id.customer_search_view);
         addCustomerButton = v.findViewById(R.id.add_customer_btn);
         refreshButton = v.findViewById(R.id.refresh_customers);
+
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity.getAppMode() == AppMode.MODE_USER) {
+            addCustomerButton.setVisibility(View.GONE);
+        }
 
         addCustomerButton.setOnClickListener(new View.OnClickListener() {
             @Override
