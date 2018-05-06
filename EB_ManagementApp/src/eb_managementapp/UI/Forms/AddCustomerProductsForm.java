@@ -182,7 +182,7 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         setVisible(false);
-        setUpForm = new SetUpForm();
+        setUpForm = new SetUpForm(this);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButtonActionPerformed
@@ -197,7 +197,7 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         setVisible(false);
-        setUpForm = new SetUpForm();
+        setUpForm = new SetUpForm(this);
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void addCustomerProducts() {

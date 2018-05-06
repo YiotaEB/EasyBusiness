@@ -14,6 +14,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.encoding.EncodingManager;
 
 public class PDFBoxUtils {
 
@@ -23,9 +25,9 @@ public class PDFBoxUtils {
     }
 
     public static PDPage getPage(PDDocument document, int pageNumber) {
-        if (pageNumber >= document.getNumberOfPages() || pageNumber< 0)
+        if (pageNumber >= document.getNumberOfPages() || pageNumber < 0) {
             throw new RuntimeException("Cannot get page " + pageNumber + " from a " + document.getNumberOfPages() + " page document. Indexes start from 0.");
-        else {
+        } else {
             return (PDPage) document.getDocumentCatalog().getAllPages().get(pageNumber);
         }
     }
@@ -42,8 +44,9 @@ public class PDFBoxUtils {
 
     public static void removePage(PDDocument document, int page) {
         final int NUM_PAGES = document.getNumberOfPages();
-        if (page >= NUM_PAGES || page < 0) throw new RuntimeException("Cannot delete page " + page + " from a " + NUM_PAGES + " page document. Indexes start from 0.");
-        else {
+        if (page >= NUM_PAGES || page < 0) {
+            throw new RuntimeException("Cannot delete page " + page + " from a " + NUM_PAGES + " page document. Indexes start from 0.");
+        } else {
             document.removePage(getPage(document, page));
         }
     }
@@ -66,13 +69,35 @@ public class PDFBoxUtils {
         }
     }
 
+    public static void addTextEuro(PDDocument document, PDPage page, String text, Color color, PDType1Font font, int fontSize, float xPos, float yPos) {
+        try {
+            PDPageContentStream contentStream = new PDPageContentStream(document, page, true, false);
+
+            contentStream.beginText();
+
+            contentStream.setFont(font, fontSize);
+            contentStream.moveTextPositionByAmount(xPos, yPos);
+            contentStream.setNonStrokingColor(color);
+            contentStream.drawString(String.valueOf(Character.toChars(EncodingManager.INSTANCE.getEncoding(COSName.WIN_ANSI_ENCODING).getCode("Euro"))));
+
+            contentStream.drawString(text);
+
+            contentStream.endText();
+            contentStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void addRectangle(PDDocument document, PDPage page, Rectangle rectangle, boolean fill, Color color) {
         PDPageContentStream contentStream = null;
         try {
             contentStream = new PDPageContentStream(document, page, true, false);
             contentStream.setNonStrokingColor(color);
             contentStream.addRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-            if (fill) contentStream.fill(1);
+            if (fill) {
+                contentStream.fill(1);
+            }
             contentStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,8 +112,7 @@ public class PDFBoxUtils {
             PDXObjectImage image;
             if (imageFilepath.endsWith(".jpg")) {
                 image = new PDJpeg(document, new FileInputStream(imageFilepath));
-            }
-            else {
+            } else {
                 BufferedImage awtImage = ImageIO.read(new File(imageFilepath));
                 image = new PDPixelMap(document, awtImage);
             }

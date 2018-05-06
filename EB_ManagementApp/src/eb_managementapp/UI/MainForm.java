@@ -13,6 +13,8 @@ import static eb_managementapp.EB_ManagementApp.customersForm;
 import static eb_managementapp.EB_ManagementApp.addSuppliersForm;
 import static eb_managementapp.EB_ManagementApp.addSuppliesForm;
 import static eb_managementapp.EB_ManagementApp.addProductsForm;
+import static eb_managementapp.EB_ManagementApp.adminForm;
+import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Customerproducts;
 import eb_managementapp.Entities.Customers;
@@ -34,9 +36,13 @@ import eb_managementapp.UI.Forms.AddSuppliersForm;
 import eb_managementapp.UI.Forms.AddSuppliesForm;
 import eb_managementapp.UI.Forms.CustomersForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
+import eb_managementapp.UI.Forms.AdminForm;
+import eb_managementapp.UI.Forms.SetUpForm;
 import org.json.*;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -53,7 +59,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -83,7 +88,13 @@ public final class MainForm extends javax.swing.JFrame {
     private ArrayList<Sales> salesList;
     private ArrayList<Userlevels> positionsList;
     private ArrayList<Supplytransactions> supplyTransactionList;
-    //private ArrayList<Companyinformation> companyInfoList;
+    
+    private String companyName;
+    private int companyCountryID;
+    private String companyTelephone;
+    private String companyAddress;
+    private String companyCity;
+    
 
     private TableRowSorter<DefaultTableModel> sorter;
     private TableRowSorter<DefaultTableModel> supplierSorter;
@@ -597,13 +608,29 @@ public final class MainForm extends javax.swing.JFrame {
         getProducts();
         getProduction();
         getCustomers();
+        getCountries();
         getSaleProducts();
         getSales();
         getSupplies();
         getSupplyTransactions();
         getSuppliers();
         getSupplierSupplies();
+        getCompanyInformation();
         homeTab();
+        
+//        AdminForm.addActionListener(new ActionListener(){
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                
+//            }
+//    });
+//        
+//           SetUpForm.addActionListener(new ActionListener(){
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setUpForm = new SetUpForm(this);
+//            }
+//    });
 
         setTitle(TITLE);
     }
@@ -707,23 +734,24 @@ public final class MainForm extends javax.swing.JFrame {
         //Add each item in the list as a row in the table:
         for (int i = 0; i < lastSalesTop5.size(); i++) {
 
+            //Total
             double total = 0.0;
-            for (int j = 0; j < saleProductsList.size(); j++) {
-                int sold = saleProductsList.get(j).getQuantitySold();
-                System.out.println("Sold:" + sold);
-                double price = 0.0;
-                for (int k = 0; k < productsList.size(); k++) {
-                    if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
-                        price = productsList.get(k).getPrice();
-                        System.out.println("Price:" + price);
-                        break;
-                    }
 
+            for (int j = 0; j < saleProductsList.size(); j++) {
+                if (salesList.get(i).getID() == saleProductsList.get(j).getSaleID()) {
+                    int quantity = saleProductsList.get(j).getQuantitySold();
+                    double price = 0.0;
+                    for (int k = 0; k < productsList.size(); k++) {
+                        if (saleProductsList.get(j).getProductID() == productsList.get(k).getID()) {
+                            price = productsList.get(k).getPrice();
+                            break;
+                        }
+                    }
+                    total += quantity * price;
                 }
-                total += (price * sold);
+
             }
 
-            //Math.round(total);
             //Put customerName in the Table
             String customerName = "";
             for (int j = 0; j < customersList.size(); j++) {
@@ -739,7 +767,7 @@ public final class MainForm extends javax.swing.JFrame {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
                 customerName,
-                String.valueOf(total)
+                "€ " + String.format("%.2f", total)
             };
 
             salesTableModel.addRow(currentRow);
@@ -814,7 +842,7 @@ public final class MainForm extends javax.swing.JFrame {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
                 supplierName,
-                "€" + String.format("%.2g%n", total)
+                "€ " + String.format("%.2f", total)
             };
             supplyPurchasesTableModel.addRow(currentRow);
         }
@@ -1326,7 +1354,7 @@ public final class MainForm extends javax.swing.JFrame {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
                 supplierName,
-                "€" + String.format("%.2g%n", total)
+                "€ " + String.format("%.2f", total)
             };
             supplyPurchasesTableModel.addRow(currentRow);
         }
@@ -1857,44 +1885,40 @@ public final class MainForm extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
-//    public void getCompanyInformation() {
-//        salesList = new ArrayList<>();
-//
-//        long saleTimeDate = 0;
-//
-//        //Get customers from api
-//        String salesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "GetMultiple", "SessionID=aa");
-//        try {
-//            System.out.println("Get Sales HTTP -> " + salesJSON);
-//            JSONObject jsonObject = new JSONObject(salesJSON);
-//            final String status = jsonObject.getString("Status");
-//            final String title = jsonObject.getString("Title");
-//            final String message = jsonObject.getString("Message");
-//
-//            if (status.equals(HTTPConnection.RESPONSE_OK)) {
-//                JSONArray dataArray = jsonObject.getJSONArray("Data");
-//                for (int i = 0; i < dataArray.length(); i++) {
-//                    JSONObject currentItem = dataArray.getJSONObject(i);
-//
-//                    int id = currentItem.getInt("ID");
-//                    int customerID = currentItem.getInt("CustomerID");
-//                    int saleProductsID = currentItem.getInt("SaleProductsID");
-//                    int tax = currentItem.getInt("Tax");
-//                    saleTimeDate = currentItem.getLong("SaleTimeDate");
-//
-//                    Sales c = new Sales(id, customerID, saleProductsID, tax, saleTimeDate);
-//                    salesList.add(c);
-//                }
-//            } else {
-//                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-//                System.out.println("Fail " + salesJSON);
-//            }
-//        } catch (JSONException e) {
-//            System.out.println(e);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
+    public void getCompanyInformation() {
+        
+
+        //Get customers from api
+        String companyInfoJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Companyinformation", "GetMultiple", "SessionID=aa&Limit=0");
+        try {
+            System.out.println("Get Company Info HTTP -> " + companyInfoJSON);
+            JSONObject jsonObject = new JSONObject(companyInfoJSON);
+            final String status = jsonObject.getString("Status");
+            final String title = jsonObject.getString("Title");
+            final String message = jsonObject.getString("Message");
+
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                JSONArray dataArray = jsonObject.getJSONArray("Data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject currentItem = dataArray.getJSONObject(i);
+
+                    companyName = currentItem.getString("CompanyName");
+                    companyCountryID = currentItem.getInt("CountryID");
+                    companyTelephone = currentItem.getString("Telephone");
+                    companyAddress = currentItem.getString("Address");
+                    companyCity = currentItem.getString("City");
+                    
+                }
+            } else {
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Fail " + companyInfoJSON);
+            }
+        } catch (JSONException e) {
+            System.out.println(e);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     private void salesTab() {
         refreshSalesButton.setEnabled(false);
@@ -1943,7 +1967,7 @@ public final class MainForm extends javax.swing.JFrame {
                 i + 1,
                 Users.DATE_FORMAT.format(date),
                 customerName,
-                String.valueOf(total)
+                "€ " + String.format("%.2f", total)
             };
 
             salesTableModel.addRow(currentRow);
@@ -2396,6 +2420,11 @@ public final class MainForm extends javax.swing.JFrame {
         purchHistoryTable = new javax.swing.JTable();
         supplierGraphPanel = new javax.swing.JPanel();
         suppliesGraphPanel = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        Menu = new javax.swing.JMenu();
+        Forms = new javax.swing.JMenu();
+        AdminForm = new javax.swing.JMenuItem();
+        SetUpForm = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -2536,7 +2565,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(latestSales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(latestPurchases, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(957, Short.MAX_VALUE))
+                .addContainerGap(791, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Home", home);
@@ -2602,7 +2631,7 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(productsDetailsPanelLayout.createSequentialGroup()
                         .addComponent(deleteProductsButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 630, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(productsSaveButton)
                         .addGap(18, 18, 18)
                         .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2624,14 +2653,12 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(deleteProductsButton)
                         .addComponent(productsSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(productsDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(importProductsButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(refreshProductsTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(importProductsButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshProductsTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(productsScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(789, 789, 789))
+                .addGap(603, 603, 603))
         );
 
         javax.swing.GroupLayout productsTabLayout = new javax.swing.GroupLayout(productsTab);
@@ -2647,7 +2674,7 @@ public final class MainForm extends javax.swing.JFrame {
             productsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productsTabLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(productsDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1380, Short.MAX_VALUE)
+                .addComponent(productsDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(74, 74, 74))
         );
 
@@ -2737,7 +2764,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(suppliesSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(suppliesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(663, Short.MAX_VALUE))
+                .addContainerGap(497, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout suppliesPanelLayout = new javax.swing.GroupLayout(suppliesPanel);
@@ -2781,7 +2808,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         inventoryLayout.setVerticalGroup(
             inventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(invenrotyTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1503, Short.MAX_VALUE)
+            .addComponent(invenrotyTabPanel)
         );
 
         tabPanel.addTab("Inventory", inventory);
@@ -2828,21 +2855,20 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(productNameTextField2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(productionQuantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
                                 .addComponent(productNameTextField))
                             .addComponent(hireDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(productComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dateOfProduction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(productNameTextField2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(productionQuantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(72, 72, 72)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dateOfProduction, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                            .addComponent(productComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(46, 46, 46)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -2855,7 +2881,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addComponent(addBottlesQuantityButton)))
-                .addGap(297, 297, 297))
+                .addContainerGap(478, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2946,10 +2972,10 @@ public final class MainForm extends javax.swing.JFrame {
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(searchProduction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(deleteProductionButton)))
-                    .addComponent(refreshProductionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addComponent(refreshProductionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(13, 13, 13)
-                .addComponent(productionScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
-                .addGap(96, 96, 96))
+                .addComponent(productionScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addGap(90, 90, 90))
         );
 
         javax.swing.GroupLayout productionLayout = new javax.swing.GroupLayout(production);
@@ -2958,10 +2984,10 @@ public final class MainForm extends javax.swing.JFrame {
             productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addContainerGap())
         );
         productionLayout.setVerticalGroup(
             productionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2970,7 +2996,7 @@ public final class MainForm extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(513, Short.MAX_VALUE))
+                .addContainerGap(725, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Production", production);
@@ -3015,17 +3041,14 @@ public final class MainForm extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(saleScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(printSalesDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(refreshSalesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(printSalesDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(refreshSalesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(saleScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1067, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3044,17 +3067,16 @@ public final class MainForm extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(958, Short.MAX_VALUE))
+                .addContainerGap(792, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Daily Sales", jPanel2);
@@ -3266,7 +3288,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         customersGraphsPanel2Layout.setVerticalGroup(
             customersGraphsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 488, Short.MAX_VALUE)
+            .addGap(0, 420, Short.MAX_VALUE)
         );
 
         numOfCustomersLabel.setName("numOfCustomersLabel"); // NOI18N
@@ -3312,7 +3334,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addComponent(customerTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(655, Short.MAX_VALUE))
+                .addContainerGap(557, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Customers", customers);
@@ -3413,7 +3435,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(employeesSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(15, 15, 15)
                 .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(733, Short.MAX_VALUE))
+                .addContainerGap(567, Short.MAX_VALUE))
         );
 
         numOfEmployeesLabel.setName("numOfEmployeesLabel"); // NOI18N
@@ -3713,7 +3735,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         suppliesGraphPanelLayout.setVerticalGroup(
             suppliesGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 358, Short.MAX_VALUE)
+            .addGap(0, 290, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout suppliersLayout = new javax.swing.GroupLayout(suppliers);
@@ -3749,7 +3771,7 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(suppliersLayout.createSequentialGroup()
                         .addComponent(suppliesGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(799, Short.MAX_VALUE))
+                        .addContainerGap(701, Short.MAX_VALUE))
                     .addGroup(suppliersLayout.createSequentialGroup()
                         .addComponent(suppliesTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -3757,11 +3779,40 @@ public final class MainForm extends javax.swing.JFrame {
 
         tabPanel.addTab("Suppliers", suppliers);
 
+        Menu.setText("File");
+
+        Forms.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        Forms.setText("Forms");
+
+        AdminForm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/create employee.png"))); // NOI18N
+        AdminForm.setText("Admin Form");
+        AdminForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdminFormActionPerformed(evt);
+            }
+        });
+        Forms.add(AdminForm);
+
+        SetUpForm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/export.png"))); // NOI18N
+        SetUpForm.setText("SetUp Form");
+        SetUpForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SetUpFormActionPerformed(evt);
+            }
+        });
+        Forms.add(SetUpForm);
+
+        Menu.add(Forms);
+
+        jMenuBar1.add(Menu);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(tabPanel)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3802,12 +3853,12 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void importSupplierBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importSupplierBtnActionPerformed
         this.setVisible(true);
-        addSuppliersForm = new AddSuppliersForm();
+        addSuppliersForm = new AddSuppliersForm(this);
     }//GEN-LAST:event_importSupplierBtnActionPerformed
 
     private void importCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importCustomerBtnActionPerformed
         setVisible(true);
-        customersForm = new CustomersForm();
+        customersForm = new CustomersForm(this);
     }//GEN-LAST:event_importCustomerBtnActionPerformed
 
     private void importEmplBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importEmplBtnActionPerformed
@@ -3817,7 +3868,7 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void importProductsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importProductsButtonActionPerformed
         this.setVisible(true);
-        addProductsForm = new AddProductsForm();
+        addProductsForm = new AddProductsForm(this);
     }//GEN-LAST:event_importProductsButtonActionPerformed
 
     private void searchProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProductsActionPerformed
@@ -3826,24 +3877,12 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void importSuppliesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importSuppliesButtonActionPerformed
         this.setVisible(true);
-        addSuppliesForm = new AddSuppliesForm();
+        addSuppliesForm = new AddSuppliesForm(this);
     }//GEN-LAST:event_importSuppliesButtonActionPerformed
 
     private void searchSuppliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSuppliesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchSuppliesActionPerformed
-
-    private void dateOfProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateOfProductionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dateOfProductionActionPerformed
-
-    private void addBottlesQuantityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBottlesQuantityButtonActionPerformed
-        addProduction();
-    }//GEN-LAST:event_addBottlesQuantityButtonActionPerformed
-
-    private void searchProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProductionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchProductionActionPerformed
 
     private void refreshEmployeesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshEmployeesBtnActionPerformed
         getEmployees();
@@ -3879,11 +3918,6 @@ public final class MainForm extends javax.swing.JFrame {
         getSupplies();
         suppliesTab();
     }//GEN-LAST:event_refreshSuppliesTableActionPerformed
-
-    private void refreshProductionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshProductionButtonActionPerformed
-        getProduction();
-        productionTab();
-    }//GEN-LAST:event_refreshProductionButtonActionPerformed
 
     private void refreshPurchasesTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshPurchasesTableBtnActionPerformed
         getSupplyTransactions();
@@ -3926,17 +3960,6 @@ public final class MainForm extends javax.swing.JFrame {
             suppliersTab();
         }
     }//GEN-LAST:event_deleteSupplyButtonActionPerformed
-
-    private void deleteProductionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteProductionButtonActionPerformed
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete the selected production batch?", "Warning", JOptionPane.YES_NO_OPTION);
-        if (dialogResult == JOptionPane.YES_OPTION) {
-            int selectedRow = productionDetailsTable.getSelectedRow();
-            int selectedID = productionList.get(selectedRow).getID();
-            deleteProduction(selectedID);
-            getProduction();
-            productionTab();
-        }
-    }//GEN-LAST:event_deleteProductionButtonActionPerformed
 
     private void deleteCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCustomerButtonActionPerformed
         int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete the selected customer?", "Warning", JOptionPane.YES_NO_OPTION);
@@ -4390,7 +4413,8 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void printSalesDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printSalesDetailsBtnActionPerformed
 
-        int currentRow = supplierDetailsTable.getSelectedRow();
+        int currentRow = salesDetailsTable.getSelectedRow();
+        System.out.println("Current row: " + currentRow);
         if (currentRow < 0) {
             PDDocument document;
             URL url = getClass().getResource("");
@@ -4402,21 +4426,26 @@ public final class MainForm extends javax.swing.JFrame {
                 document = PDDocument.load(file);
 
                 PDPage page = PDFBoxUtils.getPage(document, 0);
+                String country ="";
+                for (int j = 0; j < countriesList.size(); j++) {
+                        if (countriesList.get(j).getID() == companyCountryID) {
+                            country = countriesList.get(j).getName();
+                        }
+                    }
 
                 //Company Details
-                PDFBoxUtils.addText(document, page, "Company name", Color.black, PDType1Font.COURIER, 11, 75, 645);
-                PDFBoxUtils.addText(document, page, "Telephne", Color.black, PDType1Font.COURIER, 11, 75, 632);
-                PDFBoxUtils.addText(document, page, "Address", Color.black, PDType1Font.COURIER, 11, 75, 620);
-                PDFBoxUtils.addText(document, page, "City", Color.black, PDType1Font.COURIER, 11, 75, 609);
-                PDFBoxUtils.addText(document, page, "Country", Color.black, PDType1Font.COURIER, 11, 75, 599);
+                PDFBoxUtils.addText(document, page, companyName, Color.black, PDType1Font.COURIER, 11, 75, 645);
+                PDFBoxUtils.addText(document, page, companyTelephone, Color.black, PDType1Font.COURIER, 11, 75, 632);
+                PDFBoxUtils.addText(document, page, companyAddress, Color.black, PDType1Font.COURIER, 11, 75, 620);
+                PDFBoxUtils.addText(document, page, companyCity, Color.black, PDType1Font.COURIER, 11, 75, 609);
+                PDFBoxUtils.addText(document, page, country, Color.black, PDType1Font.COURIER, 11, 75, 599);
 
-                int height = 512;
                 int numHeight = 512;
                 double subTotal = 0.0;
                 String sumTotal = "";
 
                 for (int i = 0; i < salesList.size(); i++) {
-                    
+
                     //Put customerName in the Table
                     String customerName = "";
                     for (int j = 0; j < customersList.size(); j++) {
@@ -4435,7 +4464,7 @@ public final class MainForm extends javax.swing.JFrame {
 
                     //Total
                     double total = 0.0;
-                    
+
                     for (int j = 0; j < saleProductsList.size(); j++) {
                         if (salesList.get(i).getID() == saleProductsList.get(j).getSaleID()) {
                             int quantity = saleProductsList.get(j).getQuantitySold();
@@ -4449,23 +4478,21 @@ public final class MainForm extends javax.swing.JFrame {
                             total += quantity * price;
                             subTotal += total;
                         }
-                        
-                    }
-                    
-                    String totalNum = String.valueOf(String.format("%.2f", total));
 
-                    String n2 = String.format("%.2f", subTotal);
-                    sumTotal = String.valueOf(n2);
+                    }
+
+                    String totalNum = String.format("%.2f" ,total);
+
+                    sumTotal = String.format("%.2f" , subTotal);
 
                     PDFBoxUtils.addText(document, page, number, Color.black, PDType1Font.COURIER, 13, 75, numHeight);
                     PDFBoxUtils.addText(document, page, Users.DATE_FORMAT.format(date), Color.black, PDType1Font.COURIER, 10, 132, numHeight);
                     PDFBoxUtils.addText(document, page, customerName, Color.black, PDType1Font.COURIER, 13, 200, numHeight);
-                    PDFBoxUtils.addText(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 450, numHeight);
-                    
-                    height = height - 8;
+                    PDFBoxUtils.addTextEuro(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 448, numHeight);
+
                     numHeight -= 17;
                 }
-                PDFBoxUtils.addText(document, page, sumTotal, Color.black, PDType1Font.COURIER, 13, 450, 160);
+                PDFBoxUtils.addTextEuro(document, page, sumTotal, Color.black, PDType1Font.COURIER, 13, 448, 160);
 
                 String fileName = "customerSales.pdf";
                 String exportedFileName = currentFolder + "../../../" + fileName;
@@ -4478,94 +4505,153 @@ public final class MainForm extends javax.swing.JFrame {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            return;
+        } else {
+
+            PDDocument document;
+            URL url = getClass().getResource("");
+            String currentFolder = url.getPath();
+            String combinedPath = currentFolder + "Documents/invoice.pdf";
+            System.out.println(combinedPath);
+            File file = new File(combinedPath);
+            try {
+                document = PDDocument.load(file);
+
+                PDPage page = PDFBoxUtils.getPage(document, 0);
+                
+                String country ="";
+                for (int j = 0; j < countriesList.size(); j++) {
+                        if (countriesList.get(j).getID() == companyCountryID) {
+                            country = countriesList.get(j).getName();
+                        }
+                    }
+
+                //Company Details
+                PDFBoxUtils.addText(document, page, companyName, Color.black, PDType1Font.COURIER, 11, 75, 645);
+                PDFBoxUtils.addText(document, page, companyTelephone, Color.black, PDType1Font.COURIER, 11, 75, 632);
+                PDFBoxUtils.addText(document, page, companyAddress, Color.black, PDType1Font.COURIER, 11, 75, 620);
+                PDFBoxUtils.addText(document, page, companyCity, Color.black, PDType1Font.COURIER, 11, 75, 609);
+                PDFBoxUtils.addText(document, page, country, Color.black, PDType1Font.COURIER, 11, 75, 599);
+
+                int currentSaleID = salesList.get(currentRow).getID();
+                double total = 0.0;
+                String sumTotal = "";
+                int numHeight = 475;
+
+                for (int j = 0; j < saleProductsList.size(); j++) {
+                    if (saleProductsList.get(j).getSaleID() == currentSaleID) {
+
+                        // Date
+                        Timestamp timestamp = new Timestamp(salesList.get(currentRow).getSaleTimeDate());
+                        Date date = new Date(timestamp.getTime());
+                        String stringDate = Users.DATE_FORMAT.format(date);
+
+                        String customerName = "";
+                        for (int k = 0; k < customersList.size(); k++) {
+                            if (customersList.get(k).getID() == salesList.get(currentRow).getCustomerID()) {
+                                customerName = customersList.get(k).getName();
+                                break;
+                            }
+                        }
+
+                        int quantity = saleProductsList.get(j).getQuantitySold();
+
+                        String productName = "";
+                        int productSizeID = 0;
+                        double price = 0.0;
+                        for (int k = 0; k < productsList.size(); k++) {
+                            if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
+                                productName = productsList.get(k).getName();
+                                productSizeID = productsList.get(k).getProductSizeID();
+                                price = productsList.get(k).getPrice();
+                                break;
+                            }
+                        }
+
+                        String productSizeName = "";
+                        for (int k = 0; k < productSizesList.size(); k++) {
+                            if (productSizesList.get(k).getID() == productSizeID) {
+                                productSizeName = productSizesList.get(k).getName();
+                                break;
+                            }
+                        }
+
+                        double lineTotal = price * quantity;
+                        total += lineTotal;
+
+                        String totalNum = String.format("%.2f" , lineTotal);
+                        String stringQuantity = String.valueOf(quantity);
+                        String stringPrice = String.format("%.2f" ,price);
+
+                        sumTotal = String.format("%.2f" ,  total);
+
+                        PDFBoxUtils.addText(document, page, customerName, Color.black, PDType1Font.COURIER, 13, 75, 525);
+                        PDFBoxUtils.addText(document, page, stringDate, Color.black, PDType1Font.COURIER, 13, 270, 525);
+
+                        PDFBoxUtils.addText(document, page, stringQuantity, Color.black, PDType1Font.COURIER, 13, 80, numHeight);
+                        PDFBoxUtils.addText(document, page, productName, Color.black, PDType1Font.COURIER, 13, 132, numHeight);
+                        PDFBoxUtils.addText(document, page, productSizeName, Color.black, PDType1Font.COURIER, 13, 300, numHeight);
+                        PDFBoxUtils.addTextEuro(document, page, stringPrice, Color.black, PDType1Font.COURIER, 13, 388, numHeight);
+                        PDFBoxUtils.addTextEuro(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 448, numHeight);
+
+                        numHeight -= 18;
+
+                    }
+
+                }
+
+                //Customer name...
+                PDFBoxUtils.addTextEuro(document, page, sumTotal, Color.black, PDType1Font.COURIER, 13, 448, 155);
+                String fileName = "custsInvoice.pdf";
+                String exportedFileName = currentFolder + "../../../" + fileName;
+                document.save(exportedFileName);
+                document.close();
+                File exportedFile = new File(exportedFileName);
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(exportedFile);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-//        int currentRow = salesDetailsTable.getSelectedRow();
-//        if (currentRow < 0) {
-//            return;
-//        }
-//        PDDocument document;
-//        URL url = getClass().getResource("");
-//        String currentFolder = url.getPath();
-//        String combinedPath = currentFolder + "Documents/invoice.pdf";
-//        System.out.println(combinedPath);
-//        File file = new File(combinedPath);
-//        try {
-//            document = PDDocument.load(file);
-//
-//            PDPage page = PDFBoxUtils.getPage(document, 0);
-//
-//            //Company Details
-//            PDFBoxUtils.addText(document, page, "Company name", Color.black, PDType1Font.COURIER, 11, 75, 645);
-//            PDFBoxUtils.addText(document, page, "Telephne", Color.black, PDType1Font.COURIER, 11, 75, 632);
-//            PDFBoxUtils.addText(document, page, "Address", Color.black, PDType1Font.COURIER, 11, 75, 620);
-//            PDFBoxUtils.addText(document, page, "City", Color.black, PDType1Font.COURIER, 11, 75, 609);
-//            PDFBoxUtils.addText(document, page, "Country", Color.black, PDType1Font.COURIER, 11, 75, 599);
-//
-//            int numHeight = 477;
-//            for (int i = 0; i < saleProductsList.size(); i++) {
-//                String product = "";
-//                for (int k = 0; k < customerProductsList.size(); i++) {
-//                    //Put supplier Name in the Table
-//                    for (int j = 0; j < productsList.size(); j++) {
-//                        if (productsList.get(j).getID() == customerProductsList.get(k).getProductID()) {
-//                            product = productsList.get(j).getName();
-//                        }
-//                    }
-//                }
-//
-//                //Put price Name in the Table
-//                double price = 0.0;
-//                for (int j = 0; j < productsList.size(); j++) {
-//                    if (productsList.get(j).getID() == saleProductsList.get(i).getProductID()) {
-//                        price = productsList.get(j).getPrice();
-//                    }
-//                }
-//                String productPrice = String.valueOf(price);
-//
-//                //Quantity
-//                int quantitySold = saleProductsList.get(i).getQuantitySold();
-//                String quantity = String.valueOf(quantitySold);
-//
-////                    //Total
-////                    double total = 0.0;
-////                    for (int j = 0; j < saleProductsList.size(); j++) {
-////                        int sold = saleProductsList.get(j).getQuantitySold();
-////                        //System.out.println("Sold:" + sold);
-////                        double price = 0.0;
-////                        for (int k = 0; k < productsList.size(); k++) {
-////                            if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
-////                                price = productsList.get(k).getPrice();
-////                                //System.out.println("Price:" + price);
-////                                break;
-////                            }
-////
-////                        }
-////                        total += (price * sold);
-////                    }
-//                //String totalNum = String.valueOf(total);
-//                PDFBoxUtils.addText(document, page, quantity, Color.black, PDType1Font.COURIER, 13, 75, numHeight);
-//                PDFBoxUtils.addText(document, page, product, Color.black, PDType1Font.COURIER, 13, 132, numHeight);
-//                PDFBoxUtils.addText(document, page, productPrice, Color.black, PDType1Font.COURIER, 13, 200, numHeight);
-//                //PDFBoxUtils.addText(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 450, numHeight);
-//
-//                numHeight -= 17;
-//            }
-//
-//            String fileName = "custInvoice.pdf";
-//            String exportedFileName = currentFolder + "../../../" + fileName;
-//            document.save(exportedFileName);
-//            document.close();
-//            File exportedFile = new File(exportedFileName);
-//            if (Desktop.isDesktopSupported()) {
-//                Desktop.getDesktop().open(exportedFile);
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
 
 
     }//GEN-LAST:event_printSalesDetailsBtnActionPerformed
+
+    private void deleteProductionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteProductionButtonActionPerformed
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete the selected production batch?", "Warning", JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            int selectedRow = productionDetailsTable.getSelectedRow();
+            int selectedID = productionList.get(selectedRow).getID();
+            deleteProduction(selectedID);
+            getProduction();
+            productionTab();
+        }
+    }//GEN-LAST:event_deleteProductionButtonActionPerformed
+
+    private void refreshProductionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshProductionButtonActionPerformed
+        getProduction();
+        productionTab();
+    }//GEN-LAST:event_refreshProductionButtonActionPerformed
+
+    private void searchProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProductionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchProductionActionPerformed
+
+    private void dateOfProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateOfProductionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateOfProductionActionPerformed
+
+    private void addBottlesQuantityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBottlesQuantityButtonActionPerformed
+        addProduction();
+    }//GEN-LAST:event_addBottlesQuantityButtonActionPerformed
+
+    private void AdminFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminFormActionPerformed
+        adminForm = new AdminForm(this);
+    }//GEN-LAST:event_AdminFormActionPerformed
+
+    private void SetUpFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetUpFormActionPerformed
+        setUpForm = new SetUpForm(this);
+    }//GEN-LAST:event_SetUpFormActionPerformed
 
     private void editEmployees(Users u) {
         //Get field values:
@@ -4798,6 +4884,10 @@ public final class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem AdminForm;
+    private javax.swing.JMenu Forms;
+    private javax.swing.JMenu Menu;
+    private javax.swing.JMenuItem SetUpForm;
     private javax.swing.JButton addBottlesQuantityButton;
     private javax.swing.JSpinner bottleQuantitySpinner;
     private javax.swing.JComboBox<String> bottleSizeComboBox;
@@ -4841,6 +4931,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton importSuppliesButton;
     private javax.swing.JTabbedPane invenrotyTabPanel;
     private javax.swing.JPanel inventory;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;

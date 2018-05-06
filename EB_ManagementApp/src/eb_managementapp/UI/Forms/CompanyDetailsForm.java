@@ -256,7 +256,7 @@ public class CompanyDetailsForm extends javax.swing.JFrame {
 
         addCompany();
         this.setVisible(false);
-        setUpForm = new SetUpForm();
+        setUpForm = new SetUpForm(this);
 
 
     }//GEN-LAST:event_nextButtonActionPerformed

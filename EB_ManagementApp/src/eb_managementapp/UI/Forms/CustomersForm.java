@@ -11,8 +11,10 @@ import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Customerproducts;
 import eb_managementapp.Entities.Customers;
 import eb_managementapp.UI.Components.CheckboxGroup;
+import eb_managementapp.UI.MainForm;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
@@ -24,11 +26,13 @@ public class CustomersForm extends javax.swing.JFrame {
     private ArrayList<Customers> customersList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Customerproducts> customerProductsList;
+    private JFrame sender;
 
     CheckboxGroup productsGroup;
 
-    public CustomersForm() {
+    public CustomersForm(JFrame sender) {
         initComponents();
+        this.sender = sender;
         
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
@@ -291,13 +295,25 @@ public class CustomersForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        setVisible(false);
-        setUpForm = new SetUpForm();
+        this.setVisible(false);
+        if (sender != null) {
+            if (sender instanceof SetUpForm) {
+                setUpForm = new SetUpForm(this);
+            } else if (sender instanceof MainForm) {
+
+            }
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        setVisible(false);
-        setUpForm = new SetUpForm();
+        this.setVisible(false);
+        if (sender != null) {
+            if (sender instanceof SetUpForm) {
+                setUpForm = new SetUpForm(this);
+            } else if (sender instanceof MainForm) {
+
+            }
+        }
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void viewCustomersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCustomersButtonActionPerformed
@@ -487,7 +503,7 @@ public class CustomersForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CustomersForm().setVisible(true);
+                new CustomersForm(new JFrame()).setVisible(true);
             }
         });
     }

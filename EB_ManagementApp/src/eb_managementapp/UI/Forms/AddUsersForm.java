@@ -1,6 +1,8 @@
 package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
+import static eb_managementapp.EB_ManagementApp.mainForm;
+import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
@@ -399,9 +401,11 @@ public class AddUsersForm extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.setVisible(false);
-        if (sender instanceof MainForm) {
-            MainForm form = (MainForm) sender;
-            form.getEmployees();
+        if (sender != null){
+            if (sender instanceof SetUpForm){
+                setUpForm = new SetUpForm(this);
+            }else if (sender instanceof MainForm){
+            }
         }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -411,11 +415,12 @@ public class AddUsersForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         this.setVisible(false);
-        if (sender instanceof MainForm) {
-            System.out.println("Attempted update?");
-            MainForm form = (MainForm) sender;
-            form.getEmployees();
-            form.employeesTab();
+        if (sender != null){
+            if (sender instanceof SetUpForm){
+                setUpForm = new SetUpForm(this);
+            }else if (sender instanceof MainForm){
+                
+            }
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 

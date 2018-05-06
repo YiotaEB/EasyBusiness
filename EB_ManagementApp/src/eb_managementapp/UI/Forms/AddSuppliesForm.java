@@ -8,8 +8,10 @@ package eb_managementapp.UI.Forms;
 import Utilities.HTTPConnection;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Suppliers;
+import eb_managementapp.UI.MainForm;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import org.json.JSONArray;
@@ -20,9 +22,11 @@ public class AddSuppliesForm extends javax.swing.JFrame {
     final String TITLE = "Add Suppliers";
 
     private ArrayList<Suppliers> suppliersList;
+    private JFrame sender;
 
-    public AddSuppliesForm() {
+    public AddSuppliesForm(JFrame sender) {
         initComponents();
+        this.sender = sender;
 
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
@@ -222,6 +226,13 @@ public class AddSuppliesForm extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.setVisible(false);
+        if (sender != null) {
+            if (sender instanceof SetUpForm) {
+                setUpForm = new SetUpForm(this);
+            } else if (sender instanceof MainForm) {
+
+            }
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addSuppliesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliesButtonActionPerformed
@@ -234,7 +245,13 @@ public class AddSuppliesForm extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         this.setVisible(false);
-        setUpForm = new SetUpForm();
+        if (sender != null) {
+            if (sender instanceof SetUpForm) {
+                setUpForm = new SetUpForm(this);
+            } else if (sender instanceof MainForm) {
+
+            }
+        }
     }//GEN-LAST:event_nextButtonActionPerformed
 
    
@@ -367,7 +384,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddSuppliesForm().setVisible(true);
+                new AddSuppliesForm(new JFrame()).setVisible(true);
             }
         });
     }

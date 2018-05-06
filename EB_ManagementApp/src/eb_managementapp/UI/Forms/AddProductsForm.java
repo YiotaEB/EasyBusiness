@@ -34,23 +34,22 @@ public class AddProductsForm extends javax.swing.JFrame {
     private ArrayList<Defaultsizes> sizeList;
     private ArrayList<Producttypes> productTypesList;
     private ArrayList<Products> productsList;
-    
+
     private JFrame sender;
 
     private CheckboxGroup sizesCheckBoxGroup;
 
-    public AddProductsForm() {
+    public AddProductsForm(JFrame sender) {
         initComponents();
         this.sender = sender;
 
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
-        
+
         //getProducts();
         getSizes();
         getProductTypes();
-        
-        
+
         setTitle(TITLE);
         setVisible(true);
 
@@ -324,8 +323,14 @@ public class AddProductsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        setVisible(false);
-        setUpForm = new SetUpForm();
+        this.setVisible(false);
+        if (sender != null) {
+            if (sender instanceof SetUpForm) {
+                setUpForm = new SetUpForm(this);
+            } else if (sender instanceof MainForm) {
+
+            }
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void productNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameTextFieldActionPerformed
@@ -361,7 +366,14 @@ public class AddProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_typeComboBoxActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        
+        this.setVisible(false);
+        if (sender != null) {
+            if (sender instanceof SetUpForm) {
+                setUpForm = new SetUpForm(this);
+            } else if (sender instanceof MainForm) {
+
+            }
+        }
     }//GEN-LAST:event_nextButtonActionPerformed
 
     public void getProducts() {
@@ -400,7 +412,6 @@ public class AddProductsForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         //Create a new model for the table:
         DefaultTableModel productsTableModel = new DefaultTableModel();
@@ -447,14 +458,14 @@ public class AddProductsForm extends javax.swing.JFrame {
         }
         productsTable.setModel(productsTableModel);
     }
-    
+
     private void addProducts() {
 
         String name = productNameTextField.getText();
         float price = Float.parseFloat(priceTextField.getText());
         int quantityInStock = Integer.parseInt(quantitySpinner.getValue().toString());
         int productTypesID = productTypesList.get(typeComboBox.getSelectedIndex()).getID();
-        
+
         //Check if the product name is valid
         if (name.trim().isEmpty()) {
             showMessageDialog(null, "Please provide a valid product name", "Invalid Product Name", JOptionPane.PLAIN_MESSAGE);
@@ -466,14 +477,13 @@ public class AddProductsForm extends javax.swing.JFrame {
             return;
         }
         //Check if the quantity is valid
-        if (quantityInStock <=0) {
+        if (quantityInStock <= 0) {
             showMessageDialog(null, "Please provide a valid quantity", "Invalid Quantity", JOptionPane.PLAIN_MESSAGE);
             return;
         }
 
-
         ArrayList<Integer> sizeIDs = new ArrayList();
-        for (int i = 0; i <sizesCheckBoxGroup.getCheckBoxes().size(); i++) {
+        for (int i = 0; i < sizesCheckBoxGroup.getCheckBoxes().size(); i++) {
             JCheckBox checkBox = sizesCheckBoxGroup.getCheckBoxes().get(i);
             if (checkBox.isSelected()) {
                 sizeIDs.add(sizeList.get(i).getID());
@@ -486,10 +496,10 @@ public class AddProductsForm extends javax.swing.JFrame {
 
             //Make the call:
             String addProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Create",
-                    "SessionID=aa&ID=0&Name="+name+ "&Price="+price+"&QuantityInStock="+quantityInStock+"&ProductSizeID=" + sizeIDs.get(i) +"&ProductTypeID=" + productTypesID + "&ProductSuppliesID=0");
+                    "SessionID=aa&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypeID=" + productTypesID + "&ProductSuppliesID=0");
 
-             System.out.println("!!!" + "SessionID=aa&ID=0&Name="+name+ "&Price="+price+"&QuantityInStock="+quantityInStock+"&ProductSizeID=" + sizeIDs.get(i) +"&ProductTypesID=" + productTypesID + "&ProductSuppliesID=0");
-            
+            System.out.println("!!!" + "SessionID=aa&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypesID=" + productTypesID + "&ProductSuppliesID=0");
+
             System.out.println(sizeList.get(i).getName() + " add Production HTTP -> " + addProductionJSON);
 
             try {
@@ -529,9 +539,9 @@ public class AddProductsForm extends javax.swing.JFrame {
 
         //Get sizes from api
         String sizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Defaultsizes", "GetMultiple", "SessionID=aa");
-        
+
         System.out.println("Get Sizes HTTP -> " + sizesJSON);
-        
+
         try {
             JSONObject jsonObject = new JSONObject(sizesJSON);
             final String status = jsonObject.getString("Status");
@@ -547,7 +557,7 @@ public class AddProductsForm extends javax.swing.JFrame {
                     String name = currentItem.getString("Name");
                     int unitTypeID = currentItem.getInt("UnitTypeID");
 
-                    Defaultsizes c = new Defaultsizes(id, name,unitTypeID);
+                    Defaultsizes c = new Defaultsizes(id, name, unitTypeID);
                     sizeList.add(c);
 
                 }
@@ -558,12 +568,12 @@ public class AddProductsForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-         //Get productSizes from api
+
+        //Get productSizes from api
         String productSizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "GetMultiple", "SessionID=aa&Limit=0");
-        
+
         System.out.println("Get Sizes HTTP -> " + productSizesJSON);
-        
+
         try {
             JSONObject jsonObject = new JSONObject(productSizesJSON);
             final String status = jsonObject.getString("Status");
@@ -579,7 +589,7 @@ public class AddProductsForm extends javax.swing.JFrame {
                     String name = currentItem.getString("Name");
                     int unitTypeID = currentItem.getInt("UnitTypeID");
 
-                    Defaultsizes c = new Defaultsizes(id, name,unitTypeID);
+                    Defaultsizes c = new Defaultsizes(id, name, unitTypeID);
                     sizeList.add(c);
 
                 }
@@ -603,7 +613,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         sizesCheckBoxGroup = new CheckboxGroup(sizesListString);//String
         sizesCheckBoxGroup.setBounds(new Rectangle(new Point(80, 120), sizesCheckBoxGroup.getPreferredSize()));
         productPanel.add(sizesCheckBoxGroup);
-        
+
     }
 
     public void getProductTypes() {
@@ -644,8 +654,6 @@ public class AddProductsForm extends javax.swing.JFrame {
         }
 
     }
-    
-   
 
     /**
      * @param args the command line arguments
@@ -677,7 +685,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddProductsForm().setVisible(true);
+                new AddProductsForm(new JFrame()).setVisible(true);
             }
         });
     }

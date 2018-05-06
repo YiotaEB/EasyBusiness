@@ -7,13 +7,15 @@ package eb_managementapp.UI.Forms;
 
 import Utilities.HTTPConnection;
 import Utilities.Hash;
-import eb_managementapp.UI.Forms.SetUpForm;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
+import eb_managementapp.UI.MainForm;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import org.json.JSONArray;
@@ -27,21 +29,29 @@ public class AdminForm extends javax.swing.JFrame {
 
     //final variables:
     final String TITLE = "Easy Business - Administrator";
-    
+
     private ArrayList<Users> usersList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Userlevels> positionsList;
 
-    public AdminForm() {
+    private JFrame sender;
+
+    public AdminForm(JFrame sender) {
         initComponents();
-        
+
+        this.sender = sender;
+
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
-        
+
         getCountries();
 
         this.setTitle(TITLE);
         setVisible(true);
+    }
+
+    AdminForm() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -200,10 +210,9 @@ public class AdminForm extends javax.swing.JFrame {
                 .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cityLabel)
                     .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(administratorDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(countryLabel))))
+                        .addComponent(countryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(countryLabel))
+                    .addComponent(cityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -365,7 +374,15 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_addressTextFieldActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        System.exit(0);
+
+        this.setVisible(false);
+        if (sender != null) {
+            if (sender instanceof MainForm) {
+            } else {
+                System.exit(0);
+            }
+        }
+
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
@@ -381,10 +398,15 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_confirmPasswordFieldActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-
         addAdmin();
         this.setVisible(false);
-        setUpForm = new SetUpForm();
+        if (sender != null) {
+            if (sender instanceof MainForm)
+             {
+            } else {
+                setUpForm = new SetUpForm(this);
+            }
+        }
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void addAdmin() {
@@ -533,7 +555,7 @@ public class AdminForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminForm().setVisible(true);
+                new AdminForm(new JFrame()).setVisible(true);
             }
         });
     }

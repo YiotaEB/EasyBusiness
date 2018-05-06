@@ -13,17 +13,23 @@ import static eb_managementapp.EB_ManagementApp.addProductsForm;
 import static eb_managementapp.EB_ManagementApp.addSuppliesForm;
 import static eb_managementapp.EB_ManagementApp.addSuppliersForm;
 import static eb_managementapp.EB_ManagementApp.customersForm;
+import static eb_managementapp.EB_ManagementApp.adminForm;
 import eb_managementapp.UI.MainForm;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 public class SetUpForm extends javax.swing.JFrame {
 
     final String TITLE = "Easy Business - Set Up";
     
     
-    public SetUpForm() {
+    private JFrame sender;
+    
+    public SetUpForm(JFrame sender) {
         initComponents();
-        //Todo
+        
+        this.sender = sender;
+        
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
         
@@ -246,27 +252,33 @@ public class SetUpForm extends javax.swing.JFrame {
 
     private void addProductsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductsButtonActionPerformed
        this.setVisible(false);
-       addProductsForm = new AddProductsForm ();
+       addProductsForm = new AddProductsForm (this);
     }//GEN-LAST:event_addProductsButtonActionPerformed
 
     private void addSupplierButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSupplierButtonActionPerformed
        this.setVisible(false);
-       addSuppliersForm = new AddSuppliersForm ();
+       addSuppliersForm = new AddSuppliersForm (this);
     }//GEN-LAST:event_addSupplierButtonActionPerformed
 
     private void addCustomersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCustomersButtonActionPerformed
        this.setVisible(false);
-       customersForm= new CustomersForm();
+       customersForm= new CustomersForm(this);
     }//GEN-LAST:event_addCustomersButtonActionPerformed
 
     private void finishCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishCompanyButtonActionPerformed
         this.setVisible(false);
-        mainForm = new MainForm();
+        if (sender != null) {
+            if (sender instanceof AdminForm) {
+                mainForm = new MainForm();
+            } else if (sender instanceof MainForm) {
+
+            }
+        }
     }//GEN-LAST:event_finishCompanyButtonActionPerformed
 
     private void addSuppliesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliesButtonActionPerformed
         this.setVisible(false);
-       addSuppliesForm = new AddSuppliesForm ();
+       addSuppliesForm = new AddSuppliesForm (this);
     }//GEN-LAST:event_addSuppliesButtonActionPerformed
 
     /**
@@ -301,7 +313,7 @@ public class SetUpForm extends javax.swing.JFrame {
             @Override
             public void run() {
                
-                new SetUpForm().setVisible(true);
+                new SetUpForm(new JFrame()).setVisible(true);
             }
         });
     }
