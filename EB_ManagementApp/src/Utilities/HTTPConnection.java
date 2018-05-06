@@ -14,6 +14,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -51,45 +55,58 @@ public class HTTPConnection {
     }
 
     public static String executePost(String targetURL, String entityName, String endpointName, String urlParameters) {
-        HttpURLConnection urlConnection = null;
-        String responseData = null;
 
         try {
-            //Create connection
-            URL url = new URL(encodeForAPI(API_URL, entityName, endpointName));
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setDoOutput(true);
-            byte[] outputBytes = urlParameters.getBytes("UTF-8");
-            urlConnection.setRequestMethod("POST");
-            urlConnection.connect();
-            OutputStream os = urlConnection.getOutputStream();
-            os.write(outputBytes);
-            os.close();
-            int statusCode = urlConnection.getResponseCode();
 
-            //OK
-            if (statusCode == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                responseData = convertStreamToString(inputStream);
-                urlConnection.disconnect();
-                return responseData;
-            } else {
-                showMessageDialog(null, "HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName) + ". Please make sure you have an internet connection.", "Connection Error", JOptionPane.PLAIN_MESSAGE);
-                throw new RuntimeException("HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName));
-            }
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Callable<String> callable = new Callable<String>() {
+                @Override
+                public String call() {
+                    HttpURLConnection urlConnection = null;
+                    String responseData = null;
 
-            
+                    try {
+                        //Create connection
+                        URL url = new URL(encodeForAPI(API_URL, entityName, endpointName));
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setDoOutput(true);
+                        byte[] outputBytes = urlParameters.getBytes("UTF-8");
+                        urlConnection.setRequestMethod("POST");
+                        urlConnection.connect();
+                        OutputStream os = urlConnection.getOutputStream();
+                        os.write(outputBytes);
+                        os.close();
+                        int statusCode = urlConnection.getResponseCode();
+
+                        //OK
+                        if (statusCode == HttpURLConnection.HTTP_OK) {
+                            InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                            responseData = convertStreamToString(inputStream);
+                            urlConnection.disconnect();
+                            return responseData;
+                        } else {
+                            showMessageDialog(null, "HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName) + ". Please make sure you have an internet connection.", "Connection Error", JOptionPane.PLAIN_MESSAGE);
+                            throw new RuntimeException("HTTP Connection Error on URL: " + encodeForAPI(API_URL, entityName, endpointName));
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                    return null;
+                }
+            };
+            Future<String> future = executor.submit(callable);
+            executor.shutdown();
+
+            return future.get();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-        }
-        
         return null;
-
     }
 }

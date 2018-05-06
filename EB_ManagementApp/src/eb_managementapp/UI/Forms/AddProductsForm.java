@@ -9,15 +9,18 @@ import Utilities.HTTPConnection;
 import static eb_managementapp.EB_ManagementApp.addProductTypeForm;
 import static eb_managementapp.EB_ManagementApp.addSizeForm;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
+import static eb_managementapp.EB_ManagementApp.mainForm;
 import eb_managementapp.Entities.Defaultsizes;
 import eb_managementapp.Entities.Products;
 import eb_managementapp.Entities.Producttypes;
 import eb_managementapp.UI.Components.CheckboxGroup;
+import eb_managementapp.UI.MainForm;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
@@ -31,11 +34,14 @@ public class AddProductsForm extends javax.swing.JFrame {
     private ArrayList<Defaultsizes> sizeList;
     private ArrayList<Producttypes> productTypesList;
     private ArrayList<Products> productsList;
+    
+    private JFrame sender;
 
     private CheckboxGroup sizesCheckBoxGroup;
 
     public AddProductsForm() {
         initComponents();
+        this.sender = sender;
 
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
@@ -78,7 +84,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         productsTable = new javax.swing.JTable();
         buttonPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
-        cancelButton1 = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -259,10 +265,10 @@ public class AddProductsForm extends javax.swing.JFrame {
             }
         });
 
-        cancelButton1.setText("Next >");
-        cancelButton1.addActionListener(new java.awt.event.ActionListener() {
+        nextButton.setText("Next >");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButton1ActionPerformed(evt);
+                nextButtonActionPerformed(evt);
             }
         });
 
@@ -274,7 +280,7 @@ public class AddProductsForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cancelButton1)
+                .addComponent(nextButton)
                 .addGap(33, 33, 33))
         );
         buttonPanelLayout.setVerticalGroup(
@@ -283,7 +289,7 @@ public class AddProductsForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
-                    .addComponent(cancelButton1))
+                    .addComponent(nextButton))
                 .addGap(11, 11, 11))
         );
 
@@ -354,9 +360,9 @@ public class AddProductsForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_typeComboBoxActionPerformed
 
-    private void cancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButton1ActionPerformed
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     public void getProducts() {
         productsList = new ArrayList<>();
@@ -682,8 +688,8 @@ public class AddProductsForm extends javax.swing.JFrame {
     private javax.swing.JButton addTypeButton;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton cancelButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton nextButton;
     private javax.swing.JLabel priceLabel;
     private javax.swing.JTextField priceTextField;
     private javax.swing.JLabel productNameLabel;

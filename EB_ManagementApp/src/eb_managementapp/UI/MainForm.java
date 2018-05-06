@@ -1913,18 +1913,17 @@ public final class MainForm extends javax.swing.JFrame {
 
             double total = 0.0;
             for (int j = 0; j < saleProductsList.size(); j++) {
-                int sold = saleProductsList.get(j).getQuantitySold();
-                //System.out.println("Sold:" + sold);
-                double price = 0.0;
-                for (int k = 0; k < productsList.size(); k++) {
-                    if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
-                        price = productsList.get(k).getPrice();
-                        //System.out.println("Price:" + price);
-                        break;
+                if (salesList.get(i).getID() == saleProductsList.get(j).getSaleID()) {
+                    int quantity = saleProductsList.get(j).getQuantitySold();
+                    double price = 0.0;
+                    for (int k = 0; k < productsList.size(); k++) {
+                        if (saleProductsList.get(j).getProductID() == productsList.get(k).getID()) {
+                            price = productsList.get(k).getPrice();
+                            break;
+                        }
                     }
-
+                    total += quantity * price;
                 }
-                total += (price * sold);
             }
 
             //Math.round(total);
@@ -1936,8 +1935,7 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             }
 
-            System.out.println("Customer:" + customerName);
-
+            //System.out.println("Customer:" + customerName);
             Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
             Date date = new Date(timestamp.getTime());
 
@@ -2335,9 +2333,6 @@ public final class MainForm extends javax.swing.JFrame {
         searchSale = new javax.swing.JTextField();
         refreshSalesButton = new javax.swing.JButton();
         printSalesDetailsBtn = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jPanel7 = new javax.swing.JPanel();
         customers = new javax.swing.JPanel();
         noCustomerLb = new javax.swing.JLabel();
         customerDetailsPanel = new javax.swing.JPanel();
@@ -2401,26 +2396,6 @@ public final class MainForm extends javax.swing.JFrame {
         purchHistoryTable = new javax.swing.JTable();
         supplierGraphPanel = new javax.swing.JPanel();
         suppliesGraphPanel = new javax.swing.JPanel();
-        menuBar = new javax.swing.JMenuBar();
-        file = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        view = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
-        options = new javax.swing.JMenu();
-        jMenu7 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu9 = new javax.swing.JMenu();
-        tools = new javax.swing.JMenu();
-        jMenu10 = new javax.swing.JMenu();
-        jMenu11 = new javax.swing.JMenu();
-        jMenu12 = new javax.swing.JMenu();
-        help = new javax.swing.JMenu();
-        helpContentMenu = new javax.swing.JMenu();
-        aboutMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -2561,7 +2536,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(latestSales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(latestPurchases, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(464, Short.MAX_VALUE))
+                .addContainerGap(957, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Home", home);
@@ -2626,19 +2601,19 @@ public final class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(productsDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(productsScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(productsDetailsPanelLayout.createSequentialGroup()
                         .addComponent(deleteProductsButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 630, Short.MAX_VALUE)
                         .addComponent(productsSaveButton)
                         .addGap(18, 18, 18)
                         .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshProductsTable, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(importProductsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12))))
+                        .addGap(12, 12, 12))
+                    .addGroup(productsDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(productsScrollPanel)
+                        .addContainerGap())))
         );
         productsDetailsPanelLayout.setVerticalGroup(
             productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2649,11 +2624,14 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(searchProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(deleteProductsButton)
                         .addComponent(productsSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(refreshProductsTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(importProductsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(25, 25, 25)
+                    .addGroup(productsDetailsPanelLayout.createSequentialGroup()
+                        .addGroup(productsDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(importProductsButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(refreshProductsTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addComponent(productsScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(345, 345, 345))
+                .addGap(789, 789, 789))
         );
 
         javax.swing.GroupLayout productsTabLayout = new javax.swing.GroupLayout(productsTab);
@@ -2669,7 +2647,7 @@ public final class MainForm extends javax.swing.JFrame {
             productsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productsTabLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(productsDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(productsDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1380, Short.MAX_VALUE)
                 .addGap(74, 74, 74))
         );
 
@@ -2733,11 +2711,11 @@ public final class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(suppliesDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(suppliesDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(suppliesScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
+                        .addComponent(suppliesScrollPanel)
                         .addContainerGap())
                     .addGroup(suppliesDetailsPanelLayout.createSequentialGroup()
                         .addComponent(deleteSuppliesButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 649, Short.MAX_VALUE)
                         .addComponent(suppliesSaveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(searchSupplies, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2757,9 +2735,9 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(deleteSuppliesButton)
                         .addComponent(searchSupplies, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(suppliesSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(suppliesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(suppliesScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(663, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout suppliesPanelLayout = new javax.swing.GroupLayout(suppliesPanel);
@@ -2803,7 +2781,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         inventoryLayout.setVerticalGroup(
             inventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(invenrotyTabPanel)
+            .addComponent(invenrotyTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1503, Short.MAX_VALUE)
         );
 
         tabPanel.addTab("Inventory", inventory);
@@ -2992,7 +2970,7 @@ public final class MainForm extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(513, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Production", production);
@@ -3036,19 +3014,18 @@ public final class MainForm extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(printSalesDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(refreshSalesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(saleScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(printSalesDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchSale, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(refreshSalesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(saleScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1017, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3058,58 +3035,26 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(refreshSalesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(searchSale))
                     .addComponent(printSalesDetailsBtn))
-                .addGap(0, 237, Short.MAX_VALUE))
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                    .addContainerGap(37, Short.MAX_VALUE)
-                    .addComponent(saleScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
-
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item - Customer 1", "Item - Customer 2" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
-
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Customers Daily Sales"));
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 792, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 173, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(saleScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(14, 14, 14))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
+                .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(530, Short.MAX_VALUE))
+                .addContainerGap(958, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Daily Sales", jPanel2);
@@ -3321,7 +3266,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         customersGraphsPanel2Layout.setVerticalGroup(
             customersGraphsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 251, Short.MAX_VALUE)
+            .addGap(0, 488, Short.MAX_VALUE)
         );
 
         numOfCustomersLabel.setName("numOfCustomersLabel"); // NOI18N
@@ -3367,7 +3312,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addComponent(customerTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(457, Short.MAX_VALUE))
+                .addContainerGap(655, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Customers", customers);
@@ -3468,7 +3413,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(employeesSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(15, 15, 15)
                 .addComponent(employeeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap(733, Short.MAX_VALUE))
         );
 
         numOfEmployeesLabel.setName("numOfEmployeesLabel"); // NOI18N
@@ -3768,7 +3713,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         suppliesGraphPanelLayout.setVerticalGroup(
             suppliesGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
+            .addGap(0, 358, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout suppliersLayout = new javax.swing.GroupLayout(suppliers);
@@ -3804,7 +3749,7 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(suppliersLayout.createSequentialGroup()
                         .addComponent(suppliesGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(601, Short.MAX_VALUE))
+                        .addContainerGap(799, Short.MAX_VALUE))
                     .addGroup(suppliersLayout.createSequentialGroup()
                         .addComponent(suppliesTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -3812,82 +3757,19 @@ public final class MainForm extends javax.swing.JFrame {
 
         tabPanel.addTab("Suppliers", suppliers);
 
-        file.setText("File");
-
-        jMenu1.setText("jMenu1");
-        file.add(jMenu1);
-
-        jMenu2.setText("jMenu1");
-        file.add(jMenu2);
-
-        jMenu3.setText("jMenu1");
-        file.add(jMenu3);
-
-        menuBar.add(file);
-
-        view.setText("View");
-
-        jMenu4.setText("jMenu1");
-        view.add(jMenu4);
-
-        jMenu5.setText("jMenu1");
-        view.add(jMenu5);
-
-        jMenu6.setText("jMenu1");
-        view.add(jMenu6);
-
-        menuBar.add(view);
-
-        options.setText("Options");
-
-        jMenu7.setText("jMenu1");
-        options.add(jMenu7);
-
-        jMenu8.setText("jMenu1");
-        options.add(jMenu8);
-
-        jMenu9.setText("jMenu1");
-        options.add(jMenu9);
-
-        menuBar.add(options);
-
-        tools.setText("Tools");
-
-        jMenu10.setText("jMenu1");
-        tools.add(jMenu10);
-
-        jMenu11.setText("jMenu1");
-        tools.add(jMenu11);
-
-        jMenu12.setText("jMenu1");
-        tools.add(jMenu12);
-
-        menuBar.add(tools);
-
-        help.setText("Help");
-
-        helpContentMenu.setText("jMenu1");
-        help.add(helpContentMenu);
-
-        aboutMenu.setText("jMenu1");
-        help.add(aboutMenu);
-
-        menuBar.add(help);
-
-        setJMenuBar(menuBar);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanel)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanel)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTxtActionPerformed
@@ -4507,82 +4389,182 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_printSupDetailsBtn1ActionPerformed
 
     private void printSalesDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printSalesDetailsBtnActionPerformed
-        PDDocument document;
-        URL url = getClass().getResource("");
-        String currentFolder = url.getPath();
-        String combinedPath = currentFolder + "Documents/sales.pdf";
-        System.out.println(combinedPath);
-        File file = new File(combinedPath);
-        try {
-            document = PDDocument.load(file);
 
-            PDPage page = PDFBoxUtils.getPage(document, 0);
+        int currentRow = supplierDetailsTable.getSelectedRow();
+        if (currentRow < 0) {
+            PDDocument document;
+            URL url = getClass().getResource("");
+            String currentFolder = url.getPath();
+            String combinedPath = currentFolder + "Documents/sales.pdf";
+            System.out.println(combinedPath);
+            File file = new File(combinedPath);
+            try {
+                document = PDDocument.load(file);
 
-            //Company Details
-            PDFBoxUtils.addText(document, page, "Company name", Color.black, PDType1Font.COURIER, 11, 75, 645);
-            PDFBoxUtils.addText(document, page, "Telephne", Color.black, PDType1Font.COURIER, 11, 75, 632);
-            PDFBoxUtils.addText(document, page, "Address", Color.black, PDType1Font.COURIER, 11, 75, 620);
-            PDFBoxUtils.addText(document, page, "City", Color.black, PDType1Font.COURIER, 11, 75, 609);
-            PDFBoxUtils.addText(document, page, "Country", Color.black, PDType1Font.COURIER, 11, 75, 599);
+                PDPage page = PDFBoxUtils.getPage(document, 0);
 
-            int height = 512;
-            int numHeight = 512;
-            for (int i = 0; i < salesList.size(); i++) {
+                //Company Details
+                PDFBoxUtils.addText(document, page, "Company name", Color.black, PDType1Font.COURIER, 11, 75, 645);
+                PDFBoxUtils.addText(document, page, "Telephne", Color.black, PDType1Font.COURIER, 11, 75, 632);
+                PDFBoxUtils.addText(document, page, "Address", Color.black, PDType1Font.COURIER, 11, 75, 620);
+                PDFBoxUtils.addText(document, page, "City", Color.black, PDType1Font.COURIER, 11, 75, 609);
+                PDFBoxUtils.addText(document, page, "Country", Color.black, PDType1Font.COURIER, 11, 75, 599);
 
-                //Put customerName in the Table
-                String customerName = "";
-                for (int j = 0; j < customersList.size(); j++) {
-                    if (customersList.get(j).getID() == salesList.get(i).getCustomerID()) {
-                        customerName = customersList.get(j).getName();
-                    }
-                }
-                //Date
-                Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
-                Date date = new Date(timestamp.getTime());
+                int height = 512;
+                int numHeight = 512;
+                double subTotal = 0.0;
+                String sumTotal = "";
 
-                //Row Number
-                int num = 0;
-                num = i + 1;
-                String number = String.valueOf(num);
-
-                //Total
-                double total = 0.0;
-                for (int j = 0; j < saleProductsList.size(); j++) {
-                    int sold = saleProductsList.get(j).getQuantitySold();
-                    //System.out.println("Sold:" + sold);
-                    double price = 0.0;
-                    for (int k = 0; k < productsList.size(); k++) {
-                        if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
-                            price = productsList.get(k).getPrice();
-                            //System.out.println("Price:" + price);
-                            break;
+                for (int i = 0; i < salesList.size(); i++) {
+                    
+                    //Put customerName in the Table
+                    String customerName = "";
+                    for (int j = 0; j < customersList.size(); j++) {
+                        if (customersList.get(j).getID() == salesList.get(i).getCustomerID()) {
+                            customerName = customersList.get(j).getName();
                         }
-
                     }
-                    total += (price * sold);
+                    //Date
+                    Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
+                    Date date = new Date(timestamp.getTime());
+
+                    //Row Number
+                    int num = 0;
+                    num = i + 1;
+                    String number = String.valueOf(num);
+
+                    //Total
+                    double total = 0.0;
+                    
+                    for (int j = 0; j < saleProductsList.size(); j++) {
+                        if (salesList.get(i).getID() == saleProductsList.get(j).getSaleID()) {
+                            int quantity = saleProductsList.get(j).getQuantitySold();
+                            double price = 0.0;
+                            for (int k = 0; k < productsList.size(); k++) {
+                                if (saleProductsList.get(j).getProductID() == productsList.get(k).getID()) {
+                                    price = productsList.get(k).getPrice();
+                                    break;
+                                }
+                            }
+                            total += quantity * price;
+                            subTotal += total;
+                        }
+                        
+                    }
+                    
+                    String totalNum = String.valueOf(String.format("%.2f", total));
+
+                    String n2 = String.format("%.2f", subTotal);
+                    sumTotal = String.valueOf(n2);
+
+                    PDFBoxUtils.addText(document, page, number, Color.black, PDType1Font.COURIER, 13, 75, numHeight);
+                    PDFBoxUtils.addText(document, page, Users.DATE_FORMAT.format(date), Color.black, PDType1Font.COURIER, 10, 132, numHeight);
+                    PDFBoxUtils.addText(document, page, customerName, Color.black, PDType1Font.COURIER, 13, 200, numHeight);
+                    PDFBoxUtils.addText(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 450, numHeight);
+                    
+                    height = height - 8;
+                    numHeight -= 17;
                 }
-                String totalNum = String.valueOf(total);
+                PDFBoxUtils.addText(document, page, sumTotal, Color.black, PDType1Font.COURIER, 13, 450, 160);
 
-                PDFBoxUtils.addText(document, page, number, Color.black, PDType1Font.COURIER, 13, 75, numHeight);
-                PDFBoxUtils.addText(document, page, Users.DATE_FORMAT.format(date), Color.black, PDType1Font.COURIER, 10, 132, numHeight);
-                PDFBoxUtils.addText(document, page, customerName, Color.black, PDType1Font.COURIER, 13, 200, numHeight);
-                PDFBoxUtils.addText(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 450, numHeight);
-                height = height - 8;
-                numHeight -= 17;
+                String fileName = "customerSales.pdf";
+                String exportedFileName = currentFolder + "../../../" + fileName;
+                document.save(exportedFileName);
+                document.close();
+                File exportedFile = new File(exportedFileName);
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(exportedFile);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-
-            String fileName = "customerSales.pdf";
-            String exportedFileName = currentFolder + "../../../" + fileName;
-            document.save(exportedFileName);
-            document.close();
-            File exportedFile = new File(exportedFileName);
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().open(exportedFile);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            return;
         }
+//        int currentRow = salesDetailsTable.getSelectedRow();
+//        if (currentRow < 0) {
+//            return;
+//        }
+//        PDDocument document;
+//        URL url = getClass().getResource("");
+//        String currentFolder = url.getPath();
+//        String combinedPath = currentFolder + "Documents/invoice.pdf";
+//        System.out.println(combinedPath);
+//        File file = new File(combinedPath);
+//        try {
+//            document = PDDocument.load(file);
+//
+//            PDPage page = PDFBoxUtils.getPage(document, 0);
+//
+//            //Company Details
+//            PDFBoxUtils.addText(document, page, "Company name", Color.black, PDType1Font.COURIER, 11, 75, 645);
+//            PDFBoxUtils.addText(document, page, "Telephne", Color.black, PDType1Font.COURIER, 11, 75, 632);
+//            PDFBoxUtils.addText(document, page, "Address", Color.black, PDType1Font.COURIER, 11, 75, 620);
+//            PDFBoxUtils.addText(document, page, "City", Color.black, PDType1Font.COURIER, 11, 75, 609);
+//            PDFBoxUtils.addText(document, page, "Country", Color.black, PDType1Font.COURIER, 11, 75, 599);
+//
+//            int numHeight = 477;
+//            for (int i = 0; i < saleProductsList.size(); i++) {
+//                String product = "";
+//                for (int k = 0; k < customerProductsList.size(); i++) {
+//                    //Put supplier Name in the Table
+//                    for (int j = 0; j < productsList.size(); j++) {
+//                        if (productsList.get(j).getID() == customerProductsList.get(k).getProductID()) {
+//                            product = productsList.get(j).getName();
+//                        }
+//                    }
+//                }
+//
+//                //Put price Name in the Table
+//                double price = 0.0;
+//                for (int j = 0; j < productsList.size(); j++) {
+//                    if (productsList.get(j).getID() == saleProductsList.get(i).getProductID()) {
+//                        price = productsList.get(j).getPrice();
+//                    }
+//                }
+//                String productPrice = String.valueOf(price);
+//
+//                //Quantity
+//                int quantitySold = saleProductsList.get(i).getQuantitySold();
+//                String quantity = String.valueOf(quantitySold);
+//
+////                    //Total
+////                    double total = 0.0;
+////                    for (int j = 0; j < saleProductsList.size(); j++) {
+////                        int sold = saleProductsList.get(j).getQuantitySold();
+////                        //System.out.println("Sold:" + sold);
+////                        double price = 0.0;
+////                        for (int k = 0; k < productsList.size(); k++) {
+////                            if (productsList.get(k).getID() == saleProductsList.get(j).getProductID()) {
+////                                price = productsList.get(k).getPrice();
+////                                //System.out.println("Price:" + price);
+////                                break;
+////                            }
+////
+////                        }
+////                        total += (price * sold);
+////                    }
+//                //String totalNum = String.valueOf(total);
+//                PDFBoxUtils.addText(document, page, quantity, Color.black, PDType1Font.COURIER, 13, 75, numHeight);
+//                PDFBoxUtils.addText(document, page, product, Color.black, PDType1Font.COURIER, 13, 132, numHeight);
+//                PDFBoxUtils.addText(document, page, productPrice, Color.black, PDType1Font.COURIER, 13, 200, numHeight);
+//                //PDFBoxUtils.addText(document, page, totalNum, Color.black, PDType1Font.COURIER, 13, 450, numHeight);
+//
+//                numHeight -= 17;
+//            }
+//
+//            String fileName = "custInvoice.pdf";
+//            String exportedFileName = currentFolder + "../../../" + fileName;
+//            document.save(exportedFileName);
+//            document.close();
+//            File exportedFile = new File(exportedFileName);
+//            if (Desktop.isDesktopSupported()) {
+//                Desktop.getDesktop().open(exportedFile);
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+
+
     }//GEN-LAST:event_printSalesDetailsBtnActionPerformed
 
     private void editEmployees(Users u) {
@@ -4816,7 +4798,6 @@ public final class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu aboutMenu;
     private javax.swing.JButton addBottlesQuantityButton;
     private javax.swing.JSpinner bottleQuantitySpinner;
     private javax.swing.JComboBox<String> bottleSizeComboBox;
@@ -4850,9 +4831,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton employeesSaveButton;
     private javax.swing.JTable employeesTable;
     private javax.swing.JButton exportPurchFilesBtn;
-    private javax.swing.JMenu file;
-    private javax.swing.JMenu help;
-    private javax.swing.JMenu helpContentMenu;
     private javax.swing.JLabel hireDateLabel;
     private javax.swing.JPanel home;
     private javax.swing.JButton importCustomerBtn;
@@ -4863,35 +4841,18 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton importSuppliesButton;
     private javax.swing.JTabbedPane invenrotyTabPanel;
     private javax.swing.JPanel inventory;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu11;
-    private javax.swing.JMenu jMenu12;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenu jMenu9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel latestPurchases;
     private javax.swing.JPanel latestSales;
-    private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel noCustomerLb;
     private javax.swing.JLabel noEmployeesLb;
     private javax.swing.JLabel noSuppliesLb;
     private javax.swing.JLabel numOfCustomersLabel;
     private javax.swing.JLabel numOfEmployeesLabel;
-    private javax.swing.JMenu options;
     private javax.swing.JButton printBtn;
     private javax.swing.JButton printCusDetailsBtn;
     private javax.swing.JButton printCustProductsBtn;
@@ -4961,7 +4922,5 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel suppliesTabPanel;
     private javax.swing.JTable suppliesTable;
     private javax.swing.JTabbedPane tabPanel;
-    private javax.swing.JMenu tools;
-    private javax.swing.JMenu view;
     // End of variables declaration//GEN-END:variables
 }
