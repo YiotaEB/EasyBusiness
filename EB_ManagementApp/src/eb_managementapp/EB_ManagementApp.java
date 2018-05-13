@@ -13,6 +13,7 @@ import eb_managementapp.UI.Forms.AddProductTypeForm;
 import eb_managementapp.UI.Forms.AddSuppliersForm;
 import eb_managementapp.UI.Forms.AddSuppliesForm;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 
 public class EB_ManagementApp {
 
@@ -39,7 +40,7 @@ public class EB_ManagementApp {
         
         
         //Making the setup form visible 
-        adminForm = new AdminForm();
+        adminForm = new AdminForm(new JFrame());
         
         
         //Making the login form visible 
