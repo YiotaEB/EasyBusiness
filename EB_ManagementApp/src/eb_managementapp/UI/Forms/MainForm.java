@@ -77,6 +77,8 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 
 public final class MainForm extends javax.swing.JFrame {
 
@@ -576,6 +578,80 @@ public final class MainForm extends javax.swing.JFrame {
                         getCustomerProducts();
                         customersTab();
 
+                        //CHARTS:
+                        HashMap<String, Double> salesByCustomer = new HashMap();
+
+                        for (int i = 0; i < salesList.size(); i++) {
+
+                            String customerNameG = "";
+                            int customerID = salesList.get(i).getCustomerID();
+                            
+                            for (int j = 0; j < customersList.size(); j++) {
+                                if (customerID == customersList.get(j).getID()) {
+                                    customerNameG = customersList.get(j).getName();
+                                    //System.out.println(customerNameG);
+                                    break;
+                                }
+                            }
+
+                            double totalForCustomer = 0.0;
+                            for (int j = 0; j < saleProductsList.size(); j++) {
+                                double totalForSalesProduct = 0.0;
+                                int quantity = saleProductsList.get(j).getQuantitySold();
+                                if (saleProductsList.get(j).getSaleID() == salesList.get(i).getID()) {
+                                    double price = 0.0;
+                                    for (int k = 0; k < productsList.size(); k++) {
+                                        if (saleProductsList.get(j).getProductID() == productsList.get(k).getID()) {
+                                            price = productsList.get(k).getPrice();
+                                            break;
+                                        }
+                                    }
+                                    totalForSalesProduct = quantity * price;
+                                }
+                                totalForCustomer += totalForSalesProduct;
+                            }
+
+                            String customerNameFound = null;
+                            for (Map.Entry<String, Double> entry : salesByCustomer.entrySet()) {
+                                String customerName = entry.getKey();
+                                if (customerNameG.equals(customerName)) {
+                                    System.out.println(customerNameFound + " vs " + customerName);
+                                    customerNameFound = customerName;
+                                    break;
+                                }
+                            }
+
+                            //If customer already exists in map:
+                            if (customerNameFound != null) {
+                                double total = salesByCustomer.get(customerNameFound);
+                                total += totalForCustomer;
+                                salesByCustomer.put(customerNameFound, total);
+                            } //If date does not already exist in map:
+                            else {
+                                salesByCustomer.put(customerNameG, totalForCustomer);
+                            }
+
+                        }
+
+                        DefaultPieDataset dataset = new DefaultPieDataset();
+
+                        for (Map.Entry<String, Double> entry : salesByCustomer.entrySet()) {
+                            System.out.println("Key " + entry.getKey() + " -> " + entry.getValue());
+                            dataset.setValue(entry.getKey(), entry.getValue());
+                        }
+
+                        JFreeChart pieChartObject = ChartFactory.createPieChart("Sales by customer", dataset);
+
+                        pieChartObject.getPlot().setBackgroundPaint(Color.decode("#DDDDDD"));
+
+                        ChartPanel chartPanel = new ChartPanel(pieChartObject);
+                        chartPanel.setPreferredSize(new java.awt.Dimension(300, 300));
+
+                        customersGraphsPanel.setLayout(new java.awt.BorderLayout());
+                        customersGraphsPanel.add(chartPanel);
+
+                        customersGraphsPanel.validate();
+
                         break;
 
                     //Employess
@@ -617,14 +693,9 @@ public final class MainForm extends javax.swing.JFrame {
         getCountries();
         getSaleProducts();
         getSales();
-        getSupplies();
-        getSupplyTransactions();
-        getSuppliers();
-        getSupplierSupplies();
-        getCompanyInformation();
-        homeTab();
 
-//CHARTS:
+        /*--------------------------*/
+        //CHARTS:
         HashMap<MyDate, Double> salesByDay = new HashMap();
 
         for (int i = 0; i < salesList.size(); i++) {
@@ -687,7 +758,6 @@ public final class MainForm extends javax.swing.JFrame {
 //            System.out.println("Key " + entry.getKey().month + " -> " + entry.getValue());
 //            salesChartset.addValue(entry.getValue(), salesTag, monthToString(entry.getKey().month));
 //        }
-
         JFreeChart lineChartObject = ChartFactory.createBarChart(
                 "Monthly Sales", "Days",
                 "No. Sales",
@@ -705,6 +775,15 @@ public final class MainForm extends javax.swing.JFrame {
         statistics.validate();
 
         setTitle(TITLE);
+
+        /*--------------------------*/
+        getSupplies();
+        getSupplyTransactions();
+        getSuppliers();
+        getSupplierSupplies();
+        getCompanyInformation();
+        homeTab();
+
     }
 
     private void homeTab() {
@@ -2449,7 +2528,6 @@ public final class MainForm extends javax.swing.JFrame {
         customerProductsTable = new javax.swing.JTable();
         deleteCustomerProductsButton = new javax.swing.JButton();
         customersGraphsPanel = new javax.swing.JPanel();
-        customersGraphsPanel2 = new javax.swing.JPanel();
         numOfCustomersLabel = new javax.swing.JLabel();
         employees = new javax.swing.JPanel();
         noEmployeesLb = new javax.swing.JLabel();
@@ -3355,19 +3433,6 @@ public final class MainForm extends javax.swing.JFrame {
             .addGap(0, 211, Short.MAX_VALUE)
         );
 
-        customersGraphsPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customer Sales per month", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
-
-        javax.swing.GroupLayout customersGraphsPanel2Layout = new javax.swing.GroupLayout(customersGraphsPanel2);
-        customersGraphsPanel2.setLayout(customersGraphsPanel2Layout);
-        customersGraphsPanel2Layout.setHorizontalGroup(
-            customersGraphsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        customersGraphsPanel2Layout.setVerticalGroup(
-            customersGraphsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
-        );
-
         numOfCustomersLabel.setName("numOfCustomersLabel"); // NOI18N
 
         javax.swing.GroupLayout customersLayout = new javax.swing.GroupLayout(customers);
@@ -3387,9 +3452,7 @@ public final class MainForm extends javax.swing.JFrame {
                             .addComponent(customerDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(customerTabPanel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(customersGraphsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(customersGraphsPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(customersGraphsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         customersLayout.setVerticalGroup(
@@ -3403,15 +3466,9 @@ public final class MainForm extends javax.swing.JFrame {
                 .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(customersGraphsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(customerDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(customersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(customersLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(customersGraphsPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(customersLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(customerTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(557, Short.MAX_VALUE))
+                .addGap(23, 23, 23)
+                .addComponent(customerTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(732, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Customers", customers);
@@ -5077,7 +5134,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane customerTabPanel;
     private javax.swing.JPanel customers;
     private javax.swing.JPanel customersGraphsPanel;
-    private javax.swing.JPanel customersGraphsPanel2;
     private javax.swing.JButton customersSaveButton;
     private javax.swing.JTable dailyProductionTable;
     private javax.swing.JTable dailyPurchasesTable;
