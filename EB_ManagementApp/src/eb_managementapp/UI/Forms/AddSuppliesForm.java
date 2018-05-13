@@ -8,7 +8,6 @@ package eb_managementapp.UI.Forms;
 import Utilities.HTTPConnection;
 import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Suppliers;
-import eb_managementapp.UI.MainForm;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,13 +18,21 @@ import org.json.JSONObject;
 
 public class AddSuppliesForm extends javax.swing.JFrame {
 
-    final String TITLE = "Add Suppliers";
+    final String TITLE = "Add Supplies";
 
     private ArrayList<Suppliers> suppliersList;
     private JFrame sender;
+    private String sessionID;
 
     public AddSuppliesForm(JFrame sender) {
         initComponents();
+        
+        sessionID = AdminForm.readSetting(LoginForm.SESSION_FILENAME);
+        if (sessionID == null) {
+            new LoginForm();
+            this.setVisible(false);
+        }
+        
         this.sender = sender;
 
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
@@ -55,17 +62,17 @@ public class AddSuppliesForm extends javax.swing.JFrame {
         priceLabel = new javax.swing.JLabel();
         priceTextField = new javax.swing.JTextField();
         addSuppliesButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         buttonPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         suppliesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplies", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
 
         supplierLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        supplierLabel.setText("Sypplier:");
+        supplierLabel.setText("Supplier:");
 
         supplierComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         supplierComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -102,6 +109,15 @@ public class AddSuppliesForm extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eb_managementapp/UI/Images/Refresh_icon.svg.png"))); // NOI18N
+        jButton1.setAlignmentY(0.0F);
+        jButton1.setPreferredSize(new java.awt.Dimension(49, 25));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout suppliesPanelLayout = new javax.swing.GroupLayout(suppliesPanel);
         suppliesPanel.setLayout(suppliesPanelLayout);
         suppliesPanelLayout.setHorizontalGroup(
@@ -116,7 +132,9 @@ public class AddSuppliesForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(suppliesNameTextField)
-                            .addComponent(supplierComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(supplierComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(suppliesPanelLayout.createSequentialGroup()
                         .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesPanelLayout.createSequentialGroup()
@@ -130,7 +148,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
                             .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(quantitySpinner)
                                 .addComponent(priceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         suppliesPanelLayout.setVerticalGroup(
             suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,8 +156,9 @@ public class AddSuppliesForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(supplierComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(supplierLabel))
-                .addGap(15, 15, 15)
+                    .addComponent(supplierLabel)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
                 .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(suppliesNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(suppliesNameLabel))
@@ -151,7 +170,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
                 .addGroup(suppliesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(priceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(priceLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addSuppliesButton)
                 .addContainerGap())
         );
@@ -163,7 +182,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
             }
         });
 
-        nextButton.setText("Next >");
+        nextButton.setText("OK");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -175,10 +194,10 @@ public class AddSuppliesForm extends javax.swing.JFrame {
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(cancelButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -254,6 +273,10 @@ public class AddSuppliesForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        getSuppliers();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
    
 
     private void addSupplies() {
@@ -273,7 +296,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
 
         //Make the call:
         String addSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "Create",
-                "SessionID=aa&ID=1&Name=" + name + "&SupplierID=" + suppliersID + "&Quantity=" + quantity + "&Price=" + price
+                "SessionID=" + sessionID + "&ID=1&Name=" + name + "&SupplierID=" + suppliersID + "&Quantity=" + quantity + "&Price=" + price
         );
         try {
             JSONObject jsonObject = new JSONObject(addSuppliesJSON);
@@ -303,7 +326,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
         supplierComboBox.removeAllItems();
 
         //Get customers from api
-        String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "GetMultiple", "SessionID=aa");
+        String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "GetMultiple", "SessionID=" + sessionID + "");
         try {
             JSONObject jsonObject = new JSONObject(suppliersJSON);
             final String status = jsonObject.getString("Status");
@@ -393,6 +416,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
     private javax.swing.JButton addSuppliesButton;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton nextButton;
     private javax.swing.JLabel priceLabel;
     private javax.swing.JTextField priceTextField;

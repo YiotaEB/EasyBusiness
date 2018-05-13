@@ -11,7 +11,6 @@ import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Customerproducts;
 import eb_managementapp.Entities.Customers;
 import eb_managementapp.UI.Components.CheckboxGroup;
-import eb_managementapp.UI.MainForm;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -27,11 +26,19 @@ public class CustomersForm extends javax.swing.JFrame {
     private ArrayList<Countries> countriesList;
     private ArrayList<Customerproducts> customerProductsList;
     private JFrame sender;
+    private String sessionID;
 
     CheckboxGroup productsGroup;
 
     public CustomersForm(JFrame sender) {
         initComponents();
+        
+        sessionID = AdminForm.readSetting(LoginForm.SESSION_FILENAME);
+        if (sessionID == null) {
+            new LoginForm();
+            this.setVisible(false);
+        }
+        
         this.sender = sender;
         
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
@@ -75,7 +82,6 @@ public class CustomersForm extends javax.swing.JFrame {
         customerTable = new javax.swing.JTable();
         viewCustomersButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         customerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(153, 153, 153))); // NOI18N
@@ -202,7 +208,7 @@ public class CustomersForm extends javax.swing.JFrame {
             }
         });
 
-        nextButton.setText("Next ->");
+        nextButton.setText("OK");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -214,10 +220,10 @@ public class CustomersForm extends javax.swing.JFrame {
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(cancelButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -357,7 +363,7 @@ public class CustomersForm extends javax.swing.JFrame {
 
         //Make the call:
         String addCustomersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "Create",
-                "SessionID=aa&ID=1&Name=" + name + "&CountryID=" + countryID + "&Address=" + address + "&Telephone=" + telephone + "&City=" + city + "&CustomerProductsID=0"
+                "SessionID=" + sessionID + "&ID=1&Name=" + name + "&CountryID=" + countryID + "&Address=" + address + "&Telephone=" + telephone + "&City=" + city + "&CustomerProductsID=0"
         );
 
         System.out.println("Add customer HTTP -> " + addCustomersJSON);
@@ -369,7 +375,7 @@ public class CustomersForm extends javax.swing.JFrame {
         customersList = new ArrayList<>();
 
         //Get customers from api
-        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "SessionID=aa");
+        String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "SessionID=" + sessionID + "");
         try {
             JSONObject jsonObject = new JSONObject(customersJSON);
             final String status = jsonObject.getString("Status");

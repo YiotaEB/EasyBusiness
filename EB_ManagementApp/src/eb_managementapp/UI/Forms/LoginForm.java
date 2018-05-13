@@ -4,7 +4,6 @@ import Utilities.HTTPConnection;
 import eb_managementapp.UI.Forms.AdminForm;
 import static eb_managementapp.EB_ManagementApp.adminForm;
 import static eb_managementapp.EB_ManagementApp.mainForm;
-import eb_managementapp.UI.MainForm;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,14 +25,13 @@ public class LoginForm extends javax.swing.JFrame {
     public static final String SESSION_USERID = "applicationUserID";
     public static final String ADMIN_EXISTING = "settingAdmin";
     public static final String SETUP_COMPLETED = "setupCompleted";
-    public static String SESSION_ID;
 
     //Constructor
     public LoginForm() {
         initComponents();
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
-        
+
         this.setTitle(TITLE);
         setVisible(true);
     }
@@ -159,7 +157,7 @@ public class LoginForm extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         this.setVisible(false);
         login();
-       
+
 
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -171,17 +169,17 @@ public class LoginForm extends javax.swing.JFrame {
 
         String username = userTextField.getText();
         String password = passwordField.getText();
-        
+
         //Check if the username is valid
-        if(username.trim().isEmpty()){
+        if (username.trim().isEmpty()) {
             showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
             this.setVisible(true);
             return;
         }
-        
+
         //Get login from api
-        String loginJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Login", "", "Username="+ username + "&Password=" + password);
-        
+        String loginJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Login", "", "Username=" + username + "&Password=" + password);
+
         try {
             JSONObject jsonObject = new JSONObject(loginJSON);
             final String status = jsonObject.getString("Status");
@@ -190,26 +188,40 @@ public class LoginForm extends javax.swing.JFrame {
 
             if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 String sessionID = jsonObject.getString("SessionID");
-                
-                mainForm = new MainForm();
-                PrintWriter writer = new PrintWriter(SESSION_FILENAME,"UTF-8");
+
+                PrintWriter writer = new PrintWriter(SESSION_FILENAME, "UTF-8");
                 writer.println(sessionID);
                 writer.close();
-                
-                SESSION_ID = sessionID;
-                
-                PrintWriter writerUser = new PrintWriter(SESSION_USERNAME,"UTF-8");
+
+                PrintWriter writerUser = new PrintWriter(SESSION_USERNAME, "UTF-8");
                 writerUser.println(username);
                 writerUser.close();
-                
-                PrintWriter writerPassword = new PrintWriter(SESSION_PASSWORD,"UTF-8");
+
+                PrintWriter writerPassword = new PrintWriter(SESSION_PASSWORD, "UTF-8");
                 writerPassword.println(password);
                 writerPassword.close();
-                
-                PrintWriter writerUserID = new PrintWriter(SESSION_USERID,"UTF-8");
+
+                PrintWriter writerUserID = new PrintWriter(SESSION_USERID, "UTF-8");
                 writerUserID.println(jsonObject.getString("UserID"));
                 writerUserID.close();
                 
+                String adminExists = AdminForm.readSetting(ADMIN_EXISTING);
+                String setupCompleted = AdminForm.readSetting(SETUP_COMPLETED);
+                
+                if (adminExists == null || setupCompleted == null) {
+                    new AdminForm(this);
+                    return;
+                }
+                
+                if (adminExists.equals("true")) {
+                    if (setupCompleted.equals("true")) {
+                        new MainForm();
+                    } else {
+                        new SetUpForm(new JFrame());
+                    }
+                } else {
+                    new AdminForm(new JFrame());
+                }
 
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
@@ -218,8 +230,6 @@ public class LoginForm extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
 
     }
 

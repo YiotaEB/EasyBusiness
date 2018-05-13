@@ -6,7 +6,6 @@ import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
-import eb_managementapp.UI.MainForm;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,11 +23,18 @@ public class AddUsersForm extends javax.swing.JFrame {
     private ArrayList<Users> usersList;
     private ArrayList<Countries> countriesList;
     private ArrayList<Userlevels> positionsList;
+    private String sessionID;
 
     private JFrame sender;
     
     public AddUsersForm(JFrame sender) {
         initComponents();
+        
+        sessionID = AdminForm.readSetting(LoginForm.SESSION_FILENAME);
+        if (sessionID == null) {
+            new LoginForm();
+            this.setVisible(false);
+        }
         
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
@@ -37,7 +43,8 @@ public class AddUsersForm extends javax.swing.JFrame {
 
         getCountries();
         getPositions();
-
+        getUsers();
+        
         setTitle(TITLE);
         setVisible(true);
     }
@@ -79,7 +86,6 @@ public class AddUsersForm extends javax.swing.JFrame {
         employeesTable = new javax.swing.JTable();
         viewEmployeesButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Easy Business - Add Employees");
         setResizable(false);
 
@@ -227,7 +233,8 @@ public class AddUsersForm extends javax.swing.JFrame {
             }
         });
 
-        addNewEmployeesButton.setText("Add New Emplyees");
+        addNewEmployeesButton.setText("Add New Employees");
+        addNewEmployeesButton.setActionCommand("Add New Employees");
         addNewEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addNewEmployeesButtonActionPerformed(evt);
@@ -280,7 +287,7 @@ public class AddUsersForm extends javax.swing.JFrame {
             }
         });
 
-        nextButton.setText("Next ->");
+        nextButton.setText("OK");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -292,10 +299,10 @@ public class AddUsersForm extends javax.swing.JFrame {
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(635, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(cancelButton)
-                .addGap(18, 18, 18)
-                .addComponent(nextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
         );
         buttonPanelLayout.setVerticalGroup(
@@ -312,7 +319,7 @@ public class AddUsersForm extends javax.swing.JFrame {
 
         employeesScrollPane.setViewportView(employeesTable);
 
-        viewEmployeesButton.setText("View Employees");
+        viewEmployeesButton.setText("Refresh list");
         viewEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewEmployeesButtonActionPerformed(evt);
@@ -326,7 +333,7 @@ public class AddUsersForm extends javax.swing.JFrame {
             .addGroup(viewEmployeesPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(viewEmployeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(employeesScrollPane)
+                    .addComponent(employeesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewEmployeesPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(viewEmployeesButton)))
@@ -466,7 +473,7 @@ public class AddUsersForm extends javax.swing.JFrame {
 
         //Make the call:
         String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create",
-                "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
+                "SessionID=" + sessionID + "&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
                 + "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID
                 + "&UserLevelID=" + positionID + "&Password= " + "&DateHired=" + dateHired
         );
@@ -504,7 +511,7 @@ public class AddUsersForm extends javax.swing.JFrame {
         long dateHiredLong = 0;
         
         //Get customers from api
-        String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=aa");
+        String usersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=" + sessionID + "");
         try {
             JSONObject jsonObject = new JSONObject(usersJSON);
             final String status = jsonObject.getString("Status");
@@ -624,7 +631,7 @@ public class AddUsersForm extends javax.swing.JFrame {
         positionComboBox.removeAllItems();
 
         //Get customers from api
-        String positionsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Userlevels", "GetMultiple", "SessionID=aa");
+        String positionsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Userlevels", "GetMultiple", "SessionID=" + sessionID + "");
         try {
             JSONObject jsonObject = new JSONObject(positionsJSON);
             final String status = jsonObject.getString("Status");
@@ -645,10 +652,9 @@ public class AddUsersForm extends javax.swing.JFrame {
                     } else {
                         show = false;
                     }
-                    if (show) {
-                        Userlevels u = new Userlevels(id, name, show);
-                        positionsList.add(u);
-                    }
+                    Userlevels u = new Userlevels(id, name, show);
+                    positionsList.add(u);
+                   
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);

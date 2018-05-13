@@ -14,7 +14,6 @@ import static eb_managementapp.EB_ManagementApp.addSuppliersForm;
 import static eb_managementapp.EB_ManagementApp.customersForm;
 import static eb_managementapp.EB_ManagementApp.adminForm;
 import static eb_managementapp.UI.Forms.LoginForm.ADMIN_EXISTING;
-import eb_managementapp.UI.MainForm;
 import java.io.PrintWriter;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;

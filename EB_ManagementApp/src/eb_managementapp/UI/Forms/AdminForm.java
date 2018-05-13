@@ -14,7 +14,6 @@ import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
 import static eb_managementapp.UI.Forms.LoginForm.ADMIN_EXISTING;
 import static eb_managementapp.UI.Forms.LoginForm.SESSION_PASSWORD;
-import eb_managementapp.UI.MainForm;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -278,7 +277,7 @@ public class AdminForm extends javax.swing.JFrame {
         );
 
         cancelButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cancelButton.setText("Exit");
+        cancelButton.setText("Close");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -286,7 +285,7 @@ public class AdminForm extends javax.swing.JFrame {
         });
 
         nextButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        nextButton.setText("Next >");
+        nextButton.setText("OK");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -298,10 +297,10 @@ public class AdminForm extends javax.swing.JFrame {
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(387, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
         );
         buttonPanelLayout.setVerticalGroup(
@@ -320,11 +319,11 @@ public class AdminForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(loginInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(administratorDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(loginInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(administratorDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,6 +402,7 @@ public class AdminForm extends javax.swing.JFrame {
             this.setVisible(false);
             if (sender != null) {
                 if (sender instanceof MainForm) {
+                    this.setVisible(false);
                 } else {
                     setUpForm = new SetUpForm(this);
                 }
@@ -478,13 +478,21 @@ public class AdminForm extends javax.swing.JFrame {
             new LoginForm();
             return;
         }
+        
+        String sessionID = readSetting(LoginForm.SESSION_FILENAME);
+        if (sessionID == null) {
+            new LoginForm();
+            return;
+        }
 
         //Make the call:
         String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Update",
-                "SessionID=" + LoginForm.SESSION_ID + "&UserID=" + userID + "&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
+                "SessionID=" + sessionID + "&UserID=" + userID + "&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
                 + "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID
                 + "&UserLevelID=" + positionID + "&Password=" + Hash.MD5(password) + "&DateHired=" + dateHired
         );
+        
+        System.out.println("Admin -" + addUsersJSON);
 
         try {
             JSONObject jsonObject = new JSONObject(addUsersJSON);
@@ -492,10 +500,9 @@ public class AdminForm extends javax.swing.JFrame {
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
-            showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-
             if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
                 System.out.println("Fail " + addUsersJSON);
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
@@ -512,6 +519,8 @@ public class AdminForm extends javax.swing.JFrame {
                 PrintWriter writer = new PrintWriter(LoginForm.ADMIN_EXISTING, "UTF-8");
                 writer.println("true");
                 writer.close();
+                
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
             }
         } catch (Exception e) {

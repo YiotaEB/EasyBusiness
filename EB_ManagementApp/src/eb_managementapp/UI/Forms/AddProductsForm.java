@@ -14,7 +14,6 @@ import eb_managementapp.Entities.Defaultsizes;
 import eb_managementapp.Entities.Products;
 import eb_managementapp.Entities.Producttypes;
 import eb_managementapp.UI.Components.CheckboxGroup;
-import eb_managementapp.UI.MainForm;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public class AddProductsForm extends javax.swing.JFrame {
     private ArrayList<Defaultsizes> sizeList;
     private ArrayList<Producttypes> productTypesList;
     private ArrayList<Products> productsList;
+    private String sessionID;
 
     private JFrame sender;
 
@@ -41,14 +41,21 @@ public class AddProductsForm extends javax.swing.JFrame {
 
     public AddProductsForm(JFrame sender) {
         initComponents();
+        
+        sessionID = AdminForm.readSetting(LoginForm.SESSION_FILENAME);
+        if (sessionID == null) {
+            new LoginForm();
+            this.setVisible(false);
+        }
+        
         this.sender = sender;
 
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
-
-        //getProducts();
+        
         getSizes();
         getProductTypes();
+        getProducts();
 
         setTitle(TITLE);
         setVisible(true);
@@ -85,7 +92,6 @@ public class AddProductsForm extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         productPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Products", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(153, 153, 153))); // NOI18N
@@ -264,7 +270,7 @@ public class AddProductsForm extends javax.swing.JFrame {
             }
         });
 
-        nextButton.setText("Next >");
+        nextButton.setText("OK");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -276,11 +282,11 @@ public class AddProductsForm extends javax.swing.JFrame {
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(cancelButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nextButton)
-                .addGap(33, 33, 33))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,7 +388,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         getSize();
 
         //Get customers from api
-        String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "GetMultiple", "SessionID=aa");
+        String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "GetMultiple", "SessionID=" + sessionID + "");
         try {
             JSONObject jsonObject = new JSONObject(productsJSON);
             final String status = jsonObject.getString("Status");
@@ -496,9 +502,9 @@ public class AddProductsForm extends javax.swing.JFrame {
 
             //Make the call:
             String addProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Create",
-                    "SessionID=aa&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypeID=" + productTypesID + "&ProductSuppliesID=0");
+                    "SessionID=" + sessionID + "&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypeID=" + productTypesID + "&ProductSuppliesID=0");
 
-            System.out.println("!!!" + "SessionID=aa&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypesID=" + productTypesID + "&ProductSuppliesID=0");
+            System.out.println("!!!" + "SessionID=" + sessionID + "&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypesID=" + productTypesID + "&ProductSuppliesID=0");
 
             System.out.println(sizeList.get(i).getName() + " add Production HTTP -> " + addProductionJSON);
 
@@ -538,7 +544,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         sizeList = new ArrayList<>();
 
         //Get sizes from api
-        String sizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Defaultsizes", "GetMultiple", "SessionID=aa");
+        String sizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Defaultsizes", "GetMultiple", "SessionID=" + sessionID + "");
 
         System.out.println("Get Sizes HTTP -> " + sizesJSON);
 
@@ -570,7 +576,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         }
 
         //Get productSizes from api
-        String productSizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "GetMultiple", "SessionID=aa&Limit=0");
+        String productSizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "GetMultiple", "SessionID=" + sessionID + "&Limit=0");
 
         System.out.println("Get Sizes HTTP -> " + productSizesJSON);
 
@@ -622,7 +628,7 @@ public class AddProductsForm extends javax.swing.JFrame {
         typeComboBox.removeAllItems();
 
         //Get customers from api
-        String productTypesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Producttypes", "GetMultiple", "SessionID=aa");
+        String productTypesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Producttypes", "GetMultiple", "SessionID=" + sessionID + "");
         try {
             System.out.println("Get Customers HTTP -> " + productTypesJSON);
             JSONObject jsonObject = new JSONObject(productTypesJSON);

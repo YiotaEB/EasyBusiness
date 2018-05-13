@@ -5,7 +5,7 @@ import eb_managementapp.UI.Forms.AddProductsForm;
 import eb_managementapp.UI.Forms.AddUsersForm;
 import eb_managementapp.UI.Forms.AdminForm;
 import eb_managementapp.UI.Forms.LoginForm;
-import eb_managementapp.UI.MainForm;
+import eb_managementapp.UI.Forms.MainForm;
 import eb_managementapp.UI.Forms.CompanyDetailsForm;
 import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.UI.Forms.CustomersForm;
@@ -69,7 +69,6 @@ public class EB_ManagementApp {
             return;
         }
         String response = HTTPConnection.executePost(HTTPConnection.API_URL + "/LoginExisting/", "Username=" + username + "&Password=" + Utilities.Hash.MD5(password));
-        System.out.println(HTTPConnection.API_URL + "/LoginExisting/" + "Username=" + username + "&Password=" + password);
         System.out.println(response);
         try {
             JSONObject jsonObject = new JSONObject(response);
