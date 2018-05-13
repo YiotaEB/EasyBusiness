@@ -5,6 +5,7 @@
  */
 package Utilities;
 
+import eb_managementapp.UI.Components.AlertBox;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -52,6 +53,62 @@ public class HTTPConnection {
 
     public static String encodeForAPI(final String apiBaseURL, final String entityName, final String endpointName) {
         return apiBaseURL + "/" + entityName + "/" + endpointName + "/";
+    }
+    
+    public static String executePost(String targetURL, String urlParameters) {
+        try {
+
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Callable<String> callable = new Callable<String>() {
+                @Override
+                public String call() {
+                    HttpURLConnection urlConnection = null;
+                    String responseData = null;
+
+                    try {
+                        //Create connection
+                        URL url = new URL(targetURL);
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setDoOutput(true);
+                        byte[] outputBytes = urlParameters.getBytes("UTF-8");
+                        urlConnection.setRequestMethod("POST");
+                        urlConnection.connect();
+                        OutputStream os = urlConnection.getOutputStream();
+                        os.write(outputBytes);
+                        os.close();
+                        int statusCode = urlConnection.getResponseCode();
+
+                        //OK
+                        if (statusCode == HttpURLConnection.HTTP_OK) {
+                            InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                            responseData = convertStreamToString(inputStream);
+                            urlConnection.disconnect();
+                            return responseData;
+                        } else {
+                            showMessageDialog(null, "HTTP Connection Error on URL: " + targetURL + ". Please make sure you have an internet connection.", "Connection Error", JOptionPane.PLAIN_MESSAGE);
+                            throw new RuntimeException("HTTP Connection Error on URL: " + targetURL);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                    return null;
+                }
+            };
+            Future<String> future = executor.submit(callable);
+            executor.shutdown();
+
+            return future.get();
+
+        } catch (Exception e) {
+            AlertBox a = new AlertBox("Error", "Connection failed!");
+            a.show();
+        }
+        return null;
     }
 
     public static String executePost(String targetURL, String entityName, String endpointName, String urlParameters) {

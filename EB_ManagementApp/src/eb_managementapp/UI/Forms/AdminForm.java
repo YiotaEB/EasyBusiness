@@ -12,7 +12,13 @@ import eb_managementapp.UI.Forms.SetUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Userlevels;
 import eb_managementapp.Entities.Users;
+import static eb_managementapp.UI.Forms.LoginForm.ADMIN_EXISTING;
+import static eb_managementapp.UI.Forms.LoginForm.SESSION_PASSWORD;
 import eb_managementapp.UI.MainForm;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -48,10 +54,6 @@ public class AdminForm extends javax.swing.JFrame {
 
         this.setTitle(TITLE);
         setVisible(true);
-    }
-
-    AdminForm() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -92,7 +94,6 @@ public class AdminForm extends javax.swing.JFrame {
 
         administratorDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Administrator Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
 
-        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         nameLabel.setText("Name:");
 
         nameTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -101,7 +102,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        lastNameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         lastNameLabel.setText("Last name:");
 
         lastNameTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -110,7 +110,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        adminTelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         adminTelephoneLabel.setText("Telephone:");
 
         adminTelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -119,7 +118,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        countryLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         countryLabel.setText("Country:");
 
         countryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -129,7 +127,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        cityLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cityLabel.setText("City:");
 
         cityTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -138,7 +135,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        adminAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         adminAddressLabel.setText("Address:");
 
         addressTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -218,7 +214,6 @@ public class AdminForm extends javax.swing.JFrame {
 
         loginInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
 
-        usernameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         usernameLabel.setText("User Name: ");
 
         usernameTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -227,7 +222,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        passwordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         passwordLabel.setText("Password:");
 
         passwordField.addActionListener(new java.awt.event.ActionListener() {
@@ -236,7 +230,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        confirmPasswordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         confirmPasswordLabel.setText("Confirm Password:");
 
         confirmPasswordField.addActionListener(new java.awt.event.ActionListener() {
@@ -398,23 +391,77 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_confirmPasswordFieldActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        addAdmin();
-        this.setVisible(false);
-        if (sender != null) {
-            if (sender instanceof MainForm)
-             {
-            } else {
-                setUpForm = new SetUpForm(this);
+        if (checkInput() == true) {
+            addAdmin();
+            try {
+                PrintWriter writerAdminSetting = new PrintWriter(ADMIN_EXISTING, "UTF-8");
+                writerAdminSetting.println("true");
+                writerAdminSetting.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            this.setVisible(false);
+            if (sender != null) {
+                if (sender instanceof MainForm) {
+                } else {
+                    setUpForm = new SetUpForm(this);
+                }
             }
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
+    private boolean checkInput() {
+        String firstname = nameTextField.getText().toString();
+        String lastname = lastNameTextField.getText().toString();
+        String password = passwordField.getText().toString();
+        String confirmPassword = confirmPasswordField.getText().toString();
+        String city = cityTextField.getText().toString();
+        String address = addressTextField.getText().toString();
+        String telephone = adminTelephoneTextField.getText().toString();
+
+        //Check if the firstname is valid
+        if (firstname.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid firstname", "Invalid Firstname", JOptionPane.PLAIN_MESSAGE);
+            return false;
+        }
+
+        //Check if the password is valid
+        if (password.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
+            return false;
+        }
+
+        //Check if the lastname is valid
+        if (lastname.trim().isEmpty()) {
+            showMessageDialog(null, "Please provide a valid lastname", "Invalid lastname", JOptionPane.PLAIN_MESSAGE);
+            return false;
+        }
+
+        if (!password.equals(confirmPassword) || confirmPassword.trim().isEmpty()) {
+            showMessageDialog(null, "The passwords you provided do not match.", "Invalid Password", JOptionPane.PLAIN_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+    public static String readSetting(String filename) {
+        String currentLine;
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            while ((currentLine = br.readLine()) != null) {
+                return currentLine;
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return null;
+    }
+    
     private void addAdmin() {
 
         //Get field values:
         String firstname = nameTextField.getText().toString();
         String lastname = lastNameTextField.getText().toString();
-        String username = firstname.charAt(0) + lastname;
         String password = passwordField.getText().toString();
         String confirmPassword = confirmPasswordField.getText().toString();
         String city = cityTextField.getText().toString();
@@ -424,36 +471,17 @@ public class AdminForm extends javax.swing.JFrame {
         int positionID = 1;
         int dateHired = 0;
 
-        //Check if the firstname is valid
-        if (firstname.trim().isEmpty()) {
-            showMessageDialog(null, "Please provide a valid firstname", "Invalid Firstname", JOptionPane.PLAIN_MESSAGE);
-            return;
-        }
-        //Check if the username is valid
-        if (username.trim().isEmpty()) {
-            showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
+        String username = firstname.charAt(0) + lastname;
+        
+        String userID = readSetting(LoginForm.SESSION_USERID);
+        if (userID == null) {
+            new LoginForm();
             return;
         }
 
-        //Check if the password is valid
-        if (password.trim().isEmpty()) {
-            showMessageDialog(null, "Please provide a valid username", "Invalid Username", JOptionPane.PLAIN_MESSAGE);
-            return;
-        }
-
-        //Check if the lastname is valid
-        if (lastname.trim().isEmpty()) {
-            showMessageDialog(null, "Please provide a valid lastname", "Invalid lastname", JOptionPane.PLAIN_MESSAGE);
-            return;
-        }
-
-        if (!password.equals(confirmPassword) || confirmPassword.trim().isEmpty()) {
-            showMessageDialog(null, "The passwords you provided do not match.", "Invalid Password", JOptionPane.PLAIN_MESSAGE);
-            return;
-        }
         //Make the call:
-        String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Create",
-                "SessionID=aa&UserID=1&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
+        String addUsersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Update",
+                "SessionID=" + LoginForm.SESSION_ID + "&UserID=" + userID + "&Firstname=" + firstname + "&Lastname=" + lastname + "&Username=" + username
                 + "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID
                 + "&UserLevelID=" + positionID + "&Password=" + Hash.MD5(password) + "&DateHired=" + dateHired
         );
@@ -468,6 +496,7 @@ public class AdminForm extends javax.swing.JFrame {
 
             if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
                 System.out.println("Fail " + addUsersJSON);
+
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
                 setVisible(true);
@@ -479,7 +508,10 @@ public class AdminForm extends javax.swing.JFrame {
                 addressTextField.setText("");
                 adminTelephoneTextField.setText("");
 
-                System.out.println("PASSWORD " + passwordField.getText());
+                //Create file and store setting.
+                PrintWriter writer = new PrintWriter(LoginForm.ADMIN_EXISTING, "UTF-8");
+                writer.println("true");
+                writer.close();
 
             }
         } catch (Exception e) {

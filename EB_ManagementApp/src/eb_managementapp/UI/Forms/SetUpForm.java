@@ -5,7 +5,6 @@
  */
 package eb_managementapp.UI.Forms;
 
-
 import static eb_managementapp.EB_ManagementApp.companyDetailsForm;
 import static eb_managementapp.EB_ManagementApp.addUsersForm;
 import static eb_managementapp.EB_ManagementApp.mainForm;
@@ -14,25 +13,26 @@ import static eb_managementapp.EB_ManagementApp.addSuppliesForm;
 import static eb_managementapp.EB_ManagementApp.addSuppliersForm;
 import static eb_managementapp.EB_ManagementApp.customersForm;
 import static eb_managementapp.EB_ManagementApp.adminForm;
+import static eb_managementapp.UI.Forms.LoginForm.ADMIN_EXISTING;
 import eb_managementapp.UI.MainForm;
+import java.io.PrintWriter;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class SetUpForm extends javax.swing.JFrame {
 
     final String TITLE = "Easy Business - Set Up";
-    
-    
+
     private JFrame sender;
-    
+
     public SetUpForm(JFrame sender) {
         initComponents();
-        
+
         this.sender = sender;
-        
+
         ImageIcon imageIcon = new ImageIcon("C:\\Users\\panay\\Desktop\\EasyBusiness\\EB_ManagementApp\\src\\eb_managementapp\\UI\\Images\\mini_logo.fw.png");
         setIconImage(imageIcon.getImage());
-        
+
         setTitle(TITLE);
         setVisible(true);
     }
@@ -242,7 +242,7 @@ public class SetUpForm extends javax.swing.JFrame {
 
     private void createCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCompanyButtonActionPerformed
         this.setVisible(false);
-        companyDetailsForm = new CompanyDetailsForm ();
+        companyDetailsForm = new CompanyDetailsForm();
     }//GEN-LAST:event_createCompanyButtonActionPerformed
 
     private void createEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createEmployeesButtonActionPerformed
@@ -251,18 +251,18 @@ public class SetUpForm extends javax.swing.JFrame {
     }//GEN-LAST:event_createEmployeesButtonActionPerformed
 
     private void addProductsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductsButtonActionPerformed
-       this.setVisible(false);
-       addProductsForm = new AddProductsForm (this);
+        this.setVisible(false);
+        addProductsForm = new AddProductsForm(this);
     }//GEN-LAST:event_addProductsButtonActionPerformed
 
     private void addSupplierButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSupplierButtonActionPerformed
-       this.setVisible(false);
-       addSuppliersForm = new AddSuppliersForm (this);
+        this.setVisible(false);
+        addSuppliersForm = new AddSuppliersForm(this);
     }//GEN-LAST:event_addSupplierButtonActionPerformed
 
     private void addCustomersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCustomersButtonActionPerformed
-       this.setVisible(false);
-       customersForm= new CustomersForm(this);
+        this.setVisible(false);
+        customersForm = new CustomersForm(this);
     }//GEN-LAST:event_addCustomersButtonActionPerformed
 
     private void finishCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishCompanyButtonActionPerformed
@@ -274,11 +274,18 @@ public class SetUpForm extends javax.swing.JFrame {
 
             }
         }
+        try {
+            PrintWriter writerAdminSetting = new PrintWriter(LoginForm.SETUP_COMPLETED, "UTF-8");
+            writerAdminSetting.println("true");
+            writerAdminSetting.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_finishCompanyButtonActionPerformed
 
     private void addSuppliesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppliesButtonActionPerformed
         this.setVisible(false);
-       addSuppliesForm = new AddSuppliesForm (this);
+        addSuppliesForm = new AddSuppliesForm(this);
     }//GEN-LAST:event_addSuppliesButtonActionPerformed
 
     /**
@@ -312,7 +319,7 @@ public class SetUpForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-               
+
                 new SetUpForm(new JFrame()).setVisible(true);
             }
         });
