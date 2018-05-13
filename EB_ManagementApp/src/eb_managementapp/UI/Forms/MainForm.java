@@ -18,6 +18,7 @@ import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Customerproducts;
 import eb_managementapp.Entities.Customers;
+import eb_managementapp.Entities.MyDate;
 import eb_managementapp.Entities.Productionbatches;
 import eb_managementapp.Entities.Products;
 import eb_managementapp.Entities.Suppliers;
@@ -50,8 +51,13 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -221,6 +227,38 @@ public final class MainForm extends javax.swing.JFrame {
             return null;
         }
         return null;
+    }
+
+    private String monthToString(int month) {
+        switch (month) {
+            case 1:
+                return "January";
+            case 2:
+                return "Febrary";
+            case 3:
+                return "March";
+            case 4:
+                return "April";
+            case 5:
+                return "May";
+            case 6:
+                return "June";
+            case 7:
+                return "July";
+            case 8:
+                return "August";
+            case 9:
+                return "September";
+            case 10:
+                return "October";
+            case 11:
+                return "November";
+            case 12:
+                return "December";
+            default:
+                return "Error";
+
+        }
     }
 
     public MainForm() {
@@ -565,60 +603,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         customerScrollPanel.setViewportView(customerDetailsTable);
 
-//        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//
-//        dataset.setValue(
-//                80, "Marks", "Value 1");
-//        dataset.setValue(
-//                70, "Marks", "Value 2");
-//        dataset.setValue(
-//                75, "Marks", "Value 3");
-//        JFreeChart chart = ChartFactory.createBarChart("Student's Score", "Student's Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
-//        CategoryPlot p = chart.getCategoryPlot();
-//
-//        p.setRangeGridlinePaint(Color.black);
-//
-//        //Panel (same window):
-//        ChartPanel chartPanel = new ChartPanel(chart);
-//
-//        statistics.setLayout(
-//                new java.awt.BorderLayout());
-//        statistics.add(chartPanel, BorderLayout.CENTER);
-//
-//        statistics.validate();
-//
-//        //Panel (same window):
-//        ChartPanel chartPanel2 = new ChartPanel(chart);
-//
-//        customersGraphsPanel2.setLayout(
-//                new java.awt.BorderLayout());
-//        customersGraphsPanel2.add(chartPanel2, BorderLayout.CENTER);
-//
-//        customersGraphsPanel2.validate();
-        DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
-        line_chart_dataset.addValue(40, "sales", "April");
-        line_chart_dataset.addValue(50, "sales", "May");
-        line_chart_dataset.addValue(100, "sales", "June");
-        line_chart_dataset.addValue(200, "sales", "July");
-        line_chart_dataset.addValue(150, "sales", "August");
-        line_chart_dataset.addValue(120, "sales", "September");
-
-        JFreeChart lineChartObject = ChartFactory.createLineChart(
-                "Monthly Sales", "Days",
-                "No. Sales",
-                line_chart_dataset, PlotOrientation.VERTICAL,
-                true, true, false);
-
-        lineChartObject.getPlot().setBackgroundPaint(Color.decode("#DDDDDD"));
-
-        ChartPanel chartPanel = new ChartPanel(lineChartObject);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
-
-        statistics.setLayout(new java.awt.BorderLayout());
-        statistics.add(chartPanel);
-
-        statistics.validate();
-
 //      int width = 640;    /* Width of the image */
 //      int height = 480;   /* Height of the image */ 
 //      File lineChart = new File( "LineChart.jpeg" ); 
@@ -640,19 +624,86 @@ public final class MainForm extends javax.swing.JFrame {
         getCompanyInformation();
         homeTab();
 
-//        AdminForm.addActionListener(new ActionListener(){
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                
-//            }
-//    });
-//        
-//           SetUpForm.addActionListener(new ActionListener(){
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                setUpForm = new SetUpForm(this);
-//            }
-//    });
+//CHARTS:
+        HashMap<MyDate, Double> salesByDay = new HashMap();
+
+        for (int i = 0; i < salesList.size(); i++) {
+            long timestamp = salesList.get(i).getSaleTimeDate();
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(timestamp);
+            MyDate myDate = new MyDate();
+            myDate.day = cal.get(Calendar.DAY_OF_MONTH);
+            myDate.month = cal.get(Calendar.MONTH) + 1;
+            myDate.year = cal.get(Calendar.YEAR);
+
+            double totalForSale = 0.0;
+            for (int j = 0; j < saleProductsList.size(); j++) {
+                double totalForSalesProduct = 0.0;
+                int quantity = saleProductsList.get(j).getQuantitySold();
+                if (saleProductsList.get(j).getSaleID() == salesList.get(i).getID()) {
+                    double price = 0.0;
+                    for (int k = 0; k < productsList.size(); k++) {
+                        if (saleProductsList.get(j).getProductID() == productsList.get(k).getID()) {
+                            price = productsList.get(k).getPrice();
+                            break;
+                        }
+                    }
+                    totalForSalesProduct = quantity * price;
+                }
+                totalForSale += totalForSalesProduct;
+            }
+
+            MyDate dateFound = null;
+            for (Map.Entry<MyDate, Double> entry : salesByDay.entrySet()) {
+                MyDate e = entry.getKey();
+                if (e.day == myDate.day && e.month == myDate.month && e.year == myDate.year) {
+                    dateFound = e;
+                    break;
+                }
+            }
+
+            //If date already exists in map:
+            if (dateFound != null) {
+                double total = salesByDay.get(dateFound);
+                total += totalForSale;
+                salesByDay.put(dateFound, total);
+            } //If date does not already exist in map:
+            else {
+                salesByDay.put(myDate, totalForSale);
+            }
+
+        }
+
+        final String salesTag = "Sales";
+        DefaultCategoryDataset salesChartset = new DefaultCategoryDataset();
+
+        SortedSet<MyDate> keys = new TreeSet<>(salesByDay.keySet());
+        for (MyDate key : keys) {
+            System.out.println("Key " + key.month + " : " + salesByDay.get(key));
+            salesChartset.addValue(salesByDay.get(key), salesTag, monthToString(key.month));
+        }
+
+//        for (Map.Entry<MyDate, Double> entry : salesByDay.entrySet()) {
+//            System.out.println("Key " + entry.getKey().month + " -> " + entry.getValue());
+//            salesChartset.addValue(entry.getValue(), salesTag, monthToString(entry.getKey().month));
+//        }
+
+        JFreeChart lineChartObject = ChartFactory.createBarChart(
+                "Monthly Sales", "Days",
+                "No. Sales",
+                salesChartset, PlotOrientation.VERTICAL,
+                true, true, false);
+
+        lineChartObject.getPlot().setBackgroundPaint(Color.decode("#DDDDDD"));
+
+        ChartPanel chartPanel = new ChartPanel(lineChartObject);
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
+
+        statistics.setLayout(new java.awt.BorderLayout());
+        statistics.add(chartPanel);
+
+        statistics.validate();
+
         setTitle(TITLE);
     }
 
@@ -776,7 +827,7 @@ public final class MainForm extends javax.swing.JFrame {
             //Put customerName in the Table
             String customerName = "";
             for (int j = 0; j < customersList.size(); j++) {
-                if (customersList.get(j).getID() == lastSalesTop5.get(i).getID()) {
+                if (customersList.get(j).getID() == lastSalesTop5.get(i).getCustomerID()) {
                     customerName = customersList.get(j).getName();
                 }
             }
@@ -4738,12 +4789,12 @@ public final class MainForm extends javax.swing.JFrame {
                 if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
                     showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
                 } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
-                    
+
                     File file = new File(LoginForm.SESSION_FILENAME);
                     File file2 = new File(LoginForm.SESSION_PASSWORD);
                     File file3 = new File(LoginForm.SESSION_USERID);
                     File file4 = new File(LoginForm.SESSION_USERNAME);
-                    
+
                     file.delete();
                     file2.delete();
                     file3.delete();
