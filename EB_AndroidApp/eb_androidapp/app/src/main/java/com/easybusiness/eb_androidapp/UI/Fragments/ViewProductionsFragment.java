@@ -57,7 +57,6 @@ public class ViewProductionsFragment extends Fragment {
     private ListView productionListView;
     private ImageButton addProductionBtn;
     private Button refreshBtn;
-    private Button printBtn;
 
     private SharedPreferences sharedPreferences;
     private String sessionID;
@@ -84,7 +83,6 @@ public class ViewProductionsFragment extends Fragment {
         productionListView = v.findViewById(R.id.productionList);
         addProductionBtn = v.findViewById(R.id.addProductionButton);
         refreshBtn = v.findViewById(R.id.refresh_production);
-        printBtn = v.findViewById(R.id.print_production_list_btn);
 
         productionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

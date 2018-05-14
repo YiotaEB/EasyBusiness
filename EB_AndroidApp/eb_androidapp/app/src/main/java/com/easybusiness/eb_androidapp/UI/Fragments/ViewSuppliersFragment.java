@@ -58,7 +58,6 @@ public class ViewSuppliersFragment extends Fragment {
     private ListView suppliersListView;
     private ImageButton addSupplierBtn;
     private Button refreshButton;
-    private Button printButton;
     private View v;
 
 
@@ -79,7 +78,6 @@ public class ViewSuppliersFragment extends Fragment {
         searchView = v.findViewById(R.id.suppliers_search_view);
         addSupplierBtn = v.findViewById(R.id.addSuppliersButton);
         refreshButton = v.findViewById(R.id.refresh_suppliers);
-        printButton = v.findViewById(R.id.print_suppliers_list_btn);
 
         //VIEW (Short click)
         suppliersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

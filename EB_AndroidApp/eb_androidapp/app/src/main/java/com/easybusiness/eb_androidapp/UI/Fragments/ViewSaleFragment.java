@@ -51,7 +51,6 @@ public class ViewSaleFragment extends Fragment {
 
     private TextView totalTextView;
     private ListView productsListView;
-    private Button toPDFButton;
 
     private ProgressBar progressBar;
     private View layout;
@@ -82,14 +81,6 @@ public class ViewSaleFragment extends Fragment {
 
         productsListView = v.findViewById(R.id.sale_products_listview);
         totalTextView = v.findViewById(R.id.sale_total_price);
-        toPDFButton = v.findViewById(R.id.viewSale_toPDF);
-
-        toPDFButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "TODO", Toast.LENGTH_LONG).show();
-            }
-        });
 
         return v;
     }

@@ -63,7 +63,6 @@ public class ViewEmployeeFragment extends Fragment {
     private TextView telephoneTextview;
 
     private Button editButton;
-    private Button toPDFButton;
 
     public ViewEmployeeFragment() {
         // Required empty public constructor
@@ -89,7 +88,6 @@ public class ViewEmployeeFragment extends Fragment {
         telephoneTextview = v.findViewById(R.id.viewEmployee_telephone_textview);
 
         editButton = v.findViewById(R.id.viewEmployee_editButton);
-        toPDFButton = v.findViewById(R.id.viewEmployee_ToPDFButton);
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +102,6 @@ public class ViewEmployeeFragment extends Fragment {
                 fragmentTransaction.replace(R.id.frame, newFragment, EditEmployeesFragment.TAG);
                 fragmentTransaction.addToBackStack(newFragment.getTag());
                 fragmentTransaction.commit();
-            }
-        });
-
-        toPDFButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "TODO", Toast.LENGTH_LONG).show();
             }
         });
 

@@ -72,7 +72,6 @@ public class ViewSalesFragment extends Fragment {
     private ListView salesListView;
     private ImageButton addSaleBtn;
     private Button refreshBtn;
-    private Button printBtn;
 
     private SharedPreferences sharedPreferences;
     private String sessionID;
@@ -108,79 +107,10 @@ public class ViewSalesFragment extends Fragment {
         salesListView = v.findViewById(R.id.salesList);
         addSaleBtn = v.findViewById(R.id.addSaleButton);
         refreshBtn = v.findViewById(R.id.refresh_sales);
-        printBtn = v.findViewById(R.id.print_sales_list_btn);
 
         salesListView.setTextFilterEnabled(true);
         setupSearchView();
 
-        printBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AssetManager assetManager;
-
-                PDFBoxResourceLoader.init(getActivity().getApplicationContext());
-                root = android.os.Environment.getDataDirectory();
-                assetManager = getActivity().getAssets();
-
-                document = new PDDocument();
-                PDPage page = new PDPage();
-                document.addPage(page);
-                PDFont font = PDType1Font.COURIER;
-                PDPageContentStream contentStream;
-
-                try {
-
-                    contentStream = new PDPageContentStream(document, page);
-
-                    contentStream.beginText();
-                    contentStream.setNonStrokingColor(15, 38, 192);
-                    contentStream.setFont(font, 12);
-                    contentStream.newLineAtOffset(100, 700);
-                    contentStream.showText("Hello World");
-                    contentStream.endText();
-
-                    contentStream.close();
-                    PackageManager m = getActivity().getPackageManager();
-                    String s = getActivity().getPackageName();
-                    PackageInfo p = m.getPackageInfo(s, 0);
-                    s = p.applicationInfo.dataDir;
-
-                    path = s + "/files/Created.pdf";
-                    System.out.println(path);
-
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                            System.out.println("PERMISSION - WRITE");
-                        } else {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_EXTERNAL_WRITE);
-                        }
-                    }
-
-
-
-                    try {
-                        document.save(path);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(path),"application/pdf");
-                    startActivity(intent);
-
-                    document.close();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-
-            }
-        });
 
         salesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
