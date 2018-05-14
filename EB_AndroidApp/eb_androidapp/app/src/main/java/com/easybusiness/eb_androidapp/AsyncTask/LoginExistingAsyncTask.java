@@ -67,7 +67,6 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
             if (statusCode == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 String responseData = AsyncTasks.convertStreamToString(inputStream);
-                System.out.println("RESPONSE DATA " + responseData);
                 JSONObject outterObject = new JSONObject(responseData);
 
                 final String status = outterObject.getString("Status");
@@ -110,7 +109,6 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
                 }
                 //Unknown error
                 else {
-                    System.out.println("LoginExistingAsyncTask - Unknown Error");
                     Intent intent = new Intent(activity, LoginActivity.class);
                     activity.startActivity(intent);
                     activity.finish();
@@ -120,7 +118,6 @@ public class LoginExistingAsyncTask extends AsyncTask<Void, Void, Void> {
             }
             //Connection error
             else {
-                System.out.println("LoginExistingAsyncTask - Connection Error");
                 Intent intent = new Intent(activity, LoginActivity.class);
                 activity.startActivity(intent);
                 activity.finish();

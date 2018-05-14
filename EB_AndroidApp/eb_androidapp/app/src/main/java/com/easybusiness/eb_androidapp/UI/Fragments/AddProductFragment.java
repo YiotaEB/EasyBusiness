@@ -160,7 +160,6 @@ public class AddProductFragment extends Fragment {
 
             if (query == null) query = "";
 
-            System.out.println("PRODUCT TYPES QUERY: " + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Producttypes", "GetMultiple"));
@@ -180,7 +179,6 @@ public class AddProductFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -262,7 +260,6 @@ public class AddProductFragment extends Fragment {
 
             if (query == null) query = "";
 
-            System.out.println("PRODUCT SIZES QUERY: " + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Productsizes", "GetMultiple"));
@@ -282,7 +279,6 @@ public class AddProductFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -389,7 +385,6 @@ public class AddProductFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

@@ -37,7 +37,7 @@ public class InvoiceAdapter extends ArrayAdapter<Sales> {
 
         //set TextViews
         salesAdapterId.setText(String.valueOf(position+1));
-        salesAdapterName.setText(String.valueOf(salesList.get(position).getCustomerID())); //TODO Display the customers name instead of his ID.
+        salesAdapterName.setText(String.valueOf(salesList.get(position).getCustomerID()));
         salesAdapterTotal.setText(String.valueOf(salesList.get(position).getSaleProductsID()));
 
         return view;

@@ -69,7 +69,6 @@ public class EB_ManagementApp {
             return;
         }
         String response = HTTPConnection.executePost(HTTPConnection.API_URL + "/LoginExisting/", "Username=" + username + "&Password=" + Utilities.Hash.MD5(password));
-        System.out.println(response);
         try {
             JSONObject jsonObject = new JSONObject(response);
             final String status = jsonObject.getString("Status");

@@ -191,7 +191,6 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
 
     private void customerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerComboBoxActionPerformed
 
-        //TODO Panayiota: Action when selecting an item in TypeComboBox.
 
     }//GEN-LAST:event_customerComboBoxActionPerformed
 
@@ -220,8 +219,6 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
             String addProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "Create",
                     "SessionID=aa&ID=0&CustomerID=" + customerID + "&ProductID=" + productIDs.get(i));
             
-            System.out.println(productList.get(i).getName() + " add Production HTTP -> " + addProductionJSON);
-            
             try {
                 JSONObject jsonObject = new JSONObject(addProductionJSON);
                 final String status = jsonObject.getString("Status");
@@ -235,7 +232,6 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
                 
 
                 if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                    System.out.println("Fail " + addProductionJSON);
                 } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
                     //Reset fields:
                     setVisible(true);
@@ -283,9 +279,7 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
 
                 }
             } else {
-                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productsJSON);
-            }
+                showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -309,7 +303,6 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
         //Get customers from api
         String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "SessionID=aa");
         try {
-            System.out.println("Get Customers HTTP -> " + customersJSON);
             JSONObject jsonObject = new JSONObject(customersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -333,7 +326,6 @@ public class AddCustomerProductsForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + customersJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

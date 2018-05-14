@@ -81,11 +81,6 @@ public class ViewSalesFragment extends Fragment {
     private ArrayList<Products> productsList;
     private ArrayList<Customers> customersList;
 
-    public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_WRITE = 1;
-    public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_READ = 2;
-    private PDDocument document;
-    private String path;
-    File root;
 
     public ViewSalesFragment() {
         // Required empty public constructor
@@ -141,47 +136,6 @@ public class ViewSalesFragment extends Fragment {
         });
 
         return v;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_EXTERNAL_WRITE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    System.out.println("GRANT PERMISSION - WRITE: OK");
-                    try {
-                        document.save(path);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            System.out.println("PERMISSION - READ");
-                        } else {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_EXTERNAL_READ);
-                        }
-                    }
-
-                } else {
-                    Toast.makeText(getActivity(), "You need to allow storage permissions", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-
-            case MY_PERMISSIONS_REQUEST_EXTERNAL_READ: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    System.out.println("GRANT PERMISSION - READ: OK");
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(path + "Created.pdf"),"application/pdf");
-                    startActivity(intent);
-
-                } else {
-                    Toast.makeText(getActivity(), "You need to allow storage permissions", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-        }
     }
 
     @Override

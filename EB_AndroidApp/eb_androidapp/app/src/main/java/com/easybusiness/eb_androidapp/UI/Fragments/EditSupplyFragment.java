@@ -158,7 +158,6 @@ public class EditSupplyFragment extends Fragment {
                     .appendQueryParameter("SessionID", sessionID);
             query = builder.build().getEncodedQuery();
 
-            System.out.println("GET SUPPLY QUERY -->" + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Supplies", "GetByID"));
@@ -179,7 +178,6 @@ public class EditSupplyFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
 
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -262,7 +260,6 @@ public class EditSupplyFragment extends Fragment {
 
             if (query == null) query = "";
 
-            System.out.println("SUPPLIERS QUERY: " + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Suppliers", "GetMultiple"));
@@ -282,7 +279,6 @@ public class EditSupplyFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -375,8 +371,6 @@ public class EditSupplyFragment extends Fragment {
                     .appendQueryParameter("SessionID", sessionID);
             query = builder.build().getEncodedQuery();
 
-            System.out.println("UPDATE SUPPLY QUERY -->" + query);
-
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Supplies", "Update"));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -396,7 +390,6 @@ public class EditSupplyFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
 
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

@@ -197,7 +197,6 @@ public class ChangeInfoFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -281,7 +280,6 @@ public class ChangeInfoFragment extends Fragment {
                     .appendQueryParameter("SessionID", sharedPreferences.getString(MainActivity.PREFERENCE_SESSIONID, ""));
             query = builder.build().getEncodedQuery();
 
-            System.out.println("GET EMPLOYEE QUERY -->" + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Users", "GetByID"));
@@ -302,8 +300,6 @@ public class ChangeInfoFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
-
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
                     final String message = outterObject.getString("Message");
@@ -408,7 +404,6 @@ public class ChangeInfoFragment extends Fragment {
                     .appendQueryParameter("CountryID", String.valueOf(countries.get(countrySpinner.getSelectedItemPosition()).getID()));
 
             this.query = builder.build().getEncodedQuery();
-            System.out.println(query);
         }
 
         @Override
@@ -434,7 +429,6 @@ public class ChangeInfoFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

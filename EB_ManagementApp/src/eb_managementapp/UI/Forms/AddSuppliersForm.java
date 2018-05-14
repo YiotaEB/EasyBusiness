@@ -312,9 +312,7 @@ public class AddSuppliersForm extends javax.swing.JFrame {
 
             showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addSuppliersJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+           if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
                 setVisible(true);
                 countryComboBox.setSelectedIndex(0);
@@ -354,7 +352,6 @@ public class AddSuppliersForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + countriesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -129,7 +129,6 @@ public class AdminHomeFragment extends Fragment {
             datee.month = cal.get(Calendar.MONTH);
             datee.year = cal.get(Calendar.YEAR);
 
-            //System.out.println(" DATE " + datee.day + " " + datee.month + " " + datee.year);
             saleDates.add(datee);
 
             for (int j = 0; j < saleProductsList.size(); j++) {
@@ -190,7 +189,6 @@ public class AdminHomeFragment extends Fragment {
         int entries = 0;
         for (Map.Entry<Datee, Double> entry : daySalesTotals.entrySet()) {
             entries++;
-            System.out.println("Date: " + entry.getKey().day + "/" + entry.getKey().month + " -- " + entry.getValue());
         }
 
         //Put data into the graph:
@@ -225,7 +223,6 @@ public class AdminHomeFragment extends Fragment {
                     .appendQueryParameter("SessionID", PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(MainActivity.PREFERENCE_SESSIONID, ""));
             query = builder.build().getEncodedQuery();
 
-            System.out.println("GET COMPANY INFO QUERY -->" + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Companyinformation", "GetMultiple"));
@@ -246,7 +243,6 @@ public class AdminHomeFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
 
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -340,7 +336,6 @@ public class AdminHomeFragment extends Fragment {
 
             countriesList = new ArrayList<>();
 
-            System.out.println("GET COUNTRY QUERY -->" + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Countries", "GetMultiple"));
@@ -361,7 +356,6 @@ public class AdminHomeFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
 
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -432,7 +426,6 @@ public class AdminHomeFragment extends Fragment {
 
             if (query == null) query = "";
 
-            System.out.println("SALES QUERY -> " + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Sales", "GetMultiple"));

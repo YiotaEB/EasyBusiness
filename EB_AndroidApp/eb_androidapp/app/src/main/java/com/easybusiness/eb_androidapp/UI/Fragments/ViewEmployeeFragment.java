@@ -138,7 +138,6 @@ public class ViewEmployeeFragment extends Fragment {
         nameTextview.setText(title);
         telephoneTextview.setText(user.getTelephone());
 
-        System.out.println("----------- ON RESUME CALLED ------------");
 
         new GetSingleEmployeeAsyncTask(getActivity(), "UserID=" + user.getUserID() + "&SessionID=" + SESSION_ID).execute();
 
@@ -189,7 +188,6 @@ public class ViewEmployeeFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
 
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

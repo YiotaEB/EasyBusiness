@@ -168,7 +168,6 @@ public class ViewProductFragment extends Fragment {
                     .appendQueryParameter("SessionID", sessionID);
             query = builder.build().getEncodedQuery();
 
-            System.out.println("GET PRODUCT QUERY -->" + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Products", "GetByID"));
@@ -189,7 +188,6 @@ public class ViewProductFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
 
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -269,7 +267,6 @@ public class ViewProductFragment extends Fragment {
 
             if (query == null) query = "";
 
-            System.out.println("PRODUCT TYPES QUERY: " + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Producttypes", "GetByID"));
@@ -289,7 +286,6 @@ public class ViewProductFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -358,7 +354,6 @@ public class ViewProductFragment extends Fragment {
 
             if (query == null) query = "";
 
-            System.out.println("PRODUCT SIZES QUERY: " + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Productsizes", "GetByID"));
@@ -378,7 +373,6 @@ public class ViewProductFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

@@ -188,7 +188,6 @@ public class ViewCustomersFragment extends Fragment {
                     .appendQueryParameter("SessionID", sessionID);
             query = builder.build().getEncodedQuery();
 
-            System.out.println("GET CUSTOMERS QUERY -->" + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Customers", "GetMultiple"));

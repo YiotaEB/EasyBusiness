@@ -34,6 +34,7 @@ import com.easybusiness.eb_androidapp.UI.Fragments.AddEmployeesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.AddSuppliersFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.AdminHomeFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ChangeInfoFragment;
+import com.easybusiness.eb_androidapp.UI.Fragments.UserHomeFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewCustomersFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewDeliveryRoutesFragment;
 import com.easybusiness.eb_androidapp.UI.Fragments.ViewEmployeeFragment;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     public static  AdminHomeFragment adminHomeFragment = null;
     public static  ViewCustomersFragment viewCustomersFragment = null;
     public static  ViewDeliveryRoutesFragment viewDeliveryRoutesFragment = null;
+    public static  UserHomeFragment userHomeFragment = null;
     public static  ViewEmployeesFragment viewEmployeesFragment = null;
     public static  ViewInventoryFragment viewInventoryFragment = null;
     public static ViewProductionsFragment viewProductionFragment = null;
@@ -308,7 +310,15 @@ public class MainActivity extends AppCompatActivity
 
 
             case R.id.users_nav_home:
-                //TODO
+                setTitle(UserHomeFragment.TITLE);
+                if (userHomeFragment == null) {
+                    newFragment = new UserHomeFragment();
+                }
+                else {
+                    newFragment = userHomeFragment;
+                }
+                fragmentTransaction.replace(R.id.frame, newFragment, UserHomeFragment.TAG);
+
                 break;
 
             case R.id.users_nav_sales:
@@ -348,15 +358,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showDefaultFragment() {
-        Fragment defaultFragment = new AdminHomeFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        setTitle(AdminHomeFragment.TITLE);
-        fragmentTransaction.replace(R.id.frame, defaultFragment, AdminHomeFragment.TAG);
+        Fragment defaultFragment;
+        FragmentTransaction fragmentTransaction= getSupportFragmentManager().beginTransaction();;
+        switch(appMode){
+            case MODE_ADMIN:
+                defaultFragment = new AdminHomeFragment();
+                setTitle(AdminHomeFragment.TITLE);
+                fragmentTransaction.replace(R.id.frame, defaultFragment, AdminHomeFragment.TAG);
+                break;
+            case MODE_USER:
+                defaultFragment = new UserHomeFragment();
+                setTitle(UserHomeFragment.TITLE);
+                fragmentTransaction.replace(R.id.frame, defaultFragment, UserHomeFragment.TAG);;
+                break;
+        }
         fragmentTransaction.commit();
         navigationView.getMenu().getItem(0).setChecked(true);
     }
 
-    //TODO:
     public void setMenuItemChecked(Fragment fragment) {
         switch (appMode) {
             case MODE_ADMIN:

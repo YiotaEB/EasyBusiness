@@ -157,7 +157,7 @@ public class AddSizeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void sizeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sizeTextFieldActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_sizeTextFieldActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -199,9 +199,7 @@ public class AddSizeForm extends javax.swing.JFrame {
 
             showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addSizeJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
                 typeComboBox.setSelectedIndex(0);
                 sizeTextField.setText("");
@@ -239,7 +237,6 @@ public class AddSizeForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + sizesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -273,7 +270,6 @@ public class AddSizeForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + unitTypeJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

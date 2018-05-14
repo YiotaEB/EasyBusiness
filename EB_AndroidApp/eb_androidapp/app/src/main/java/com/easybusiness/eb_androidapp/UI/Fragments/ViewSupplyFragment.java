@@ -152,7 +152,6 @@ public class ViewSupplyFragment extends Fragment {
                     .appendQueryParameter("SessionID", sessionID);
             query = builder.build().getEncodedQuery();
 
-            System.out.println("GET SUPPLY QUERY -->" + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Supplies", "GetByID"));
@@ -173,7 +172,6 @@ public class ViewSupplyFragment extends Fragment {
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
                     JSONObject outterObject = new JSONObject(responseData);
-                    System.out.println(responseData);
 
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -258,7 +256,6 @@ public class ViewSupplyFragment extends Fragment {
 
             if (query == null) query = "";
 
-            System.out.println("SUPPLIERS QUERY: " + query);
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(getActivity().getString(R.string.baseURL), "Suppliers", "GetByID"));
@@ -278,7 +275,6 @@ public class ViewSupplyFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

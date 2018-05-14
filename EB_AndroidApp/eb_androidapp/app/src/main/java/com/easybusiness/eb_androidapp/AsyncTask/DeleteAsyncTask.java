@@ -79,7 +79,6 @@ public class DeleteAsyncTask extends AsyncTask<Void,Void,Void> {
                 .appendQueryParameter("SessionID", sessionID);
 
         query = builder.build().getEncodedQuery();
-        System.out.println(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), entityName, entityEndpoint) + query);
     }
 
     @Override

@@ -306,9 +306,7 @@ public class AddSuppliesForm extends javax.swing.JFrame {
 
             showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addSuppliesJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
                 setVisible(true);
                 supplierComboBox.setSelectedIndex(0);
@@ -350,7 +348,6 @@ public class AddSuppliesForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + suppliersJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

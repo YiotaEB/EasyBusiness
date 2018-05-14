@@ -188,7 +188,6 @@ public class AddProductTypeForm extends javax.swing.JFrame {
             showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
             if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addTypeJSON);
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
                 nameTypeTextField.setText("");
@@ -225,7 +224,6 @@ public class AddProductTypeForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + sizesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

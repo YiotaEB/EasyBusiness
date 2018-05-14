@@ -366,8 +366,6 @@ public class CustomersForm extends javax.swing.JFrame {
                 "SessionID=" + sessionID + "&ID=1&Name=" + name + "&CountryID=" + countryID + "&Address=" + address + "&Telephone=" + telephone + "&City=" + city + "&CustomerProductsID=0"
         );
 
-        System.out.println("Add customer HTTP -> " + addCustomersJSON);
-
         getCustomers();
     }
 
@@ -435,7 +433,6 @@ public class CustomersForm extends javax.swing.JFrame {
 
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + customersJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -467,7 +464,6 @@ public class CustomersForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + countriesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

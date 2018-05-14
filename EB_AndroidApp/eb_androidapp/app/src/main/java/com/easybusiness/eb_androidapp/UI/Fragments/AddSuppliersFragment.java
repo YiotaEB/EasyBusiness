@@ -196,7 +196,6 @@ public class AddSuppliersFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -277,7 +276,6 @@ public class AddSuppliersFragment extends Fragment {
 
             this.name = name;
             this.query = builder.build().getEncodedQuery();
-            System.out.println(query);
             this.activity = activity;
             this.view = view;
             countries = new ArrayList<>();
@@ -306,7 +304,6 @@ public class AddSuppliersFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

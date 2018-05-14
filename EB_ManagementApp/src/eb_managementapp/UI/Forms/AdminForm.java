@@ -491,8 +491,6 @@ public class AdminForm extends javax.swing.JFrame {
                 + "&City=" + city + "&Address=" + address + "&Telephone=" + telephone + "&CountryID=" + countryID
                 + "&UserLevelID=" + positionID + "&Password=" + Hash.MD5(password) + "&DateHired=" + dateHired
         );
-        
-        System.out.println("Admin -" + addUsersJSON);
 
         try {
             JSONObject jsonObject = new JSONObject(addUsersJSON);
@@ -501,7 +499,6 @@ public class AdminForm extends javax.swing.JFrame {
             final String message = jsonObject.getString("Message");
 
             if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addUsersJSON);
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
             } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
@@ -554,7 +551,6 @@ public class AdminForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + countriesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -234,7 +234,6 @@ public class EditEmployeesFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -332,7 +331,6 @@ public class EditEmployeesFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");
@@ -357,7 +355,6 @@ public class EditEmployeesFragment extends Fragment {
                         }
 
                         adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, positionNames);
-                        System.out.println("Found adapter size = "  + adapter.getCount());
 
                         activity.runOnUiThread(new Runnable() {
                             @Override
@@ -370,7 +367,6 @@ public class EditEmployeesFragment extends Fragment {
                                         break;
                                     }
                                 }
-                                System.out.println("Selected spinner position: " + selectedSpinnerPosition);
                                 positionSpinner.setSelection(selectedSpinnerPosition);
                                 final View progressView = activity.findViewById(R.id.edit_employees_progress);
                                 final View employeeAddView = activity.findViewById(R.id.edit_employees_view);
@@ -420,14 +416,11 @@ public class EditEmployeesFragment extends Fragment {
 
         public EditEmployeeAsyncTask(Activity activity, View view, String sessionID) {
 
-            System.out.println("COUNTRIES SIZE: " + countries.size());
-            System.out.println("Date Hired: " + user.getDateHired());
-
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("UserID", String.valueOf(user.getUserID()))
                     .appendQueryParameter("SessionID", sessionID)
                     .appendQueryParameter("Username", String.valueOf(usernameEditText.getText()))
-                    .appendQueryParameter("Password", " ") //TODO
+                    .appendQueryParameter("Password", " ")
                     .appendQueryParameter("UserLevelID", String.valueOf(user.getUserLevelID()))
                     .appendQueryParameter("Firstname", String.valueOf(firstnameEditText.getText()))
                     .appendQueryParameter("Lastname", String.valueOf(lastnameEditText.getText()))
@@ -438,15 +431,12 @@ public class EditEmployeesFragment extends Fragment {
                     .appendQueryParameter("CountryID", String.valueOf(countries.get(countrySpinner.getSelectedItemPosition()).getID()));
 
             this.query = builder.build().getEncodedQuery();
-            System.out.println(query);
             this.activity = activity;
             this.view = view;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-
-
 
             try {
                 URL url = new URL(AsyncTasks.encodeForAPI(activity.getString(R.string.baseURL), "Users", "Update"));
@@ -466,7 +456,6 @@ public class EditEmployeesFragment extends Fragment {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
 
-                    System.out.println(responseData);
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");
                     final String title = outterObject.getString("Title");

@@ -14,7 +14,6 @@ import static eb_managementapp.EB_ManagementApp.addSuppliersForm;
 import static eb_managementapp.EB_ManagementApp.addSuppliesForm;
 import static eb_managementapp.EB_ManagementApp.addProductsForm;
 import static eb_managementapp.EB_ManagementApp.adminForm;
-import static eb_managementapp.EB_ManagementApp.setUpForm;
 import eb_managementapp.Entities.Countries;
 import eb_managementapp.Entities.Customerproducts;
 import eb_managementapp.Entities.Customers;
@@ -585,11 +584,10 @@ public final class MainForm extends javax.swing.JFrame {
 
                             String customerNameG = "";
                             int customerID = salesList.get(i).getCustomerID();
-                            
+
                             for (int j = 0; j < customersList.size(); j++) {
                                 if (customerID == customersList.get(j).getID()) {
                                     customerNameG = customersList.get(j).getName();
-                                    //System.out.println(customerNameG);
                                     break;
                                 }
                             }
@@ -615,7 +613,6 @@ public final class MainForm extends javax.swing.JFrame {
                             for (Map.Entry<String, Double> entry : salesByCustomer.entrySet()) {
                                 String customerName = entry.getKey();
                                 if (customerNameG.equals(customerName)) {
-                                    System.out.println(customerNameFound + " vs " + customerName);
                                     customerNameFound = customerName;
                                     break;
                                 }
@@ -636,7 +633,6 @@ public final class MainForm extends javax.swing.JFrame {
                         DefaultPieDataset dataset = new DefaultPieDataset();
 
                         for (Map.Entry<String, Double> entry : salesByCustomer.entrySet()) {
-                            System.out.println("Key " + entry.getKey() + " -> " + entry.getValue());
                             dataset.setValue(entry.getKey(), entry.getValue());
                         }
 
@@ -662,8 +658,10 @@ public final class MainForm extends javax.swing.JFrame {
                         employeesTab();
 
                         break;
+                        
                     //Suppliers
                     case 6:
+                        
                         getSupplies();
                         getSupplyTransactions();
                         getCountries();
@@ -678,11 +676,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
 
         customerScrollPanel.setViewportView(customerDetailsTable);
-
-//      int width = 640;    /* Width of the image */
-//      int height = 480;   /* Height of the image */ 
-//      File lineChart = new File( "LineChart.jpeg" ); 
-//      ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
+        
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.setVisible(true);
@@ -694,7 +688,6 @@ public final class MainForm extends javax.swing.JFrame {
         getSaleProducts();
         getSales();
 
-        /*--------------------------*/
         //CHARTS:
         HashMap<MyDate, Double> salesByDay = new HashMap();
 
@@ -750,14 +743,9 @@ public final class MainForm extends javax.swing.JFrame {
 
         SortedSet<MyDate> keys = new TreeSet<>(salesByDay.keySet());
         for (MyDate key : keys) {
-            System.out.println("Key " + key.month + " : " + salesByDay.get(key));
             salesChartset.addValue(salesByDay.get(key), salesTag, monthToString(key.month));
         }
 
-//        for (Map.Entry<MyDate, Double> entry : salesByDay.entrySet()) {
-//            System.out.println("Key " + entry.getKey().month + " -> " + entry.getValue());
-//            salesChartset.addValue(entry.getValue(), salesTag, monthToString(entry.getKey().month));
-//        }
         JFreeChart lineChartObject = ChartFactory.createBarChart(
                 "Monthly Sales", "Days",
                 "No. Sales",
@@ -776,7 +764,78 @@ public final class MainForm extends javax.swing.JFrame {
 
         setTitle(TITLE);
 
-        /*--------------------------*/
+        /******************************************************************************/
+        //CHARTS:
+        HashMap<String, Double> salesByCustomer = new HashMap();
+
+        for (int i = 0; i < salesList.size(); i++) {
+
+            String customerNameG = "";
+            int customerID = salesList.get(i).getCustomerID();
+
+            for (int j = 0; j < customersList.size(); j++) {
+                if (customerID == customersList.get(j).getID()) {
+                    customerNameG = customersList.get(j).getName();
+                    break;
+                }
+            }
+
+            double totalForCustomer = 0.0;
+            for (int j = 0; j < saleProductsList.size(); j++) {
+                double totalForSalesProduct = 0.0;
+                int quantity = saleProductsList.get(j).getQuantitySold();
+                if (saleProductsList.get(j).getSaleID() == salesList.get(i).getID()) {
+                    double price = 0.0;
+                    for (int k = 0; k < productsList.size(); k++) {
+                        if (saleProductsList.get(j).getProductID() == productsList.get(k).getID()) {
+                            price = productsList.get(k).getPrice();
+                            break;
+                        }
+                    }
+                    totalForSalesProduct = quantity * price;
+                }
+                totalForCustomer += totalForSalesProduct;
+            }
+
+            String customerNameFound = null;
+            for (Map.Entry<String, Double> entry : salesByCustomer.entrySet()) {
+                String customerName = entry.getKey();
+                if (customerNameG.equals(customerName)) {
+                    customerNameFound = customerName;
+                    break;
+                }
+            }
+
+            //If customer already exists in map:
+            if (customerNameFound != null) {
+                double total = salesByCustomer.get(customerNameFound);
+                total += totalForCustomer;
+                salesByCustomer.put(customerNameFound, total);
+            } //If date does not already exist in map:
+            else {
+                salesByCustomer.put(customerNameG, totalForCustomer);
+            }
+
+        }
+
+        DefaultPieDataset dataset = new DefaultPieDataset();
+
+        for (Map.Entry<String, Double> entry : salesByCustomer.entrySet()) {
+            dataset.setValue(entry.getKey(), entry.getValue());
+        }
+
+        JFreeChart pieChartObject = ChartFactory.createPieChart("Sales by customer", dataset);
+
+        pieChartObject.getPlot().setBackgroundPaint(Color.decode("#DDDDDD"));
+
+        ChartPanel chartPane2 = new ChartPanel(pieChartObject);
+        chartPane2.setPreferredSize(new java.awt.Dimension(300, 300));
+
+        customersGraphsPanel1.setLayout(new java.awt.BorderLayout());
+        customersGraphsPanel1.add(chartPane2);
+
+        customersGraphsPanel1.validate();
+
         getSupplies();
         getSupplyTransactions();
         getSuppliers();
@@ -788,9 +847,6 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void homeTab() {
 
-        /**
-         * ***************************************************************************************
-         */
         //DAILY PRODUCTION
         //Create a new model for the table:
         DefaultTableModel productsTableModel = new DefaultTableModel();
@@ -806,7 +862,7 @@ public final class MainForm extends javax.swing.JFrame {
         lastProduction.sort(new Comparator<Productionbatches>() {
             @Override
             public int compare(Productionbatches o1, Productionbatches o2) {
-                return o2.getID() - o1.getID(); //TODO
+                return o2.getID() - o1.getID(); 
             }
 
         });
@@ -847,9 +903,6 @@ public final class MainForm extends javax.swing.JFrame {
             productsTableModel.addRow(currentRow);
         }
         dailyProductionTable.setModel(productsTableModel);
-        /**
-         * **************************************************************************************
-         */
 
         //Create a new model for the table:
         DefaultTableModel salesTableModel = new DefaultTableModel();
@@ -865,7 +918,7 @@ public final class MainForm extends javax.swing.JFrame {
         lastSales.sort(new Comparator<Sales>() {
             @Override
             public int compare(Sales o1, Sales o2) {
-                return o2.getID() - o1.getID(); //TODO
+                return o2.getID() - o1.getID(); 
             }
 
         });
@@ -925,9 +978,7 @@ public final class MainForm extends javax.swing.JFrame {
         }
         dailySalesTable.setModel(salesTableModel);
 
-        /**
-         * ************************************************************************************
-         */
+        /***************************************************************************************/
         //SUPPLIER PURCHASES RECORDS TABLE
         //Create a new model for the table:
         DefaultTableModel supplyPurchasesTableModel = new DefaultTableModel();
@@ -943,7 +994,7 @@ public final class MainForm extends javax.swing.JFrame {
         lastSupplyTransactions.sort(new Comparator<Supplytransactions>() {
             @Override
             public int compare(Supplytransactions o1, Supplytransactions o2) {
-                return o2.getID() - o1.getID(); //TODO
+                return o2.getID() - o1.getID(); 
             }
 
         });
@@ -966,12 +1017,10 @@ public final class MainForm extends javax.swing.JFrame {
             double total = 0.0;
             for (int j = 0; j < lastSupplyProducctionTop5.size(); j++) {
                 int sold = lastSupplyProducctionTop5.get(j).getQuantity();
-                System.out.println("Sold:" + sold);
                 double price = 0.0;
                 for (int k = 0; k < suppliesList.size(); k++) {
                     if (suppliesList.get(k).getID() == lastSupplyProducctionTop5.get(j).getSupplierSuppliesID()) {
                         price = suppliesList.get(k).getPrice();
-                        System.out.println("Price:" + price);
                         break;
                     }
 
@@ -1020,7 +1069,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         if (productionDate != null) {
             date = productionDate.getTime();
-            System.out.println(date);
         } else {
             showMessageDialog(null, "Please provide a valid date", "Invalid Date", JOptionPane.PLAIN_MESSAGE);
         }
@@ -1031,13 +1079,10 @@ public final class MainForm extends javax.swing.JFrame {
         String addProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productionbatches", "Create",
                 "SessionID=" + sessionID + "&ID=1&QuantityProduced=" + productionQuantity + "&ProductID=" + productID + "&ProductionDate=" + date
         );
-        System.out.println("Add Production HTTP -> " + addProductionJSON);
 
         String updateProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Update",
                 "SessionID=" + sessionID + "&ID=" + productID + "&Name=" + productName + "&Price=" + price + "&QuantityInStock="
                 + quantityInStock + "&ProductTypeID=" + productTypeID + "&ProductSizeID=" + productSizeID + "&ProductSuppliesID=" + productSuppliesID);
-
-        System.out.println("Update Products HTTP -> " + addProductionJSON);
 
         try {
             JSONObject jsonObject = new JSONObject(addProductionJSON);
@@ -1047,9 +1092,7 @@ public final class MainForm extends javax.swing.JFrame {
 
             showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + addProductionJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 //Reset fields:
                 setVisible(true);
                 productComboBox.setSelectedIndex(0);
@@ -1068,7 +1111,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String customersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "GetMultiple", "SessionID=" + sessionID);
         try {
-            System.out.println("Get Customers HTTP -> " + customersJSON);
             JSONObject jsonObject = new JSONObject(customersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1092,7 +1134,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + customersJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1146,9 +1187,7 @@ public final class MainForm extends javax.swing.JFrame {
         customerDetailsTable.setModel(customersTableModel);
         refreshCusDetailsBtn.setEnabled(true);
         numOfCustomersLabel.setText(String.valueOf(customersList.size()));
-        /**
-         * **************************************************************************************************
-         */
+        /***********************************************************************************************/
 
         //CUSTOMER PRODUCTS TABLE
         refreshCustProductsBtn.setEnabled(false);
@@ -1264,13 +1303,10 @@ public final class MainForm extends javax.swing.JFrame {
     public void getCustomerProducts() {
         customerProductsList = new ArrayList<>();
         refreshCustProductsBtn.setEnabled(false);
-//        getProducts();
-//        getCustomers();
-
+        
         //Get customers from api
         String customerProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "GetMultiple", "SessionID=" + sessionID);
         try {
-            System.out.println("Get Customer Products HTTP -> " + customerProductsJSON);
             JSONObject jsonObject = new JSONObject(customerProductsJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1290,7 +1326,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + customerProductsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1339,7 +1374,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get Suppliers HTTP -> " + suppliersJSON);
             JSONObject jsonObject = new JSONObject(suppliersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1362,7 +1396,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + suppliersJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1475,12 +1508,10 @@ public final class MainForm extends javax.swing.JFrame {
             double total = 0.0;
             for (int j = 0; j < supplyTransactionList.size(); j++) {
                 int sold = supplyTransactionList.get(j).getQuantity();
-                System.out.println("Sold:" + sold);
                 double price = 0.0;
                 for (int k = 0; k < suppliesList.size(); k++) {
                     if (suppliesList.get(k).getID() == supplyTransactionList.get(j).getSupplierSuppliesID()) {
                         price = suppliesList.get(k).getPrice();
-                        System.out.println("Price:" + price);
                         break;
                     }
 
@@ -1497,9 +1528,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
 
             Timestamp timestamp = new Timestamp(supplyTransactionList.get(i).getDateMade());
-            System.out.println("Timestamp: " + timestamp);
             Date date = new Date(timestamp.getTime());
-            System.out.println("Date: " + date);
 
             Object[] currentRow = {
                 i + 1,
@@ -1527,7 +1556,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String employeesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get Users HTTP -> " + employeesJSON);
             JSONObject jsonObject = new JSONObject(employeesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1556,7 +1584,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + employeesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1570,7 +1597,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String suppliersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get Supplies  HTTP -> " + suppliersJSON);
             JSONObject jsonObject = new JSONObject(suppliersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1592,7 +1618,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + suppliersJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1608,7 +1633,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String supplyTransactionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplytransactions", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get SupplyTransactions HTTP -> " + supplyTransactionJSON);
             JSONObject jsonObject = new JSONObject(supplyTransactionJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1629,10 +1653,9 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + supplyTransactionJSON);
             }
         } catch (JSONException e) {
-            System.out.println(e);
+            e.printStackTrace();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1688,7 +1711,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String countriesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Countries", "GetMultiple", "");
         try {
-            System.out.println("Get countries HTTP -> " + countriesJSON);
             JSONObject jsonObject = new JSONObject(countriesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1707,7 +1729,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + countriesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1739,7 +1760,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productTypesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1773,7 +1793,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productSizesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1790,7 +1809,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         //Get customers from api
         String productsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "GetMultiple", "SessionID=" + sessionID + "");
-        System.out.println("Product HTTP -> " + productsJSON);
         try {
             JSONObject jsonObject = new JSONObject(productsJSON);
             final String status = jsonObject.getString("Status");
@@ -1815,7 +1833,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1904,14 +1921,12 @@ public final class MainForm extends javax.swing.JFrame {
                     int quantityProduced = currentItem.getInt("QuantityProduced");
                     int productID = currentItem.getInt("ProductID");
                     productionDate = currentItem.getLong("ProductionDate");
-                    System.out.println(productionDate);
 
                     Productionbatches c = new Productionbatches(id, quantityProduced, productID, productionDate);
                     productionList.add(c);
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1969,7 +1984,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String saleProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Saleproducts", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get Sale Products HTTP -> " + saleProductsJSON);
             JSONObject jsonObject = new JSONObject(saleProductsJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -1990,7 +2004,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + saleProductsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2006,7 +2019,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String salesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Sales", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get Sales HTTP -> " + salesJSON);
             JSONObject jsonObject = new JSONObject(salesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2028,10 +2040,9 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + salesJSON);
             }
         } catch (JSONException e) {
-            System.out.println(e);
+            e.printStackTrace();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -2042,7 +2053,6 @@ public final class MainForm extends javax.swing.JFrame {
         //Get customers from api
         String companyInfoJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Companyinformation", "GetMultiple", "SessionID=" + sessionID + "&Limit=0");
         try {
-            System.out.println("Get Company Info HTTP -> " + companyInfoJSON);
             JSONObject jsonObject = new JSONObject(companyInfoJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2062,10 +2072,9 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + companyInfoJSON);
             }
         } catch (JSONException e) {
-            System.out.println(e);
+            e.printStackTrace();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -2110,7 +2119,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             }
 
-            //System.out.println("Customer:" + customerName);
             Timestamp timestamp = new Timestamp(salesList.get(i).getSaleTimeDate());
             Date date = new Date(timestamp.getTime());
 
@@ -2135,13 +2143,10 @@ public final class MainForm extends javax.swing.JFrame {
     public void getSupplierSupplies() {
         supplierSuppliesList = new ArrayList<>();
         refreshSuppliesTableBtn.setEnabled(false);
-//        getSupplies();
-//        getSuppliers();
 
         //Get customers from api
         String supplierSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliersupplies", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get supplier supplies HTTP -> " + supplierSuppliesJSON);
             JSONObject jsonObject = new JSONObject(supplierSuppliesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2161,7 +2166,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + supplierSuppliesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2238,7 +2242,6 @@ public final class MainForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + positionsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2253,7 +2256,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteUserJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Users", "Delete", "SessionID=" + sessionID + "&UserID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteUserJSON);
             JSONObject jsonObject = new JSONObject(deleteUserJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2263,7 +2265,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteUserJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2277,7 +2278,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteSupplierJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliers", "Delete", "SessionID=" + sessionID + "&ID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteSupplierJSON);
             JSONObject jsonObject = new JSONObject(deleteSupplierJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2287,7 +2287,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteSupplierJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2301,7 +2300,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteSupplierSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Suppliersupplies", "Delete", "SessionID=" + sessionID + "&ID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteSupplierSuppliesJSON);
             JSONObject jsonObject = new JSONObject(deleteSupplierSuppliesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2311,7 +2309,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteSupplierSuppliesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2325,7 +2322,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteSuppliesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Supplies", "Delete", "SessionID=" + sessionID + "&ID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteSuppliesJSON);
             JSONObject jsonObject = new JSONObject(deleteSuppliesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2335,7 +2331,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteSuppliesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2349,7 +2344,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Delete", "SessionID=" + sessionID + "&ID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteProductsJSON);
             JSONObject jsonObject = new JSONObject(deleteProductsJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2359,7 +2353,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteProductsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2373,7 +2366,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteCustomersJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customers", "Delete", "SessionID=" + sessionID + "&ID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteCustomersJSON);
             JSONObject jsonObject = new JSONObject(deleteCustomersJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2383,7 +2375,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteCustomersJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2397,7 +2388,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteCustomerProductsJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Customerproducts", "Delete", "SessionID=" + sessionID + "&ID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteCustomerProductsJSON);
             JSONObject jsonObject = new JSONObject(deleteCustomerProductsJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2407,7 +2397,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteCustomerProductsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2421,7 +2410,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         String deleteProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productionbatches", "Delete", "SessionID=" + sessionID + "&ID=" + id);
         try {
-            System.out.println("Delete User HTTP -> " + deleteProductionJSON);
             JSONObject jsonObject = new JSONObject(deleteProductionJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -2431,7 +2419,6 @@ public final class MainForm extends javax.swing.JFrame {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + deleteProductionJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2459,6 +2446,7 @@ public final class MainForm extends javax.swing.JFrame {
         latestPurchases = new javax.swing.JPanel();
         purchasesScrollPanel = new javax.swing.JScrollPane();
         dailyPurchasesTable = new javax.swing.JTable();
+        customersGraphsPanel1 = new javax.swing.JPanel();
         inventory = new javax.swing.JPanel();
         invenrotyTabPanel = new javax.swing.JTabbedPane();
         productsTab = new javax.swing.JPanel();
@@ -2568,8 +2556,6 @@ public final class MainForm extends javax.swing.JFrame {
         importPurchaseBtn = new javax.swing.JButton();
         purchHistoryScrollPanel = new javax.swing.JScrollPane();
         purchHistoryTable = new javax.swing.JTable();
-        supplierGraphPanel = new javax.swing.JPanel();
-        suppliesGraphPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         Menu = new javax.swing.JMenu();
         Forms = new javax.swing.JMenu();
@@ -2595,7 +2581,7 @@ public final class MainForm extends javax.swing.JFrame {
         );
         statisticsLayout.setVerticalGroup(
             statisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 243, Short.MAX_VALUE)
         );
 
         dialyProduction.setBorder(javax.swing.BorderFactory.createTitledBorder("Daily Production"));
@@ -2694,13 +2680,28 @@ public final class MainForm extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
+        customersGraphsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customers Sales %", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        javax.swing.GroupLayout customersGraphsPanel1Layout = new javax.swing.GroupLayout(customersGraphsPanel1);
+        customersGraphsPanel1.setLayout(customersGraphsPanel1Layout);
+        customersGraphsPanel1Layout.setHorizontalGroup(
+            customersGraphsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        customersGraphsPanel1Layout.setVerticalGroup(
+            customersGraphsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 211, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
         home.setLayout(homeLayout);
         homeLayout.setHorizontalGroup(
             homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customersGraphsPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(latestPurchases, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2712,8 +2713,11 @@ public final class MainForm extends javax.swing.JFrame {
             homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(statistics, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
+                        .addComponent(statistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(customersGraphsPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(homeLayout.createSequentialGroup()
                         .addComponent(dialyProduction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -3743,7 +3747,7 @@ public final class MainForm extends javax.swing.JFrame {
             .addGroup(suppliesTabPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(suppliesTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(suppliesTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
+                    .addComponent(suppliesTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, suppliesTabPanelLayout.createSequentialGroup()
                         .addComponent(deleteSupplyButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -3816,7 +3820,7 @@ public final class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(purchasesHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, purchasesHistoryPanelLayout.createSequentialGroup()
-                        .addGap(0, 515, Short.MAX_VALUE)
+                        .addGap(0, 800, Short.MAX_VALUE)
                         .addComponent(exportPurchFilesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(printPurchasesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3826,7 +3830,7 @@ public final class MainForm extends javax.swing.JFrame {
                         .addComponent(refreshPurchasesTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)
                         .addComponent(importPurchaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(purchHistoryScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE))
+                    .addComponent(purchHistoryScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE))
                 .addContainerGap())
         );
         purchasesHistoryPanelLayout.setVerticalGroup(
@@ -3846,32 +3850,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         suppliesTab.addTab("Purchases Records", purchasesHistoryPanel);
 
-        supplierGraphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplier purchases %", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
-
-        javax.swing.GroupLayout supplierGraphPanelLayout = new javax.swing.GroupLayout(supplierGraphPanel);
-        supplierGraphPanel.setLayout(supplierGraphPanelLayout);
-        supplierGraphPanelLayout.setHorizontalGroup(
-            supplierGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
-        );
-        supplierGraphPanelLayout.setVerticalGroup(
-            supplierGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
-        );
-
-        suppliesGraphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Supplies purchases  per month", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
-
-        javax.swing.GroupLayout suppliesGraphPanelLayout = new javax.swing.GroupLayout(suppliesGraphPanel);
-        suppliesGraphPanel.setLayout(suppliesGraphPanelLayout);
-        suppliesGraphPanelLayout.setHorizontalGroup(
-            suppliesGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        suppliesGraphPanelLayout.setVerticalGroup(
-            suppliesGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout suppliersLayout = new javax.swing.GroupLayout(suppliers);
         suppliers.setLayout(suppliersLayout);
         suppliersLayout.setHorizontalGroup(
@@ -3882,14 +3860,8 @@ public final class MainForm extends javax.swing.JFrame {
                     .addGroup(suppliersLayout.createSequentialGroup()
                         .addComponent(noSuppliesLb)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(suppliersLayout.createSequentialGroup()
-                        .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(suppliersDetailsPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(suppliesTab))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(supplierGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(suppliesGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(suppliesTab, javax.swing.GroupLayout.DEFAULT_SIZE, 1066, Short.MAX_VALUE)
+                    .addComponent(suppliersDetailsPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         suppliersLayout.setVerticalGroup(
@@ -3898,17 +3870,10 @@ public final class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(noSuppliesLb)
                 .addGap(32, 32, 32)
-                .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(supplierGraphPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(suppliersDetailsPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(suppliersDetailsPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(suppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(suppliersLayout.createSequentialGroup()
-                        .addComponent(suppliesGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(701, Short.MAX_VALUE))
-                    .addGroup(suppliersLayout.createSequentialGroup()
-                        .addComponent(suppliesTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addComponent(suppliesTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(732, Short.MAX_VALUE))
         );
 
         tabPanel.addTab("Suppliers", suppliers);
@@ -4284,7 +4249,6 @@ public final class MainForm extends javax.swing.JFrame {
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
         String combinedPath = currentFolder + "Documents/employees.pdf";
-        System.out.println(combinedPath);
         File file = new File(combinedPath);
         try {
             document = PDDocument.load(file);
@@ -4516,7 +4480,6 @@ public final class MainForm extends javax.swing.JFrame {
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
         String combinedPath = currentFolder + "Documents/customer.pdf";
-        System.out.println(combinedPath);
         File file = new File(combinedPath);
         try {
             document = PDDocument.load(file);
@@ -4563,7 +4526,6 @@ public final class MainForm extends javax.swing.JFrame {
         URL url = getClass().getResource("");
         String currentFolder = url.getPath();
         String combinedPath = currentFolder + "Documents/suppliers.pdf";
-        System.out.println(combinedPath);
         File file = new File(combinedPath);
         try {
             document = PDDocument.load(file);
@@ -4593,13 +4555,11 @@ public final class MainForm extends javax.swing.JFrame {
     private void printSalesDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printSalesDetailsBtnActionPerformed
 
         int currentRow = salesDetailsTable.getSelectedRow();
-        System.out.println("Current row: " + currentRow);
         if (currentRow < 0) {
             PDDocument document;
             URL url = getClass().getResource("");
             String currentFolder = url.getPath();
             String combinedPath = currentFolder + "Documents/sales.pdf";
-            System.out.println(combinedPath);
             File file = new File(combinedPath);
             try {
                 document = PDDocument.load(file);
@@ -4690,7 +4650,6 @@ public final class MainForm extends javax.swing.JFrame {
             URL url = getClass().getResource("");
             String currentFolder = url.getPath();
             String combinedPath = currentFolder + "Documents/invoice.pdf";
-            System.out.println(combinedPath);
             File file = new File(combinedPath);
             try {
                 document = PDDocument.load(file);
@@ -4864,7 +4823,7 @@ public final class MainForm extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-        
+
         new LoginForm();
         this.setVisible(false);
 
@@ -4920,9 +4879,7 @@ public final class MainForm extends javax.swing.JFrame {
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + editUserJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 showMessageDialog(null, "Employee " + u.getFirstname() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
             }
         } catch (Exception e) {
@@ -4954,9 +4911,7 @@ public final class MainForm extends javax.swing.JFrame {
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + editSupplierJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 showMessageDialog(null, "Supplier " + s.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
             }
         } catch (Exception e) {
@@ -4982,7 +4937,6 @@ public final class MainForm extends javax.swing.JFrame {
                 "SessionID=" + sessionID + "&ID=" + c.getID() + "&Name=" + c.getName() + "&CountryID=" + c.getCountryID()
                 + "&City=" + c.getCity() + "&Address=" + c.getAddress() + "&Telephone=" + c.getTelephone() + "&CustomerProductsID=" + c.getCustomerProductsID()
         );
-        System.out.println("customersjson " + editCustomersJSON);
 
         try {
             JSONObject jsonObject = new JSONObject(editCustomersJSON);
@@ -4990,9 +4944,7 @@ public final class MainForm extends javax.swing.JFrame {
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + editCustomersJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 showMessageDialog(null, "Customers " + c.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
             }
         } catch (Exception e) {
@@ -5025,9 +4977,7 @@ public final class MainForm extends javax.swing.JFrame {
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + editProductsJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 showMessageDialog(null, "Products " + p.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
             }
         } catch (Exception e) {
@@ -5059,9 +5009,7 @@ public final class MainForm extends javax.swing.JFrame {
             final String title = jsonObject.getString("Title");
             final String message = jsonObject.getString("Message");
 
-            if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                System.out.println("Fail " + editSuppliesJSON);
-            } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+            if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 showMessageDialog(null, "Supplies " + s.getName() + " saved.", title, JOptionPane.PLAIN_MESSAGE);
             }
         } catch (Exception e) {
@@ -5137,6 +5085,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane customerTabPanel;
     private javax.swing.JPanel customers;
     private javax.swing.JPanel customersGraphsPanel;
+    private javax.swing.JPanel customersGraphsPanel1;
     private javax.swing.JButton customersSaveButton;
     private javax.swing.JTable dailyProductionTable;
     private javax.swing.JTable dailyPurchasesTable;
@@ -5233,14 +5182,12 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField searchTxt;
     private javax.swing.JPanel statistics;
     private javax.swing.JTable supplierDetailsTable;
-    private javax.swing.JPanel supplierGraphPanel;
     private javax.swing.JScrollPane supplierScrollPanel;
     private javax.swing.JPanel suppliers;
     private javax.swing.JPanel suppliersDetailsPanel1;
     private javax.swing.JButton suppliersSaveButton;
     private javax.swing.JPanel suppliesDetailsPanel;
     private javax.swing.JTable suppliesDetailsTable;
-    private javax.swing.JPanel suppliesGraphPanel;
     private javax.swing.JPanel suppliesInvTabs;
     private javax.swing.JPanel suppliesPanel;
     private javax.swing.JButton suppliesSaveButton;

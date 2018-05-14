@@ -498,7 +498,6 @@ public class EditProductSupplies extends Fragment {
                 if (statusCode == HttpURLConnection.HTTP_OK) {
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     responseData = AsyncTasks.convertStreamToString(inputStream);
-                    System.out.println(responseData);
 
                     JSONObject outterObject = new JSONObject(responseData);
                     final String status = outterObject.getString("Status");

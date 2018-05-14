@@ -340,11 +340,11 @@ public class AddProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void productNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameTextFieldActionPerformed
-        // TODO add your handling code here:
+    
     }//GEN-LAST:event_productNameTextFieldActionPerformed
 
     private void priceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_priceTextFieldActionPerformed
 
     private void addNewProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewProductButtonActionPerformed
@@ -413,7 +413,6 @@ public class AddProductsForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productsJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -504,10 +503,6 @@ public class AddProductsForm extends javax.swing.JFrame {
             String addProductionJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Products", "Create",
                     "SessionID=" + sessionID + "&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypeID=" + productTypesID + "&ProductSuppliesID=0");
 
-            System.out.println("!!!" + "SessionID=" + sessionID + "&ID=0&Name=" + name + "&Price=" + price + "&QuantityInStock=" + quantityInStock + "&ProductSizeID=" + sizeIDs.get(i) + "&ProductTypesID=" + productTypesID + "&ProductSuppliesID=0");
-
-            System.out.println(sizeList.get(i).getName() + " add Production HTTP -> " + addProductionJSON);
-
             try {
                 JSONObject jsonObject = new JSONObject(addProductionJSON);
                 final String status = jsonObject.getString("Status");
@@ -518,9 +513,7 @@ public class AddProductsForm extends javax.swing.JFrame {
                     success = false;
                 }
 
-                if (status.equals(HTTPConnection.RESPONSE_ERROR)) {
-                    System.out.println("Fail " + addProductionJSON);
-                } else if (status.equals(HTTPConnection.RESPONSE_OK)) {
+                if (status.equals(HTTPConnection.RESPONSE_OK)) {
                     //Reset fields:
                     setVisible(true);
                     typeComboBox.setSelectedIndex(0);
@@ -540,13 +533,10 @@ public class AddProductsForm extends javax.swing.JFrame {
     }
 
     public void getSizes() {
-        System.out.println("getSizes");
         sizeList = new ArrayList<>();
 
         //Get sizes from api
         String sizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Defaultsizes", "GetMultiple", "SessionID=" + sessionID + "");
-
-        System.out.println("Get Sizes HTTP -> " + sizesJSON);
 
         try {
             JSONObject jsonObject = new JSONObject(sizesJSON);
@@ -569,7 +559,6 @@ public class AddProductsForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + sizesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -577,8 +566,6 @@ public class AddProductsForm extends javax.swing.JFrame {
 
         //Get productSizes from api
         String productSizesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Productsizes", "GetMultiple", "SessionID=" + sessionID + "&Limit=0");
-
-        System.out.println("Get Sizes HTTP -> " + productSizesJSON);
 
         try {
             JSONObject jsonObject = new JSONObject(productSizesJSON);
@@ -601,7 +588,6 @@ public class AddProductsForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productSizesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -630,7 +616,6 @@ public class AddProductsForm extends javax.swing.JFrame {
         //Get customers from api
         String productTypesJSON = HTTPConnection.executePost(HTTPConnection.API_URL, "Producttypes", "GetMultiple", "SessionID=" + sessionID + "");
         try {
-            System.out.println("Get Customers HTTP -> " + productTypesJSON);
             JSONObject jsonObject = new JSONObject(productTypesJSON);
             final String status = jsonObject.getString("Status");
             final String title = jsonObject.getString("Title");
@@ -649,7 +634,6 @@ public class AddProductsForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
-                System.out.println("Fail " + productTypesJSON);
             }
         } catch (Exception e) {
             e.printStackTrace();

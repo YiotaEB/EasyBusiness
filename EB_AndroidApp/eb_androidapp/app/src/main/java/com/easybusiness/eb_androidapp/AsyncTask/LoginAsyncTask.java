@@ -76,7 +76,6 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
                 String responseData = AsyncTasks.convertStreamToString(inputStream);
 
                 JSONObject outterObject = new JSONObject(responseData);
-                System.out.println(responseData);
                 final String status = outterObject.getString("Status");
                 final String title = outterObject.getString("Title");
                 final String message = outterObject.getString("Message");

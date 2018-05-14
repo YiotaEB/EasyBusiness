@@ -71,7 +71,6 @@ public class GetEmployeesAsyncTask extends AsyncTask<Void, Void, Void> {
                 responseData = AsyncTasks.convertStreamToString(inputStream);
 
                 JSONObject outterObject = new JSONObject(responseData);
-                System.out.println(responseData);
 
                 final String status = outterObject.getString("Status");
                 final String title = outterObject.getString("Title");
