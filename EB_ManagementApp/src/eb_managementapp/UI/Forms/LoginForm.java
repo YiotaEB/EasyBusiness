@@ -188,6 +188,13 @@ public class LoginForm extends javax.swing.JFrame {
 
             if (status.equals(HTTPConnection.RESPONSE_OK)) {
                 String sessionID = jsonObject.getString("SessionID");
+                int userLevelID = jsonObject.getInt("UserLevelID");
+                
+                if (userLevelID > 2) {
+                    showMessageDialog(null, "This user not not administrator.", "Error", JOptionPane.PLAIN_MESSAGE);
+                    this.setVisible(true);
+                    return;
+                }
 
                 PrintWriter writer = new PrintWriter(SESSION_FILENAME, "UTF-8");
                 writer.println(sessionID);

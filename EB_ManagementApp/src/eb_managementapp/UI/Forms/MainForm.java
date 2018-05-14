@@ -4864,6 +4864,9 @@ public final class MainForm extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
+        
+        new LoginForm();
+        this.setVisible(false);
 
     }//GEN-LAST:event_logoutMenuItemActionPerformed
 
