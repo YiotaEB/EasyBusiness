@@ -17,6 +17,7 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/company_info_cardview"
+        android:visibility="gone"
         app:cardCornerRadius="5dp"
         app:cardBackgroundColor="@color/white"
         android:layout_width="match_parent"

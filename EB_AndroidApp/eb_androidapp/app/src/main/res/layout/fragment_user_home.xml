@@ -12,10 +12,11 @@
         android:id="@+id/user_home_progress"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
     <android.support.v7.widget.CardView
+        android:visibility="gone"
         android:id="@+id/company_info_cardview"
         app:cardCornerRadius="5dp"
         app:cardBackgroundColor="@color/white"
@@ -27,10 +28,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-           <TextView
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:text="1234"/>
+            <TextView
+                android:id="@+id/companyName"
+                android:text="COMPANY NAME"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="@string/latest_Sale"
+                android:id="@+id/lastSaleView"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/companyName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/latest_sale"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/lastSaleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/addCustomer"
+                android:layout_above="@id/addSale"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorOpposite"
+                android:text="@string/Add_Customer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/addSale"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorOpposite"
+                android:text="@string/add_sale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
         </RelativeLayout>

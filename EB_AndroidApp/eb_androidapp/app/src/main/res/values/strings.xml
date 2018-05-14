@@ -135,5 +135,6 @@
     <string name="add_production">Add Production</string>
     <string name="supplier_name">Supplier Name</string>
     <string name="my_account">My Account</string>
+    <string name="latest_Sale">Latest sale</string>
 
 </resources>
